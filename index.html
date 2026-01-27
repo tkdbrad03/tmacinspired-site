@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TMac Inspired™ | You Can Have It All</title>
+    <meta name="description" content="TMac Inspired helps nurses pivot from bedside burnout into business ownership through luxury consulting and mindset mastery.">
+    <style>
+        /* --- RESET & VARIABLES --- */
+        :root {
+            --bg: #ffffff;
+            --pine: #1f4236;
+            --gold: #c9a961;
+            --rose: #b76e79;
+            --text-main: #1f4236;
+            --text-light: #5c6b64;
+            
+            --font-serif: Georgia, 'Times New Roman', Times, serif;
+            
+            --max-w: 1100px; /* Restrained width for elegance */
+            --spacing-section: 8rem;
+            --spacing-element: 2rem;
+            
+            --transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: var(--font-serif);
+            line-height: 1.6;
+            font-size: 18px;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3 {
+            font-weight: 400; /* Regular weight looks more luxurious */
+            letter-spacing: -0.02em;
+            line-height: 1.3;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--pine);
+            margin-bottom: 1.5rem;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            color: var(--pine);
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+        }
+
+        p {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            max-width: 32em; /* Optimal reading length */
+        }
+
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+
+        /* --- BUTTONS --- */
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            border: 1px solid var(--pine);
+            color: var(--pine);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: transparent;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            background: var(--pine);
+            color: var(--bg);
+        }
+
+        .btn-gold {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+        .btn-gold:hover {
+            background: var(--gold);
+            color: white;
+        }
+
+        /* --- LAYOUT UTILITIES --- */
+        .container {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-padding {
+            padding: var(--spacing-section) 0;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            padding: 2rem 0;
+            text-align: center;
+        }
+        .logo {
+            font-size: 1.2rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--pine);
+        }
+
+        /* --- HERO --- */
+        .hero {
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 1rem;
+        }
+        
+        .hero-statement {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            max-width: 800px;
+            margin-bottom: 2rem;
+            color: var(--pine);
+        }
+        
+        .hero-sub {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        /* --- OFFERING GRID (The Z-Pattern) --- */
+        .offering-grid {
+            display: grid;
+            gap: 6rem;
+        }
+
+        .offering-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        /* Image Styling */
+        .image-wrapper {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 4/5; /* Portrait aspect ratio looks elegant */
+            background-color: #f4f4f4; /* Placeholder color while loading */
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.2s ease;
+        }
+
+        /* Subtle hover zoom effect on images */
+        .offering-row:hover .image-wrapper img {
+            transform: scale(1.03);
+        }
+
+        .content-wrapper {
+            padding: 2rem;
+        }
+
+        /* Alternate layout: Text Left, Image Right for even children */
+        .offering-row:nth-child(even) .content-wrapper {
+            order: -1;
+        }
+
+        /* --- TEE ROOM (Text Only Section) --- */
+        .tee-room-section {
+            background-color: #fcfbf9; /* Extremely subtle off-white */
+            text-align: center;
+            border-top: 1px solid rgba(31, 66, 54, 0.05);
+            border-bottom: 1px solid rgba(31, 66, 54, 0.05);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 4rem 0;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            border-top: 1px solid rgba(31, 66, 54, 0.1);
+        }
+        
+        footer a {
+            margin: 0 10px;
+            color: var(--pine);
+        }
+
+        /* --- ANIMATION UTILITIES --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- MOBILE RESPONSIVE --- */
+        @media (max-width: 768px) {
+            :root {
+                --spacing-section: 4rem;
+            }
+            
+            .offering-row {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .offering-row:nth-child(even) .content-wrapper {
+                order: 1; /* Reset order for mobile so image is always top */
+            }
+            
+            .image-wrapper {
+                aspect-ratio: 16/9; /* Wider on mobile */
+            }
+
+            .content-wrapper {
+                padding: 0;
+                text-align: center; /* Center text on mobile */
+            }
+            
+            p { margin: 0 auto 2rem auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="reveal">
+        <div class="logo">TMac Inspired™</div>
+    </nav>
+
+    <header class="hero container reveal">
+        <h1 class="hero-statement">You can have it all.<br>TMac Inspired™ shows you how.</h1>
+        <div class="hero-sub">The pivot from bedside to legacy.</div>
+    </header>
+
+    <main class="container">
+        <div class="offering-grid">
+
+            <section class="offering-row reveal">
+                <div class="image-wrapper">
+                    <img src="tmac-working.jpg" alt="TMac working elegantly at a desk" loading="lazy">
+                </div>
+                <div class="content-wrapper">
+                    <h3>The Entry Point</h3>
+                    <h2>Nurse Pivot Plan Starter Guide</h2>
+                    <p>Stop trading time for money. Begin the transition from bedside exhaustion to business ownership with our foundational blueprint.</p>
+                    <a href="nurse-pivot.html" class="btn">Get the Free Guide</a>
+                </div>
+            </section>
+
+            <section class="offering-row reveal">
+                <div class="image-wrapper">
+                    <img src="from-bedside-to-business.jpg" alt="TMac speaking on stage" loading="lazy">
+                </div>
+                <div class="content-wrapper">
+                    <h3>The Acceleration</h3>
+                    <h2>Slay Your Shift</h2>
+                    <p>A 5-day execution experience designed to shift your mindset and your tax bracket. Join the next cohort February 23-27, 2026.</p>
+                    <a href="slay-your-shift.html" class="btn">Join the Sprint</a>
+                </div>
+            </section>
+
+            <section class="offering-row reveal">
+                <div class="image-wrapper">
+                    <img src="Where_is_my_Life_Partner_Mockup.png" alt="Where Is My Life Partner Book" style="object-fit: contain; padding: 2rem;">
+                </div>
+                <div class="content-wrapper">
+                    <h3>The Philosophy</h3>
+                    <h2>Where Is My Life Partner?</h2>
+                    <p>The Manifestation Edition. A guide not just to love, but to the alignment required to attract everything that belongs to you.</p>
+                    <a href="https://book.tmacinspired.com" class="btn">Get the Book</a>
+                </div>
+            </section>
+
+            <section class="offering-row reveal">
+                <div class="image-wrapper">
+                    <img src="golfing.jpg" alt="TMac on the golf course" loading="lazy">
+                </div>
+                <div class="content-wrapper">
+                    <h3>The Membership</h3>
+                    <h2>The Tee Elite Circle</h2>
+                    <p>Where elite women build empire. Access the network, the mindset, and the "greens" where business is truly conducted.</p>
+                    <a href="https://tmacmastermind.com" class="btn btn-gold">Explore the Circle</a>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <section class="section-padding tee-room-section reveal">
+        <div class="container">
+            <h3>The Content</h3>
+            <h2 style="font-size: 1.8rem;">Weekly Insights for Women Building Legacy</h2>
+            <p style="margin: 0 auto 2rem auto;">Enter the Tee Elite Room for high-level conversation.</p>
+            <a href="https://tmacmastermind.com/tee-room" style="border-bottom: 1px solid var(--pine);">Read the Latest</a>
+        </div>
+    </section>
+
+    <footer class="reveal">
+        <div class="container">
+            <p style="margin-bottom: 1rem; font-style: italic;">"You can have it all."</p>
+            <div style="margin-bottom: 1rem;">TMac Inspired™ &copy; 2026</div>
+            <div>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        
+        window.addEventListener("scroll", reveal);
+        // Trigger once on load
+        reveal();
+    </script>
+</body>
+</html>
