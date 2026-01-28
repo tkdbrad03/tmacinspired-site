@@ -3,643 +3,394 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Where Is My Life Partner? - The Manifestation Edition</title>
-    <link rel="icon" type="image/png" href="/tmac-logo.png">
-    <link rel="apple-touch-icon" href="/tmac-logo.png">
+    <title>TMac Inspired™ | You Can Have It All</title>
+    <meta name="description" content="TMac Inspired helps nurses pivot from bedside burnout into business ownership through luxury consulting and mindset mastery.">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* --- RESET & VARIABLES --- */
+        :root {
+            --bg: #ffffff;
+            --pine: #1f4236;
+            --gold: #c9a961;
+            --rose: #b76e79;
+            --text-main: #1f4236;
+            --text-light: #5c6b64;
+            
+            --font-serif: Georgia, 'Times New Roman', Times, serif;
+            
+            --max-w: 1100px; /* Restrained width for elegance */
+            --spacing-section: 8rem;
+            --spacing-element: 2rem;
+            
+            --transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
         }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: 'Georgia', serif;
-            line-height: 1.8;
-            color: #2c3e50;
-            background: #fafafa;
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: var(--font-serif);
+            line-height: 1.6;
+            font-size: 18px;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
-        .header {
-            background: linear-gradient(135deg, #1f4236 0%, #2d6b5a 100%);
-            color: white;
-            padding: 60px 20px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 3em;
-            margin-bottom: 10px;
-            font-weight: 300;
-            letter-spacing: 2px;
-        }
-
-        .header .subtitle {
-            font-size: 1.3em;
-            font-style: italic;
-            background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 20px;
-        }
-
-        .header .tagline {
-            font-size: 1.4em;
-            margin-top: 30px;
-            font-weight: 300;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .hero-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-            padding: 80px 20px;
-            background: white;
-        }
-
-        .hero-image {
-            text-align: center;
-        }
-
-        .hero-image img {
-            max-width: 100%;
-            height: auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-            border-radius: 8px;
-        }
-
-        .hero-content h2 {
-            font-size: 2.5em;
-            color: #1f4236;
-            margin-bottom: 30px;
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3 {
+            font-weight: 400; /* Regular weight looks more luxurious */
+            letter-spacing: -0.02em;
             line-height: 1.3;
         }
 
-        .hero-content p {
-            font-size: 1.2em;
-            margin-bottom: 20px;
-            color: #555;
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--pine);
+            margin-bottom: 1.5rem;
         }
 
-        .questions-section {
-            background: #f8f4f0;
-            padding: 80px 20px;
+        h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            color: var(--pine);
         }
 
-        .questions-section h2 {
-            font-size: 2.3em;
-            color: #1f4236;
-            text-align: center;
-            margin-bottom: 50px;
+        h3 {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
         }
 
-        .question-list {
-            max-width: 800px;
-            margin: 0 auto;
+        p {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            max-width: 32em; /* Optimal reading length */
         }
 
-        .question-item {
-            background: white;
-            padding: 25px;
-            margin-bottom: 20px;
-            border-left: 5px solid #c9a961;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            font-size: 1.15em;
-            font-style: italic;
-            color: #2c3e50;
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+
+        /* --- BUTTONS --- */
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            border: 1px solid var(--pine);
+            color: var(--pine);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: transparent;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
 
-        .transformation-section {
-            background: white;
-            padding: 80px 20px;
+        .btn:hover {
+            background: var(--pine);
+            color: var(--bg);
         }
 
-        .transformation-section h2 {
-            font-size: 2.5em;
-            color: #1f4236;
-            text-align: center;
-            margin-bottom: 30px;
+        .btn-gold {
+            border-color: var(--gold);
+            color: var(--gold);
         }
-
-        .transformation-content {
-            max-width: 900px;
-            margin: 0 auto;
-            font-size: 1.2em;
-            line-height: 2;
-        }
-
-        .transformation-content p {
-            margin-bottom: 25px;
-        }
-
-        .highlight-box {
-            background: #1f4236;
+        .btn-gold:hover {
+            background: var(--gold);
             color: white;
-            padding: 40px;
-            margin: 60px 0;
-            text-align: center;
-            border-radius: 8px;
         }
 
-        .highlight-box h3 {
-            font-size: 2em;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .highlight-box p {
-            font-size: 1.3em;
-            line-height: 1.8;
-        }
-
-        .system-section {
-            background: linear-gradient(135deg, #1f4236 0%, #2d6b5a 100%);
-            color: white;
-            padding: 80px 20px;
-        }
-
-        .system-section h2 {
-            font-size: 2.8em;
-            text-align: center;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .system-section .subtitle {
-            text-align: center;
-            font-size: 1.4em;
-            margin-bottom: 60px;
-            font-style: italic;
-        }
-
-        .system-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-            max-width: 1100px;
+        /* --- LAYOUT UTILITIES --- */
+        .container {
+            max-width: var(--max-w);
             margin: 0 auto;
+            padding: 0 2rem;
         }
 
-        .system-card {
-            background: rgba(255,255,255,0.1);
-            padding: 35px;
-            border-radius: 8px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
+        .section-padding {
+            padding: var(--spacing-section) 0;
         }
 
-        .system-card h3 {
-            font-size: 1.6em;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+        /* This creates the banner area at the very top */
+.header-banner {
+    width: 100%;
+    height: 250px; /* This makes the banner tall enough to see */
+    background-image: url('banner.jpg'); /* Change 'banner.jpg' to your banner file name */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
 
-        .system-card p {
-            font-size: 1.1em;
-            line-height: 1.8;
-        }
+/* 1. The Green Banner - Shorter and solid Pine Green */
+.header-banner {
+    width: 100%;
+    height: 120px; /* Reduced from 250px to 120px to remove extra space */
+    background-color: #1f4236; /* This ensures the Deep Pine green shows up */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
 
-        .author-section {
-            background: white;
-            padding: 80px 20px;
-        }
+/* 2. The Logo inside the banner */
+.header-banner img.logo {
+    max-height: 80px; /* Limits the height so it fits comfortably */
+    width: auto;
+}
 
-        .author-content {
+/* 3. The Hero Area - Cutting the top space */
+header.hero {
+    min-height: auto; /* Removes the forced tall height */
+    padding: 3rem 1rem 2rem 1rem; /* Less padding means less empty space */
+    text-align: center;
+}
+
+/* 4. Fix the Hero Statement spacing */
+.hero-statement {
+    font-size: clamp(2rem, 4vw, 3rem);
+    max-width: 800px;
+    margin: 0 auto 1rem auto; /* Reduced bottom margin */
+    text-align: center;
+}
+
+
+        /* --- OFFERING GRID (The Z-Pattern) --- */
+        .offering-grid {
             display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 60px;
-            max-width: 1100px;
-            margin: 0 auto;
+            gap: 6rem;
+        }
+
+        .offering-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
             align-items: center;
         }
 
-        .author-image img {
-            max-width: 100%;
-            border-radius: 8px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        /* Image Styling */
+        .image-wrapper {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 4/5; /* Portrait aspect ratio looks elegant */
+            background-color: #f4f4f4; /* Placeholder color while loading */
+        }
+        
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.2s ease;
+        }
+/* Rule for wide/horizontal photos */
+.image-wrapper.horizontal {
+    aspect-ratio: 16/9 !important; /* Forces it to be wide like a TV screen */
+}
+
+/* Rule for the book (no gray box, bigger image) */
+.image-wrapper.book-mode {
+    background-color: transparent !important; /* Removes the gray box */
+    aspect-ratio: auto; /* Lets the image shape itself */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-wrapper.book-mode img {
+    object-fit: contain !important; /* Shows the whole book */
+    transform: scale(1.3); /* Makes the book 30% bigger */
+}
+        /* Subtle hover zoom effect on images */
+        .offering-row:hover .image-wrapper img {
+            transform: scale(1.03);
         }
 
-        .author-bio h2 {
-            font-size: 2.5em;
-            color: #1f4236;
-            margin-bottom: 30px;
+        .content-wrapper {
+            padding: 2rem;
         }
 
-        .author-bio p {
-            font-size: 1.15em;
-            margin-bottom: 20px;
-            line-height: 1.9;
+        /* Alternate layout: Text Left, Image Right for even children */
+        .offering-row:nth-child(even) .content-wrapper {
+            order: -1;
         }
 
-        .for-you-section {
-            background: #f8f4f0;
-            padding: 80px 20px;
-        }
-
-        .for-you-section h2 {
-            font-size: 2.5em;
-            color: #1f4236;
+        /* --- TEE ROOM (Text Only Section) --- */
+        .tee-room-section {
+            background-color: #fcfbf9; /* Extremely subtle off-white */
             text-align: center;
-            margin-bottom: 50px;
+            border-top: 1px solid rgba(31, 66, 54, 0.05);
+            border-bottom: 1px solid rgba(31, 66, 54, 0.05);
         }
 
-        .for-you-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .for-you-card {
-            background: white;
-            padding: 35px;
-            border-radius: 8px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            text-align: center;
-            font-size: 1.15em;
-            line-height: 1.8;
-        }
-
-        .cta-section {
-            background: linear-gradient(135deg, #1f4236 0%, #2d6b5a 100%);
-            color: white;
-            padding: 100px 20px;
-            text-align: center;
-        }
-
-        .cta-section h2 {
-            font-size: 3em;
-            margin-bottom: 30px;
-            background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .cta-section p {
-            font-size: 1.5em;
-            margin-bottom: 50px;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%);
-            color: #1f4236;
-            padding: 25px 60px;
-            font-size: 1.5em;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            letter-spacing: 1px;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-            background: linear-gradient(135deg, #b89851 0%, #e8d8a8 50%, #b89851 100%);
-        }
-
-        .quote-section {
-            background: white;
-            padding: 80px 20px;
-            text-align: center;
-        }
-
-        .quote {
-            font-size: 2.5em;
-            font-style: italic;
-            color: #1f4236;
-            max-width: 800px;
-            margin: 0 auto 30px;
-            line-height: 1.5;
-        }
-
-        .quote-author {
-            font-size: 1.5em;
-            background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 300;
-        }
-
+        /* --- FOOTER --- */
         footer {
-            background: #1f4236;
-            color: white;
-            padding: 40px 20px;
+            padding: 4rem 0;
             text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            border-top: 1px solid rgba(31, 66, 54, 0.1);
+        }
+        
+        footer a {
+    margin: 0 10px;
+    color: var(--pine);
+    text-decoration: none;
+    font-size: 0.8rem;
+}
+
+footer a:hover {
+    color: var(--gold); /* Subtle gold shift when they hover */
+}
+
+
+        /* --- ANIMATION UTILITIES --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        footer p {
-            font-size: 1em;
-            margin-bottom: 10px;
-        }
-
+        /* --- MOBILE RESPONSIVE --- */
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2em;
+            :root {
+                --spacing-section: 4rem;
             }
-
-            .header .subtitle {
-                font-size: 1.1em;
-            }
-
-            .header .tagline {
-                font-size: 1.1em;
-            }
-
-            .header {
-                padding: 40px 20px;
-            }
-
-            .hero-section {
+            
+            .offering-row {
                 grid-template-columns: 1fr;
-                gap: 40px;
-                padding: 40px 20px;
+                gap: 2rem;
             }
 
-            .hero-content h2 {
-                font-size: 1.8em;
+            .offering-row:nth-child(even) .content-wrapper {
+                order: 1; /* Reset order for mobile so image is always top */
+            }
+            
+            .image-wrapper {
+                aspect-ratio: 16/9; /* Wider on mobile */
             }
 
-            .hero-content p {
-                font-size: 1.1em;
+            .content-wrapper {
+                padding: 0;
+                text-align: center; /* Center text on mobile */
             }
-
-            .questions-section {
-                padding: 40px 20px;
-            }
-
-            .questions-section h2 {
-                font-size: 1.8em;
-            }
-
-            .question-item {
-                font-size: 1em;
-                padding: 20px;
-            }
-
-            .highlight-box {
-                padding: 30px 20px;
-                margin: 40px 0;
-            }
-
-            .highlight-box h3 {
-                font-size: 1.5em;
-            }
-
-            .highlight-box p {
-                font-size: 1.1em;
-            }
-
-            .transformation-section {
-                padding: 40px 20px;
-            }
-
-            .transformation-section h2 {
-                font-size: 1.8em;
-            }
-
-            .transformation-content {
-                font-size: 1.05em;
-            }
-
-            .author-content {
-                grid-template-columns: 1fr;
-            }
-
-            .author-section {
-                padding: 40px 20px;
-            }
-
-            .author-bio h2 {
-                font-size: 1.8em;
-            }
-
-            .author-bio p {
-                font-size: 1.05em;
-            }
-
-            .system-section {
-                padding: 40px 20px;
-            }
-
-            .system-section h2 {
-                font-size: 2em;
-            }
-
-            .system-section .subtitle {
-                font-size: 1.1em;
-            }
-
-            .system-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .system-card {
-                padding: 25px;
-            }
-
-            .system-card h3 {
-                font-size: 1.4em;
-            }
-
-            .system-card p {
-                font-size: 1em;
-            }
-
-            .for-you-section {
-                padding: 40px 20px;
-            }
-
-            .for-you-section h2 {
-                font-size: 1.8em;
-            }
-
-            .for-you-card {
-                font-size: 1.05em;
-                padding: 25px;
-            }
-
-            .quote-section {
-                padding: 40px 20px;
-            }
-
-            .quote {
-                font-size: 1.5em;
-            }
-
-            .quote-author {
-                font-size: 1.2em;
-            }
-
-            .cta-section {
-                padding: 60px 20px;
-            }
-
-            .cta-section h2 {
-                font-size: 2em;
-            }
-
-            .cta-section p {
-                font-size: 1.2em;
-            }
-
-            .cta-button {
-                padding: 20px 40px;
-                font-size: 1.2em;
-                width: 90%;
-                text-align: center;
-            }
+            
+            p { margin: 0 auto 2rem auto; }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <h1>You can have it all.</h1>
-        <div class="tagline">TMac Inspired shows you how.</div>
-    </header>
 
-    <section class="hero-section container">
-        <div class="hero-image">
-            <img src="front_mockup.png" alt="Where Is My Life Partner Book Cover">
+   <div class="header-banner">
+    <img src="tmac-logo.png" alt="TMac Inspired Logo" class="logo">
+</div>
+
+<header class="hero container reveal">
+    <h1 class="hero-statement">You can have it all.<br>TMac Inspired™ shows you how.</h1>
+    <div class="hero-sub">The pivot from bedside to legacy.</div>
+</header>
+
+    <main class="container">
+        <div class="offering-grid">
+
+            <section class="offering-row reveal">
+                <div class="image-wrapper">
+                    <img src="tmac-working.png" alt="TMac working elegantly at a desk" loading="lazy">
+                </div>
+                <div class="content-wrapper">
+                    <h3>The Entry Point</h3>
+                    <h2>Nurse Pivot Plan Starter Guide</h2>
+                    <p>For nurses who are ready to move with clarity and structure, not more noise.</p>
+                    <a href="nurse-pivot.html" class="btn">Get Your Free Guide</a>
+                </div>
+            </section>
+
+            <section class="offering-row reveal">
+                <div class="image-wrapper horizontal">
+    <img src="from-bedside-to-business.png" alt="TMac speaking on stage" loading="lazy">
+</div>
+                <div class="content-wrapper">
+                    <h3>The Acceleration</h3>
+                    <h2>Slay Your Shift</h2>
+                    <p>The live, 5-day execution experience for nurses ready to swap burnout for a profitable business they love.
+            Join the next shift February 23-27, 2026.</p>
+                    <a href="slay-your-shift.html" class="btn">Join the Shift</a>
+                </div>
+            </section>
+
+            <section class="offering-row reveal">
+                    <div class="image-wrapper book-mode">
+    <img src="Where_is_my_Life_Partner_Mockup.png" alt="Where Is My Life Partner Book">
+</div>
+                <div class="content-wrapper">
+                    <h3>The Philosophy</h3>
+                    <h2>Where Is My Life Partner?</h2>
+                    <p>The Manifestation Edition. A guide not just to love, but to the alignment required to attract everything that belongs to you.</p>
+                    <a href="https://book.tmacinspired.com" class="btn">Get the Book</a>
+                </div>
+            </section>
+
+            <section class="offering-row reveal">
+                <div class="image-wrapper">
+                    <img src="golfing.png" alt="TMac on the golf course" loading="lazy">
+                </div>
+                <div class="content-wrapper">
+                    <h3>The Membership</h3>
+                    <h2>The Tee Elite Circle</h2>
+                    <p>Not a league. A lifestyle. Among women who've already built. Now, you play.</p>
+                    <a href="https://tmacmastermind.com" class="btn btn-gold">Explore the Circle</a>
+                </div>
+            </section>
+
         </div>
-        <div class="hero-content">
-            <h2>Where Is My Life Partner? The Manifestation Edition</h2>
-            <p><em>A Woman's Guide to Attracting Her Soulmate</em></p>
-            <p>You are a leader, a visionary, and a woman of profound faith. You've built a life that looks complete on paper, yet there is a specific void that accolades haven't been able to fill.</p>
-            <p>You are the "Strong One," the "Boss," and the problem solver for everyone in your circle, but you are ready to be the woman who is cherished and supported in her own home.</p>
+    </main>
+
+    <section class="section-padding tee-room-section reveal">
+        <div class="container">
+            <h3>The Content</h3>
+            <h2 style="font-size: 1.8rem;">Daily permission for women who are ready to stop negotiating with the life they want.</h2>
+            <p style="margin: 0 auto 2rem auto;">Enter the Tee Elite Room where accomplished women get permission to play their own game.</p>
+            <a href="https://tmacmastermind.com/tee-room" style="border-bottom: 1px solid var(--pine);">Read the Latest</a>
         </div>
     </section>
 
-    <section class="questions-section">
+    <footer class="reveal">
         <div class="container">
-            <h2>You Find Yourself Searching for Answers</h2>
-            <div class="question-list">
-                <div class="question-item">"Why do I keep attracting the same relationship patterns?"</div>
-                <div class="question-item">"How do I stop being the provider and the fixer in every partnership?"</div>
-                <div class="question-item">"Why is it so difficult to find a man who isn't intimidated by my brilliance?"</div>
-                <div class="question-item">"How do I move from survival mode into true emotional safety?"</div>
-            </div>
-            <div class="highlight-box">
-                <h3>If you're tired of chemistry without safety and hope without results...</h3>
-                <p>It's time for an internal upgrade.</p>
-            </div>
-        </div>
-    </section>
+            <p style="margin-bottom: 1rem; font-style: italic;">"You can have it all."</p>
+            <div style="margin-bottom: 1rem;">TMac Inspired™ &copy; 2026</div>
+            <div>
+                <a href="privacy.html">Privacy Policy</a>
+<a href="terms.html">Terms of Service</a>
 
-    <section class="transformation-section">
-        <div class="container">
-            <h2>Written from the Other Side of the Prayer</h2>
-            <div class="transformation-content">
-                <p>When Dr. Tasha "TMac" McCray wrote the first edition of <em>Where Is My Life Partner?</em>, she wasn't writing from a place of "wanting." She was writing from the side of <strong>having</strong>.</p>
-                <p>After doing the deep, transformative work to break her own patterns, she successfully manifested her husband, Benny. She is the living proof that when you align your internal state, your external world—and your soulmate—must follow.</p>
-                <p>In this Enhanced Manifestation Edition, she bridges the gap between her 2018 foundation and her current life as a tech visionary and manifestation expert. She doesn't just teach theory; she teaches the exact system that allowed her to manifest a multi-million dollar legacy and a thriving, peaceful marriage.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="system-section">
-        <div class="container">
-            <h2>The L.O.V.E. M.E. System</h2>
-            <p class="subtitle">This is not a book of dating "rules." It's a blueprint for internal restructuring.</p>
-            <div class="system-grid">
-                <div class="system-card">
-                    <h3>The L.O.V.E. M.E. Framework</h3>
-                    <p>A deep dive into Listening, Observing, Validating, and Evaluating your own truth so you never settle again.</p>
-                </div>
-                <div class="system-card">
-                    <h3>Breaking the Cycle</h3>
-                    <p>Identifying the unresolved stories and unspoken grief that keep you attracting the same relationship patterns.</p>
-                </div>
-                <div class="system-card">
-                    <h3>The Myth of Independence</h3>
-                    <p>Understanding why being "strong" is often a mask for self-betrayal, and how to embrace the softness required for true partnership.</p>
-                </div>
-                <div class="system-card">
-                    <h3>Preparation Over Promise</h3>
-                    <p>How to move from survival mode into a state of awareness and self-trust that prepares you for the partner you seek.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="author-section">
-        <div class="container">
-            <div class="author-content">
-                <div class="author-image">
-                    <img src="back_cover_mockup.png" alt="Dr. Tasha TMac McCray">
-                </div>
-                <div class="author-bio">
-                    <h2>Wealth on Your Terms. Love by Design.</h2>
-                    <p>Dr. TMac lives the life she teaches. As the founder of CompliTrst™, she builds complex tech solutions, business automations, and customized apps. As a wife and matriarch, she fosters legacy and connection.</p>
-                    <p>She doesn't balance these roles; she encompasses them as one integrated, abundant life.</p>
-                    <p>She might be closing a software deal or sinking a hole-in-one on the golf course with her husband—every move she makes is from a state of flow.</p>
-                    <p><strong>This book is your invitation to join her in that space of total alignment.</strong></p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="for-you-section">
-        <div class="container">
-            <h2>This Book Is For You If:</h2>
-            <div class="for-you-grid">
-                <div class="for-you-card">
-                    You are an accomplished woman ready to stop "hustling" for love.
-                </div>
-                <div class="for-you-card">
-                    You want a partner who doesn't just see your light, but protects it.
-                </div>
-                <div class="for-you-card">
-                    You are ready to trade survival for safety and "strong" for "cherished."
-                </div>
+                <a href="mailto:support@tmacinspired.com">Contact</a>
             </div>
         </div>
-    </section>
-
-    <section class="quote-section">
-        <div class="container">
-            <p class="quote">"You can have it all."</p>
-            <p class="quote-author">— Dr. Tasha "TMac" McCray</p>
-        </div>
-    </section>
-
-    <section class="cta-section">
-        <div class="container">
-            <h2>Your Soulmate Isn't a Mystery to Be Solved</h2>
-            <p>He is an outcome of your alignment.</p>
-            <a href="#" class="cta-button">Stop Searching. Start Assuming. Get Your Copy Today.</a>
-        </div>
-    </section>
-
-    <footer>
-        <p>&copy; 2026 TMac Inspired™</p>
-        <p>Questions? <a href="mailto:support@tmacinspired.com" style="color: #c9a961; text-decoration: none;">support@tmacinspired.com</a></p>
-        <p>All Rights Reserved</p>
     </footer>
+
+    <script>
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        
+        window.addEventListener("scroll", reveal);
+        // Trigger once on load
+        reveal();
+    </script>
 </body>
 </html>

@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Where Is My Life Partner? - The Manifestation Edition</title>
+    <link rel="icon" type="image/png" href="/tmac-logo.png">
+    <link rel="apple-touch-icon" href="/tmac-logo.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.8;
+            color: #2c3e50;
+            background: #fafafa;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1f4236 0%, #2d6b5a 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .header .subtitle {
+            font-size: 1.3em;
+            font-style: italic;
+            background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .header .tagline {
+            font-size: 1.4em;
+            margin-top: 30px;
+            font-weight: 300;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .hero-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            padding: 80px 20px;
+            background: white;
+        }
+
+        .hero-image {
+            text-align: center;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+
+        .hero-content h2 {
+            font-size: 2.5em;
+            color: #1f4236;
+            margin-bottom: 30px;
+            line-height: 1.3;
+        }
+
+        .hero-content p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .questions-section {
+            background: #f8f4f0;
+            padding: 80px 20px;
+        }
+
+        .questions-section h2 {
+            font-size: 2.3em;
+            color: #1f4236;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .question-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .question-item {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 5px solid #c9a961;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            font-size: 1.15em;
+            font-style: italic;
+            color: #2c3e50;
+        }
+
+        .transformation-section {
+            background: white;
+            padding: 80px 20px;
+        }
+
+        .transformation-section h2 {
+            font-size: 2.5em;
+            color: #1f4236;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .transformation-content {
+            max-width: 900px;
+            margin: 0 auto;
+            font-size: 1.2em;
+            line-height: 2;
+        }
+
+        .transformation-content p {
+            margin-bottom: 25px;
+        }
+
+        .highlight-box {
+            background: #1f4236;
+            color: white;
+            padding: 40px;
+            margin: 60px 0;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .highlight-box h3 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .highlight-box p {
+            font-size: 1.3em;
+            line-height: 1.8;
+        }
+
+        .system-section {
+            background: linear-gradient(135deg, #1f4236 0%, #2d6b5a 100%);
+            color: white;
+            padding: 80px 20px;
+        }
+
+        .system-section h2 {
+            font-size: 2.8em;
+            text-align: center;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .system-section .subtitle {
+            text-align: center;
+            font-size: 1.4em;
+            margin-bottom: 60px;
+            font-style: italic;
+        }
+
+        .system-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .system-card {
+            background: rgba(255,255,255,0.1);
+            padding: 35px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .system-card h3 {
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .system-card p {
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        .author-section {
+            background: white;
+            padding: 80px 20px;
+        }
+
+        .author-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 60px;
+            max-width: 1100px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .author-image img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        .author-bio h2 {
+            font-size: 2.5em;
+            color: #1f4236;
+            margin-bottom: 30px;
+        }
+
+        .author-bio p {
+            font-size: 1.15em;
+            margin-bottom: 20px;
+            line-height: 1.9;
+        }
+
+        .for-you-section {
+            background: #f8f4f0;
+            padding: 80px 20px;
+        }
+
+        .for-you-section h2 {
+            font-size: 2.5em;
+            color: #1f4236;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .for-you-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .for-you-card {
+            background: white;
+            padding: 35px;
+            border-radius: 8px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            font-size: 1.15em;
+            line-height: 1.8;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #1f4236 0%, #2d6b5a 100%);
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 3em;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cta-section p {
+            font-size: 1.5em;
+            margin-bottom: 50px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%);
+            color: #1f4236;
+            padding: 25px 60px;
+            font-size: 1.5em;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            letter-spacing: 1px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            background: linear-gradient(135deg, #b89851 0%, #e8d8a8 50%, #b89851 100%);
+        }
+
+        .quote-section {
+            background: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .quote {
+            font-size: 2.5em;
+            font-style: italic;
+            color: #1f4236;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            line-height: 1.5;
+        }
+
+        .quote-author {
+            font-size: 1.5em;
+            background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 300;
+        }
+
+        footer {
+            background: #1f4236;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        footer p {
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .header .subtitle {
+                font-size: 1.1em;
+            }
+
+            .header .tagline {
+                font-size: 1.1em;
+            }
+
+            .header {
+                padding: 40px 20px;
+            }
+
+            .hero-section {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                padding: 40px 20px;
+            }
+
+            .hero-content h2 {
+                font-size: 1.8em;
+            }
+
+            .hero-content p {
+                font-size: 1.1em;
+            }
+
+            .questions-section {
+                padding: 40px 20px;
+            }
+
+            .questions-section h2 {
+                font-size: 1.8em;
+            }
+
+            .question-item {
+                font-size: 1em;
+                padding: 20px;
+            }
+
+            .highlight-box {
+                padding: 30px 20px;
+                margin: 40px 0;
+            }
+
+            .highlight-box h3 {
+                font-size: 1.5em;
+            }
+
+            .highlight-box p {
+                font-size: 1.1em;
+            }
+
+            .transformation-section {
+                padding: 40px 20px;
+            }
+
+            .transformation-section h2 {
+                font-size: 1.8em;
+            }
+
+            .transformation-content {
+                font-size: 1.05em;
+            }
+
+            .author-content {
+                grid-template-columns: 1fr;
+            }
+
+            .author-section {
+                padding: 40px 20px;
+            }
+
+            .author-bio h2 {
+                font-size: 1.8em;
+            }
+
+            .author-bio p {
+                font-size: 1.05em;
+            }
+
+            .system-section {
+                padding: 40px 20px;
+            }
+
+            .system-section h2 {
+                font-size: 2em;
+            }
+
+            .system-section .subtitle {
+                font-size: 1.1em;
+            }
+
+            .system-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .system-card {
+                padding: 25px;
+            }
+
+            .system-card h3 {
+                font-size: 1.4em;
+            }
+
+            .system-card p {
+                font-size: 1em;
+            }
+
+            .for-you-section {
+                padding: 40px 20px;
+            }
+
+            .for-you-section h2 {
+                font-size: 1.8em;
+            }
+
+            .for-you-card {
+                font-size: 1.05em;
+                padding: 25px;
+            }
+
+            .quote-section {
+                padding: 40px 20px;
+            }
+
+            .quote {
+                font-size: 1.5em;
+            }
+
+            .quote-author {
+                font-size: 1.2em;
+            }
+
+            .cta-section {
+                padding: 60px 20px;
+            }
+
+            .cta-section h2 {
+                font-size: 2em;
+            }
+
+            .cta-section p {
+                font-size: 1.2em;
+            }
+
+            .cta-button {
+                padding: 20px 40px;
+                font-size: 1.2em;
+                width: 90%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>You can have it all.</h1>
+        <div class="tagline">TMac Inspired shows you how.</div>
+    </header>
+
+    <section class="hero-section container">
+        <div class="hero-image">
+            <img src="front_mockup.png" alt="Where Is My Life Partner Book Cover">
+        </div>
+        <div class="hero-content">
+            <h2>Where Is My Life Partner? The Manifestation Edition</h2>
+            <p><em>A Woman's Guide to Attracting Her Soulmate</em></p>
+            <p>You are a leader, a visionary, and a woman of profound faith. You've built a life that looks complete on paper, yet there is a specific void that accolades haven't been able to fill.</p>
+            <p>You are the "Strong One," the "Boss," and the problem solver for everyone in your circle, but you are ready to be the woman who is cherished and supported in her own home.</p>
+        </div>
+    </section>
+
+    <section class="questions-section">
+        <div class="container">
+            <h2>You Find Yourself Searching for Answers</h2>
+            <div class="question-list">
+                <div class="question-item">"Why do I keep attracting the same relationship patterns?"</div>
+                <div class="question-item">"How do I stop being the provider and the fixer in every partnership?"</div>
+                <div class="question-item">"Why is it so difficult to find a man who isn't intimidated by my brilliance?"</div>
+                <div class="question-item">"How do I move from survival mode into true emotional safety?"</div>
+            </div>
+            <div class="highlight-box">
+                <h3>If you're tired of chemistry without safety and hope without results...</h3>
+                <p>It's time for an internal upgrade.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="transformation-section">
+        <div class="container">
+            <h2>Written from the Other Side of the Prayer</h2>
+            <div class="transformation-content">
+                <p>When Dr. Tasha "TMac" McCray wrote the first edition of <em>Where Is My Life Partner?</em>, she wasn't writing from a place of "wanting." She was writing from the side of <strong>having</strong>.</p>
+                <p>After doing the deep, transformative work to break her own patterns, she successfully manifested her husband, Benny. She is the living proof that when you align your internal state, your external world—and your soulmate—must follow.</p>
+                <p>In this Enhanced Manifestation Edition, she bridges the gap between her 2018 foundation and her current life as a tech visionary and manifestation expert. She doesn't just teach theory; she teaches the exact system that allowed her to manifest a multi-million dollar legacy and a thriving, peaceful marriage.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="system-section">
+        <div class="container">
+            <h2>The L.O.V.E. M.E. System</h2>
+            <p class="subtitle">This is not a book of dating "rules." It's a blueprint for internal restructuring.</p>
+            <div class="system-grid">
+                <div class="system-card">
+                    <h3>The L.O.V.E. M.E. Framework</h3>
+                    <p>A deep dive into Listening, Observing, Validating, and Evaluating your own truth so you never settle again.</p>
+                </div>
+                <div class="system-card">
+                    <h3>Breaking the Cycle</h3>
+                    <p>Identifying the unresolved stories and unspoken grief that keep you attracting the same relationship patterns.</p>
+                </div>
+                <div class="system-card">
+                    <h3>The Myth of Independence</h3>
+                    <p>Understanding why being "strong" is often a mask for self-betrayal, and how to embrace the softness required for true partnership.</p>
+                </div>
+                <div class="system-card">
+                    <h3>Preparation Over Promise</h3>
+                    <p>How to move from survival mode into a state of awareness and self-trust that prepares you for the partner you seek.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="author-section">
+        <div class="container">
+            <div class="author-content">
+                <div class="author-image">
+                    <img src="back_cover_mockup.png" alt="Dr. Tasha TMac McCray">
+                </div>
+                <div class="author-bio">
+                    <h2>Wealth on Your Terms. Love by Design.</h2>
+                    <p>Dr. TMac lives the life she teaches. As the founder of CompliTrst™, she builds complex tech solutions, business automations, and customized apps. As a wife and matriarch, she fosters legacy and connection.</p>
+                    <p>She doesn't balance these roles; she encompasses them as one integrated, abundant life.</p>
+                    <p>She might be closing a software deal or sinking a hole-in-one on the golf course with her husband—every move she makes is from a state of flow.</p>
+                    <p><strong>This book is your invitation to join her in that space of total alignment.</strong></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="for-you-section">
+        <div class="container">
+            <h2>This Book Is For You If:</h2>
+            <div class="for-you-grid">
+                <div class="for-you-card">
+                    You are an accomplished woman ready to stop "hustling" for love.
+                </div>
+                <div class="for-you-card">
+                    You want a partner who doesn't just see your light, but protects it.
+                </div>
+                <div class="for-you-card">
+                    You are ready to trade survival for safety and "strong" for "cherished."
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="quote-section">
+        <div class="container">
+            <p class="quote">"You can have it all."</p>
+            <p class="quote-author">— Dr. Tasha "TMac" McCray</p>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>Your Soulmate Isn't a Mystery to Be Solved</h2>
+            <p>He is an outcome of your alignment.</p>
+            <a href="#" class="cta-button">Stop Searching. Start Assuming. Get Your Copy Today.</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 TMac Inspired™</p>
+        <p>Questions? <a href="mailto:support@tmacinspired.com" style="color: #c9a961; text-decoration: none;">support@tmacinspired.com</a></p>
+        <p>All Rights Reserved</p>
+    </footer>
+</body>
+</html>
