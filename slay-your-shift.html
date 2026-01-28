@@ -37,45 +37,44 @@
             width: auto; 
         }
 
-        /* 2. HERO AREA - More space, centered & prominent */
+        /* 2. HERO AREA - Prominent & Centered */
         .hero {
-            padding: 6rem 1rem 5rem 1rem;
+            padding: 6rem 1rem 4rem 1rem;
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
+        }
+        h1 { 
+            font-size: clamp(2.5rem, 5vw, 4rem); 
+            font-weight: 400; 
+            margin: 0 0 20px 0; 
+            line-height: 1.1; 
+            text-transform: uppercase;
+        }
+        .subtitle { 
+            font-style: italic; 
+            color: var(--gold); 
+            font-size: 1.8rem; 
+            margin-bottom: 10px;
+            display: block;
         }
         .date-badge {
             color: var(--gold);
             text-transform: uppercase;
             letter-spacing: 5px;
             font-size: 1.1rem;
-            margin-bottom: 1.5rem;
-            display: block;
             font-weight: bold;
-        }
-        h1 { 
-            font-size: clamp(2.5rem, 5vw, 4rem); 
-            font-weight: 400; 
-            margin: 0 auto 20px auto; 
-            line-height: 1.1; 
-            max-width: 900px;
-            text-transform: uppercase;
-        }
-        .subtitle { 
-            color: var(--gold); 
-            font-size: 1.6rem; 
-            font-style: italic;
-            margin-top: 10px;
-            max-width: 750px;
+            display: block;
+            margin-bottom: 2rem;
         }
 
-        /* 3. WIDE PHOTO - Cinematic crop */
+        /* 3. WIDE PHOTO - Cinematic */
         .wide-image-container {
             width: 100%;
             height: 450px;
             overflow: hidden;
-            margin-bottom: 4rem;
+            margin-bottom: 5rem;
         }
         .wide-image-container img {
             width: 100%;
@@ -96,13 +95,15 @@
             letter-spacing: 4px;
             color: var(--gold);
             font-size: 1.2rem;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
         }
 
-        .pain-points {
+        /* "HELL YES" HOOK SECTION */
+        .hook-section {
             background-color: #fcfbf9;
-            padding: 5rem 0;
+            padding: 6rem 0;
             margin-bottom: 5rem;
+            text-align: center;
         }
 
         .day-item {
@@ -128,18 +129,18 @@
             background-color: var(--pine);
             color: white;
             padding: 6rem 0;
-            margin-top: 4rem;
+            margin-top: 5rem;
         }
         .included-list {
             list-style: none;
-            margin: 2rem 0;
+            margin: 3rem 0;
         }
         .included-list li {
             padding: 15px 0;
             border-bottom: 1px solid rgba(255,255,255,0.1);
             display: flex;
             justify-content: space-between;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
         }
         .value { color: var(--gold); font-style: italic; }
 
@@ -169,9 +170,9 @@
         footer {
             text-align: center;
             padding: 4rem 0;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: #999;
-            background: #fff;
+            border-top: 1px solid #eee;
         }
         footer a { color: #999; text-decoration: none; margin: 0 10px; }
     </style>
@@ -185,79 +186,77 @@
     </div>
 
     <header class="hero container">
-        <span class="date-badge">Feb 23-27, 2026 • Live Execution Sprint</span>
-        <h1>Stop Slaying Your Life.<br><span style="color: var(--gold);">Start Building Your Empire.</span></h1>
-        <p class="subtitle">The only 5-day implementation experience designed for nurses ready to swap burnout for a profitable consulting business.</p>
-        <a href="#join" class="btn" style="background-color: var(--pine); color: white;">I'm Ready to Pivot</a>
+        <span class="subtitle">A 5-Day Execution Experience</span>
+        <h1>From Bedside to Business:<br>Slay Your Shift</h1>
+        <span class="date-badge">Feb 23-27, 2026</span>
+        <a href="#join" class="btn" style="background-color: var(--pine); color: white;">Secure My Spot</a>
     </header>
 
     <div class="wide-image-container">
-        <img src="from-bedside-to-business.jpg" alt="TMac Leading">
+        <img src="from-bedside-to-business.png" alt="TMac Leading">
     </div>
 
-    <section class="pain-points">
+    <section class="hook-section">
         <div class="container">
             <h2 class="section-title">Is This You?</h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-top: 2rem;">
-                <div style="border-left: 2px solid var(--gold); padding-left: 25px;">
-                    <p style="font-size: 1.2rem; color: var(--pine);"><strong>The Burnout:</strong> You love nursing, but the 12-hour shifts and the ceiling on your income have become a cage you're ready to escape.</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px; text-align: left;">
+                <div style="border-left: 3px solid var(--gold); padding-left: 20px;">
+                    <p style="font-size: 1.2rem;"><strong>The Burnout:</strong> You're tired of trading 12 hours of your life for a paycheck that has a hard ceiling.</p>
                 </div>
-                <div style="border-left: 2px solid var(--gold); padding-left: 25px;">
-                    <p style="font-size: 1.2rem; color: var(--pine);"><strong>The Vision:</strong> You know your clinical expertise is worth more. You’re ready to package your knowledge into a high-value asset.</p>
+                <div style="border-left: 3px solid var(--gold); padding-left: 20px;">
+                    <p style="font-size: 1.2rem;"><strong>The Vision:</strong> You know your clinical expertise is worth more, but you need the blueprint to package it.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <section class="container">
-        <h2 class="section-title">The 5-Day Roadmap to Freedom</h2>
+        <h2 class="section-title">The Curriculum</h2>
         
         <div class="day-item">
             <span class="day-label">Day 1</span>
-            <div class="day-title">The Identity Shift</div>
-            <p style="font-size: 1.1rem;">Shedding the 'employee' skin. We align your mindset with the 7-figure woman you are becoming. No more asking for permission.</p>
+            <div class="day-title">Clarity & Identity</div>
+            <p style="font-size: 1.1rem;">Shed the "employee" mindset. Define your unique value and align your vision with the entrepreneur you are becoming.</p>
         </div>
 
         <div class="day-item">
             <span class="day-label">Day 2</span>
-            <div class="day-title">Business Architecture</div>
-            <p style="font-size: 1.1rem;">What are you actually selling? We take your clinical knowledge and turn it into a high-ticket consulting package.</p>
+            <div class="day-title">Framework & Business Architecture</div>
+            <p style="font-size: 1.1rem;">Build your signature offer. We take your clinical knowledge and turn it into a high-ticket asset that sells.</p>
         </div>
 
         <div class="day-item">
             <span class="day-label">Day 3</span>
-            <div class="day-title">The Manifestation Method</div>
-            <p style="font-size: 1.1rem;">Neville Goddard for Business. Techniques to assume the feeling of the wish fulfilled. Build your empire from a place of rest, not stress.</p>
+            <div class="day-title">Audience & The Manifestation Method</div>
+            <p style="font-size: 1.1rem;">Identify and attract ideal clients using Neville Goddard techniques to assume the feeling of the wish fulfilled.</p>
         </div>
 
         <div class="day-item">
             <span class="day-label">Day 4</span>
-            <div class="day-title">Strategic Visibility</div>
-            <p style="font-size: 1.1rem;">How to be seen as the authority in your niche without the 'hustle' of social media burnout. Systems that work while you sleep.</p>
+            <div class="day-title">Systems & Automated Visibility</div>
+            <p style="font-size: 1.1rem;">Set up simple systems that scale and bring in leads without the 'hustle' of social media burnout.</p>
         </div>
 
         <div class="day-item">
             <span class="day-label">Day 5</span>
-            <div class="day-title">The Empire Blueprint</div>
-            <p style="font-size: 1.1rem;">Your 90-day execution plan. You leave with a step-by-step manual and total clarity on your next revenue-generating move.</p>
+            <div class="day-title">Launch & Empire Blueprint</div>
+            <p style="font-size: 1.1rem;">Execute your revenue-generating action. You leave with a 90-day plan and total execution clarity.</p>
         </div>
     </section>
 
     <section class="value-section" id="join">
         <div class="container">
             <h2 class="section-title" style="color: white; border-bottom: 1px solid var(--gold); padding-bottom: 1rem; display: inline-block;">The Slay Your Shift Stack</h2>
-            
             <ul class="included-list">
-                <li>5 Daily Live Execution Sprints <span class="value">Value $497</span></li>
-                <li>Mindset Mastery Workbook <span class="value">Value $97</span></li>
-                <li>Private Nurse-to-CEO Community Access <span class="value">Value $197</span></li>
-                <li>Lifetime Access to Recordings <span class="value">Value $297</span></li>
+                <li>5 Daily Execution Sprints <span class="value">Value $497</span></li>
+                <li>Business Mastery Workbook <span class="value">Value $97</span></li>
+                <li>Private Community Access <span class="value">Value $197</span></li>
                 <li>Build Your Signature Digital Asset <span class="value">Value $697</span></li>
-                <li style="font-weight: bold; border-top: 2px solid var(--gold); font-size: 1.4rem; margin-top: 20px;">TOTAL VALUE <span style="text-decoration: line-through; opacity: 0.6;">$1,785</span></li>
+                <li style="font-weight: bold; border-top: 2px solid var(--gold); font-size: 1.4rem; margin-top: 20px;">TOTAL VALUE <span style="text-decoration: line-through; opacity: 0.6;">$1,488</span></li>
             </ul>
 
             <div class="offer-box">
-                <p class="price-label">Secure Your Seat For Only</p>
+                <p class="price-label">Your Investment</p>
                 <div class="price">$147</div>
                 <a href="#" class="btn">Join the Sprint</a>
             </div>
