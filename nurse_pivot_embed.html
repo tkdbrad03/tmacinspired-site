@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Nurse Pivot Assessment</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="tmac-logo.png">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,6 +37,27 @@
         .bg-pine { background-color: #1f4236; }
         .text-pine { color: #1f4236; }
         .text-gold { color: #c9a961; }
+        
+        /* CONSISTENT HEADER STYLE FROM INDEX.HTML */
+        .header-banner {
+            background-color: #1f4236;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .header-banner img.logo { 
+            max-height: 50px;
+            width: auto; 
+        }
+        @media (max-width: 768px) {
+            .header-banner { height: 80px; }
+            .header-banner img.logo { max-height: 40px; }
+        }
     </style>
 </head>
 <body class="bg-white text-pine font-serif overflow-x-hidden">
@@ -49,6 +72,17 @@
         import htm from 'https://esm.sh/htm';
 
         const html = htm.bind(h);
+
+        // Reusable Header Component to match index.html
+        function Header() {
+            return html`
+                <div class="header-banner">
+                    <a href="index.html">
+                        <img src="tmac-logo.png" alt="TMac Inspired Logo" class="logo" />
+                    </a>
+                </div>
+            `;
+        }
 
         function App() {
             const [step, setStep] = useState('landing');
@@ -73,13 +107,11 @@
 
             const resultType = answers.fatigue === 'soul-tired' ? 'PIVOT' : 'TIRED';
 
-            // SVG Icons
             const IconSparkle = html`<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>`;
-            const IconArrow = html`<svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M5 12h14m-7-7l7 7-7 7"/></svg>`;
 
             if (step === 'landing') return html`
                 <div class="min-h-screen flex flex-col">
-                    <nav class="bg-pine py-6 flex justify-center sticky top-0 z-50"><div class="text-gold tracking-[.3em] font-light uppercase">TMAC INSPIRED</div></nav>
+                    <${Header} />
                     <main class="max-w-4xl mx-auto px-6 pt-20 text-center animate-in">
                         <div class="inline-flex items-center space-x-2 text-gold uppercase tracking-widest text-xs font-bold mb-6 bg-cream px-4 py-2 rounded-full border border-gold/20">
                             ${IconSparkle} <span>Free Assessment</span>
@@ -92,7 +124,7 @@
 
             if (step === 'audit') return html`
                 <div class="min-h-screen">
-                    <nav class="bg-pine py-6 flex justify-center"><div class="text-gold tracking-widest font-light uppercase">TMAC INSPIRED</div></nav>
+                    <${Header} />
                     <main class="max-w-2xl mx-auto px-6 pt-12 animate-in">
                         <div class="flex justify-between items-end mb-10">
                             <div><span class="text-gold uppercase tracking-widest text-xs font-bold block mb-2">Step 1 of 3</span><h2 class="text-3xl font-normal">How does your body feel?</h2></div>
@@ -113,7 +145,7 @@
 
             if (step === 'skills') return html`
                 <div class="min-h-screen">
-                    <nav class="bg-pine py-6 flex justify-center"><div class="text-gold tracking-widest font-light uppercase">TMAC INSPIRED</div></nav>
+                    <${Header} />
                     <main class="max-w-2xl mx-auto px-6 pt-12 animate-in">
                         <div class="flex justify-between items-end mb-10">
                             <div><span class="text-gold uppercase tracking-widest text-xs font-bold block mb-2">Step 2 of 3</span><h2 class="text-3xl font-normal">What energizes you?</h2></div>
@@ -130,7 +162,7 @@
 
             if (step === 'vision') return html`
                 <div class="min-h-screen">
-                    <nav class="bg-pine py-6 flex justify-center"><div class="text-gold tracking-widest font-light uppercase">TMAC INSPIRED</div></nav>
+                    <${Header} />
                     <main class="max-w-2xl mx-auto px-6 pt-12 animate-in">
                         <div class="flex justify-between items-end mb-10">
                             <div><span class="text-gold uppercase tracking-widest text-xs font-bold block mb-2">Step 3 of 3</span><h2 class="text-3xl font-normal">Ownership Vision</h2></div>
@@ -148,7 +180,7 @@
 
             if (step === 'leadgen') return html`
                 <div class="min-h-screen">
-                    <nav class="bg-pine py-6 flex justify-center"><div class="text-gold tracking-widest font-light uppercase">TMAC INSPIRED</div></nav>
+                    <${Header} />
                     <main class="max-w-md mx-auto px-6 pt-20 animate-in">
                         <div class="bg-cream border border-gold/20 p-8 md:p-12 shadow-2xl text-center relative">
                             <h2 class="text-3xl font-normal mb-4 uppercase tracking-tight">Strategy Pending</h2>
@@ -164,7 +196,7 @@
 
             if (step === 'result') return html`
                 <div class="min-h-screen pb-20">
-                    <nav class="bg-pine py-6 flex justify-center mb-12"><div class="text-gold tracking-widest font-light uppercase">TMAC INSPIRED</div></nav>
+                    <${Header} />
                     <main class="max-w-4xl mx-auto px-6 animate-in">
                         <div class="text-center mb-16">
                             <span class="text-gold uppercase tracking-widest text-xs font-bold block mb-4">Results for ${formData.name}</span>
@@ -176,7 +208,7 @@
                         <div class="bg-pine text-white p-10 md:p-16 text-center rounded-sm">
                             <h3 class="text-3xl md:text-4xl uppercase mb-6 leading-tight">Stop Slaying the Shift.<br/><span class="italic text-gold">Slay Your Business.</span></h3>
                             <p class="text-gold italic mb-10 text-lg opacity-90">Join Slay Your Shift: our 5-day live implementation experience.</p>
-                            <a href="#" class="inline-block bg-gold text-pine px-12 py-6 text-sm uppercase tracking-widest font-bold hover:scale-105 transition-all shadow-xl">Secure Your Spot</a>
+                            <a href="slay-your-shift.html" class="inline-block bg-gold text-pine px-12 py-6 text-sm uppercase tracking-widest font-bold hover:scale-105 transition-all shadow-xl">Secure Your Spot</a>
                         </div>
                         <button onClick=${() => setStep('landing')} class="mt-12 flex items-center mx-auto text-[10px] uppercase tracking-widest text-pine/30 hover:text-gold transition-colors">Restart Assessment</button>
                     </main>
@@ -187,4 +219,3 @@
     </script>
 </body>
 </html>
-
