@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nurse Pivot Plan | TMac Inspired™</title>
+    <style>
+        :root {
+            --pine: #1f4236;
+            --gold: #c9a961;
+            --bg: #ffffff;
+            --text: #1f4236;
+            --font: Georgia, serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { 
+            margin: 0; 
+            font-family: var(--font); 
+            background: var(--bg); 
+            color: var(--text); 
+            line-height: 1.6; 
+        }
+
+        /* 1. GREEN BANNER */
+        .header-banner {
+            background-color: var(--pine);
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+        .header-banner img.logo { 
+            max-height: 60px; 
+            width: auto; 
+        }
+
+        /* 2. HERO AREA - Tight and centered */
+        .hero {
+            padding: 2.5rem 1rem 1.5rem 1rem;
+            text-align: center;
+        }
+        h1 { 
+            font-size: 2.5rem; 
+            font-weight: 400; 
+            margin: 0 0 5px 0; 
+            line-height: 1.1; 
+            text-transform: uppercase;
+        }
+        .subtitle { 
+            font-style: italic; 
+            color: var(--gold); 
+            font-size: 1.2rem; 
+            margin-top: 0; 
+        }
+
+        /* 3. LAYOUT CONTAINER */
+        .container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            padding: 0 20px; 
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            margin-bottom: 4rem;
+        }
+
+        .image-side img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* 4. THE OPT-IN FORM */
+        .form-side {
+            padding: 1rem;
+        }
+        .form-side p {
+            margin-bottom: 2rem;
+            color: #5c6b64;
+        }
+        
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            color: var(--gold);
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 12px 0;
+            border: none;
+            border-bottom: 1px solid var(--pine);
+            font-family: var(--font);
+            font-size: 1rem;
+            outline: none;
+            background: transparent;
+        }
+
+        .btn {
+            background: var(--pine);
+            color: white;
+            padding: 18px 40px;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            margin-top: 2rem;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        .btn:hover { opacity: 0.9; }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            font-size: 0.8rem;
+            color: #999;
+            border-top: 1px solid #eee;
+        }
+        footer a { color: #999; text-decoration: none; margin: 0 10px; }
+
+        /* MOBILE FIX */
+        @media (max-width: 768px) {
+            .container { 
+                grid-template-columns: 1fr; 
+                gap: 2rem;
+            }
+            .image-side { order: 2; }
+            .form-side { order: 1; }
+            h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-banner">
+        <a href="index.html">
+            <img src="tmac-logo.png" alt="TMac Inspired Logo" class="logo">
+        </a>
+    </div>
+
+    <header class="hero container" style="display: block;">
+        <h1>The Nurse Pivot Plan</h1>
+        <p class="subtitle">From Bedside to Business</p>
+    </header>
+
+    <main class="container">
+        <div class="image-side">
+            <img src="tmac-working.png" alt="TMac working">
+        </div>
+
+        <div class="form-side">
+            <p>Download the blueprint to transition your clinical expertise into a high-value consulting practice.</p>
+            
+            <form action="#">
+                <div class="input-group">
+                    <label>First Name</label>
+                    <input type="text" placeholder="Your name" required>
+                </div>
+                
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" placeholder="email@address.com" required>
+                </div>
+
+                <button type="submit" class="btn">Get the Free Guide</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        TMac Inspired™ &copy; 2026<br>
+        <div style="margin-top: 10px;">
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+            <a href="mailto:support@tmacinspired.com">Contact</a>
+        </div>
+    </footer>
+
+</body>
+</html>
