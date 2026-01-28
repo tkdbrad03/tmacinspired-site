@@ -168,14 +168,31 @@
             aspect-ratio: 4/5; /* Portrait aspect ratio looks elegant */
             background-color: #f4f4f4; /* Placeholder color while loading */
         }
-
+        
         .image-wrapper img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform 1.2s ease;
         }
+/* Rule for wide/horizontal photos */
+.image-wrapper.horizontal {
+    aspect-ratio: 16/9 !important; /* Forces it to be wide like a TV screen */
+}
 
+/* Rule for the book (no gray box, bigger image) */
+.image-wrapper.book-mode {
+    background-color: transparent !important; /* Removes the gray box */
+    aspect-ratio: auto; /* Lets the image shape itself */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-wrapper.book-mode img {
+    object-fit: contain !important; /* Shows the whole book */
+    transform: scale(1.3); /* Makes the book 30% bigger */
+}
         /* Subtle hover zoom effect on images */
         .offering-row:hover .image-wrapper img {
             transform: scale(1.03);
@@ -277,9 +294,9 @@
             </section>
 
             <section class="offering-row reveal">
-                <div class="image-wrapper">
-                    <img src="from-bedside-to-business.png" alt="TMac speaking on stage" loading="lazy">
-                </div>
+                <div class="image-wrapper horizontal">
+    <img src="from-bedside-to-business.png" alt="TMac speaking on stage" loading="lazy">
+</div>
                 <div class="content-wrapper">
                     <h3>The Acceleration</h3>
                     <h2>Slay Your Shift</h2>
@@ -290,9 +307,9 @@
             </section>
 
             <section class="offering-row reveal">
-                <div class="image-wrapper">
-                    <img src="Where_is_my_Life_Partner_Mockup.png" alt="Where Is My Life Partner Book" style="object-fit: contain; padding: 2rem;">
-                </div>
+                    <div class="image-wrapper book-mode">
+    <img src="Where_is_my_Life_Partner_Mockup.png" alt="Where Is My Life Partner Book">
+</div>
                 <div class="content-wrapper">
                     <h3>The Philosophy</h3>
                     <h2>Where Is My Life Partner?</h2>
