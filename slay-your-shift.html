@@ -218,28 +218,51 @@
             font-size: 1.15rem;
         }
         .value { color: var(--gold); font-style: italic; }
-.testimonials { padding: 72px 0; background: #fff; }
-.t-wrap { width: min(1120px, 92vw); margin: 0 auto; }
-
-.t-grid{
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px;
+/* Enhanced Testimonials Styling */
+.testimonials { 
+    padding: 4rem 0; 
+    background: #fcfbf9; /* Matching your avatar section background */
 }
 
-.t-grid img{
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 18px;
-  border: 1px solid rgba(31,66,54,0.10);
-  background: #fff;
+.t-wrap { 
+    width: 100%; 
+    max-width: 1120px; 
+    margin: 0 auto; 
+    padding: 0 20px; 
 }
 
-@media (max-width: 900px){
-  .t-grid{ grid-template-columns: 1fr; }
+.t-grid {
+    display: grid;
+    /* Defaults to 1 column for mobile */
+    grid-template-columns: 1fr; 
+    gap: 20px;
 }
 
+.t-grid img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+    border: 1px solid rgba(31,66,54,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    transition: transform 0.3s ease;
+}
+
+/* Responsive Breakpoints */
+@media (min-width: 768px) {
+    .t-grid { 
+        grid-template-columns: repeat(2, 1fr); /* 2 columns for tablets/small desktops */
+    }
+}
+
+@media (min-width: 1024px) {
+    .t-grid { 
+        gap: 30px; /* More breathing room on large screens */
+    }
+    .t-grid img:hover {
+        transform: scale(1.02); /* Subtle hover effect for desktop */
+    }
+}
         /* 9. OFFER BOX */
         .offer-box {
             background-color: var(--pine);
@@ -382,14 +405,15 @@
             <h2 class="section-title">Voices of the Shift</h2>
             
             <section class="testimonials">
-  <div class="t-wrap">
-    <div class="t-grid">
-      <img src="/testimonials/tina-p.png" alt="Client testimonial" loading="lazy">
-      <img src="/testimonials/mia-j.png" alt="Client testimonial" loading="lazy">
-      <img src="/testimonials/brittany-n.png" alt="Client testimonial" loading="lazy">
-      <img src="/testimonials/danielle-b.png" alt="Client testimonial" loading="lazy">
+    <div class="t-wrap">
+        <h2 class="section-title">Voices of the Shift</h2>
+        <div class="t-grid">
+            <img src="/testimonials/tina-p.png" alt="Client testimonial" loading="lazy">
+            <img src="/testimonials/mia-j.png" alt="Client testimonial" loading="lazy">
+            <img src="/testimonials/brittany-n.png" alt="Client testimonial" loading="lazy">
+            <img src="/testimonials/danielle-b.png" alt="Client testimonial" loading="lazy">
+        </div>
     </div>
-  </div>
 </section>
 
     <section class="container">
