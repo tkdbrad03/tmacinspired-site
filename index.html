@@ -14,13 +14,9 @@
             --rose: #b76e79;
             --text-main: #1f4236;
             --text-light: #5c6b64;
-            
             --font-serif: Georgia, 'Times New Roman', Times, serif;
-            
-            --max-w: 1100px; /* Restrained width for elegance */
+            --max-w: 1100px;
             --spacing-section: 8rem;
-            --spacing-element: 2rem;
-            
             --transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
@@ -37,39 +33,11 @@
         }
 
         /* --- TYPOGRAPHY --- */
-        h1, h2, h3 {
-            font-weight: 400; /* Regular weight looks more luxurious */
-            letter-spacing: -0.02em;
-            line-height: 1.3;
-        }
-
-        h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            color: var(--pine);
-            margin-bottom: 1.5rem;
-        }
-
-        h2 {
-            font-size: 2.2rem;
-            margin-bottom: 1rem;
-            color: var(--pine);
-        }
-
-        h3 {
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: var(--gold);
-            margin-bottom: 1rem;
-            font-size: 0.85rem;
-        }
-
-        p {
-            color: var(--text-light);
-            margin-bottom: 2rem;
-            max-width: 32em; /* Optimal reading length */
-        }
-
+        h1, h2, h3 { font-weight: 400; letter-spacing: -0.02em; line-height: 1.3; }
+        h1 { font-size: clamp(2.5rem, 5vw, 4rem); color: var(--pine); margin-bottom: 1.5rem; }
+        h2 { font-size: 2.2rem; margin-bottom: 1rem; color: var(--pine); }
+        h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--gold); margin-bottom: 1rem; }
+        p { color: var(--text-light); margin-bottom: 2rem; max-width: 32em; }
         a { text-decoration: none; color: inherit; transition: var(--transition); }
 
         /* --- BUTTONS --- */
@@ -83,211 +51,64 @@
             letter-spacing: 0.1em;
             background: transparent;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
+            transition: var(--transition);
         }
+        .btn:hover { background: var(--pine); color: var(--bg); }
+        .btn-gold { border-color: var(--gold); color: var(--gold); }
+        .btn-gold:hover { background: var(--gold); color: white; }
 
-        .btn:hover {
-            background: var(--pine);
-            color: var(--bg);
-        }
-
-        .btn-gold {
-            border-color: var(--gold);
-            color: var(--gold);
-        }
-        .btn-gold:hover {
-            background: var(--gold);
-            color: white;
-        }
-
-        /* --- LAYOUT UTILITIES --- */
-        .container {
-            max-width: var(--max-w);
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .section-padding {
-            padding: var(--spacing-section) 0;
-        }
-
-        /* This creates the banner area at the very top */
-.header-banner {
-    width: 100%;
-    height: 250px; /* This makes the banner tall enough to see */
-    background-image: url('banner.jpg'); /* Change 'banner.jpg' to your banner file name */
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-}
-
-/* 1. The Green Banner - Shorter and solid Pine Green */
-.header-banner {
-    width: 100%;
-    height: 120px; /* Reduced from 250px to 120px to remove extra space */
-    background-color: #1f4236; /* This ensures the Deep Pine green shows up */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-}
-
-/* 2. The Logo inside the banner */
-.header-banner img.logo {
-    max-height: 80px; /* Limits the height so it fits comfortably */
-    width: auto;
-}
-
-/* 3. The Hero Area - Cutting the top space */
-header.hero {
-    min-height: auto; /* Removes the forced tall height */
-    padding: 3rem 1rem 2rem 1rem; /* Less padding means less empty space */
-    text-align: center;
-}
-
-/* 4. Fix the Hero Statement spacing */
-.hero-statement {
-    font-size: clamp(2rem, 4vw, 3rem);
-    max-width: 800px;
-    margin: 0 auto 1rem auto; /* Reduced bottom margin */
-    text-align: center;
-}
-
-
-        /* --- OFFERING GRID (The Z-Pattern) --- */
-        .offering-grid {
-            display: grid;
-            gap: 6rem;
-        }
-
-        .offering-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
+        /* --- HEADER & HERO --- */
+        .header-banner {
+            width: 100%;
+            height: 120px;
+            background-color: var(--pine);
+            display: flex;
+            justify-content: center;
             align-items: center;
         }
-
-        /* Image Styling */
-        .image-wrapper {
-            position: relative;
-            overflow: hidden;
-            aspect-ratio: 4/5; /* Portrait aspect ratio looks elegant */
-            background-color: #f4f4f4; /* Placeholder color while loading */
-        }
+        .header-banner img.logo { max-height: 80px; width: auto; }
         
-        .image-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 1.2s ease;
-        }
-/* Rule for wide/horizontal photos */
-.image-wrapper.horizontal {
-    aspect-ratio: 16/9 !important; /* Forces it to be wide like a TV screen */
-}
+        header.hero { text-align: center; padding: 3rem 1rem 2rem 1rem; }
+        .hero-statement { font-size: clamp(2rem, 4vw, 3rem); max-width: 800px; margin: 0 auto 1rem auto; }
+        .hero-sub { color: var(--gold); text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.75rem; }
 
-/* Rule for the book (no gray box, bigger image) */
-.image-wrapper.book-mode {
-    background-color: transparent !important; /* Removes the gray box */
-    aspect-ratio: auto; /* Lets the image shape itself */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+        /* --- LAYOUT --- */
+        .container { max-width: var(--max-w); margin: 0 auto; padding: 0 2rem; }
+        .offering-grid { display: grid; gap: 6rem; margin-top: 4rem; }
+        .offering-row { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .offering-row:nth-child(even) .content-wrapper { order: -1; }
 
-.image-wrapper.book-mode img {
-    object-fit: contain !important; /* Shows the whole book */
-    transform: scale(1.3); /* Makes the book 30% bigger */
-}
-        /* Subtle hover zoom effect on images */
-        .offering-row:hover .image-wrapper img {
-            transform: scale(1.03);
-        }
+        /* --- IMAGES --- */
+        .image-wrapper { position: relative; overflow: hidden; aspect-ratio: 4/5; background-color: #f4f4f4; }
+        .image-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s ease; }
+        .image-wrapper.horizontal { aspect-ratio: 16/9; }
+        .image-wrapper.book-mode { background-color: transparent; display: flex; justify-content: center; align-items: center; }
+        .image-wrapper.book-mode img { object-fit: contain; transform: scale(1.3); }
+        .offering-row:hover .image-wrapper img { transform: scale(1.03); }
 
-        .content-wrapper {
-            padding: 2rem;
-        }
-
-        /* Alternate layout: Text Left, Image Right for even children */
-        .offering-row:nth-child(even) .content-wrapper {
-            order: -1;
-        }
-
-        /* --- TEE ROOM (Text Only Section) --- */
-        .tee-room-section {
-            background-color: #fcfbf9; /* Extremely subtle off-white */
-            text-align: center;
-            border-top: 1px solid rgba(31, 66, 54, 0.05);
-            border-bottom: 1px solid rgba(31, 66, 54, 0.05);
-        }
+        /* --- TEE ROOM --- */
+        .section-padding { padding: var(--spacing-section) 0; }
+        .tee-room-section { background-color: #fcfbf9; text-align: center; border-y: 1px solid rgba(31, 66, 54, 0.05); }
 
         /* --- FOOTER --- */
-        footer {
-            padding: 4rem 0;
-            text-align: center;
-            font-size: 0.8rem;
-            color: var(--text-light);
-            border-top: 1px solid rgba(31, 66, 54, 0.1);
-        }
-        
-        footer a {
-    margin: 0 10px;
-    color: var(--pine);
-    text-decoration: none;
-    font-size: 0.8rem;
-}
+        footer { padding: 4rem 0; text-align: center; font-size: 0.8rem; color: var(--text-light); border-top: 1px solid rgba(31, 66, 54, 0.1); }
+        footer a { margin: 0 10px; color: var(--pine); }
+        footer a:hover { color: var(--gold); }
 
-footer a:hover {
-    color: var(--gold); /* Subtle gold shift when they hover */
-}
+        /* --- ANIMATIONS --- */
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
-
-        /* --- ANIMATION UTILITIES --- */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* --- MOBILE RESPONSIVE --- */
         @media (max-width: 768px) {
-            :root {
-                --spacing-section: 4rem;
-            }
-            
-            .offering-row {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .offering-row:nth-child(even) .content-wrapper {
-                order: 1; /* Reset order for mobile so image is always top */
-            }
-            
-            .image-wrapper {
-                aspect-ratio: 16/9; /* Wider on mobile */
-            }
-
-            .content-wrapper {
-                padding: 0;
-                text-align: center; /* Center text on mobile */
-            }
-            
-            p { margin: 0 auto 2rem auto; }
+            .offering-row { grid-template-columns: 1fr; gap: 2rem; text-align: center; }
+            .offering-row:nth-child(even) .content-wrapper { order: 1; }
+            .content-wrapper p { margin: 0 auto 2rem auto; }
         }
     </style>
 </head>
 <body>
 
-   <div class="header-banner">
+<div class="header-banner">
     <img src="tmac-logo.png" alt="TMac Inspired Logo" class="logo">
 </div>
 
@@ -296,101 +117,98 @@ footer a:hover {
     <div class="hero-sub">The pivot from bedside to legacy.</div>
 </header>
 
-    <main class="container">
-        <div class="offering-grid">
-
-            <section class="offering-row reveal">
-                <div class="image-wrapper">
-                    <img src="tmac-working.png" alt="TMac working elegantly at a desk" loading="lazy">
-                </div>
-                <div class="content-wrapper">
-                    <h3>The Entry Point</h3>
-                    <h2>Nurse Pivot Plan Starter Guide</h2>
-                    <p>For nurses who are ready to move with clarity and structure, not more noise.</p>
-                    <a href="nurse-pivot.html" class="btn">Get Your Free Guide</a>
-                </div>
-            </section>
-
-            <section class="offering-row reveal">
-                <div class="image-wrapper horizontal">
-    <img src="from-bedside-to-business.png" alt="TMac speaking on stage" loading="lazy">
-</div>
-                <div class="content-wrapper">
-                    <h3>The Acceleration</h3>
-                    <h2>Slay Your Shift</h2>
-                    <p>The live, 5-day execution experience for nurses ready to swap burnout for a profitable business they love.
-            Join the next shift February 23-27, 2026.</p>
-                    <a href="slay-your-shift.html" class="btn">Join the Shift</a>
-                </div>
-            </section>
-
-            <section class="offering-row reveal">
-                    <div class="image-wrapper book-mode">
-    <img src="Where_is_my_Life_Partner_Mockup.png" alt="Where Is My Life Partner Book">
-</div>
-                <div class="content-wrapper">
-                    <h3>The Philosophy</h3>
-                    <h2>Where Is My Life Partner?</h2>
-                    <p>The Manifestation Edition. A guide not just to love, but to the alignment required to attract everything that belongs to you.</p>
-                    <a href="https://book.tmacinspired.com" class="btn">Get the Book</a>
-                </div>
-            </section>
-
-            <section class="offering-row reveal">
-                <div class="image-wrapper">
-                    <img src="golfing.png" alt="TMac on the golf course" loading="lazy">
-                </div>
-                <div class="content-wrapper">
-                    <h3>The Membership</h3>
-                    <h2>The Tee Elite Circle</h2>
-                    <p>Not a league. A lifestyle. Among women who've already built. Now, you play.</p>
-                    <a href="https://tmacmastermind.com" class="btn btn-gold">Explore the Circle</a>
-                </div>
-            </section>
-
-        </div>
-    </main>
-
-    <section class="section-padding tee-room-section reveal">
-        <div class="container">
-            <h3>The Content</h3>
-            <h2 style="font-size: 1.8rem;">Daily permission for women who are ready to stop negotiating with the life they want.</h2>
-            <p style="margin: 0 auto 2rem auto;">Enter the Tee Elite Room where accomplished women get permission to play their own game.</p>
-            <a href="https://tmacmastermind.com/tee-room" style="border-bottom: 1px solid var(--pine);">Read the Latest</a>
-        </div>
-    </section>
-
-    <footer class="reveal">
-        <div class="container">
-            <p style="margin-bottom: 1rem; font-style: italic;">"You can have it all."</p>
-            <div style="margin-bottom: 1rem;">TMac Inspired™ &copy; 2026</div>
-            <div>
-                <a href="privacy.html">Privacy Policy</a>
-<a href="terms.html">Terms of Service</a>
-
-                <a href="mailto:support@tmacinspired.com">Contact</a>
+<main class="container">
+    <div class="offering-grid">
+        <!-- FIRST ROW: NOW CONNECTED TO ASSESSMENT -->
+        <section class="offering-row reveal">
+            <div class="image-wrapper">
+                <img src="tmac-working.png" alt="TMac working elegantly at a desk" loading="lazy">
             </div>
-        </div>
-    </footer>
+            <div class="content-wrapper">
+                <h3>The Entry Point</h3>
+                <h2>Nurse Pivot Plan Assessment</h2>
+                <p>Are you just tired, or are you ready for ownership? Take the free 2-minute assessment to discover your path out of burnout.</p>
+                <!-- POINTING TO THE EMBED FILE -->
+                <a href="nurse_pivot_embed.html" class="btn">Take the Assessment</a>
+            </div>
+        </section>
 
-    <script>
-        function reveal() {
-            var reveals = document.querySelectorAll(".reveal");
-            
-            for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                var elementTop = reveals[i].getBoundingClientRect().top;
-                var elementVisible = 150;
-                
-                if (elementTop < windowHeight - elementVisible) {
-                    reveals[i].classList.add("active");
-                }
+        <!-- SECOND ROW: SLAY YOUR SHIFT -->
+        <section class="offering-row reveal">
+            <div class="image-wrapper horizontal">
+                <img src="from-bedside-to-business.png" alt="TMac speaking on stage" loading="lazy">
+            </div>
+            <div class="content-wrapper">
+                <h3>The Acceleration</h3>
+                <h2>Slay Your Shift</h2>
+                <p>The live, 5-day execution experience for nurses ready to swap burnout for a profitable business they love. Join the next shift February 23-27, 2026.</p>
+                <a href="slay-your-shift.html" class="btn">Join the Shift</a>
+            </div>
+        </section>
+
+        <!-- THIRD ROW: BOOK -->
+        <section class="offering-row reveal">
+            <div class="image-wrapper book-mode">
+                <img src="Where_is_my_Life_Partner_Mockup.png" alt="Where Is My Life Partner Book">
+            </div>
+            <div class="content-wrapper">
+                <h3>The Philosophy</h3>
+                <h2>Where Is My Life Partner?</h2>
+                <p>The Manifestation Edition. A guide not just to love, but to the alignment required to attract everything that belongs to you.</p>
+                <a href="https://book.tmacinspired.com" class="btn">Get the Book</a>
+            </div>
+        </section>
+
+        <!-- FOURTH ROW: TEE ELITE -->
+        <section class="offering-row reveal">
+            <div class="image-wrapper">
+                <img src="golfing.png" alt="TMac on the golf course" loading="lazy">
+            </div>
+            <div class="content-wrapper">
+                <h3>The Membership</h3>
+                <h2>The Tee Elite Circle</h2>
+                <p>Not a league. A lifestyle. Among women who've already built. Now, you play.</p>
+                <a href="https://tmacmastermind.com" class="btn btn-gold">Explore the Circle</a>
+            </div>
+        </section>
+    </div>
+</main>
+
+<section class="section-padding tee-room-section reveal">
+    <div class="container">
+        <h3>The Content</h3>
+        <h2 style="font-size: 1.8rem;">Daily permission for women who are ready to stop negotiating with the life they want.</h2>
+        <p style="margin: 0 auto 2rem auto;">Enter the Tee Elite Room where accomplished women get permission to play their own game.</p>
+        <a href="https://tmacmastermind.com/tee-room" style="border-bottom: 1px solid var(--pine);">Read the Latest</a>
+    </div>
+</section>
+
+<footer class="reveal">
+    <div class="container">
+        <p style="margin-bottom: 1rem; font-style: italic;">"You can have it all."</p>
+        <div style="margin-bottom: 1rem;">TMac Inspired™ &copy; 2026</div>
+        <div>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+            <a href="mailto:support@tmacinspired.com">Contact</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function reveal() {
+        var reveals = document.querySelectorAll(".reveal");
+        for (var i = 0; i < reveals.length; i++) {
+            var windowHeight = window.innerHeight;
+            var elementTop = reveals[i].getBoundingClientRect().top;
+            if (elementTop < windowHeight - 150) {
+                reveals[i].classList.add("active");
             }
         }
-        
-        window.addEventListener("scroll", reveal);
-        // Trigger once on load
-        reveal();
-    </script>
+    }
+    window.addEventListener("scroll", reveal);
+    reveal();
+</script>
 </body>
 </html>
+
