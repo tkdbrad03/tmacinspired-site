@@ -125,42 +125,38 @@
     position: relative;
 }
 
-/* This styles your logo sitting on top of the banner */
+/* 1. The Green Banner - Shorter and solid Pine Green */
+.header-banner {
+    width: 100%;
+    height: 120px; /* Reduced from 250px to 120px to remove extra space */
+    background-color: #1f4236; /* This ensures the Deep Pine green shows up */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* 2. The Logo inside the banner */
 .header-banner img.logo {
-    max-width: 300px; /* This makes sure your logo isn't too big */
-    height: auto;
-    z-index: 2;
+    max-height: 80px; /* Limits the height so it fits comfortably */
+    width: auto;
 }
 
-/* This adds a tiny bit of space below the banner before the text starts */
+/* 3. The Hero Area - Cutting the top space */
 header.hero {
-    padding-top: 4rem;
+    min-height: auto; /* Removes the forced tall height */
+    padding: 3rem 1rem 2rem 1rem; /* Less padding means less empty space */
+    text-align: center;
 }
 
+/* 4. Fix the Hero Statement spacing */
+.hero-statement {
+    font-size: clamp(2rem, 4vw, 3rem);
+    max-width: 800px;
+    margin: 0 auto 1rem auto; /* Reduced bottom margin */
+    text-align: center;
+}
 
-        /* --- HERO --- */
-        .hero {
-            min-height: 60vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 4rem 1rem;
-        }
-        
-        .hero-statement {
-            font-size: clamp(2rem, 4vw, 3.5rem);
-            max-width: 800px;
-            margin-bottom: 2rem;
-            color: var(--pine);
-        }
-        
-        .hero-sub {
-            font-size: 1.2rem;
-            font-style: italic;
-            color: var(--gold);
-        }
 
         /* --- OFFERING GRID (The Z-Pattern) --- */
         .offering-grid {
@@ -284,14 +280,14 @@ header.hero {
 </head>
 <body>
 
-    <div class="header-banner">
+   <div class="header-banner">
     <img src="tmac-logo.png" alt="TMac Inspired Logo" class="logo">
 </div>
 
-
-    <header class="hero container reveal">
-        <h1 class="hero-statement">You can have it all.<br>TMac Inspired™ shows you how.</h1>
-    </header>
+<header class="hero container reveal">
+    <h1 class="hero-statement">You can have it all.<br>TMac Inspired™ shows you how.</h1>
+    <div class="hero-sub">The pivot from bedside to legacy.</div>
+</header>
 
     <main class="container">
         <div class="offering-grid">
