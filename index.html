@@ -235,9 +235,16 @@ header.hero {
         }
         
         footer a {
-            margin: 0 10px;
-            color: var(--pine);
-        }
+    margin: 0 10px;
+    color: var(--pine);
+    text-decoration: none;
+    font-size: 0.8rem;
+}
+
+footer a:hover {
+    color: var(--gold); /* Subtle gold shift when they hover */
+}
+
 
         /* --- ANIMATION UTILITIES --- */
         .reveal {
@@ -358,9 +365,10 @@ header.hero {
             <p style="margin-bottom: 1rem; font-style: italic;">"You can have it all."</p>
             <div style="margin-bottom: 1rem;">TMac Inspired™ &copy; 2026</div>
             <div>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Contact</a>
+                <a href="privacy.html">Privacy Policy</a>
+<a href="terms.html">Terms of Service</a>
+
+                <a href="mailto:support@tmacinspired.com">Contact</a>
             </div>
         </div>
     </footer>
