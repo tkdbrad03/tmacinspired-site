@@ -218,6 +218,27 @@
             font-size: 1.15rem;
         }
         .value { color: var(--gold); font-style: italic; }
+.testimonials { padding: 72px 0; background: #fff; }
+.t-wrap { width: min(1120px, 92vw); margin: 0 auto; }
+
+.t-grid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.t-grid img{
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 18px;
+  border: 1px solid rgba(31,66,54,0.10);
+  background: #fff;
+}
+
+@media (max-width: 900px){
+  .t-grid{ grid-template-columns: 1fr; }
+}
 
         /* 9. OFFER BOX */
         .offer-box {
@@ -355,6 +376,21 @@
             <p>Execute your revenue-generating action. The shift from "learning" to "doing" starts here.</p>
         </div>
     </section>
+
+    <section class="voices-section">
+        <div class="container">
+            <h2 class="section-title">Voices of the Shift</h2>
+            
+            <section class="testimonials">
+  <div class="t-wrap">
+    <div class="t-grid">
+      <img src="/testimonials/tina-p.png" alt="Client testimonial" loading="lazy">
+      <img src="/testimonials/mia-j.png" alt="Client testimonial" loading="lazy">
+      <img src="/testimonials/brittany-n.png" alt="Client testimonial" loading="lazy">
+      <img src="/testimonials/danielle-b.png" alt="Client testimonial" loading="lazy">
+    </div>
+  </div>
+</section>
 
     <section class="container">
         <h2 class="section-title">Frequently Asked Questions</h2>
