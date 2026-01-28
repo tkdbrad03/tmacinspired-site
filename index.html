@@ -112,17 +112,31 @@
             padding: var(--spacing-section) 0;
         }
 
-        /* --- NAVIGATION --- */
-        nav {
-            padding: 2rem 0;
-            text-align: center;
-        }
-        .logo {
-            font-size: 1.2rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--pine);
-        }
+        /* This creates the banner area at the very top */
+.header-banner {
+    width: 100%;
+    height: 250px; /* This makes the banner tall enough to see */
+    background-image: url('banner.jpg'); /* Change 'banner.jpg' to your banner file name */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* This styles your logo sitting on top of the banner */
+.header-banner img.logo {
+    max-width: 300px; /* This makes sure your logo isn't too big */
+    height: auto;
+    z-index: 2;
+}
+
+/* This adds a tiny bit of space below the banner before the text starts */
+header.hero {
+    padding-top: 4rem;
+}
+
 
         /* --- HERO --- */
         .hero {
