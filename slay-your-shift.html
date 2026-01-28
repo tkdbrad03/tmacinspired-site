@@ -26,52 +26,37 @@
         /* 1. GREEN BANNER */
         .header-banner {
             background-color: var(--pine);
-            height: 100px;
+            height: 120px;
             display: flex;
             justify-content: center;
             align-items: center;
             width: 100%;
         }
         .header-banner img.logo { 
-            max-height: 60px; 
+            max-height: 70px; 
             width: auto; 
         }
 
-        /* 2. HERO AREA - More space, centered & clean */
+        /* 2. HERO AREA - Centered and Spaced */
         .hero {
-            padding: 6rem 1rem 5rem 1rem; /* Added significant space here */
+            padding: 6rem 1rem 5rem 1rem;
             text-align: center;
         }
         h1 { 
-            font-size: 2.8rem; 
-            font-weight: 400; /* Reverted to lighter weight */
+            font-size: clamp(2.5rem, 5vw, 3.5rem); 
+            font-weight: 400; 
             margin: 0 auto 20px auto; 
             line-height: 1.2; 
             text-transform: uppercase;
-            max-width: 800px;
-        }
-        .subtitle { 
-            font-style: italic; 
-            color: var(--gold); 
-            font-size: 1.4rem; 
-            margin-bottom: 15px;
-            display: block;
-        }
-        .date-badge {
-            color: var(--gold);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: 0.9rem;
-            display: block;
-            margin-top: 10px;
+            max-width: 900px;
         }
 
         /* 3. WIDE PHOTO */
         .wide-image-container {
             width: 100%;
-            height: 400px;
+            height: 450px;
             overflow: hidden;
-            margin-bottom: 5rem; /* Space after photo */
+            margin-bottom: 5rem;
         }
         .wide-image-container img {
             width: 100%;
@@ -79,9 +64,9 @@
             object-fit: cover;
         }
 
-        /* 4. CONTENT SECTIONS - Wider gaps */
+        /* 4. CONTENT SECTIONS */
         .container { 
-            max-width: 800px; 
+            max-width: 850px; 
             margin: 0 auto; 
             padding: 0 20px; 
         }
@@ -89,30 +74,48 @@
         .section-title {
             text-align: center;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             color: var(--gold);
-            font-size: 1.1rem;
-            margin-bottom: 4rem; /* More space before list starts */
+            font-size: 1.2rem;
+            margin-bottom: 3.5rem;
+        }
+
+        .avatar-section {
+            background-color: #fcfbf9;
+            padding: 6rem 0;
+            margin-bottom: 5rem;
         }
 
         .day-item {
-            margin-bottom: 4rem; /* Increased space between days */
-            padding-bottom: 1.5rem;
+            margin-bottom: 4rem;
+            padding-bottom: 2rem;
             border-bottom: 1px solid #f0f0f0;
         }
         .day-label { 
             color: var(--gold); 
-            font-size: 0.8rem; 
+            font-size: 0.9rem; 
             text-transform: uppercase; 
             font-weight: bold;
         }
         .day-title { 
-            font-size: 1.6rem; 
-            margin: 5px 0; 
+            font-size: 1.8rem; 
+            margin: 10px 0; 
             color: var(--pine); 
         }
 
-        /* 5. WHAT'S INCLUDED LIST */
+        /* 5. FAQ SECTION */
+        .faq-item {
+            margin-bottom: 2.5rem;
+        }
+        .faq-question {
+            font-weight: bold;
+            color: var(--pine);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* 6. WHAT'S INCLUDED LIST */
         .included-list {
             list-style: none;
             margin: 3rem 0;
@@ -122,27 +125,28 @@
             border-bottom: 1px solid #f9f9f9;
             display: flex;
             justify-content: space-between;
+            font-size: 1.1rem;
         }
         .value { color: var(--gold); font-style: italic; }
 
-        /* 6. OFFER BOX */
+        /* 7. OFFER BOX */
         .offer-box {
             border: 1px solid var(--pine);
             padding: 4rem 1rem;
             text-align: center;
-            margin: 6rem 0; /* More room around the box */
+            margin: 6rem 0;
         }
-        .price-label { text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; }
-        .price { font-size: 4rem; margin: 10px 0; color: var(--pine); }
+        .price-label { text-transform: uppercase; letter-spacing: 3px; font-size: 1rem; }
+        .price { font-size: 4.5rem; margin: 10px 0; color: var(--pine); }
         
         .btn {
             background: var(--pine);
             color: white;
-            padding: 20px 60px;
+            padding: 22px 60px;
             text-decoration: none;
             display: inline-block;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             font-size: 1rem;
             margin-top: 25px;
             transition: opacity 0.3s;
@@ -151,8 +155,8 @@
 
         footer {
             text-align: center;
-            padding: 4rem 0;
-            font-size: 0.85rem;
+            padding: 5rem 0;
+            font-size: 0.9rem;
             color: #999;
             border-top: 1px solid #eee;
         }
@@ -168,14 +172,29 @@
     </div>
 
     <header class="hero container">
-        <h1>Slay Your Shift<br>From Bedside to Business</h1>
-        <p class="subtitle">The 5-day experience</p>
-        <span class="date-badge">Feb 23-27, 2026</span>
+        <h1>From Bedside to Business:<br>Slay Your Shift</h1>
+        <p style="font-style: italic; color: var(--gold); font-size: 1.5rem; margin-top: 15px;">The 5-day experience</p>
+        <span style="color: var(--gold); text-transform: uppercase; letter-spacing: 3px; font-weight: bold; display: block; margin-top: 20px;">Feb 23-27, 2026</span>
     </header>
 
     <div class="wide-image-container">
         <img src="from-bedside-to-business.png" alt="TMac Leading">
     </div>
+
+    <section class="avatar-section">
+        <div class="container">
+            <h2 class="section-title">Is This For You?</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px;">
+                <div style="border-left: 3px solid var(--gold); padding-left: 20px;">
+                    <p style="font-size: 1.2rem; margin-bottom: 20px;"><strong>The Burnout is Real:</strong> You've spent years "slaying the shift," but you're tired of trading your life for a paycheck that has a ceiling.</p>
+                </div>
+                <div style="border-left: 3px solid var(--gold); padding-left: 20px;">
+                    <p style="font-size: 1.2rem;"><strong>The Ambition is Greater:</strong> You know your clinical expertise is worth more. You want to package your knowledge into a high-value consulting business.</p>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 4rem; font-size: 1.3rem; font-style: italic;">This experience is for the nurse ready to transition from employee to owner.</p>
+        </div>
+    </section>
 
     <section class="container">
         <h2 class="section-title">The Curriculum</h2>
@@ -210,7 +229,24 @@
             <p>Execute your first (or next) revenue-generating action.</p>
         </div>
 
-        <h2 class="section-title" style="margin-top: 5rem;">What's Included</h2>
+        <h2 class="section-title" style="margin-top: 6rem;">Frequently Asked Questions</h2>
+        
+        <div class="faq-item">
+            <span class="faq-question">What if I don't have a business idea yet?</span>
+            <p>That is exactly what Day 1 and Day 2 are for. We help you extract your clinical expertise and turn it into a high-ticket framework.</p>
+        </div>
+
+        <div class="faq-item">
+            <span class="faq-question">Do I need to be tech-savvy?</span>
+            <p>No. We focus on simple, scalable systems. If you can use email and social media, you can build this business.</p>
+        </div>
+
+        <div class="faq-item">
+            <span class="faq-question">How much time do I need to commit?</span>
+            <p>This is an execution sprint. We meet live for 60-90 minutes each day to ensure you are doing the work, not just watching it.</p>
+        </div>
+
+        <h2 class="section-title" style="margin-top: 6rem;">What's Included</h2>
         <ul class="included-list">
             <li>5 Daily Execution Sprints <span class="value">Value $497</span></li>
             <li>Business Mastery Workbook <span class="value">Value $97</span></li>
@@ -220,9 +256,9 @@
         </ul>
 
         <div class="offer-box">
-            <p class="price-label">Your Investment</p>
+            <p class="price-label">Secure Your Spot For Only</p>
             <div class="price">$147</div>
-            <a href="#" class="btn">Join the Shift</a>
+            <a href="#" class="btn">Join the Sprint</a>
         </div>
     </section>
 
