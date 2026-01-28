@@ -42,43 +42,81 @@
 
         /* 2. HERO AREA */
         .hero {
-            padding: 5rem 1rem 4rem 1rem;
+            padding: 6rem 1rem 8rem 1rem;
             text-align: center;
         }
         h1 { 
-            font-size: clamp(2.5rem, 5vw, 3.8rem); 
+            font-size: clamp(2.5rem, 5vw, 4rem); 
             font-weight: 400; 
-            margin: 0 auto 20px auto; 
+            margin: 0 auto; 
             line-height: 1.1; 
             text-transform: uppercase;
-            max-width: 900px;
+            max-width: 950px;
+            letter-spacing: -0.02em;
         }
         .hero-sub {
             font-style: italic;
             color: var(--gold);
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-        .hero-date {
-            color: var(--gold);
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            font-weight: bold;
-            display: block;
-            font-size: 0.9rem;
+            font-size: 1.6rem;
+            margin-top: 15px;
         }
 
-        /* 3. WIDE PHOTO */
+        /* 3. WIDE PHOTO & DATE STRIP */
+        .image-section {
+            width: 100%;
+            margin-bottom: 6rem;
+        }
         .wide-image-container {
             width: 100%;
             height: 500px;
             overflow: hidden;
-            margin-bottom: 6rem;
         }
         .wide-image-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+        
+        /* Countdown & Date Strip */
+        .date-strip {
+            background-color: #fcfbf9;
+            border-bottom: 1px solid #f0f0f0;
+            padding: 40px 0;
+            text-align: center;
+        }
+        .date-info {
+            color: var(--pine);
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+        
+        .timer-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 15px;
+        }
+        .timer-segment {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .timer-number {
+            font-size: 2.5rem;
+            color: var(--pine);
+            font-family: Arial, sans-serif; /* Clean numbers */
+            font-weight: 300;
+            line-height: 1;
+        }
+        .timer-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gold);
+            margin-top: 8px;
         }
 
         /* 4. CONTAINER & TITLES */
@@ -117,8 +155,7 @@
             color: var(--text-light);
         }
 
-        /* 6. CURRICULUM */
-        .curriculum-section { margin-bottom: 8rem; }
+        /* 6. CURRICULUM (Renamed Headline) */
         .day-item {
             margin-bottom: 3.5rem;
             padding-bottom: 2rem;
@@ -138,10 +175,7 @@
         }
 
         /* 7. ACCORDION FAQ */
-        .faq-section { margin-bottom: 8rem; }
-        .accordion-item {
-            border-bottom: 1px solid #eee;
-        }
+        .accordion-item { border-bottom: 1px solid #eee; }
         .accordion-header {
             width: 100%;
             padding: 25px 0;
@@ -155,35 +189,19 @@
             font-family: var(--font);
             font-size: 1.25rem;
             color: var(--pine);
-            transition: var(--transition);
         }
-        .accordion-header:hover { color: var(--gold); }
-        .accordion-icon {
-            font-size: 1.5rem;
-            color: var(--gold);
-            transition: transform 0.3s ease;
-        }
+        .accordion-icon { font-size: 1.5rem; color: var(--gold); transition: transform 0.3s ease; }
         .accordion-item.active .accordion-icon { transform: rotate(45deg); }
         .accordion-content {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.4s ease-out, padding 0.4s ease;
         }
-        .accordion-item.active .accordion-content {
-            max-height: 500px; /* Large enough to fit content */
-            padding-bottom: 30px;
-        }
-        .accordion-content p {
-            color: var(--text-light);
-            font-size: 1.1rem;
-            margin: 0;
-        }
+        .accordion-item.active .accordion-content { max-height: 500px; padding-bottom: 30px; }
+        .accordion-content p { color: var(--text-light); font-size: 1.1rem; }
 
         /* 8. WHAT'S INCLUDED */
-        .included-list {
-            list-style: none;
-            margin: 4rem 0;
-        }
+        .included-list { list-style: none; margin: 4rem 0; }
         .included-list li {
             padding: 20px 0;
             border-bottom: 1px solid #f9f9f9;
@@ -200,11 +218,9 @@
             padding: 5rem 2rem;
             text-align: center;
             margin: 8rem 0;
-            border-radius: 2px;
         }
         .price-label { text-transform: uppercase; letter-spacing: 4px; font-size: 0.9rem; color: var(--gold); }
         .price { font-size: 5rem; margin: 15px 0; color: white; line-height: 1; }
-        
         .btn {
             background: var(--gold);
             color: var(--pine);
@@ -216,9 +232,9 @@
             font-size: 1rem;
             font-weight: bold;
             margin-top: 30px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease;
         }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .btn:hover { transform: translateY(-3px); }
 
         footer {
             text-align: center;
@@ -230,10 +246,12 @@
         footer a { color: #999; text-decoration: none; margin: 0 15px; }
 
         @media (max-width: 768px) {
+            .hero { padding-bottom: 4rem; }
             .avatar-grid { grid-template-columns: 1fr; gap: 40px; }
             .wide-image-container { height: 300px; }
-            .price { font-size: 3.5rem; }
             h1 { font-size: 2.2rem; }
+            .timer-container { gap: 15px; }
+            .timer-number { font-size: 1.8rem; }
         }
     </style>
 </head>
@@ -248,11 +266,35 @@
     <header class="hero container">
         <div class="hero-sub">The 5-Day Experience</div>
         <h1>Slay Your Shift:<br>From Bedside to Business</h1>
-        <div class="hero-date">February 23-27, 2026</div>
     </header>
 
-    <div class="wide-image-container">
-        <img src="from-bedside-to-business.png" alt="TMac Leading Nurses">
+    <div class="image-section">
+        <div class="wide-image-container">
+            <img src="from-bedside-to-business.png" alt="TMac Leading Nurses">
+        </div>
+        <div class="date-strip">
+            <div class="date-info">February 23-27, 2026 | 7:00 PM EST</div>
+            
+            <div class="timer-container">
+                <div class="timer-segment">
+                    <span class="timer-number" id="days">00</span>
+                    <span class="timer-label">Days</span>
+                </div>
+                <div class="timer-segment">
+                    <span class="timer-number" id="hours">00</span>
+                    <span class="timer-label">Hours</span>
+                </div>
+                <div class="timer-segment">
+                    <span class="timer-number" id="minutes">00</span>
+                    <span class="timer-label">Minutes</span>
+                </div>
+                <div class="timer-segment">
+                    <span class="timer-number" id="seconds">00</span>
+                    <span class="timer-label">Seconds</span>
+                </div>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--gold); letter-spacing: 1px; text-transform: uppercase;">Until the first call</p>
+        </div>
     </div>
 
     <section class="avatar-section">
@@ -270,8 +312,9 @@
         </div>
     </section>
 
-    <section class="container curriculum-section">
-        <h2 class="section-title">The Curriculum</h2>
+    <section class="container">
+        <!-- Headline updated as requested -->
+        <h2 class="section-title">5 Days. Proven Results.</h2>
         
         <div class="day-item">
             <span class="day-label">Day 1</span>
@@ -282,7 +325,7 @@
         <div class="day-item">
             <span class="day-label">Day 2</span>
             <div class="day-title">Framework</div>
-            <p>Build your signature offer. We move from "hourly rate" thinking to high-ticket consulting models.</p>
+            <p>Shift from the "Employee Mindset" to the "Business Mindset." We’ll build your proprietary Signature Framework that turns your expertise into a repeatable, high-value process that works even when you aren't on the clock.</p>
         </div>
 
         <div class="day-item">
@@ -304,7 +347,7 @@
         </div>
     </section>
 
-    <section class="container faq-section">
+    <section class="container">
         <h2 class="section-title">Frequently Asked Questions</h2>
         
         <div class="accordion">
@@ -324,7 +367,7 @@
                     <span class="accordion-icon">+</span>
                 </button>
                 <div class="accordion-content">
-                    <p>This isn't another "resilience training" from HR. This is your exit strategy. We spend one hour a night focusing on high-impact moves that actually lead to buying back your time, not adding to the clutter.</p>
+                    <p>This isn't another "resilience training" from HR. This is your exit strategy. We spend one hour a night focusing on high-impact moves that actually lead to buying back your time.</p>
                 </div>
             </div>
 
@@ -334,17 +377,17 @@
                     <span class="accordion-icon">+</span>
                 </button>
                 <div class="accordion-content">
-                    <p>Absolutely not. Most nurses come in knowing they want "out" but aren't sure where to go. Day 1 is dedicated to Clarity: uncovering the profitable business ideas already hidden in your nursing license and clinical experience.</p>
+                    <p>Absolutely not. Most nurses come in knowing they want "out" but aren't sure where to go. Day 1 is dedicated to Clarity: uncovering the profitable business ideas already hidden in your experience.</p>
                 </div>
             </div>
 
             <div class="accordion-item">
                 <button class="accordion-header">
-                    Can I really replace my nursing income with a business?
+                    Can I really replace my nursing income?
                     <span class="accordion-icon">+</span>
                 </button>
                 <div class="accordion-content">
-                    <p>We aren't promising "overnight millions," but we are teaching you the Profit Foundations used by nurses who have successfully transitioned to Legal Nurse Consulting, Concierge Nursing, and Health Coaching. We’ll look at the math of how to replace your bedside hourly rate with scalable business revenue.</p>
+                    <p>We aren't promising "overnight millions," but we are teaching you the Profit Foundations used by nurses who have successfully transitioned to consulting and coaching.</p>
                 </div>
             </div>
         </div>
@@ -380,22 +423,40 @@
     </footer>
 
     <script>
-        // Accordion Logic
+        // FAQ Accordion
         document.querySelectorAll('.accordion-header').forEach(button => {
             button.addEventListener('click', () => {
                 const accordionItem = button.parentElement;
-                
-                // Close other items
                 document.querySelectorAll('.accordion-item').forEach(item => {
                     if (item !== accordionItem) item.classList.remove('active');
                 });
-
-                // Toggle current item
                 accordionItem.classList.toggle('active');
             });
         });
+
+        // Countdown Timer Logic
+        const targetDate = new Date("February 23, 2026 19:00:00").getTime();
+
+        const updateTimer = () => {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                document.getElementById("days").innerText = days.toString().padStart(2, '0');
+                document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+                document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+                document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+            }
+        };
+
+        setInterval(updateTimer, 1000);
+        updateTimer(); // Initial call
     </script>
 
 </body>
 </html>
-
