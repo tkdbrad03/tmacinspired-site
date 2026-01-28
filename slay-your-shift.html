@@ -23,53 +23,59 @@
             line-height: 1.6; 
         }
 
-        /* 1. GREEN BANNER - No extra space */
+        /* 1. GREEN BANNER */
         .header-banner {
             background-color: var(--pine);
-            height: 100px;
+            height: 120px;
             display: flex;
             justify-content: center;
             align-items: center;
             width: 100%;
         }
         .header-banner img.logo { 
-            max-height: 60px; 
+            max-height: 70px; 
             width: auto; 
         }
 
-        /* 2. HERO AREA - Tight margins */
+        /* 2. HERO AREA - More space, centered & prominent */
         .hero {
-            padding: 2.5rem 1rem 1.5rem 1rem;
+            padding: 6rem 1rem 5rem 1rem;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .date-badge {
             color: var(--gold);
             text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 0.8rem;
-            margin-bottom: 0.5rem;
+            letter-spacing: 5px;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
             display: block;
+            font-weight: bold;
         }
         h1 { 
-            font-size: 2.5rem; 
+            font-size: clamp(2.5rem, 5vw, 4rem); 
             font-weight: 400; 
-            margin: 0 0 10px 0; 
+            margin: 0 auto 20px auto; 
             line-height: 1.1; 
+            max-width: 900px;
             text-transform: uppercase;
         }
         .subtitle { 
-            font-style: italic; 
             color: var(--gold); 
-            font-size: 1.1rem; 
-            margin-top: 0; 
+            font-size: 1.6rem; 
+            font-style: italic;
+            margin-top: 10px;
+            max-width: 750px;
         }
 
-        /* 3. WIDE PHOTO - Horizontal crop */
+        /* 3. WIDE PHOTO - Cinematic crop */
         .wide-image-container {
             width: 100%;
-            height: 350px;
+            height: 450px;
             overflow: hidden;
-            margin-bottom: 2rem;
+            margin-bottom: 4rem;
         }
         .wide-image-container img {
             width: 100%;
@@ -79,7 +85,7 @@
 
         /* 4. CONTENT SECTIONS */
         .container { 
-            max-width: 800px; 
+            max-width: 850px; 
             margin: 0 auto; 
             padding: 0 20px; 
         }
@@ -87,73 +93,87 @@
         .section-title {
             text-align: center;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             color: var(--gold);
-            font-size: 1rem;
-            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+        }
+
+        .pain-points {
+            background-color: #fcfbf9;
+            padding: 5rem 0;
+            margin-bottom: 5rem;
         }
 
         .day-item {
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
+            margin-bottom: 5rem;
+            padding-bottom: 2.5rem;
             border-bottom: 1px solid #f0f0f0;
         }
         .day-label { 
             color: var(--gold); 
-            font-size: 0.8rem; 
+            font-size: 0.9rem; 
             text-transform: uppercase; 
             font-weight: bold;
+            letter-spacing: 2px;
         }
         .day-title { 
-            font-size: 1.4rem; 
-            margin: 5px 0; 
+            font-size: 2rem; 
+            margin: 10px 0; 
             color: var(--pine); 
         }
 
-        /* 5. WHAT'S INCLUDED LIST */
+        /* 5. THE STACK / VALUE LIST */
+        .value-section {
+            background-color: var(--pine);
+            color: white;
+            padding: 6rem 0;
+            margin-top: 4rem;
+        }
         .included-list {
             list-style: none;
             margin: 2rem 0;
         }
         .included-list li {
-            padding: 10px 0;
-            border-bottom: 1px solid #f9f9f9;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
             display: flex;
             justify-content: space-between;
+            font-size: 1.1rem;
         }
         .value { color: var(--gold); font-style: italic; }
 
         /* 6. OFFER BOX */
         .offer-box {
-            border: 1px solid var(--pine);
-            padding: 3rem 1rem;
             text-align: center;
-            margin: 4rem 0;
+            padding-top: 4rem;
         }
-        .price-label { text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; }
-        .price { font-size: 3.5rem; margin: 10px 0; color: var(--pine); }
+        .price-label { text-transform: uppercase; letter-spacing: 3px; font-size: 1rem; color: var(--gold); }
+        .price { font-size: 5.5rem; margin: 10px 0; color: white; }
         
         .btn {
-            background: var(--pine);
-            color: white;
-            padding: 18px 50px;
+            background: var(--gold);
+            color: var(--pine);
+            padding: 22px 60px;
             text-decoration: none;
             display: inline-block;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 0.9rem;
-            margin-top: 20px;
-            transition: opacity 0.3s;
+            letter-spacing: 3px;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-top: 30px;
+            transition: transform 0.3s ease;
         }
-        .btn:hover { opacity: 0.9; }
+        .btn:hover { transform: scale(1.05); }
 
         footer {
             text-align: center;
-            padding: 3rem 0;
-            font-size: 0.8rem;
+            padding: 4rem 0;
+            font-size: 0.85rem;
             color: #999;
-            border-top: 1px solid #eee;
+            background: #fff;
         }
+        footer a { color: #999; text-decoration: none; margin: 0 10px; }
     </style>
 </head>
 <body>
@@ -165,68 +185,92 @@
     </div>
 
     <header class="hero container">
-        <span class="date-badge">Feb 23-27, 2026</span>
-        <h1>From Bedside to Business:<br>Slay Your Shift</h1>
-        <p class="subtitle">5-day execution experience</p>
+        <span class="date-badge">Feb 23-27, 2026 • Live Execution Sprint</span>
+        <h1>Stop Slaying Your Life.<br><span style="color: var(--gold);">Start Building Your Empire.</span></h1>
+        <p class="subtitle">The only 5-day implementation experience designed for nurses ready to swap burnout for a profitable consulting business.</p>
+        <a href="#join" class="btn" style="background-color: var(--pine); color: white;">I'm Ready to Pivot</a>
     </header>
 
     <div class="wide-image-container">
-        <img src="from-bedside-to-business.png" alt="TMac Leading">
+        <img src="from-bedside-to-business.jpg" alt="TMac Leading">
     </div>
 
+    <section class="pain-points">
+        <div class="container">
+            <h2 class="section-title">Is This You?</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-top: 2rem;">
+                <div style="border-left: 2px solid var(--gold); padding-left: 25px;">
+                    <p style="font-size: 1.2rem; color: var(--pine);"><strong>The Burnout:</strong> You love nursing, but the 12-hour shifts and the ceiling on your income have become a cage you're ready to escape.</p>
+                </div>
+                <div style="border-left: 2px solid var(--gold); padding-left: 25px;">
+                    <p style="font-size: 1.2rem; color: var(--pine);"><strong>The Vision:</strong> You know your clinical expertise is worth more. You’re ready to package your knowledge into a high-value asset.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="container">
-        <h2 class="section-title">The Curriculum</h2>
+        <h2 class="section-title">The 5-Day Roadmap to Freedom</h2>
         
         <div class="day-item">
             <span class="day-label">Day 1</span>
-            <div class="day-title">Clarity</div>
-            <p>Define your unique value and business vision.</p>
+            <div class="day-title">The Identity Shift</div>
+            <p style="font-size: 1.1rem;">Shedding the 'employee' skin. We align your mindset with the 7-figure woman you are becoming. No more asking for permission.</p>
         </div>
 
         <div class="day-item">
             <span class="day-label">Day 2</span>
-            <div class="day-title">Framework</div>
-            <p>Build your signature offer that sells.</p>
+            <div class="day-title">Business Architecture</div>
+            <p style="font-size: 1.1rem;">What are you actually selling? We take your clinical knowledge and turn it into a high-ticket consulting package.</p>
         </div>
 
         <div class="day-item">
             <span class="day-label">Day 3</span>
-            <div class="day-title">Audience</div>
-            <p>Identify and attract your ideal clients.</p>
+            <div class="day-title">The Manifestation Method</div>
+            <p style="font-size: 1.1rem;">Neville Goddard for Business. Techniques to assume the feeling of the wish fulfilled. Build your empire from a place of rest, not stress.</p>
         </div>
 
         <div class="day-item">
             <span class="day-label">Day 4</span>
-            <div class="day-title">Systems</div>
-            <p>Set up simple systems that scale without the 'hustle' of social media burnout.</p>
+            <div class="day-title">Strategic Visibility</div>
+            <p style="font-size: 1.1rem;">How to be seen as the authority in your niche without the 'hustle' of social media burnout. Systems that work while you sleep.</p>
         </div>
 
         <div class="day-item">
             <span class="day-label">Day 5</span>
-            <div class="day-title">Launch</div>
-            <p>Execute your first (or next) revenue-generating action.</p>
+            <div class="day-title">The Empire Blueprint</div>
+            <p style="font-size: 1.1rem;">Your 90-day execution plan. You leave with a step-by-step manual and total clarity on your next revenue-generating move.</p>
         </div>
+    </section>
 
-        <h2 class="section-title" style="margin-top: 4rem;">What's Included</h2>
-        <ul class="included-list">
-            <li>5 Daily Execution Sprints <span class="value">Value $497</span></li>
-            <li>Business Mastery Workbook <span class="value">Value $97</span></li>
-            <li>Private Community Access <span class="value">Value $197</span></li>
-            <li>Build Your Signature Digital Asset<span class="value">Value $697</span></li>
-            <li style="font-weight: bold; border-top: 2px solid var(--pine);">TOTAL VALUE <span>$1,488</span></li>
-        </ul>
+    <section class="value-section" id="join">
+        <div class="container">
+            <h2 class="section-title" style="color: white; border-bottom: 1px solid var(--gold); padding-bottom: 1rem; display: inline-block;">The Slay Your Shift Stack</h2>
+            
+            <ul class="included-list">
+                <li>5 Daily Live Execution Sprints <span class="value">Value $497</span></li>
+                <li>Mindset Mastery Workbook <span class="value">Value $97</span></li>
+                <li>Private Nurse-to-CEO Community Access <span class="value">Value $197</span></li>
+                <li>Lifetime Access to Recordings <span class="value">Value $297</span></li>
+                <li>Build Your Signature Digital Asset <span class="value">Value $697</span></li>
+                <li style="font-weight: bold; border-top: 2px solid var(--gold); font-size: 1.4rem; margin-top: 20px;">TOTAL VALUE <span style="text-decoration: line-through; opacity: 0.6;">$1,785</span></li>
+            </ul>
 
-        <div class="offer-box">
-            <p class="price-label">Your Investment</p>
-            <div class="price">$147</div>
-            <a href="#" class="btn">Join the Sprint</a>
+            <div class="offer-box">
+                <p class="price-label">Secure Your Seat For Only</p>
+                <div class="price">$147</div>
+                <a href="#" class="btn">Join the Sprint</a>
+            </div>
         </div>
     </section>
 
     <footer>
         TMac Inspired™ &copy; 2026<br>
-        <a href="privacy.html" style="color:#999; margin: 0 5px;">Privacy</a> | 
-        <a href="terms.html" style="color:#999; margin: 0 5px;">Terms</a>
+        <div style="margin-top: 15px;">
+            <a href="privacy.html">Privacy</a> | 
+            <a href="terms.html">Terms</a> | 
+            <a href="mailto:support@tmacinspired.com">Contact</a>
+        </div>
     </footer>
 
 </body>
