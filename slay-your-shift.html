@@ -26,55 +26,52 @@
         /* 1. GREEN BANNER */
         .header-banner {
             background-color: var(--pine);
-            height: 120px;
+            height: 100px;
             display: flex;
             justify-content: center;
             align-items: center;
             width: 100%;
         }
         .header-banner img.logo { 
-            max-height: 70px; 
+            max-height: 60px; 
             width: auto; 
         }
 
-        /* 2. HERO AREA - Prominent & Centered */
+        /* 2. HERO AREA - More space, centered & clean */
         .hero {
-            padding: 6rem 1rem 4rem 1rem;
+            padding: 6rem 1rem 5rem 1rem; /* Added significant space here */
             text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
         h1 { 
-            font-size: clamp(2.5rem, 5vw, 4rem); 
-            font-weight: 400; 
-            margin: 0 0 20px 0; 
-            line-height: 1.1; 
+            font-size: 2.8rem; 
+            font-weight: 400; /* Reverted to lighter weight */
+            margin: 0 auto 20px auto; 
+            line-height: 1.2; 
             text-transform: uppercase;
+            max-width: 800px;
         }
         .subtitle { 
             font-style: italic; 
             color: var(--gold); 
-            font-size: 1.8rem; 
-            margin-bottom: 10px;
+            font-size: 1.4rem; 
+            margin-bottom: 15px;
             display: block;
         }
         .date-badge {
             color: var(--gold);
             text-transform: uppercase;
-            letter-spacing: 5px;
-            font-size: 1.1rem;
-            font-weight: bold;
+            letter-spacing: 3px;
+            font-size: 0.9rem;
             display: block;
-            margin-bottom: 2rem;
+            margin-top: 10px;
         }
 
-        /* 3. WIDE PHOTO - Cinematic */
+        /* 3. WIDE PHOTO */
         .wide-image-container {
             width: 100%;
-            height: 450px;
+            height: 400px;
             overflow: hidden;
-            margin-bottom: 5rem;
+            margin-bottom: 5rem; /* Space after photo */
         }
         .wide-image-container img {
             width: 100%;
@@ -82,9 +79,9 @@
             object-fit: cover;
         }
 
-        /* 4. CONTENT SECTIONS */
+        /* 4. CONTENT SECTIONS - Wider gaps */
         .container { 
-            max-width: 850px; 
+            max-width: 800px; 
             margin: 0 auto; 
             padding: 0 20px; 
         }
@@ -92,85 +89,70 @@
         .section-title {
             text-align: center;
             text-transform: uppercase;
-            letter-spacing: 4px;
+            letter-spacing: 3px;
             color: var(--gold);
-            font-size: 1.2rem;
-            margin-bottom: 4rem;
-        }
-
-        /* "HELL YES" HOOK SECTION */
-        .hook-section {
-            background-color: #fcfbf9;
-            padding: 6rem 0;
-            margin-bottom: 5rem;
-            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 4rem; /* More space before list starts */
         }
 
         .day-item {
-            margin-bottom: 5rem;
-            padding-bottom: 2.5rem;
+            margin-bottom: 4rem; /* Increased space between days */
+            padding-bottom: 1.5rem;
             border-bottom: 1px solid #f0f0f0;
         }
         .day-label { 
             color: var(--gold); 
-            font-size: 0.9rem; 
+            font-size: 0.8rem; 
             text-transform: uppercase; 
             font-weight: bold;
-            letter-spacing: 2px;
         }
         .day-title { 
-            font-size: 2rem; 
-            margin: 10px 0; 
+            font-size: 1.6rem; 
+            margin: 5px 0; 
             color: var(--pine); 
         }
 
-        /* 5. THE STACK / VALUE LIST */
-        .value-section {
-            background-color: var(--pine);
-            color: white;
-            padding: 6rem 0;
-            margin-top: 5rem;
-        }
+        /* 5. WHAT'S INCLUDED LIST */
         .included-list {
             list-style: none;
             margin: 3rem 0;
         }
         .included-list li {
             padding: 15px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid #f9f9f9;
             display: flex;
             justify-content: space-between;
-            font-size: 1.2rem;
         }
         .value { color: var(--gold); font-style: italic; }
 
         /* 6. OFFER BOX */
         .offer-box {
+            border: 1px solid var(--pine);
+            padding: 4rem 1rem;
             text-align: center;
-            padding-top: 4rem;
+            margin: 6rem 0; /* More room around the box */
         }
-        .price-label { text-transform: uppercase; letter-spacing: 3px; font-size: 1rem; color: var(--gold); }
-        .price { font-size: 5.5rem; margin: 10px 0; color: white; }
+        .price-label { text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; }
+        .price { font-size: 4rem; margin: 10px 0; color: var(--pine); }
         
         .btn {
-            background: var(--gold);
-            color: var(--pine);
-            padding: 22px 60px;
+            background: var(--pine);
+            color: white;
+            padding: 20px 60px;
             text-decoration: none;
             display: inline-block;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             font-size: 1rem;
-            font-weight: bold;
-            margin-top: 30px;
-            transition: transform 0.3s ease;
+            margin-top: 25px;
+            transition: opacity 0.3s;
         }
-        .btn:hover { transform: scale(1.05); }
+        .btn:hover { opacity: 0.9; }
 
         footer {
             text-align: center;
             padding: 4rem 0;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #999;
             border-top: 1px solid #eee;
         }
@@ -186,80 +168,61 @@
     </div>
 
     <header class="hero container">
-        <span class="subtitle">A 5-Day Execution Experience</span>
         <h1>From Bedside to Business:<br>Slay Your Shift</h1>
+        <p class="subtitle">The 5-day experience</p>
         <span class="date-badge">Feb 23-27, 2026</span>
-        <a href="#join" class="btn" style="background-color: var(--pine); color: white;">Secure My Spot</a>
     </header>
 
     <div class="wide-image-container">
         <img src="from-bedside-to-business.png" alt="TMac Leading">
     </div>
 
-    <section class="hook-section">
-        <div class="container">
-            <h2 class="section-title">Is This You?</h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px; text-align: left;">
-                <div style="border-left: 3px solid var(--gold); padding-left: 20px;">
-                    <p style="font-size: 1.2rem;"><strong>The Burnout:</strong> You're tired of trading 12 hours of your life for a paycheck that has a hard ceiling.</p>
-                </div>
-                <div style="border-left: 3px solid var(--gold); padding-left: 20px;">
-                    <p style="font-size: 1.2rem;"><strong>The Vision:</strong> You know your clinical expertise is worth more, but you need the blueprint to package it.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section class="container">
         <h2 class="section-title">The Curriculum</h2>
         
         <div class="day-item">
             <span class="day-label">Day 1</span>
-            <div class="day-title">Clarity & Identity</div>
-            <p style="font-size: 1.1rem;">Shed the "employee" mindset. Define your unique value and align your vision with the entrepreneur you are becoming.</p>
+            <div class="day-title">Clarity</div>
+            <p>Define your unique value and business vision.</p>
         </div>
 
         <div class="day-item">
             <span class="day-label">Day 2</span>
-            <div class="day-title">Framework & Business Architecture</div>
-            <p style="font-size: 1.1rem;">Build your signature offer. We take your clinical knowledge and turn it into a high-ticket asset that sells.</p>
+            <div class="day-title">Framework</div>
+            <p>Build your signature offer that sells.</p>
         </div>
 
         <div class="day-item">
             <span class="day-label">Day 3</span>
-            <div class="day-title">Audience & The Manifestation Method</div>
-            <p style="font-size: 1.1rem;">Identify and attract ideal clients using Neville Goddard techniques to assume the feeling of the wish fulfilled.</p>
+            <div class="day-title">Audience</div>
+            <p>Identify and attract your ideal clients.</p>
         </div>
 
         <div class="day-item">
             <span class="day-label">Day 4</span>
-            <div class="day-title">Systems & Automated Visibility</div>
-            <p style="font-size: 1.1rem;">Set up simple systems that scale and bring in leads without the 'hustle' of social media burnout.</p>
+            <div class="day-title">Systems</div>
+            <p>Set up simple systems that scale without the 'hustle' of social media burnout.</p>
         </div>
 
         <div class="day-item">
             <span class="day-label">Day 5</span>
-            <div class="day-title">Launch & Empire Blueprint</div>
-            <p style="font-size: 1.1rem;">Execute your revenue-generating action. You leave with a 90-day plan and total execution clarity.</p>
+            <div class="day-title">Launch</div>
+            <p>Execute your first (or next) revenue-generating action.</p>
         </div>
-    </section>
 
-    <section class="value-section" id="join">
-        <div class="container">
-            <h2 class="section-title" style="color: white; border-bottom: 1px solid var(--gold); padding-bottom: 1rem; display: inline-block;">The Slay Your Shift Stack</h2>
-            <ul class="included-list">
-                <li>5 Daily Execution Sprints <span class="value">Value $497</span></li>
-                <li>Business Mastery Workbook <span class="value">Value $97</span></li>
-                <li>Private Community Access <span class="value">Value $197</span></li>
-                <li>Build Your Signature Digital Asset <span class="value">Value $697</span></li>
-                <li style="font-weight: bold; border-top: 2px solid var(--gold); font-size: 1.4rem; margin-top: 20px;">TOTAL VALUE <span style="text-decoration: line-through; opacity: 0.6;">$1,488</span></li>
-            </ul>
+        <h2 class="section-title" style="margin-top: 5rem;">What's Included</h2>
+        <ul class="included-list">
+            <li>5 Daily Execution Sprints <span class="value">Value $497</span></li>
+            <li>Business Mastery Workbook <span class="value">Value $97</span></li>
+            <li>Private Community Access <span class="value">Value $197</span></li>
+            <li>Build Your Signature Digital Asset<span class="value">Value $697</span></li>
+            <li style="font-weight: bold; border-top: 2px solid var(--pine); padding-top: 20px;">TOTAL VALUE <span>$1,488</span></li>
+        </ul>
 
-            <div class="offer-box">
-                <p class="price-label">Your Investment</p>
-                <div class="price">$147</div>
-                <a href="#" class="btn">Join the Shift</a>
-            </div>
+        <div class="offer-box">
+            <p class="price-label">Your Investment</p>
+            <div class="price">$147</div>
+            <a href="#" class="btn">Join the Shift</a>
         </div>
     </section>
 
