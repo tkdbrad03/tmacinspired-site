@@ -92,10 +92,42 @@
         .section-padding { padding: var(--spacing-section) 0; }
         .tee-room-section { background-color: #fcfbf9; text-align: center; border-y: 1px solid rgba(31, 66, 54, 0.05); }
 
-        /* --- FOOTER --- */
-        footer { padding: 4rem 0; text-align: center; font-size: 0.8rem; color: var(--text-light); border-top: 1px solid rgba(31, 66, 54, 0.1); }
-        footer a { margin: 0 10px; color: var(--pine); }
-        footer a:hover { color: var(--gold); }
+        /* --- UPDATED FOOTER --- */
+footer { 
+    padding: 6rem 0; 
+    text-align: center; 
+    font-size: 0.85rem; 
+    color: var(--text-light); 
+    border-top: 1px solid rgba(31, 66, 54, 0.1);
+    /* Flexbox ensures everything stays centered on wide PC screens */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+footer .container {
+    width: 100%;
+}
+
+footer a { 
+    margin: 0 15px; 
+    color: var(--pine); 
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+footer a:hover { 
+    color: var(--gold); 
+}
+
+/* Ensures the quote looks elegant and centered on desktop */
+footer p {
+    margin-bottom: 20px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
 
         /* --- ANIMATIONS --- */
         .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
