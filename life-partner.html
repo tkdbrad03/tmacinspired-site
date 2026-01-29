@@ -8,41 +8,50 @@
     <link rel="icon" type="image/png" href="/tmac-logo.png">
     <link rel="apple-touch-icon" href="/tmac-logo.png">
     <style>
-        /* All your beautiful original styles are preserved */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Georgia', serif; line-height: 1.8; color: #2c3e50; background: #fafafa; }
         .header { background: linear-gradient(135deg, #1f4236 0%, #2d6b5a 100%); color: white; padding: 60px 20px; text-align: center; }
         .header h1 { font-size: 3em; margin-bottom: 10px; font-weight: 300; letter-spacing: 2px; }
-        .tagline { font-size: 1.4em; margin-top: 30px; font-weight: 300; }
+        .header .tagline { font-size: 1.4em; margin-top: 30px; font-weight: 300; }
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
         .hero-section { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; padding: 80px 20px; background: white; }
         .hero-image img { max-width: 100%; height: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2); border-radius: 8px; }
-        .hero-content h2 { font-size: 2.5em; color: #1f4236; margin-bottom: 30px; }
+        .hero-content h2 { font-size: 2.5em; color: #1f4236; margin-bottom: 30px; line-height: 1.3; }
+        .hero-content p { font-size: 1.2em; margin-bottom: 20px; color: #555; }
+        .questions-section { background: #f8f4f0; padding: 80px 20px; }
+        .questions-section h2 { font-size: 2.3em; color: #1f4236; text-align: center; margin-bottom: 50px; }
+        .question-item { background: white; padding: 25px; margin-bottom: 20px; border-left: 5px solid #c9a961; box-shadow: 0 4px 15px rgba(0,0,0,0.1); font-size: 1.15em; font-style: italic; }
+        .highlight-box { background: #1f4236; color: white; padding: 40px; margin: 60px 0; text-align: center; border-radius: 8px; }
+        .highlight-box h3 { font-size: 2em; margin-bottom: 20px; background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .system-section { background: linear-gradient(135deg, #1f4236 0%, #2d6b5a 100%); color: white; padding: 80px 20px; }
+        .system-section h2 { font-size: 2.8em; text-align: center; margin-bottom: 20px; background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .system-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+        .system-card { background: rgba(255,255,255,0.1); padding: 35px; border-radius: 8px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
+        .author-section { background: white; padding: 80px 20px; }
+        .author-content { display: grid; grid-template-columns: 1fr 2fr; gap: 60px; align-items: center; }
+        .author-image img { max-width: 100%; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
+        .cta-section { background: linear-gradient(135deg, #1f4236 0%, #2d6b5a 100%); color: white; padding: 100px 20px; text-align: center; }
+        .cta-section h2 { font-size: 3em; margin-bottom: 30px; background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
-        /* WAITLIST FORM STYLING */
-        .waitlist-box { background: #f8f4f0; padding: 30px; border-radius: 8px; border: 1px solid #c9a961; margin-top: 20px; }
-        .form-input { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; }
-        .submit-btn { 
+        /* FORM STYLING INTEGRATED INTO CTA */
+        #waitlist-form { max-width: 500px; margin: 0 auto; }
+        .form-input { width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 5px; border: none; font-size: 1.1em; }
+        .cta-button { 
             width: 100%; 
             background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%); 
             color: #1f4236; 
-            padding: 15px; 
+            padding: 20px; 
+            font-size: 1.5em; 
             border: none; 
-            border-radius: 4px; 
+            border-radius: 50px; 
             font-weight: bold; 
             cursor: pointer;
-            font-size: 1.1em;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
-        #success-msg { display: none; color: #1f4236; font-weight: bold; text-align: center; margin-top: 15px; }
+        #success-msg { display: none; font-size: 1.5em; color: #f4e4b8; font-weight: bold; margin-top: 20px; }
 
-        /* Existing layout styles... */
-        .questions-section { background: #f8f4f0; padding: 80px 20px; }
-        .question-item { background: white; padding: 25px; margin-bottom: 20px; border-left: 5px solid #c9a961; font-style: italic; }
-        .system-section { background: linear-gradient(135deg, #1f4236 0%, #2d6b5a 100%); color: white; padding: 80px 20px; }
-        .system-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
-        .system-card { background: rgba(255,255,255,0.1); padding: 35px; border-radius: 8px; }
         footer { background: #1f4236; color: white; padding: 40px 20px; text-align: center; }
-        @media (max-width: 768px) { .hero-section { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .hero-section, .author-content { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -53,30 +62,67 @@
 
     <section class="hero-section container">
         <div class="hero-image">
-            <img src="front_mockup.png" alt="Where Is My Life Partner Book Cover">
+            <img src="front_mockup.png" alt="Book Cover">
         </div>
         <div class="hero-content">
             <h2>Where Is My Life Partner? The Manifestation Edition</h2>
-            <p>The Hardcover Manifestation Edition is arriving soon. This is a limited-run collector's item for the woman ready to anchor her alignment in reality.</p>
-            
-            <div class="waitlist-box">
-                <form id="waitlist-form">
-                    <input type="text" name="firstName" class="form-input" placeholder="First Name" required>
-                    <input type="email" name="email" class="form-input" placeholder="Email" required>
-                    <button type="submit" class="submit-btn">Reserve My Hardcopy</button>
-                </form>
-                <div id="success-msg">
-                    Your place in the room is reserved. Check your inbox for your invitation.
-                </div>
-            </div>
+            <p>You are a leader, a visionary, and a woman of profound faith. You've built a life that looks complete on paper, yet there is a specific void that accolades haven't been able to fill.</p>
+            <p>You are ready to be the woman who is cherished and supported in her own home.</p>
         </div>
     </section>
 
     <section class="questions-section">
         <div class="container">
-            <div class="question-list">
-                <div class="question-item">"Why do I keep attracting the same relationship patterns?"</div>
-                <div class="question-item">"How do I move from survival mode into true emotional safety?"</div>
+            <h2>You Find Yourself Searching for Answers</h2>
+            <div class="question-item">"Why do I keep attracting the same relationship patterns?"</div>
+            <div class="question-item">"How do I move from survival mode into true emotional safety?"</div>
+            <div class="highlight-box">
+                <h3>If you're tired of chemistry without safety...</h3>
+                <p>It's time for an internal upgrade.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="system-section">
+        <div class="container">
+            <h2>The L.O.V.E. M.E. System</h2>
+            <div class="system-grid">
+                <div class="system-card">
+                    <h3>Breaking the Cycle</h3>
+                    <p>Identifying the unresolved stories and unspoken grief that keep you attracting the same patterns.</p>
+                </div>
+                <div class="system-card">
+                    <h3>Preparation Over Promise</h3>
+                    <p>How to move into a state of awareness and self-trust that prepares you for the partner you seek.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="author-section">
+        <div class="container">
+            <div class="author-content">
+                <div class="author-image"><img src="back_cover_mockup.png" alt="Dr. TMac"></div>
+                <div class="author-bio">
+                    <h2>Wealth on Your Terms. Love by Design.</h2>
+                    <p>Dr. TMac lives the life she teaches. This book is your invitation to join her in that space of total alignment.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>Your Soulmate Isn't a Mystery to Be Solved</h2>
+            <p>He is an outcome of your alignment. Enter your details to join the manifestation priority list.</p>
+            
+            <form id="waitlist-form">
+                <input type="text" name="firstName" class="form-input" placeholder="First Name" required>
+                <input type="email" name="email" class="form-input" placeholder="Email" required>
+                <button type="submit" class="cta-button">Reserve My Copy Today</button>
+            </form>
+            <div id="success-msg">
+                Your place is reserved. Check your inbox.
             </div>
         </div>
     </section>
@@ -93,16 +139,12 @@
         form.addEventListener('submit', e => {
             e.preventDefault();
             form.querySelector('button').innerText = "Reserving...";
-            
             fetch(scriptURL, { method: 'POST', body: new FormData(form)})
                 .then(response => {
                     form.style.display = 'none';
                     successMsg.style.display = 'block';
                 })
-                .catch(error => {
-                    console.error('Error!', error.message);
-                    alert("Submission failed. Please check your connection.");
-                });
+                .catch(error => console.error('Error!', error.message));
         });
     </script>
 </body>
