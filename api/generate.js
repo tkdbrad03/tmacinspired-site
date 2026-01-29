@@ -1,30 +1,48 @@
 export default async function handler(req, res) {
-  // Only allow POST requests
+  // 1. Only allow POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  // 2. Extract permission from body
   const { permission } = req.body;
-  const apiKey = process.env.GOOGLE_API_KEY; // This matches your Vercel Env Var name
+  
+  // 3. Check for the Key
+  const apiKey = process.env.GOOGLE_API_KEY;
 
-  const systemPrompt = `You are TMac, a supportive mentor for successful women. 
-  Tone: Conversational, warm, direct. No emojis. 
-  Response: 1-2 sentences of insight followed by "I give myself permission to..." for the theme: ${permission}`;
+  if (!apiKey) {
+    console.error("CRITICAL: GOOGLE_API_KEY is not defined in Vercel!");
+    return res.status(500).json({ error: 'Server configuration error: Key missing' });
+  }
 
+  // 4. Call Google Gemini
   try {
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: systemPrompt }] }]
+        contents: [{
+          parts: [{ text: `You are TMac, a supportive mentor. Give a 1-2 sentence permission grant for: ${permission}. Start with insight, end with 'I give myself permission to...'` }]
+        }]
       })
     });
 
     const data = await response.json();
-    const text = data.candidates[0].content.parts[0].text;
+
+    // Check if Google returned an error (like an invalid key)
+    if (data.error) {
+      console.error("Google API Error:", data.error.message);
+      return res.status(500).json({ error: data.error.message });
+    }
+
+    const aiText = data.candidates[0].content.parts[0].text;
     
-    res.status(200).json({ text });
+    return res.status(200).json({ text: aiText });
+
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch from AI' });
+    console.error("Fetch Error:", error.message);
+    return res.status(500).json({ error: 'Failed to connect to AI' });
   }
 }
