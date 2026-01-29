@@ -23,22 +23,28 @@
         .hero-content h2 { font-size: 2.5em; color: #1f4236; margin-bottom: 30px; line-height: 1.3; }
         .hero-content p { font-size: 1.2em; margin-bottom: 20px; color: #555; }
         
-        /* Early CTA Button Styling */
+        /* Updated Top CTA Button with Gold-to-Cream Gradient */
         .hero-cta { 
             display: inline-block; 
-            margin-top: 20px; 
-            background: #c9a961; 
-            color: white; 
-            padding: 15px 35px; 
+            margin-top: 30px; 
+            background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%); 
+            color: #1f4236; /* Matching the dark green text for readability on gold */
+            padding: 18px 45px; 
             border-radius: 50px; 
             text-decoration: none; 
             font-weight: bold; 
             text-transform: uppercase; 
-            letter-spacing: 1px;
-            font-size: 0.9em;
-            transition: transform 0.3s ease;
+            letter-spacing: 2px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(201, 169, 97, 0.4);
+            border: none;
         }
-        .hero-cta:hover { transform: translateY(-2px); background: #b08e40; }
+        .hero-cta:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 6px 20px rgba(201, 169, 97, 0.6); 
+            filter: brightness(1.05);
+        }
         .questions-section { background: #f8f4f0; padding: 80px 20px; }
         .questions-section h2 { font-size: 2.3em; color: #1f4236; text-align: center; margin-bottom: 50px; }
         .question-list { max-width: 800px; margin: 0 auto; }
