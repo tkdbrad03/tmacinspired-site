@@ -10,141 +10,420 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Georgia', serif; line-height: 1.8; color: #2c3e50; background: #fafafa; }
+        
         .header { background: linear-gradient(135deg, #1f4236 0%, #2d6b5a 100%); color: white; padding: 60px 20px; text-align: center; }
         .header h1 { font-size: 3em; margin-bottom: 10px; font-weight: 300; letter-spacing: 2px; }
+        .header .subtitle { font-size: 1.3em; opacity: 0.9; font-style: italic; color: #f4e4b8; }
         .header .tagline { font-size: 1.4em; margin-top: 30px; font-weight: 300; }
+
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        
         .hero-section { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; padding: 80px 20px; background: white; }
         .hero-image img { max-width: 100%; height: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2); border-radius: 8px; }
         .hero-content h2 { font-size: 2.5em; color: #1f4236; margin-bottom: 30px; line-height: 1.3; }
         .hero-content p { font-size: 1.2em; margin-bottom: 20px; color: #555; }
-        .questions-section { background: #f8f4f0; padding: 80px 20px; }
-        .questions-section h2 { font-size: 2.3em; color: #1f4236; text-align: center; margin-bottom: 50px; }
-        .question-item { background: white; padding: 25px; margin-bottom: 20px; border-left: 5px solid #c9a961; box-shadow: 0 4px 15px rgba(0,0,0,0.1); font-size: 1.15em; font-style: italic; }
-        .highlight-box { background: #1f4236; color: white; padding: 40px; margin: 60px 0; text-align: center; border-radius: 8px; }
-        .highlight-box h3 { font-size: 2em; margin-bottom: 20px; background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .system-section { background: linear-gradient(135deg, #1f4236 0%, #2d6b5a 100%); color: white; padding: 80px 20px; }
-        .system-section h2 { font-size: 2.8em; text-align: center; margin-bottom: 20px; background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .system-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
-        .system-card { background: rgba(255,255,255,0.1); padding: 35px; border-radius: 8px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
-        .author-section { background: white; padding: 80px 20px; }
-        .author-content { display: grid; grid-template-columns: 1fr 2fr; gap: 60px; align-items: center; }
-        .author-image img { max-width: 100%; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
-        .cta-section { background: linear-gradient(135deg, #1f4236 0%, #2d6b5a 100%); color: white; padding: 100px 20px; text-align: center; }
-        .cta-section h2 { font-size: 3em; margin-bottom: 30px; background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* AI Permission Granting Section */
+        .ai-manifestation-section { background: #fdfbf7; padding: 80px 20px; border-top: 1px solid #eee; border-bottom: 1px solid #eee; }
+        .ai-container { max-width: 800px; margin: 0 auto; text-align: center; background: white; padding: 50px; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); }
+        .ai-container h2 { color: #1f4236; margin-bottom: 15px; font-size: 2em; letter-spacing: 1px; }
+        .ai-container p { color: #666; margin-bottom: 35px; font-size: 1.1em; }
         
-        /* FORM STYLING INTEGRATED INTO CTA */
-        #waitlist-form { max-width: 500px; margin: 0 auto; }
-        .form-input { width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 5px; border: none; font-size: 1.1em; }
-        .cta-button { 
-            width: 100%; 
-            background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%); 
+        .permission-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .permission-btn { 
+            background: #fff; 
+            border: 1px solid #c9a961; 
             color: #1f4236; 
-            padding: 20px; 
-            font-size: 1.5em; 
+            padding: 15px 10px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-family: inherit; 
+            font-size: 0.95em; 
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 80px;
+            font-weight: 600;
+        }
+        .permission-btn:hover { background: #fdf6e6; transform: translateY(-2px); border-color: #b08e40; }
+        .permission-btn.active { background: #1f4236; color: #f4e4b8; border-color: #1f4236; }
+
+        .ai-action-area { margin-top: 20px; }
+        .ai-button { 
+            background: #c9a961; 
+            color: white; 
             border: none; 
+            padding: 18px 40px; 
             border-radius: 50px; 
             font-weight: bold; 
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9em;
         }
-        #success-msg { display: none; font-size: 1.5em; color: #f4e4b8; font-weight: bold; margin-top: 20px; }
+        .ai-button:disabled { background: #ccc; cursor: not-allowed; }
+        
+        #ai-response { 
+            margin-top: 40px; 
+            text-align: left; 
+            padding: 30px; 
+            background: #f8f4f0; 
+            color: #2c3e50;
+            border-radius: 12px; 
+            display: none; 
+            border-left: 5px solid #1f4236;
+            line-height: 1.6;
+            font-size: 1.1em;
+            position: relative;
+        }
+        
+        .ai-loader { display: none; margin: 30px auto; width: 40px; height: 40px; border: 3px solid #f3f3f3; border-top: 3px solid #c9a961; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        footer { background: #1f4236; color: white; padding: 40px 20px; text-align: center; }
-        @media (max-width: 768px) { .hero-section, .author-content { grid-template-columns: 1fr; } }
+        .questions-section { background: #f8f4f0; padding: 80px 20px; }
+        .questions-section h2 { font-size: 2.3em; color: #1f4236; text-align: center; margin-bottom: 50px; }
+        .question-list { max-width: 800px; margin: 0 auto; }
+        .question-item { background: white; padding: 25px; margin-bottom: 20px; border-left: 5px solid #c9a961; box-shadow: 0 4px 15px rgba(0,0,0,0.05); font-size: 1.15em; font-style: italic; }
+
+        .highlight-box { background: #1f4236; color: white; padding: 60px 40px; margin: 60px 0; text-align: center; border-radius: 8px; position: relative; overflow: hidden; }
+        .highlight-box h3 { font-size: 2.2em; margin-bottom: 20px; background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .story-section { padding: 80px 20px; background: #fff; }
+        .story-container { max-width: 900px; margin: 0 auto; }
+        .story-container h2 { font-size: 2.2em; color: #1f4236; margin-bottom: 30px; text-align: center; }
+        .story-content { font-size: 1.2em; color: #444; }
+        .story-content p { margin-bottom: 25px; }
+
+        .system-section { background: linear-gradient(135deg, #1f4236 0%, #2d6b5a 100%); color: white; padding: 80px 20px; }
+        .system-section .section-title { font-size: 2.8em; text-align: center; margin-bottom: 10px; background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .system-section .section-subtitle { text-align: center; font-style: italic; color: #f4e4b8; font-size: 1.3em; margin-bottom: 60px; max-width: 800px; margin-left: auto; margin-right: auto; }
+        
+        .system-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; }
+        .system-card { background: rgba(255,255,255,0.08); padding: 35px; border-radius: 12px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.15); transition: all 0.3s ease; display: flex; flex-direction: column; }
+        .system-card:hover { transform: translateY(-10px); background: rgba(255,255,255,0.12); }
+        .system-card h3 { font-size: 1.5em; margin-bottom: 15px; color: #f4e4b8; border-bottom: 1px solid rgba(201, 169, 97, 0.3); padding-bottom: 10px; }
+        .system-card p { font-size: 1.05em; line-height: 1.6; opacity: 0.9; }
+
+        .author-section { background: white; padding: 100px 20px; }
+        .author-content { display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: center; }
+        .author-image img { max-width: 100%; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
+        .author-bio h2 { font-size: 2.5em; color: #1f4236; margin-bottom: 30px; }
+        .author-bio .tagline { color: #c9a961; font-weight: bold; margin-bottom: 10px; font-size: 1.2em; display: block; }
+
+        .for-you-section { padding: 80px 20px; background: #fff; text-align: center; overflow: hidden; }
+        .for-you-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 40px; }
+        .for-you-card { 
+            padding: 30px; 
+            border: 1px solid #eee; 
+            border-radius: 8px; 
+            background: #fafafa; 
+            font-size: 1.1em;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .for-you-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .quote-section { background: #f8f4f0; padding: 80px 20px; text-align: center; }
+        .quote { font-size: 2.5em; font-style: italic; color: #1f4236; margin-bottom: 20px; font-weight: 300; }
+        .quote-author { font-size: 1.2em; color: #c9a961; text-transform: uppercase; letter-spacing: 2px; }
+
+        .cta-section { background: linear-gradient(135deg, #1f4236 0%, #2d6b5a 100%); color: white; padding: 100px 20px; text-align: center; }
+        .cta-section h2 { font-size: 2.5em; margin-bottom: 20px; background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .waitlist-form-container { max-width: 500px; margin: 40px auto 0; text-align: left; }
+        .form-group { margin-bottom: 15px; }
+        .form-input { width: 100%; padding: 15px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.9); font-size: 1rem; font-family: inherit; color: #2c3e50; }
+        .cta-button { 
+            width: 100%;
+            display: inline-block;
+            background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%);
+            color: #1f4236;
+            padding: 20px 40px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: none;
+            cursor: pointer;
+        }
+        .cta-button:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
+        #form-message { display: none; margin-top: 20px; font-size: 1.2em; color: #f4e4b8; font-weight: bold; text-align: center; }
+
+        footer { background: #1f4236; color: white; padding: 60px 20px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); }
+
+        @media (max-width: 768px) {
+            .hero-section, .author-content { grid-template-columns: 1fr; text-align: center; }
+            .header h1 { font-size: 2.2em; }
+        }
     </style>
 </head>
 <body>
     <header class="header">
-        <h1>You can have it all.</h1>
+        <h1>Where Is My Life Partner?</h1>
+        <div class="subtitle">A Woman's Guide to Attracting Her Soulmate</div>
         <div class="tagline">TMac Inspired shows you how.</div>
     </header>
 
     <section class="hero-section container">
         <div class="hero-image">
-            <img src="front_mockup.png" alt="Book Cover">
+            <img src="front_mockup.png" alt="Where Is My Life Partner Book Cover">
         </div>
         <div class="hero-content">
-            <h2>Where Is My Life Partner? The Manifestation Edition</h2>
+            <h2>The Manifestation Edition</h2>
             <p>You are a leader, a visionary, and a woman of profound faith. You've built a life that looks complete on paper, yet there is a specific void that accolades haven't been able to fill.</p>
-            <p>You are ready to be the woman who is cherished and supported in her own home.</p>
+            <p>You are the "Strong One," the "Boss," and the problem solver for everyone in your circle, but you are ready to be the woman who is cherished and supported in her own home.</p>
+            <p><strong>The Hardcover Manifestation Edition is arriving soon.</strong></p>
         </div>
     </section>
 
     <section class="questions-section">
         <div class="container">
             <h2>You Find Yourself Searching for Answers</h2>
-            <div class="question-item">"Why do I keep attracting the same relationship patterns?"</div>
-            <div class="question-item">"How do I move from survival mode into true emotional safety?"</div>
+            <div class="question-list">
+                <div class="question-item">"Why do I keep attracting the same relationship patterns?"</div>
+                <div class="question-item">"How do I stop being the provider and the fixer in every partnership?"</div>
+                <div class="question-item">"Why is it so difficult to find a man who isn't intimidated by my brilliance?"</div>
+                <div class="question-item">"How do I move from survival mode into true emotional safety?"</div>
+            </div>
+            
             <div class="highlight-box">
                 <h3>If you're tired of chemistry without safety...</h3>
-                <p>It's time for an internal upgrade.</p>
+                <p>It's time for an internal upgrade. This book is the blueprint for the woman ready to anchor her alignment in reality.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Simplified Permission Slip Section -->
+    <section class="ai-manifestation-section">
+        <div class="ai-container">
+            <h2>The Permission Slip</h2>
+            <p>Stop waiting for the world to change and start giving yourself what you need. Which permission are you ready to grant yourself today?</p>
+            
+            <div class="permission-grid">
+                <button class="permission-btn" data-val="softness and vulnerability">I'm ready to be soft.</button>
+                <button class="permission-btn" data-val="being cherished and supported">I'm ready to be cherished.</button>
+                <button class="permission-btn" data-val="letting go of the independent shield">I'm ready for help.</button>
+                <button class="permission-btn" data-val="being seen for who I really am">I'm ready to be seen.</button>
+            </div>
+
+            <div class="ai-action-area">
+                <button id="ai-gen-btn" class="ai-button" disabled>Grant My Permission</button>
+            </div>
+
+            <div class="ai-loader" id="ai-loader"></div>
+            <div id="ai-response"></div>
+        </div>
+    </section>
+    
+    <section class="story-section">
+        <div class="story-container">
+            <h2>Written from the Other Side of the Prayer</h2>
+            <div class="story-content">
+                <p>When Dr. Tasha "TMac" McCray wrote the first edition of <em>Where Is My Life Partner?</em>, she wasn't writing from a place of "wanting." She was writing from the side of <strong>having</strong>.</p>
+                <p>After doing the deep, transformative work to break her own patterns, she successfully manifested her husband, Benny. She is the living proof that when you align your internal state, your external world—and your soulmate—must follow.</p>
+                <p>In this Enhanced Manifestation Edition, she bridges the gap between her 2018 foundation and her current life as a tech visionary and manifestation expert. She doesn't just teach theory; she teaches the exact system that allowed her to manifest a multi-million dollar legacy and a thriving, peaceful marriage.</p>
             </div>
         </div>
     </section>
 
     <section class="system-section">
         <div class="container">
-            <h2>The L.O.V.E. M.E. System</h2>
+            <h2 class="section-title">The L.O.V.E. M.E. System</h2>
+            <p class="section-subtitle">This is not a book of dating "rules." It's a blueprint for internal restructuring.</p>
+            
             <div class="system-grid">
                 <div class="system-card">
+                    <h3>The L.O.V.E. M.E. Framework</h3>
+                    <p>A deep dive into Listening, Observing, Validating, and Evaluating your own truth so you never settle again.</p>
+                </div>
+                <div class="system-card">
                     <h3>Breaking the Cycle</h3>
-                    <p>Identifying the unresolved stories and unspoken grief that keep you attracting the same patterns.</p>
+                    <p>Identifying the unresolved stories and unspoken grief that keep you attracting the same relationship patterns.</p>
+                </div>
+                <div class="system-card">
+                    <h3>The Myth of Independence</h3>
+                    <p>Understanding why being "strong" is often a mask for self-betrayal, and how to embrace the softness required for true partnership.</p>
                 </div>
                 <div class="system-card">
                     <h3>Preparation Over Promise</h3>
-                    <p>How to move into a state of awareness and self-trust that prepares you for the partner you seek.</p>
+                    <p>How to move from survival mode into a state of awareness and self-trust that prepares you for the partner you seek.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="author-section">
+    <section class="author-section container">
+        <div class="author-content">
+            <div class="author-image">
+                <img src="back_cover_mockup.png" alt="Dr. Tasha TMac McCray">
+            </div>
+            <div class="author-bio">
+                <h2>Wealth on Your Terms. Love by Design.</h2>
+                <p>Dr. TMac lives the life she teaches. As the founder of <strong>CompliTrst™</strong>, she builds complex tech solutions, business automations, and customized apps. As a wife and matriarch, she fosters legacy and connection.</p>
+                <p>She doesn't balance these roles; she encompasses them as one integrated, abundant life. Whether she is closing a software deal or sinking a hole-in-one on the golf course with her husband, every move she makes is from a state of flow.</p>
+                <p>This book is your invitation to join her in that space of total alignment.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="for-you-section">
         <div class="container">
-            <div class="author-content">
-                <div class="author-image"><img src="back_cover_mockup.png" alt="Dr. TMac"></div>
-                <div class="author-bio">
-                    <h2>Wealth on Your Terms. Love by Design.</h2>
-                    <p>Dr. TMac lives the life she teaches. This book is your invitation to join her in that space of total alignment.</p>
+            <h2>This Book Is For You If:</h2>
+            <div class="for-you-grid">
+                <div class="for-you-card">
+                    You are an accomplished woman ready to stop "hustling" for love.
+                </div>
+                <div class="for-you-card">
+                    You want a partner who doesn't just see your light, but protects it.
+                </div>
+                <div class="for-you-card">
+                    You are ready to trade survival for safety and "strong" for "cherished."
                 </div>
             </div>
+        </div>
+    </section>
+
+    <section class="quote-section">
+        <div class="container">
+            <p class="quote">"You can have it all."</p>
+            <p class="quote-author">— Dr. Tasha "TMac" McCray</p>
         </div>
     </section>
 
     <section class="cta-section">
         <div class="container">
             <h2>Your Soulmate Isn't a Mystery to Be Solved</h2>
-            <p>He is an outcome of your alignment. Enter your details to join the manifestation priority list.</p>
+            <p>He is an outcome of your alignment. Join the priority waitlist for the Hardcover Edition.</p>
             
-            <form id="waitlist-form">
-                <input type="text" name="firstName" class="form-input" placeholder="First Name" required>
-                <input type="email" name="email" class="form-input" placeholder="Email" required>
-                <button type="submit" class="cta-button">Reserve My Copy Today</button>
-            </form>
-            <div id="success-msg">
-                Your place is reserved. Check your inbox.
+            <div class="waitlist-form-container">
+                <form id="waitlist-form">
+                    <div class="form-group">
+                        <input type="text" name="firstName" class="form-input" placeholder="First Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" class="form-input" placeholder="Professional Email" required>
+                    </div>
+                    <button type="submit" class="cta-button" id="submit-btn">Reserve My Copy Today</button>
+                </form>
+                <div id="form-message">
+                    Your place is reserved. Check your inbox for your invitation.
+                </div>
             </div>
         </div>
     </section>
 
     <footer>
         <p>&copy; 2026 TMac Inspired™</p>
+        <p>Questions? <a href="mailto:support@tmacinspired.com" style="color: #c9a961; text-decoration: none;">support@tmacinspired.com</a></p>
     </footer>
 
     <script>
+        // Form Submission Logic
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwG6m6tJ4TRM6HkOFpFdId1JLD3F8HtihrcOmWvlcimVQJh0BmorueKA50gY1HqjH8l7A/exec';
         const form = document.getElementById('waitlist-form');
-        const successMsg = document.getElementById('success-msg');
+        const btn = document.getElementById('submit-btn');
+        const msg = document.getElementById('form-message');
 
         form.addEventListener('submit', e => {
             e.preventDefault();
-            form.querySelector('button').innerText = "Reserving...";
+            btn.disabled = true;
+            btn.innerText = "Reserving...";
+            
             fetch(scriptURL, { method: 'POST', body: new FormData(form)})
                 .then(response => {
                     form.style.display = 'none';
-                    successMsg.style.display = 'block';
+                    msg.style.display = 'block';
                 })
-                .catch(error => console.error('Error!', error.message));
+                .catch(error => {
+                    console.error('Error!', error.message);
+                    btn.disabled = false;
+                    btn.innerText = "Reserve My Copy Today";
+                });
+        });
+
+        // Intersection Observer for Section Animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const cards = entry.target.querySelectorAll('.for-you-card');
+                        cards.forEach((card, index) => {
+                            setTimeout(() => {
+                                card.classList.add('visible');
+                            }, index * 200); // Staggered delay
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const forYouSection = document.querySelector('.for-you-section');
+            if (forYouSection) {
+                observer.observe(forYouSection);
+            }
+        });
+        const apiKey = "";
+        let selectedPermission = "";
+
+        const btns = document.querySelectorAll('.permission-btn');
+        const genBtn = document.getElementById('ai-gen-btn');
+        const aiResponse = document.getElementById('ai-response');
+        const aiLoader = document.getElementById('ai-loader');
+
+        btns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                btns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedPermission = btn.getAttribute('data-val');
+                genBtn.disabled = false;
+            });
+        });
+
+        async function getGeminiInsight(perm) {
+            const systemPrompt = `You are TMac, a supportive, real-talk mentor for successful women.
+            Tone: Conversational, warm, direct, grounded. No "frequencies," "matrices," or emojis.
+            Task: Give a short, encouraging permission grant for the theme: ${perm}.
+            Response: 1-2 sentences of real-talk insight followed by a simple "I give myself permission to..." statement. Do not use any emojis in the response.`;
+
+            const payload = {
+                contents: [{ parts: [{ text: `Give me a permission grant for: ${perm}` }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] }
+            };
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                return result.candidates?.[0]?.content?.parts?.[0]?.text || "Something went wrong. Let's try that again.";
+            } catch (e) { return "Connection issues. Give it one more shot."; }
+        }
+
+        genBtn.addEventListener('click', async () => {
+            genBtn.disabled = true;
+            aiLoader.style.display = 'block';
+            aiResponse.style.display = 'none';
+
+            const insight = await getGeminiInsight(selectedPermission);
+
+            aiLoader.style.display = 'none';
+            aiResponse.style.display = 'block';
+            aiResponse.innerHTML = insight.replace(/\n/g, '<br>');
+            genBtn.disabled = false;
         });
     </script>
 </body>
