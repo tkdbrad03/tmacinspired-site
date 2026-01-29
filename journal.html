@@ -1,0 +1,907 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>7-Day Clarity Challenge</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&amp;family=Outfit:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    .font-serif { font-family: 'Cormorant Garamond', Georgia, serif; }
+    .font-sans { font-family: 'Outfit', system-ui, sans-serif; }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    
+    .animate-fade { animation: fadeIn 0.6s ease-out forwards; }
+    .animate-slide { animation: slideIn 0.5s ease-out forwards; }
+    
+    .stagger-1 { animation-delay: 0.1s; opacity: 0; }
+    .stagger-2 { animation-delay: 0.2s; opacity: 0; }
+    .stagger-3 { animation-delay: 0.3s; opacity: 0; }
+    .stagger-4 { animation-delay: 0.4s; opacity: 0; }
+    
+    .journal-card {
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+    
+    .journal-card:hover {
+      transform: translateY(-2px);
+    }
+    
+    .mood-btn {
+      transition: all 0.2s ease;
+    }
+    
+    .mood-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(212, 165, 116, 0.3);
+    }
+    
+    .mood-btn.selected {
+      background: linear-gradient(135deg, #d4a574 0%, #c49a6c 100%) !important;
+      color: white !important;
+      border-color: #c49a6c !important;
+      box-shadow: 0 4px 12px rgba(212, 165, 116, 0.4);
+    }
+    
+    textarea:focus {
+      outline: none;
+    }
+    
+    .entry-item {
+      transition: all 0.3s ease;
+    }
+    
+    .entry-item:hover {
+      transform: translateX(4px);
+    }
+
+    .delete-btn {
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .entry-item:hover .delete-btn {
+      opacity: 1;
+    }
+
+    .confirm-delete {
+      animation: fadeIn 0.2s ease-out;
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+ </head>
+ <body class="h-full font-sans">
+  <div id="app" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #fdf6f0 0%, #f9e8e0 50%, #f5e6dc 100%);"><!-- Main Container -->
+   <div class="min-h-full p-4 md:p-8">
+    <div class="max-w-4xl mx-auto"><!-- Header -->
+     <header class="text-center mb-8 animate-fade stagger-1">
+      <div class="inline-flex items-center gap-2 mb-2">
+       <h1 id="main-title" class="font-serif text-3xl md:text-4xl font-semibold" style="color: #8b5a5a;">7-Day Clarity Challenge</h1>
+      </div>
+      <p id="welcome-text" class="font-sans text-sm md:text-base" style="color: #b8860b;">Transform mental clutter into crystal-clear direction</p><!-- Progress Bar -->
+      <div class="mt-6 max-w-md mx-auto">
+       <div class="flex justify-between items-center mb-2"><span class="font-sans text-xs" style="color: #a08060;">Your Progress</span> <span id="progress-text" class="font-sans text-xs font-semibold" style="color: #8b5a5a;">0 of 7 days</span>
+       </div>
+       <div class="w-full h-2 rounded-full" style="background: rgba(212, 165, 116, 0.2);">
+        <div id="progress-bar" class="h-full rounded-full transition-all duration-500" style="width: 0%; background: linear-gradient(90deg, #d4a574 0%, #c49a6c 100%);"></div>
+       </div>
+      </div>
+     </header><!-- Date Display -->
+     <div class="text-center mb-6 animate-fade stagger-2">
+      <p id="current-date" class="font-sans text-sm tracking-wider" style="color: #a08060;"></p>
+     </div><!-- Mood Selector -->
+     <div class="journal-card rounded-2xl p-6 mb-6 animate-fade stagger-2" style="background: rgba(255, 255, 255, 0.7);">
+      <p class="text-center font-sans text-sm mb-4" style="color: #8b5a5a;">How are you feeling about your business today?</p>
+      <div class="flex justify-center gap-3 flex-wrap"><button class="mood-btn px-4 py-2 rounded-full font-sans text-sm font-medium transition-all border-2" data-mood="overwhelmed" style="border-color: #d4a574; color: #8b5a5a; background: white;">Overwhelmed</button> <button class="mood-btn px-4 py-2 rounded-full font-sans text-sm font-medium transition-all border-2" data-mood="uncertain" style="border-color: #d4a574; color: #8b5a5a; background: white;">Uncertain</button> <button class="mood-btn px-4 py-2 rounded-full font-sans text-sm font-medium transition-all border-2" data-mood="hopeful" style="border-color: #d4a574; color: #8b5a5a; background: white;">Hopeful</button> <button class="mood-btn px-4 py-2 rounded-full font-sans text-sm font-medium transition-all border-2" data-mood="focused" style="border-color: #d4a574; color: #8b5a5a; background: white;">Focused</button> <button class="mood-btn px-4 py-2 rounded-full font-sans text-sm font-medium transition-all border-2" data-mood="confident" style="border-color: #d4a574; color: #8b5a5a; background: white;">Confident</button>
+      </div>
+     </div><!-- Current Day Card -->
+     <div id="current-day-card" class="mb-8"><!-- Current day will be dynamically generated -->
+     </div><!-- Navigation -->
+     <div id="navigation" class="flex justify-between items-center mb-8"><button id="prev-btn" class="px-5 py-2 rounded-full font-sans text-sm font-medium transition-all hover:shadow-lg disabled:opacity-40 disabled:cursor-not-allowed" style="background: rgba(212, 165, 116, 0.3); color: #8b5a5a;"> ← Previous Day </button> <span id="day-indicator" class="font-sans text-sm font-medium" style="color: #8b5a5a;">Day 1 of 7</span> <button id="next-btn" class="px-5 py-2 rounded-full font-sans text-sm font-medium transition-all hover:shadow-lg disabled:opacity-40 disabled:cursor-not-allowed" style="background: rgba(212, 165, 116, 0.3); color: #8b5a5a;"> Next Day → </button>
+     </div><!-- Challenge Complete Card -->
+     <div id="complete-card" class="journal-card rounded-2xl p-8 mb-6 animate-fade text-center" style="background: rgba(255, 255, 255, 0.7); display: none;">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4" style="background: linear-gradient(135deg, #d4a574 0%, #c49a6c 100%);">
+       <svg width="32" height="32" viewbox="0 0 32 32" fill="none" stroke="white" stroke-width="3"><path d="M26.667 8L12 22.667 5.333 16" stroke-linecap="round" stroke-linejoin="round" />
+       </svg>
+      </div>
+      <h3 class="font-serif text-2xl font-semibold mb-2" style="color: #8b5a5a;">Challenge Complete! 🎉</h3>
+      <p class="font-sans text-sm mb-6" style="color: #a08060;">You've completed all 7 days. Download your personalized clarity summary below.</p><button id="download-btn" class="px-6 py-3 rounded-full font-sans text-sm font-medium transition-all hover:shadow-lg" style="background: linear-gradient(135deg, #d4a574 0%, #c49a6c 100%); color: white;"> 📄 Download Your Clarity Summary </button>
+     </div><!-- Past Entries -->
+     <div class="journal-card rounded-2xl p-6 animate-fade stagger-4" style="background: rgba(255, 255, 255, 0.6);">
+      <div class="flex items-center justify-between mb-4">
+       <h3 class="font-serif text-xl font-semibold" style="color: #8b5a5a;">Your Challenge Journey</h3><span id="entry-count" class="font-sans text-xs px-3 py-1 rounded-full" style="background: #f5e6dc; color: #8b5a5a;">0 entries</span>
+      </div>
+      <div id="entries-list" class="space-y-3 max-h-80 overflow-y-auto pr-2">
+       <p id="empty-state" class="text-center font-sans text-sm py-8" style="color: #a08060;">Your daily reflections will appear here<br><span class="text-xs">Complete each day to track your transformation</span></p>
+      </div>
+     </div><!-- Inspirational Quote -->
+     <div class="text-center mt-8 mb-4 animate-fade stagger-4">
+      <p class="font-serif text-lg italic" style="color: #8b5a5a;">"Clarity comes from engagement, not thought."</p>
+      <p class="font-sans text-xs mt-1" style="color: #a08060;">— Marie Forleo</p>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+    // Default configuration
+    const defaultConfig = {
+      challenge_title: "7-Day Clarity Challenge",
+      welcome_message: "Transform mental clutter into crystal-clear direction",
+      day1_prompt: "List everything creating mental clutter in your business right now. No filter, just brain dump.",
+      day2_prompt: "If all obstacles disappeared, what would you create? Describe your ultimate business vision.",
+      day3_prompt: "What projects, commitments, or beliefs need to go? What's holding you back?",
+      day4_prompt: "Of everything on your plate, what are the 3 things that truly move your business forward?",
+      day5_prompt: "For your top 3 priorities, what's one action you'll take this week for each?",
+      day6_prompt: "Who can help you stay accountable? What support do you need to maintain clarity?",
+      day7_prompt: "Write your clarity commitment. How will you protect your focus going forward?",
+      background_color: "#fdf6f0",
+      card_color: "#ffffff",
+      text_color: "#8b5a5a",
+      accent_color: "#d4a574",
+      secondary_color: "#b8860b",
+      font_family: "Outfit",
+      font_size: 14
+    };
+
+    const dayTitles = [
+      "Acknowledge the Clutter",
+      "Define Your North Star",
+      "Release What No Longer Serves",
+      "Simplify Your Focus",
+      "Create Your Action Plan",
+      "Build Your Support System",
+      "Commit to Your Clarity"
+    ];
+
+    let config = { ...defaultConfig };
+    let entries = [];
+    let selectedMood = null;
+    let pendingDelete = null;
+    let currentDay = 1;
+
+    // Set current date
+    function setCurrentDate() {
+      const now = new Date();
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', options);
+    }
+
+    // Calculate progress
+    function calculateProgress() {
+      const completedDays = new Set();
+      entries.forEach(entry => {
+        if (entry.completed) {
+          completedDays.add(entry.day);
+        }
+      });
+      return completedDays.size;
+    }
+
+    // Update progress bar
+    function updateProgressBar() {
+      const completed = calculateProgress();
+      const percentage = (completed / 7) * 100;
+      
+      const progressBar = document.getElementById('progress-bar');
+      const progressText = document.getElementById('progress-text');
+      
+      progressBar.style.width = `${percentage}%`;
+      progressText.textContent = `${completed} of 7 days`;
+      
+      // Show completion card if all days are done
+      const completeCard = document.getElementById('complete-card');
+      if (completed === 7) {
+        completeCard.style.display = 'block';
+      } else {
+        completeCard.style.display = 'none';
+      }
+    }
+
+    // Apply configuration to UI
+    async function onConfigChange(cfg) {
+      config = { ...defaultConfig, ...cfg };
+      
+      const customFont = config.font_family || defaultConfig.font_family;
+      const baseSize = config.font_size || defaultConfig.font_size;
+      
+      // Apply title
+      const titleEl = document.getElementById('main-title');
+      titleEl.textContent = config.challenge_title || defaultConfig.challenge_title;
+      titleEl.style.color = config.text_color || defaultConfig.text_color;
+      titleEl.style.fontFamily = `'Cormorant Garamond', ${customFont}, Georgia, serif`;
+      titleEl.style.fontSize = `${baseSize * 2.5}px`;
+      
+      // Apply welcome message
+      const welcomeEl = document.getElementById('welcome-text');
+      welcomeEl.textContent = config.welcome_message || defaultConfig.welcome_message;
+      welcomeEl.style.color = config.secondary_color || defaultConfig.secondary_color;
+      welcomeEl.style.fontFamily = `${customFont}, system-ui, sans-serif`;
+      welcomeEl.style.fontSize = `${baseSize}px`;
+      
+      // Apply colors
+      const bgColor = config.background_color || defaultConfig.background_color;
+      const cardColor = config.card_color || defaultConfig.card_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+      const accentColor = config.accent_color || defaultConfig.accent_color;
+      
+      document.getElementById('app').style.background = `linear-gradient(135deg, ${bgColor} 0%, ${adjustColor(bgColor, -10)} 50%, ${adjustColor(bgColor, -20)} 100%)`;
+      
+      // Update all cards
+      document.querySelectorAll('.journal-card').forEach(card => {
+        card.style.background = `rgba(${hexToRgb(cardColor)}, 0.8)`;
+      });
+      
+      // Update entry count badge
+      const countBadge = document.getElementById('entry-count');
+      countBadge.style.background = adjustColor(bgColor, -15);
+      countBadge.style.color = textColor;
+      
+      renderCurrentDay();
+      renderEntries();
+      updateProgressBar();
+      updateNavigation();
+    }
+
+    // Helper: Hex to RGB
+    function hexToRgb(hex) {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : '255, 255, 255';
+    }
+
+    // Helper: Adjust color brightness
+    function adjustColor(hex, percent) {
+      const num = parseInt(hex.replace('#', ''), 16);
+      const amt = Math.round(2.55 * percent);
+      const R = Math.max(0, Math.min(255, (num >> 16) + amt));
+      const G = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amt));
+      const B = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
+      return `#${(0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1)}`;
+    }
+
+    // Get day prompt
+    function getDayPrompt(dayNum) {
+      const promptKey = `day${dayNum}_prompt`;
+      return config[promptKey] || defaultConfig[promptKey];
+    }
+
+    // Check if day is completed
+    function isDayCompleted(dayNum) {
+      return entries.some(entry => entry.day === dayNum && entry.completed);
+    }
+
+    // Render current day card
+    function renderCurrentDay() {
+      const container = document.getElementById('current-day-card');
+      const bgColor = config.background_color || defaultConfig.background_color;
+      const cardColor = config.card_color || defaultConfig.card_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+      const accentColor = config.accent_color || defaultConfig.accent_color;
+      
+      const i = currentDay;
+      const completed = isDayCompleted(i);
+      
+      container.innerHTML = '';
+      
+      const card = document.createElement('div');
+      card.className = 'journal-card rounded-2xl p-6 animate-fade';
+      card.style.background = completed ? `rgba(${hexToRgb(adjustColor(accentColor, 40))}, 0.3)` : `rgba(${hexToRgb(cardColor)}, 0.8)`;
+      card.style.border = completed ? `2px solid ${accentColor}` : 'none';
+      
+      card.innerHTML = `
+        <div class="flex items-start gap-3 mb-4">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center font-sans font-semibold text-lg" style="background: ${completed ? accentColor : adjustColor(bgColor, -15)}; color: ${completed ? 'white' : textColor};">
+            ${completed ? '✓' : i}
+          </div>
+          <div class="flex-1">
+            <h3 class="font-serif text-xl md:text-2xl font-semibold" style="color: ${textColor};">Day ${i}: ${dayTitles[i-1]}</h3>
+            <p class="font-sans text-sm md:text-base mt-2" style="color: ${adjustColor(textColor, 20)};">${getDayPrompt(i)}</p>
+          </div>
+        </div>
+        ${!completed ? `
+          <textarea 
+            id="day${i}-input"
+            class="w-full p-4 rounded-xl font-sans text-sm resize-none border-2 transition-colors mt-4"
+            style="background: rgba(253, 246, 240, 0.8); border-color: #f5e6dc; color: #5a4a4a; min-height: 150px;"
+            placeholder="Take your time... there's no rush. Write what comes to mind."
+          ></textarea>
+          <button id="save-day${i}" class="mt-4 px-6 py-3 rounded-full font-sans text-sm font-medium transition-all hover:shadow-lg" style="background: linear-gradient(135deg, ${accentColor} 0%, ${adjustColor(accentColor, -10)} 100%); color: white;">
+            Complete Day ${i}
+          </button>
+        ` : `
+          <div class="mt-4 p-5 rounded-xl" style="background: rgba(${hexToRgb(bgColor)}, 0.5);">
+            <p class="font-sans text-sm md:text-base leading-relaxed" style="color: ${adjustColor(textColor, 20)};">${getCompletedAnswer(i)}</p>
+          </div>
+          <div class="mt-4 flex items-center gap-2 text-sm font-sans" style="color: ${accentColor};">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M16.667 5L7.5 14.167 3.333 10" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Completed</span>
+          </div>
+        `}
+      `;
+      
+      container.appendChild(card);
+      
+      if (!completed) {
+        const saveBtn = document.getElementById(`save-day${i}`);
+        saveBtn.addEventListener('click', () => saveDay(i));
+      }
+    }
+
+    // Update navigation buttons
+    function updateNavigation() {
+      const prevBtn = document.getElementById('prev-btn');
+      const nextBtn = document.getElementById('next-btn');
+      const dayIndicator = document.getElementById('day-indicator');
+      
+      prevBtn.disabled = currentDay === 1;
+      nextBtn.disabled = currentDay === 7;
+      
+      dayIndicator.textContent = `Day ${currentDay} of 7`;
+      
+      const accentColor = config.accent_color || defaultConfig.accent_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+      
+      if (!prevBtn.disabled) {
+        prevBtn.style.background = `rgba(${hexToRgb(accentColor)}, 0.3)`;
+      }
+      if (!nextBtn.disabled) {
+        nextBtn.style.background = `rgba(${hexToRgb(accentColor)}, 0.3)`;
+      }
+    }
+
+    // Initialize navigation
+    function initNavigation() {
+      document.getElementById('prev-btn').addEventListener('click', () => {
+        if (currentDay > 1) {
+          currentDay--;
+          renderCurrentDay();
+          updateNavigation();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+      
+      document.getElementById('next-btn').addEventListener('click', () => {
+        if (currentDay < 7) {
+          currentDay++;
+          renderCurrentDay();
+          updateNavigation();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+    }
+
+    // Get completed answer
+    function getCompletedAnswer(dayNum) {
+      const entry = entries.find(e => e.day === dayNum && e.completed);
+      return entry ? entry.answer : '';
+    }
+
+    // Save day
+    async function saveDay(dayNum) {
+      const input = document.getElementById(`day${dayNum}-input`);
+      const answer = input.value.trim();
+      
+      if (!answer) return;
+      
+      // Check limit
+      if (entries.length >= 999) {
+        const btn = document.getElementById(`save-day${dayNum}`);
+        btn.textContent = 'Limit reached (999)';
+        setTimeout(() => {
+          btn.textContent = `Complete Day ${dayNum}`;
+        }, 2000);
+        return;
+      }
+      
+      const btn = document.getElementById(`save-day${dayNum}`);
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+      
+      const entry = {
+        id: Date.now().toString(),
+        day: dayNum,
+        question: getDayPrompt(dayNum),
+        answer: answer,
+        mood: selectedMood || '',
+        createdAt: new Date().toISOString(),
+        completed: true
+      };
+      
+      const result = await window.dataSdk.create(entry);
+      
+      if (result.isOk) {
+        selectedMood = null;
+        document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+      } else {
+        btn.textContent = 'Try again';
+        btn.disabled = false;
+      }
+    }
+
+    // Render entries
+    function renderEntries() {
+      const container = document.getElementById('entries-list');
+      const emptyState = document.getElementById('empty-state');
+      const countBadge = document.getElementById('entry-count');
+      
+      countBadge.textContent = `${entries.length} ${entries.length === 1 ? 'entry' : 'entries'}`;
+      
+      if (entries.length === 0) {
+        emptyState.style.display = 'block';
+        container.querySelectorAll('.entry-item').forEach(el => el.remove());
+        return;
+      }
+      
+      emptyState.style.display = 'none';
+      
+      const textColor = config.text_color || defaultConfig.text_color;
+      const bgColor = config.background_color || defaultConfig.background_color;
+      
+      // Sort entries by day
+      const sortedEntries = [...entries].sort((a, b) => b.day - a.day);
+      
+      const existingItems = new Map();
+      container.querySelectorAll('.entry-item').forEach(el => {
+        existingItems.set(el.dataset.entryId, el);
+      });
+      
+      const processedIds = new Set();
+      
+      sortedEntries.forEach((entry, index) => {
+        processedIds.add(entry.__backendId);
+        
+        if (existingItems.has(entry.__backendId)) {
+          const el = existingItems.get(entry.__backendId);
+          updateEntryElement(el, entry, textColor, bgColor, index);
+        } else {
+          const el = createEntryElement(entry, textColor, bgColor, index);
+          container.appendChild(el);
+        }
+      });
+      
+      existingItems.forEach((el, id) => {
+        if (!processedIds.has(id)) {
+          el.remove();
+        }
+      });
+    }
+
+    function createEntryElement(entry, textColor, bgColor, index) {
+      const el = document.createElement('div');
+      el.className = 'entry-item p-4 rounded-xl cursor-pointer animate-slide';
+      el.dataset.entryId = entry.__backendId;
+      el.style.background = adjustColor(bgColor, -8);
+      el.style.animationDelay = `${index * 0.05}s`;
+      
+      updateEntryElement(el, entry, textColor, bgColor, index);
+      
+      return el;
+    }
+
+    function updateEntryElement(el, entry, textColor, bgColor, index) {
+      const date = new Date(entry.createdAt);
+      const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const formattedTime = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+      
+      el.style.background = adjustColor(bgColor, -8);
+      
+      const isPendingDelete = pendingDelete === entry.__backendId;
+      
+      el.innerHTML = `
+        <div class="flex items-start gap-3">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 mb-1 flex-wrap">
+              <span class="font-sans text-xs font-medium uppercase tracking-wide px-2 py-1 rounded" style="background: ${adjustColor(bgColor, -15)}; color: ${textColor};">Day ${entry.day}</span>
+              ${entry.mood ? `<span class="font-sans text-xs px-2 py-1 rounded" style="background: ${adjustColor(bgColor, -15)}; color: ${adjustColor(textColor, 20)};">${entry.mood}</span>` : ''}
+              <span class="font-sans text-xs" style="color: ${adjustColor(textColor, 30)};">${formattedDate} at ${formattedTime}</span>
+            </div>
+            <p class="font-sans text-sm line-clamp-2 mt-2" style="color: ${adjustColor(textColor, 20)};">${entry.answer}</p>
+          </div>
+          ${isPendingDelete ? `
+            <div class="confirm-delete flex gap-2">
+              <button class="confirm-yes px-3 py-1 rounded-full text-xs font-medium text-white" style="background: #e74c3c;">Delete</button>
+              <button class="confirm-no px-3 py-1 rounded-full text-xs font-medium" style="background: ${adjustColor(bgColor, -20)}; color: ${textColor};">Cancel</button>
+            </div>
+          ` : `
+            <button class="delete-btn p-2 rounded-full hover:bg-red-100 transition-colors" title="Delete entry">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="${adjustColor(textColor, 30)}" stroke-width="1.5">
+                <path d="M2 4h12M5.333 4V2.667a1.333 1.333 0 011.334-1.334h2.666a1.333 1.333 0 011.334 1.334V4m2 0v9.333a1.333 1.333 0 01-1.334 1.334H4.667a1.333 1.333 0 01-1.334-1.334V4h9.334z"/>
+              </svg>
+            </button>
+          `}
+        </div>
+      `;
+      
+      const deleteBtn = el.querySelector('.delete-btn');
+      if (deleteBtn) {
+        deleteBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          pendingDelete = entry.__backendId;
+          renderEntries();
+        });
+      }
+      
+      const confirmYes = el.querySelector('.confirm-yes');
+      const confirmNo = el.querySelector('.confirm-no');
+      
+      if (confirmYes) {
+        confirmYes.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          await deleteEntry(entry);
+        });
+      }
+      
+      if (confirmNo) {
+        confirmNo.addEventListener('click', (e) => {
+          e.stopPropagation();
+          pendingDelete = null;
+          renderEntries();
+        });
+      }
+    }
+
+    async function deleteEntry(entry) {
+      const result = await window.dataSdk.delete(entry);
+      if (result.isOk) {
+        pendingDelete = null;
+      } else {
+        pendingDelete = null;
+        renderEntries();
+      }
+    }
+
+    // Initialize mood buttons
+    function initMoodButtons() {
+      document.querySelectorAll('.mood-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          selectedMood = btn.dataset.mood;
+        });
+      });
+    }
+
+    // Data handler
+    const dataHandler = {
+      onDataChanged(data) {
+        entries = data;
+        renderCurrentDay();
+        renderEntries();
+        updateProgressBar();
+        updateNavigation();
+      }
+    };
+
+    // Map to capabilities
+    function mapToCapabilities(cfg) {
+      return {
+        recolorables: [
+          {
+            get: () => cfg.background_color || defaultConfig.background_color,
+            set: (value) => { cfg.background_color = value; window.elementSdk.setConfig({ background_color: value }); }
+          },
+          {
+            get: () => cfg.card_color || defaultConfig.card_color,
+            set: (value) => { cfg.card_color = value; window.elementSdk.setConfig({ card_color: value }); }
+          },
+          {
+            get: () => cfg.text_color || defaultConfig.text_color,
+            set: (value) => { cfg.text_color = value; window.elementSdk.setConfig({ text_color: value }); }
+          },
+          {
+            get: () => cfg.accent_color || defaultConfig.accent_color,
+            set: (value) => { cfg.accent_color = value; window.elementSdk.setConfig({ accent_color: value }); }
+          },
+          {
+            get: () => cfg.secondary_color || defaultConfig.secondary_color,
+            set: (value) => { cfg.secondary_color = value; window.elementSdk.setConfig({ secondary_color: value }); }
+          }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => cfg.font_family || defaultConfig.font_family,
+          set: (value) => { cfg.font_family = value; window.elementSdk.setConfig({ font_family: value }); }
+        },
+        fontSizeable: {
+          get: () => cfg.font_size || defaultConfig.font_size,
+          set: (value) => { cfg.font_size = value; window.elementSdk.setConfig({ font_size: value }); }
+        }
+      };
+    }
+
+    // Map to edit panel values
+    function mapToEditPanelValues(cfg) {
+      return new Map([
+        ["challenge_title", cfg.challenge_title || defaultConfig.challenge_title],
+        ["welcome_message", cfg.welcome_message || defaultConfig.welcome_message],
+        ["day1_prompt", cfg.day1_prompt || defaultConfig.day1_prompt],
+        ["day2_prompt", cfg.day2_prompt || defaultConfig.day2_prompt],
+        ["day3_prompt", cfg.day3_prompt || defaultConfig.day3_prompt],
+        ["day4_prompt", cfg.day4_prompt || defaultConfig.day4_prompt],
+        ["day5_prompt", cfg.day5_prompt || defaultConfig.day5_prompt],
+        ["day6_prompt", cfg.day6_prompt || defaultConfig.day6_prompt],
+        ["day7_prompt", cfg.day7_prompt || defaultConfig.day7_prompt]
+      ]);
+    }
+
+    // Generate personalized action plan
+    function generateActionPlan() {
+      const sortedEntries = [...entries].sort((a, b) => a.day - b.day);
+      
+      let plan = "YOUR PERSONALIZED CLARITY ACTION PLAN\n";
+      plan += "=" + "=".repeat(50) + "\n\n";
+      
+      // Analyze responses to generate deeply personalized insights
+      const day1Answer = sortedEntries.find(e => e.day === 1)?.answer || '';
+      const day2Answer = sortedEntries.find(e => e.day === 2)?.answer || '';
+      const day3Answer = sortedEntries.find(e => e.day === 3)?.answer || '';
+      const day4Answer = sortedEntries.find(e => e.day === 4)?.answer || '';
+      const day5Answer = sortedEntries.find(e => e.day === 5)?.answer || '';
+      const day6Answer = sortedEntries.find(e => e.day === 6)?.answer || '';
+      const day7Answer = sortedEntries.find(e => e.day === 7)?.answer || '';
+      
+      // Analyze sentiment and key themes
+      const clutterLevel = analyzeClutterLevel(day1Answer);
+      const visionClarity = analyzeVisionClarity(day2Answer);
+      const releaseReadiness = analyzeReleaseReadiness(day3Answer);
+      const hasClearPriorities = day4Answer.length > 50;
+      const hasActionSteps = day5Answer.length > 50;
+      const hasSupportSystem = day6Answer.length > 30;
+      
+      plan += "📊 YOUR CLARITY PROFILE:\n";
+      plan += "-".repeat(50) + "\n";
+      plan += `Current State: ${clutterLevel}\n`;
+      plan += `Vision Clarity: ${visionClarity}\n`;
+      plan += `Action Readiness: ${hasActionSteps ? 'High - You have concrete next steps' : 'Building - Focus on breaking down goals'}\n`;
+      plan += `Support Network: ${hasSupportSystem ? 'Identified - Ready to activate' : 'Needs development'}\n\n`;
+      
+      plan += "🎯 YOUR PERSONALIZED NEXT STEPS:\n";
+      plan += "-".repeat(50) + "\n";
+      
+      if (hasClearPriorities && hasActionSteps) {
+        plan += "WEEK 1 - Execute Your Plan:\n";
+        plan += "• Take the specific actions you outlined on Day 5\n";
+        plan += "• Focus exclusively on your Day 4 priorities\n";
+        plan += "• Track completion of each action item daily\n\n";
+        
+        plan += "WEEK 2-4 - Build Momentum:\n";
+        plan += "• Review progress on your top 3 priorities\n";
+        plan += "• Address obstacles from your Day 3 release list\n";
+        plan += "• Refine your action steps based on what's working\n\n";
+      } else if (hasClearPriorities) {
+        plan += "WEEK 1 - Create Actionable Steps:\n";
+        plan += "• Break each Day 4 priority into 3 concrete actions\n";
+        plan += "• Assign deadlines to each action\n";
+        plan += "• Schedule focused work blocks in your calendar\n\n";
+        
+        plan += "WEEK 2-4 - Execute & Adjust:\n";
+        plan += "• Complete at least one action per priority weekly\n";
+        plan += "• Remove distractions you identified on Day 1\n";
+        plan += "• Measure progress against your Day 2 vision\n\n";
+      } else {
+        plan += "WEEK 1 - Clarify Your Focus:\n";
+        plan += "• Revisit Day 4: Identify your true top 3 priorities\n";
+        plan += "• For each priority, ask: Does this align with my Day 2 vision?\n";
+        plan += "• Eliminate or delegate 2-3 items from your Day 1 clutter list\n\n";
+        
+        plan += "WEEK 2-4 - Build Your Foundation:\n";
+        plan += "• Create specific, measurable goals for each priority\n";
+        plan += "• Develop weekly action steps\n";
+        plan += "• Establish boundaries to protect your focus\n\n";
+      }
+      
+      plan += "🌟 BASED ON YOUR RESPONSES:\n";
+      plan += "-".repeat(50) + "\n";
+      
+      // Personalized insights from Day 2 vision
+      if (day2Answer.length > 100) {
+        const visionSnippet = day2Answer.substring(0, 120).trim() + '...';
+        plan += `Your Vision: "${visionSnippet}"\n\n`;
+        plan += "To move toward this vision:\n";
+        plan += "• Daily: Ask 'Does this task serve my ultimate vision?'\n";
+        plan += "• Weekly: Measure progress against your vision statement\n";
+        plan += "• Monthly: Revisit and refine your vision as you grow\n\n";
+      }
+      
+      // Personalized release strategy from Day 3
+      if (releaseReadiness === 'Ready to let go') {
+        plan += "Your Release Strategy:\n";
+        plan += "• You've identified what needs to go - now take action\n";
+        plan += "• This week: Officially end or delegate ONE item from Day 3\n";
+        plan += "• Create a 'Not Doing' list and reference it when tempted\n\n";
+      }
+      
+      // Personalized support activation from Day 6
+      if (hasSupportSystem) {
+        plan += "Activate Your Support System:\n";
+        plan += "• Within 48 hours: Reach out to your identified supporters\n";
+        plan += "• Schedule weekly or bi-weekly accountability check-ins\n";
+        plan += "• Share your Day 7 commitment with them\n\n";
+      } else {
+        plan += "Build Your Support System:\n";
+        plan += "• Identify 2-3 people who understand your business journey\n";
+        plan += "• Join one online community aligned with your goals\n";
+        plan += "• Consider a mastermind group or accountability partner\n\n";
+      }
+      
+      plan += "💡 YOUR CUSTOM CLARITY PRACTICES:\n";
+      plan += "-".repeat(50) + "\n";
+      plan += "Daily (5 minutes):\n";
+      plan += "• Morning: Review your Day 7 commitment\n";
+      plan += "• Evening: Did today serve your top 3 priorities?\n\n";
+      
+      plan += "Weekly (30 minutes):\n";
+      plan += "• Review your Day 2 vision - still aligned?\n";
+      plan += "• Identify new clutter to release\n";
+      plan += "• Plan next week around priorities, not urgencies\n\n";
+      
+      plan += "Monthly (1 hour):\n";
+      plan += "• Measure progress on Day 5 action items\n";
+      plan += "• Celebrate wins and adjust course as needed\n";
+      plan += "• Update your support system on your journey\n\n";
+      
+      plan += "🚫 RED FLAGS TO WATCH FOR:\n";
+      plan += "-".repeat(50) + "\n";
+      plan += "Based on your Day 1 clutter patterns:\n";
+      plan += "• Saying yes to opportunities that don't match Day 2 vision\n";
+      plan += "• Your calendar filling up with non-priority tasks\n";
+      plan += "• Feeling overwhelmed again (sign to revisit Day 3 release)\n";
+      plan += "• Skipping your weekly clarity review\n\n";
+      
+      plan += "🎁 YOUR CLARITY TOOLKIT:\n";
+      plan += "-".repeat(50) + "\n";
+      plan += "When you feel overwhelmed again:\n";
+      plan += "1. Reread your Day 1 entry - recognize the pattern early\n";
+      plan += "2. Reconnect with your Day 2 vision - remember your why\n";
+      plan += "3. Review your Day 3 list - what else needs to go?\n";
+      plan += "4. Return to your Day 4 priorities - is this still your top 3?\n\n";
+      
+      if (day7Answer.length > 50) {
+        plan += "💪 YOUR COMMITMENT:\n";
+        plan += "-".repeat(50) + "\n";
+        const commitmentSnippet = day7Answer.substring(0, 200).trim() + (day7Answer.length > 200 ? '...' : '');
+        plan += `"${commitmentSnippet}"\n\n`;
+        plan += "Print this commitment. Put it where you'll see it daily.\n";
+        plan += "This is your North Star when distractions arise.\n\n";
+      }
+      
+      plan += "🔄 30-DAY CHECK-IN:\n";
+      plan += "-".repeat(50) + "\n";
+      plan += "Set a calendar reminder for 30 days from now to assess:\n";
+      plan += "□ Have I made progress on my Day 5 actions?\n";
+      plan += "□ Am I living my Day 7 commitment?\n";
+      plan += "□ Is my Day 2 vision still accurate?\n";
+      plan += "□ What new clarity work needs to be done?\n\n";
+      
+      plan += "Remember: Clarity is a practice, not a destination.\n";
+      plan += "You've done the hard work. Now protect it fiercely.\n\n";
+      plan += "When in doubt, return to this document and your 7 days of insights.\n";
+      plan += "Your answers hold the roadmap - you already know the way forward.\n\n";
+      
+      return plan;
+    }
+    
+    // Helper: Analyze clutter level
+    function analyzeClutterLevel(text) {
+      const wordCount = text.split(/\s+/).length;
+      const hasUrgentWords = /urgent|overwhelm|stress|chaos|too much|can't|struggling/i.test(text);
+      
+      if (wordCount > 200 || hasUrgentWords) return 'High overwhelm - Needs immediate focus reduction';
+      if (wordCount > 100) return 'Moderate clutter - Clear priorities will help';
+      if (wordCount > 30) return 'Manageable - Ready for focused action';
+      return 'Low clutter - Maintain current clarity';
+    }
+    
+    // Helper: Analyze vision clarity
+    function analyzeVisionClarity(text) {
+      const wordCount = text.split(/\s+/).length;
+      const hasSpecificWords = /will|create|build|grow|achieve|become|launch|scale/i.test(text);
+      
+      if (wordCount > 150 && hasSpecificWords) return 'Crystal clear - Strong direction';
+      if (wordCount > 80) return 'Developing - Good foundation to build on';
+      if (wordCount > 30) return 'Emerging - Needs more definition';
+      return 'Unclear - Requires deeper exploration';
+    }
+    
+    // Helper: Analyze release readiness
+    function analyzeReleaseReadiness(text) {
+      const wordCount = text.split(/\s+/).length;
+      const hasCommitmentWords = /will|going to|must|need to|time to|ready to/i.test(text);
+      
+      if (wordCount > 80 && hasCommitmentWords) return 'Ready to let go';
+      if (wordCount > 40) return 'Identifying boundaries';
+      return 'Exploring options';
+    }
+
+    // Download summary
+    function downloadSummary() {
+      const sortedEntries = [...entries].sort((a, b) => a.day - b.day);
+      
+      let content = "7-DAY CLARITY CHALLENGE - YOUR COMPLETE JOURNAL\n";
+      content += "=" + "=".repeat(60) + "\n";
+      content += `Completed: ${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}\n\n`;
+      
+      // Add all daily entries
+      sortedEntries.forEach(entry => {
+        const date = new Date(entry.createdAt);
+        content += "\n" + "=".repeat(60) + "\n";
+        content += `DAY ${entry.day}: ${dayTitles[entry.day - 1]}\n`;
+        content += "=".repeat(60) + "\n";
+        content += `Date: ${date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}\n`;
+        if (entry.mood) {
+          content += `Mood: ${entry.mood.charAt(0).toUpperCase() + entry.mood.slice(1)}\n`;
+        }
+        content += `\nPrompt: ${entry.question}\n\n`;
+        content += `Your Response:\n${entry.answer}\n\n`;
+      });
+      
+      // Add personalized action plan
+      content += "\n\n" + "=".repeat(60) + "\n\n";
+      content += generateActionPlan();
+      
+      // Create and download file
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `clarity-challenge-summary-${new Date().toISOString().split('T')[0]}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // Initialize download button
+    function initDownloadButton() {
+      const downloadBtn = document.getElementById('download-btn');
+      if (downloadBtn) {
+        downloadBtn.addEventListener('click', downloadSummary);
+      }
+    }
+
+    // Initialize app
+    async function init() {
+      setCurrentDate();
+      initMoodButtons();
+      initNavigation();
+      initDownloadButton();
+      
+      // Initialize Element SDK
+      if (window.elementSdk) {
+        window.elementSdk.init({
+          defaultConfig,
+          onConfigChange,
+          mapToCapabilities,
+          mapToEditPanelValues
+        });
+      }
+      
+      // Initialize Data SDK
+      if (window.dataSdk) {
+        await window.dataSdk.init(dataHandler);
+      }
+      
+      // Apply initial config
+      onConfigChange(config);
+    }
+
+    init();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c54f740572fa687',t:'MTc2OTY1MDI0Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
