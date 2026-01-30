@@ -112,9 +112,14 @@
                     resultType: answers.fatigue === 'soul-tired' ? 'PIVOT' : 'TIRED'
                 };
                 
+                // Debug: Log what we're sending
+                console.log('Submitting payload:', payload);
+                
                 try {
                     // Apps Script Web App URL
                     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyQXLWG-kzKBLa7KLg7_L5k14XfGM497n415ONuS3u8txmdLs88eyL6s9cD2AC156CyCg/exec';
+                    
+                    console.log('Sending to:', APPS_SCRIPT_URL);
                     
                     const response = await fetch(APPS_SCRIPT_URL, {
                         method: 'POST',
@@ -122,6 +127,8 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
+                    
+                    console.log('Request sent successfully');
                     
                     // Note: With no-cors mode, we can't read the response
                     // So we assume success if no error is thrown
