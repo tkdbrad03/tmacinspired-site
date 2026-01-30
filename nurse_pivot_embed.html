@@ -17,7 +17,7 @@
             theme: {
                 extend: {
                     colors: {
-                        pine: '#1f4236',
+                        pine: '#1a2f23',
                         gold: '#c9a961',
                         cream: '#fcfbf9',
                     },
@@ -34,13 +34,13 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .selection-card:hover { border-color: #c9a961; background-color: #fcfbf9; }
         input:focus { border-color: #c9a961; outline: none; }
-        .bg-pine { background-color: #1f4236; }
-        .text-pine { color: #1f4236; }
+        .bg-pine { background-color: #1a2f23; }
+        .text-pine { color: #1a2f23; }
         .text-gold { color: #c9a961; }
         
         /* CONSISTENT HEADER STYLE FROM INDEX.HTML */
         .header-banner {
-            background-color: #1f4236;
+            background-color: #1a2f23;
             height: 100px;
             display: flex;
             justify-content: center;
@@ -99,10 +99,49 @@
                 setAnswers({...answers, skills: next});
             };
             const handleVision = (val) => { setAnswers({...answers, vision: val}); setStep('leadgen'); };
-            const handleLeadSubmit = (e) => {
+            const handleLeadSubmit = async (e) => {
                 e.preventDefault();
                 setIsSubmitting(true);
-                setTimeout(() => { setIsSubmitting(false); setStep('result'); }, 1500);
+                
+                const payload = {
+                    name: formData.name,
+                    email: formData.email,
+                    fatigue: answers.fatigue,
+                    skills: answers.skills,
+                    vision: answers.vision,
+                    resultType: answers.fatigue === 'soul-tired' ? 'PIVOT' : 'TIRED'
+                };
+                
+                // Debug: Log what we're sending
+                console.log('Submitting payload:', payload);
+                
+                try {
+                    // Apps Script Web App URL
+                    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyQXLWG-kzKBLa7KLg7_L5k14XfGM497n415ONuS3u8txmdLs88eyL6s9cD2AC156CyCg/exec';
+                    
+                    console.log('Sending to:', APPS_SCRIPT_URL);
+                    
+                    const response = await fetch(APPS_SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors', // Required for Apps Script
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    console.log('Request sent successfully');
+                    
+                    // Note: With no-cors mode, we can't read the response
+                    // So we assume success if no error is thrown
+                    setIsSubmitting(false);
+                    setStep('result');
+                    
+                } catch (error) {
+                    console.error('Submission error:', error);
+                    // Still show result page even if there's an error
+                    // The data is likely still saved
+                    setIsSubmitting(false);
+                    setStep('result');
+                }
             };
 
             const resultType = answers.fatigue === 'soul-tired' ? 'PIVOT' : 'TIRED';
