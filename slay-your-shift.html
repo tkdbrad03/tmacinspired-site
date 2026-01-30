@@ -325,6 +325,68 @@
             .timer-container { gap: 15px; }
             .timer-number { font-size: 1.8rem; }
         }
+
+        /* Mobile optimization only (desktop unchanged) */
+        @media (max-width: 600px) {
+            body { line-height: 1.65; }
+
+            .header-nav { padding: 2.25rem 0 1.25rem; }
+            .logo-main { height: 70px; }
+
+            .hero { padding: 1.25rem 1rem 4.5rem; }
+            .hero h2 { letter-spacing: 0.35em; margin-bottom: 1.5rem; }
+            .hero h1 { font-size: clamp(2.1rem, 9.5vw, 3.2rem); margin-bottom: 1.25rem; }
+            .hero p { font-size: 1.1rem; margin: 0 auto 2.5rem; }
+
+            /* Ensure hero image scales cleanly on phones */
+            .hero-image-wrap { padding: 0 0 28px 0; }
+            .wide-image-container { height: auto; }
+            .wide-image-container img {
+                width: 100%;
+                height: auto;
+                display: block;
+            }
+
+            .date-strip { padding: 32px 0; }
+            .date-info { font-size: 0.85rem; letter-spacing: 3px; margin-bottom: 18px; }
+
+            .timer-container {
+                gap: 14px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .timer-number { font-size: 1.7rem; }
+            .timer-label { letter-spacing: 1.5px; }
+
+            .container { padding: 0 18px; }
+            .section-title { font-size: 0.95rem; letter-spacing: 4px; margin-bottom: 2.5rem; }
+
+            .avatar-section { padding: 4.5rem 0; margin-bottom: 3.5rem; }
+            .avatar-grid { grid-template-columns: 1fr; gap: 28px; }
+            .avatar-box { padding-left: 18px; }
+            .avatar-box p { font-size: 1.05rem; }
+
+            .day-title { font-size: 1.6rem; }
+
+            .accordion-header { font-size: 1.05rem; padding: 18px 0; }
+            .accordion-content p { font-size: 1.05rem; }
+
+            .included-list li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+
+            .offer-box { padding: 3.25rem 1.25rem; margin: 4.5rem 0; }
+            .price { font-size: 3.6rem; }
+            .btn {
+                width: 100%;
+                max-width: 360px;
+                padding: 18px 0;
+            }
+
+            footer { padding: 4rem 0; }
+        }
     </style>
 </head>
 <body>
