@@ -298,6 +298,7 @@
 .btn {
     display: inline-block;
     margin-top: 30px;
+    margin-bottom: 30px; /* NEW: breathing room below every CTA */
     background: linear-gradient(135deg, #c9a961 0%, #f4e4b8 50%, #c9a961 100%);
     color: #1f4236;
     padding: 18px 45px;
@@ -318,8 +319,19 @@
     filter: brightness(1.05);
 }
 
+/* NEW: Space between Hero CTA and hero image */
+.hero-image-wrap {
+    margin-top: 28px;
+}
 
-        footer {
+/* NEW: Space around the mid-page CTA (after testimonials, before FAQ) */
+.testimonials + .btn {
+    display: block;
+    width: fit-content;
+    margin: 40px auto 55px; /* top, auto center, bottom */
+}
+
+footer {
             text-align: center;
             padding: 6rem 0;
             font-size: 0.85rem;
@@ -350,6 +362,7 @@
 
   /* Ensure hero image scales cleanly on phones */
   .hero-image-wrap { padding: 0 0 28px 0; }
+                margin-top: 22px; /* NEW: space between CTA and image on mobile */
   .wide-image-container { height: auto; }
   .wide-image-container img {
     width: 100%;
@@ -397,7 +410,9 @@
     letter-spacing: 1.5px;
     font-size: 0.95em;
     text-align: center;
-  }
+  margin-bottom: 26px; /* NEW: mobile breathing room */
+}
+
 
   footer { padding: 4rem 0; }
 }
