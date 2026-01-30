@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Dr. TMac | TMac Inspired™</title>
+    <link rel="icon" type="image/png" href="tmac-logo.png">
+    <meta name="description" content="Meet Dr. Tasha McCray - entrepreneur, author, golfer, and manifestation guide helping accomplished women build businesses and lives they love.">
+    <style>
+        /* --- RESET & VARIABLES --- */
+        :root {
+            --bg: #ffffff;
+            --pine: #1a2f23;
+            --gold: #c9a961;
+            --rose: #b76e79;
+            --text-main: #1a2f23;
+            --text-light: #5c6b64;
+            --font-serif: Georgia, 'Times New Roman', Times, serif;
+            --max-w: 1100px;
+            --spacing-section: 8rem;
+            --transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: var(--font-serif);
+            line-height: 1.6;
+            font-size: 18px;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3 { font-weight: 400; letter-spacing: -0.02em; line-height: 1.3; }
+        h1 { font-size: clamp(2.5rem, 5vw, 4rem); color: var(--pine); margin-bottom: 1.5rem; }
+        h2 { font-size: 2.2rem; margin-bottom: 1rem; color: var(--pine); }
+        h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--gold); margin-bottom: 1rem; }
+        p { color: var(--text-light); margin-bottom: 2rem; max-width: 65ch; line-height: 1.8; }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+
+        /* --- HEADER & NAV --- */
+        .header-banner {
+            width: 100%;
+            height: 120px;
+            background-color: var(--pine);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .header-banner img.logo { max-height: 80px; width: auto; }
+        
+        .main-nav {
+            text-align: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(26, 47, 35, 0.05);
+            background: var(--bg);
+        }
+        .main-nav a {
+            margin: 0 20px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            color: var(--text-main);
+            font-weight: 400;
+        }
+        .main-nav a.active-link { color: var(--gold); border-bottom: 1px solid var(--gold); }
+
+        /* --- LAYOUT --- */
+        .container { max-width: var(--max-w); margin: 0 auto; padding: 0 2rem; }
+        
+        /* --- HERO SECTION --- */
+        .hero {
+            padding: 6rem 0 4rem;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            margin-bottom: 0.5rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--gold);
+            font-style: italic;
+            margin-bottom: 3rem;
+        }
+
+        /* --- PHOTO SECTION --- */
+        .photo-section {
+            padding: 4rem 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .photo-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+        
+        .photo-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* --- CONTENT SECTIONS --- */
+        .content-section {
+            padding: 4rem 0;
+            border-top: 1px solid rgba(26, 47, 35, 0.05);
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            margin-top: 3rem;
+        }
+        
+        .stat-box {
+            background-color: #fcfbf9;
+            padding: 3rem;
+            border-left: 4px solid var(--gold);
+            margin-bottom: 2rem;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            color: var(--pine);
+            font-weight: 400;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* --- QUOTE SECTION --- */
+        .quote-section {
+            padding: 6rem 0;
+            text-align: center;
+            background-color: #fcfbf9;
+            margin: 4rem 0;
+        }
+        
+        .quote-section blockquote {
+            font-size: 1.8rem;
+            font-style: italic;
+            color: var(--pine);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* --- VALUES GRID --- */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+        
+        .value-card {
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .value-card h3 {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        
+        .value-card p {
+            font-size: 0.95rem;
+            margin: 0 auto;
+        }
+
+        /* --- FOOTER --- */
+        footer { 
+            padding: 6rem 0; 
+            text-align: center; 
+            font-size: 0.85rem; 
+            color: var(--text-light); 
+            border-top: 1px solid rgba(26, 47, 35, 0.1);
+        }
+        footer a { margin: 0 15px; color: var(--pine); }
+
+        /* --- ANIMATIONS --- */
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 968px) {
+            .photo-section,
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .values-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .main-nav a { margin: 0 10px; font-size: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-banner">
+    <a href="index.html">
+        <img src="tmac-logo.png" alt="TMac Inspired Logo" class="logo">
+    </a>
+</div>
+
+<nav class="main-nav">
+    <a href="index.html">Home</a>
+    <a href="about.html" class="active-link">About</a>
+    <a href="https://tmacmastermind.com/tee-room.html">Blog</a>
+    <a href="mailto:support@tmacinspired.com">Contact</a>
+</nav>
+
+<header class="hero container reveal">
+    <h1>About Dr. TMac</h1>
+    <p class="hero-subtitle">Tech Founder. Entrepreneur. Author. Golfer. Manifestation Guide.</p>
+</header>
+
+<main class="container">
+    
+    <!-- PHOTO + INTRO SECTION -->
+    <section class="photo-section reveal">
+        <div class="photo-wrapper">
+            <img src="tmac_briefcase.png" alt="Dr. Tasha McCray">
+        </div>
+        <div>
+            <h3>The Woman Behind the Work</h3>
+            <h2>You Can Have It All</h2>
+            <p>Dr. Tasha "TMac" McCray is a healthcare professional turned serial entrepreneur who has spent 31 years in nursing and 29 years building businesses. She holds a PhD, MSN-Ed, and RN credentials, but her real education came from refusing to choose between success and fulfillment.</p>
+            <p>Based in Tampa, Florida, TMac runs multiple enterprises including CompliTrst™, a complete business automation software company specializing in healthcare compliance, custom app development, and golf league management systems. She also manages real estate investments, private money lending, and The Tee Elite Circle, an exclusive annual membership community for accomplished women.</p>
+            <p>Two years ago, she discovered golf. Within that time, she achieved two holes-in-one, multiple Player of the Month awards, and became an active competitor in leagues across Florida. The game became a living metaphor for her philosophy: mastery through practice, confidence through repetition, and excellence without apology.</p>
+        </div>
+    </section>
+
+    <!-- STATS SECTION -->
+    <section class="content-section reveal">
+        <div class="content-grid">
+            <div>
+                <h3>By The Numbers</h3>
+                <h2>Three Decades of Building</h2>
+                
+                <div class="stat-box">
+                    <div class="stat-number">31</div>
+                    <div class="stat-label">Years in Healthcare</div>
+                </div>
+                
+                <div class="stat-box">
+                    <div class="stat-number">29</div>
+                    <div class="stat-label">Years as Entrepreneur</div>
+                </div>
+                
+                <div class="stat-box">
+                    <div class="stat-number">2x</div>
+                    <div class="stat-label">Bestselling Author</div>
+                </div>
+            </div>
+            
+            <div>
+                <h3>What I Do</h3>
+                <h2>Building Businesses & Breaking Limits</h2>
+                <p>TMac founded CompliTrst™ to solve a problem she lived: compliance management in healthcare is broken. The software now serves assisted living facilities and group homes across Florida, automating what used to take hours into minutes. CompliTrst™ has since expanded into complete business automation solutions, custom app development, and specialized golf league management systems.</p>
+                <p>Through The Tee Elite Circle, she's created a space where high-achieving women don't just network, they rebuild their lives from the inside out. Golf is the vehicle. Consciousness is the curriculum. Legacy is the outcome.</p>
+                <p>Her work is informed by consciousness principles and the understanding that assumption creates reality. She doesn't teach hustle. She teaches alignment.</p>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- QUOTE SECTION -->
+<section class="quote-section reveal">
+    <div class="container">
+        <blockquote>
+            "I don't teach balance. I teach integration. You can have wealth, health, love, leisure, and purpose, not by negotiating between them, but by refusing to accept the lie that you must choose."
+        </blockquote>
+    </div>
+</section>
+
+<main class="container">
+
+    <!-- PHILOSOPHY SECTION -->
+    <section class="content-section reveal">
+        <h3>Philosophy</h3>
+        <h2>How I Work</h2>
+        
+        <div class="values-grid">
+            <div class="value-card">
+                <h3>Consciousness First</h3>
+                <p>Your external world is a reflection of your internal state. Change the assumption, change the reality. This isn't spiritual bypassing—it's physics.</p>
+            </div>
+            
+            <div class="value-card">
+                <h3>No Hustle Culture</h3>
+                <p>Grinding is not a strategy. Building from alignment creates sustainable wealth. Rest is productive. Ease is your birthright.</p>
+            </div>
+            
+            <div class="value-card">
+                <h3>Execution Over Theory</h3>
+                <p>Ideas without implementation are fantasies. Systems without soul are prisons. We build both—the strategy and the identity that can hold it.</p>
+            </div>
+            
+            <div class="value-card">
+                <h3>Tech Meets Spirit</h3>
+                <p>Automation, AI, and modern tools aren't the enemy of authenticity, they're the amplifiers. Use them to scale what matters, eliminate what doesn't.</p>
+            </div>
+            
+            <div class="value-card">
+                <h3>Wealth Without Apology</h3>
+                <p>Money is a tool, not a moral statement. Desiring abundance doesn't make you greedy. It makes you honest about what you're here to build.</p>
+            </div>
+            
+            <div class="value-card">
+                <h3>Community Over Competition</h3>
+                <p>The women in my circle don't compete, they collaborate. Scarcity thinking is a cage. Abundance is contagious.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CREDENTIALS SECTION -->
+    <section class="content-section reveal">
+        <h3>Credentials & Recognition</h3>
+        <h2>The Foundation</h2>
+        
+        <div class="content-grid">
+            <div>
+                <p><strong>Education:</strong> PhD, MSN-Ed, RN, Certified ALF Administrator</p>
+                <p><strong>Healthcare Expertise:</strong> 31 years of clinical and administrative experience in nursing, specializing in compliance, operations, and facility management</p>
+                <p><strong>Published Author:</strong> 2x bestselling author, with works on entrepreneurship, manifestation, and personal transformation</p>
+            </div>
+            
+            <div>
+                <p><strong>Business Leadership:</strong> Founder & CEO of CompliTrst™, real estate investor, private money lender, community builder</p>
+                <p><strong>Athletic Achievements:</strong> Multiple Player of the Month awards, two holes-in-one, active in competitive golf leagues across Florida</p>
+                <p><strong>Personal:</strong> Married to Benny, based in Tampa, Florida. Lives the integrated life she teaches.</p>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="reveal">
+    <div class="container">
+        <p style="margin-bottom: 1rem; font-style: italic;">"You can have it all."</p>
+        <div style="margin-bottom: 1rem;">TMac Inspired™ &copy; 2026</div>
+        <div>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+            <a href="mailto:support@tmacinspired.com">Contact</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function reveal() {
+        var reveals = document.querySelectorAll(".reveal");
+        for (var i = 0; i < reveals.length; i++) {
+            var windowHeight = window.innerHeight;
+            var elementTop = reveals[i].getBoundingClientRect().top;
+            if (elementTop < windowHeight - 150) {
+                reveals[i].classList.add("active");
+            }
+        }
+    }
+    window.addEventListener("scroll", reveal);
+    reveal();
+</script>
+</body>
+</html>
