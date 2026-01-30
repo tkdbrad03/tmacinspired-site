@@ -164,6 +164,11 @@
             margin-bottom: 4rem;
         }
 
+        /* NEW: extra breathing room between consecutive container sections (FAQ -> What's Included) */
+        section.container + section.container .section-title {
+            margin-top: 3.5rem;
+        }
+
         /* 5. AVATAR SECTION */
         .avatar-section {
             background-color: #fcfbf9;
@@ -383,6 +388,9 @@ footer {
 
   .container { padding: 0 18px; }
   .section-title { font-size: 0.95rem; letter-spacing: 4px; margin-bottom: 2.5rem; }
+
+  /* NEW: mobile spacing between FAQ and What's Included */
+  section.container + section.container .section-title { margin-top: 2.25rem; }
 
   .avatar-section { padding: 4.5rem 0; margin-bottom: 3.5rem; }
   .avatar-grid { grid-template-columns: 1fr; gap: 28px; }
