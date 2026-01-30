@@ -11,7 +11,7 @@
         :root {
             --pine: #1f4236;
             --gold: #c9a961;
-            --pink-dress: #f2a2b1; /* New Pink Dress Accent */
+            --pink-dress: #f2a2b1;
             --bg: #ffffff;
             --text: #1f4236;
             --text-light: #5c6b64;
@@ -52,18 +52,18 @@
         }
 
         .subject-image-container {
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
             position: relative;
             display: inline-block;
         }
 
-        /* The Speaker in Pink Dress */
+        /* The Speaker in Pink Dress (Updated with your filename) */
         .speaker-image {
             width: 100%;
-            max-width: 450px;
+            max-width: 500px;
             height: auto;
             border-radius: 4px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.12);
             display: block;
             margin: 0 auto;
         }
@@ -72,11 +72,11 @@
         .subject-image-container::after {
             content: '';
             position: absolute;
-            bottom: -20px;
+            bottom: -30px;
             left: 50%;
             transform: translateX(-50%);
-            width: 80%;
-            height: 20px;
+            width: 90%;
+            height: 40px;
             background: radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 70%);
             z-index: -1;
         }
@@ -95,14 +95,6 @@
             line-height: 1.1;
             margin-bottom: 2rem;
             font-weight: normal;
-        }
-
-        .hero h1 span {
-            display: block;
-            font-size: 0.5em;
-            color: var(--gold);
-            letter-spacing: 0.1em;
-            margin-top: 10px;
         }
 
         .hero p {
