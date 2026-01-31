@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Nurse Pivot Assessment</title>
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="tmac-logo.png">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
     <!-- Tailwind for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -29,6 +32,7 @@
             }
         }
     </script>
+
     <style>
         .animate-in { animation: fadeIn 0.8s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -37,7 +41,7 @@
         .bg-pine { background-color: #1a2f23; }
         .text-pine { color: #1a2f23; }
         .text-gold { color: #c9a961; }
-        
+
         /* CONSISTENT HEADER STYLE FROM INDEX.HTML */
         .header-banner {
             background-color: #1a2f23;
@@ -50,9 +54,9 @@
             top: 0;
             z-index: 1000;
         }
-        .header-banner img.logo { 
+        .header-banner img.logo {
             max-height: 50px;
-            width: auto; 
+            width: auto;
         }
         @media (max-width: 768px) {
             .header-banner { height: 80px; }
@@ -60,11 +64,9 @@
         }
     </style>
 </head>
-<body class="bg-white text-pine font-serif overflow-x-hidden">
 
-    <div id="app">
-        <!-- The content is dynamically injected by the script below -->
-    </div>
+<body class="bg-white text-pine font-serif overflow-x-hidden">
+    <div id="app"></div>
 
     <script type="module">
         import { h, render } from 'https://esm.sh/preact';
@@ -73,7 +75,6 @@
 
         const html = htm.bind(h);
 
-        // Reusable Header Component to match index.html
         function Header() {
             return html`
                 <div class="header-banner">
@@ -87,67 +88,66 @@
         function App() {
             const [step, setStep] = useState('landing');
             const [isSubmitting, setIsSubmitting] = useState(false);
+
+            // We keep the internal value names for logic stability.
+            // "soul-tired" maps to PIVOT result type.
             const [answers, setAnswers] = useState({ fatigue: null, skills: [], vision: null });
+
             const [formData, setFormData] = useState({ name: '', email: '' });
 
             useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [step]);
 
-            const handleFatigue = (val) => { setAnswers({...answers, fatigue: val}); setStep('skills'); };
+            const handleFatigue = (val) => { setAnswers({ ...answers, fatigue: val }); setStep('skills'); };
+
             const toggleSkill = (skill) => {
                 const current = [...answers.skills];
                 const next = current.includes(skill) ? current.filter(s => s !== skill) : [...current, skill];
-                setAnswers({...answers, skills: next});
+                setAnswers({ ...answers, skills: next });
             };
-            const handleVision = (val) => { setAnswers({...answers, vision: val}); setStep('leadgen'); };
+
+            const handleVision = (val) => { setAnswers({ ...answers, vision: val }); setStep('leadgen'); };
+
+            const resultType = answers.fatigue === 'soul-tired' ? 'PIVOT' : 'TIRED';
+
+            const IconSparkle = html`
+                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/>
+                </svg>
+            `;
+
             const handleLeadSubmit = async (e) => {
                 e.preventDefault();
                 setIsSubmitting(true);
-                
+
                 const payload = {
                     name: formData.name,
                     email: formData.email,
                     fatigue: answers.fatigue,
                     skills: answers.skills,
                     vision: answers.vision,
-                    resultType: answers.fatigue === 'soul-tired' ? 'PIVOT' : 'TIRED'
+                    resultType: resultType
                 };
-                
-                // Debug: Log what we're sending
-                console.log('Submitting payload:', payload);
-                
+
                 try {
-                    // Apps Script Web App URL
                     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyQXLWG-kzKBLa7KLg7_L5k14XfGM497n415ONuS3u8txmdLs88eyL6s9cD2AC156CyCg/exec';
-                    
-                    console.log('Sending to:', APPS_SCRIPT_URL);
-                    
-                    const response = await fetch(APPS_SCRIPT_URL, {
+
+                    await fetch(APPS_SCRIPT_URL, {
                         method: 'POST',
-                        mode: 'no-cors', // Required for Apps Script
+                        mode: 'no-cors',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
-                    
-                    console.log('Request sent successfully');
-                    
-                    // Note: With no-cors mode, we can't read the response
-                    // So we assume success if no error is thrown
+
                     setIsSubmitting(false);
                     setStep('result');
-                    
                 } catch (error) {
-                    console.error('Submission error:', error);
-                    // Still show result page even if there's an error
-                    // The data is likely still saved
+                    // Still show results even if submission fails.
                     setIsSubmitting(false);
                     setStep('result');
                 }
             };
 
-            const resultType = answers.fatigue === 'soul-tired' ? 'PIVOT' : 'TIRED';
-
-            const IconSparkle = html`<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>`;
-
+            // LANDING
             if (step === 'landing') return html`
                 <div class="min-h-screen flex flex-col">
                     <${Header} />
@@ -155,103 +155,248 @@
                         <div class="inline-flex items-center space-x-2 text-gold uppercase tracking-widest text-xs font-bold mb-6 bg-cream px-4 py-2 rounded-full border border-gold/20">
                             ${IconSparkle} <span>Free Assessment</span>
                         </div>
-                        <h1 class="text-5xl md:text-7xl font-normal leading-tight mb-8 uppercase">The Nurse <br/><span class="italic text-gold">Pivot</span> Plan</h1>
-                        <p class="text-xl md:text-2xl text-pine/80 max-w-2xl mx-auto mb-12 italic leading-relaxed">Stop normalising exhaustion. Discover if you are simply tired or if your expertise is ready for business.</p>
-                        <button onClick=${() => setStep('audit')} class="bg-pine text-white px-12 py-6 text-sm uppercase tracking-widest font-bold hover:scale-105 transition-all shadow-xl rounded-sm">Find Your Path</button>
-                    </main>
-                </div>`;
 
+                        <h1 class="text-4xl md:text-6xl font-normal leading-tight mb-6">
+                            Nurse Pivot Plan Assessment
+                        </h1>
+
+                        <p class="text-xl md:text-2xl text-pine/80 max-w-3xl mx-auto mb-6 italic leading-relaxed">
+                            Exhaustion isn’t a lack of resilience. It’s a lack of an exit plan.
+                        </p>
+
+                        <p class="text-base md:text-lg text-pine/70 max-w-3xl mx-auto mb-12 font-sans leading-relaxed">
+                            In two minutes, get clarity on your next move and a simple path forward based on your skills, energy, and goals.
+                        </p>
+
+                        <button
+                            onClick=${() => setStep('audit')}
+                            class="bg-pine text-white px-12 py-6 text-sm uppercase tracking-widest font-bold hover:scale-105 transition-all shadow-xl rounded-sm"
+                        >
+                            Get My Departure Score
+                        </button>
+                    </main>
+                </div>
+            `;
+
+            // STEP 1
             if (step === 'audit') return html`
                 <div class="min-h-screen">
                     <${Header} />
                     <main class="max-w-2xl mx-auto px-6 pt-12 animate-in">
-                        <div class="flex justify-between items-end mb-10">
-                            <div><span class="text-gold uppercase tracking-widest text-xs font-bold block mb-2">Step 1 of 3</span><h2 class="text-3xl font-normal">How does your body feel?</h2></div>
+                        <div class="flex justify-between items-end mb-8">
+                            <div>
+                                <span class="text-gold uppercase tracking-widest text-xs font-bold block mb-2">Step 1 of 3</span>
+                                <h2 class="text-3xl font-normal">How sustainable does your current nursing life feel?</h2>
+                            </div>
                             <span class="text-2xl text-gold/20 italic">01</span>
                         </div>
+
+                        <p class="text-pine/70 font-sans text-sm mb-8">
+                            Answer honestly — not based on who you’ve been trained to be, but on what your life is asking for now.
+                        </p>
+
                         <div class="space-y-6">
                             <button onClick=${() => handleFatigue('temporary')} class="w-full border border-pine/10 p-8 text-left selection-card transition-all rounded-sm">
-                                <h3 class="text-xl font-bold mb-2 uppercase">Category A: Burnout Lite</h3>
-                                <p class="text-pine/70 font-sans text-sm">I feel better after a weekend. I still enjoy clinical work, but the politics are wearing me thin.</p>
+                                <h3 class="text-xl font-bold mb-2 uppercase">Category A: Temporarily Tolerable</h3>
+                                <p class="text-pine/70 font-sans text-sm">
+                                    I recover on days off and still find meaning in the work — but the physical toll, staffing, and politics are starting to add up.
+                                </p>
                             </button>
+
                             <button onClick=${() => handleFatigue('soul-tired')} class="w-full border border-pine/10 p-8 text-left selection-card transition-all rounded-sm">
-                                <h3 class="text-xl font-bold mb-2 uppercase">Category B: Soul-Tired</h3>
-                                <p class="text-pine/70 font-sans text-sm">Vacations don't help. I feel misaligned and ready for something I own.</p>
+                                <h3 class="text-xl font-bold mb-2 uppercase">Category B: No Longer Sustainable</h3>
+                                <p class="text-pine/70 font-sans text-sm">
+                                    Time off doesn’t fix it. I feel depleted, misaligned, and increasingly aware this version of nursing can’t be my long-term plan.
+                                </p>
                             </button>
                         </div>
                     </main>
-                </div>`;
+                </div>
+            `;
 
+            // STEP 2
             if (step === 'skills') return html`
                 <div class="min-h-screen">
                     <${Header} />
                     <main class="max-w-2xl mx-auto px-6 pt-12 animate-in">
                         <div class="flex justify-between items-end mb-10">
-                            <div><span class="text-gold uppercase tracking-widest text-xs font-bold block mb-2">Step 2 of 3</span><h2 class="text-3xl font-normal">What energizes you?</h2></div>
+                            <div>
+                                <span class="text-gold uppercase tracking-widest text-xs font-bold block mb-2">Step 2 of 3</span>
+                                <h2 class="text-3xl font-normal">What part of your work still feels powerful?</h2>
+                            </div>
                             <span class="text-2xl text-gold/20 italic">02</span>
                         </div>
+
+                        <p class="text-pine/70 font-sans text-sm mb-8">
+                            Pick what you naturally do well. This helps shape the fastest income path outside bedside.
+                        </p>
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-                            ${['Strategic Problem Solving', 'Patient Education', 'Advocacy', 'Improving Flow', 'Clinical Work', 'Mentoring'].map(s => html`
-                                <button onClick=${() => toggleSkill(s)} class="p-5 border text-xs uppercase tracking-widest font-bold h-20 transition-all rounded-sm ${answers.skills.includes(s) ? 'bg-pine text-white' : 'border-pine/10'}">${s}</button>
+                            ${['Strategic Problem Solving', 'Patient Education', 'Advocacy', 'Improving Flow', 'Clinical Expertise', 'Mentoring'].map(s => html`
+                                <button
+                                    onClick=${() => toggleSkill(s)}
+                                    class="p-5 border text-xs uppercase tracking-widest font-bold h-20 transition-all rounded-sm ${answers.skills.includes(s) ? 'bg-pine text-white' : 'border-pine/10'}"
+                                >
+                                    ${s}
+                                </button>
                             `)}
                         </div>
-                        <button onClick=${() => setStep('vision')} class="w-full bg-pine text-white py-6 text-sm uppercase font-bold tracking-widest rounded-sm" disabled=${answers.skills.length === 0}>Continue</button>
-                    </main>
-                </div>`;
 
+                        <button
+                            onClick=${() => setStep('vision')}
+                            class="w-full bg-pine text-white py-6 text-sm uppercase font-bold tracking-widest rounded-sm"
+                            disabled=${answers.skills.length === 0}
+                        >
+                            Continue
+                        </button>
+                    </main>
+                </div>
+            `;
+
+            // STEP 3
             if (step === 'vision') return html`
                 <div class="min-h-screen">
                     <${Header} />
                     <main class="max-w-2xl mx-auto px-6 pt-12 animate-in">
                         <div class="flex justify-between items-end mb-10">
-                            <div><span class="text-gold uppercase tracking-widest text-xs font-bold block mb-2">Step 3 of 3</span><h2 class="text-3xl font-normal">Ownership Vision</h2></div>
+                            <div>
+                                <span class="text-gold uppercase tracking-widest text-xs font-bold block mb-2">Step 3 of 3</span>
+                                <h2 class="text-3xl font-normal">What kind of ownership fits your real life?</h2>
+                            </div>
                             <span class="text-2xl text-gold/20 italic">03</span>
                         </div>
+
+                        <p class="text-pine/70 font-sans text-sm mb-8">
+                            Choose the model you can execute without creating a second job that drains you.
+                        </p>
+
                         <div class="space-y-4">
-                            ${['Consulting', 'Digital Assets', 'Hybrid Model'].map(v => html`
-                                <button onClick=${() => handleVision(v)} class="w-full border border-pine/10 p-8 text-left selection-card transition-all rounded-sm">
-                                    <h3 class="text-xl font-bold uppercase">${v}</h3>
+                            ${[
+                                { label: 'Consulting', desc: 'High-value expertise, packaged into paid solutions.' },
+                                { label: 'Digital Assets', desc: 'Turn knowledge into products that sell while you sleep.' },
+                                { label: 'Hybrid Model', desc: 'A mix of services and scalable offers for stability.' }
+                            ].map(v => html`
+                                <button onClick=${() => handleVision(v.label)} class="w-full border border-pine/10 p-8 text-left selection-card transition-all rounded-sm">
+                                    <h3 class="text-xl font-bold uppercase mb-2">${v.label}</h3>
+                                    <p class="text-pine/70 font-sans text-sm">${v.desc}</p>
                                 </button>
                             `)}
                         </div>
                     </main>
-                </div>`;
+                </div>
+            `;
 
+            // LEAD GEN
             if (step === 'leadgen') return html`
                 <div class="min-h-screen">
                     <${Header} />
                     <main class="max-w-md mx-auto px-6 pt-20 animate-in">
                         <div class="bg-cream border border-gold/20 p-8 md:p-12 shadow-2xl text-center relative">
-                            <h2 class="text-3xl font-normal mb-4 uppercase tracking-tight">Strategy Pending</h2>
-                            <p class="text-pine/70 mb-8 font-sans text-sm">Enter your details to generate your <strong>Custom Pivot Roadmap</strong>.</p>
+                            <h2 class="text-3xl font-normal mb-4 uppercase tracking-tight">Your Departure Score Is Ready</h2>
+                            <p class="text-pine/70 mb-8 font-sans text-sm">
+                                Enter your details to generate your <strong>custom 3-step exit roadmap</strong>.
+                            </p>
+
                             <form onSubmit=${handleLeadSubmit} class="space-y-4">
-                                <input required type="text" placeholder="First Name" class="w-full p-5 border border-pine/10 font-sans text-sm rounded-sm" value=${formData.name} onInput=${(e) => setFormData({...formData, name: e.target.value})} />
-                                <input required type="email" placeholder="Email" class="w-full p-5 border border-pine/10 font-sans text-sm rounded-sm" value=${formData.email} onInput=${(e) => setFormData({...formData, email: e.target.value})} />
-                                <button type="submit" class="w-full bg-pine text-white py-6 text-xs uppercase tracking-widest font-bold rounded-sm shadow-lg">${isSubmitting ? 'Calculating...' : 'See My Result'}</button>
+                                <input
+                                    required
+                                    type="text"
+                                    placeholder="First Name"
+                                    class="w-full p-5 border border-pine/10 font-sans text-sm rounded-sm"
+                                    value=${formData.name}
+                                    onInput=${(e) => setFormData({ ...formData, name: e.target.value })}
+                                />
+
+                                <input
+                                    required
+                                    type="email"
+                                    placeholder="Email"
+                                    class="w-full p-5 border border-pine/10 font-sans text-sm rounded-sm"
+                                    value=${formData.email}
+                                    onInput=${(e) => setFormData({ ...formData, email: e.target.value })}
+                                />
+
+                                <button
+                                    type="submit"
+                                    class="w-full bg-pine text-white py-6 text-xs uppercase tracking-widest font-bold rounded-sm shadow-lg"
+                                >
+                                    ${isSubmitting ? 'Calculating...' : 'Show My Roadmap'}
+                                </button>
                             </form>
                         </div>
                     </main>
-                </div>`;
+                </div>
+            `;
 
+            // RESULT
             if (step === 'result') return html`
                 <div class="min-h-screen pb-20">
                     <${Header} />
                     <main class="max-w-4xl mx-auto px-6 animate-in">
-                        <div class="text-center mb-16">
-                            <span class="text-gold uppercase tracking-widest text-xs font-bold block mb-4">Results for ${formData.name}</span>
-                            <h2 class="text-4xl md:text-6xl font-normal uppercase mb-8">${resultType === 'PIVOT' ? 'Ready for Your Pivot' : 'Professionally Exhausted'}</h2>
-                            <p class="text-xl md:text-2xl italic text-pine/80 border-l-4 border-gold/20 pl-6 text-left max-w-2xl mx-auto">
-                                ${resultType === 'PIVOT' ? 'Soul-Tired is a symptom of misalignment. Your expertise is ready to be packaged into a business you own.' : 'You have the mindset, but your energy needs restoration before creation. Rest is your first priority.'}
-                            </p>
+                        <div class="text-center mb-14">
+                            <span class="text-gold uppercase tracking-widest text-xs font-bold block mb-4">
+                                Results for ${formData.name || 'You'}
+                            </span>
+
+                            <h2 class="text-4xl md:text-6xl font-normal uppercase mb-8">
+                                ${resultType === 'PIVOT' ? 'Departure Score: Ready to Pivot' : 'Departure Score: Reposition First'}
+                            </h2>
+
+                            <div class="max-w-3xl mx-auto text-left">
+                                <p class="text-xl md:text-2xl italic text-pine/80 border-l-4 border-gold/20 pl-6 mb-6">
+                                    ${resultType === 'PIVOT'
+                                        ? 'This is not a motivation issue. You are misaligned, and your expertise is ready to be paid outside bedside.'
+                                        : 'You are not weak. You are depleted. The goal is a smart exit plan, built from stability, not desperation.'}
+                                </p>
+
+                                <div class="bg-cream border border-gold/20 p-6 md:p-8">
+                                    <h3 class="text-lg md:text-xl font-bold uppercase mb-4">Your 3-Step Exit Roadmap</h3>
+                                    <ol class="list-decimal pl-6 space-y-3 font-sans text-sm text-pine/80">
+                                        ${resultType === 'PIVOT' ? html`
+                                            <li><strong>Choose your income lane:</strong> package the nursing skill you already have into a paid solution.</li>
+                                            <li><strong>Build a simple offer:</strong> one clear result, one clear price, one clear way to get started.</li>
+                                            <li><strong>Execute for 5 days:</strong> implement fast, so you stop overthinking and start earning.</li>
+                                        ` : html`
+                                            <li><strong>Stabilize your energy:</strong> protect your capacity so you can build from strength.</li>
+                                            <li><strong>Identify your best leverage skill:</strong> pick what you can monetize without draining yourself.</li>
+                                            <li><strong>Create a lightweight plan:</strong> one offer, one audience, one execution window.</li>
+                                        `}
+                                    </ol>
+                                </div>
+                            </div>
                         </div>
+
                         <div class="bg-pine text-white p-10 md:p-16 text-center rounded-sm">
-                            <h3 class="text-3xl md:text-4xl uppercase mb-6 leading-tight">Stop Slaying the Shift.<br/><span class="italic text-gold">Slay Your Business.</span></h3>
-                            <p class="text-gold italic mb-10 text-lg opacity-90">Join Slay Your Shift: our 5-day live implementation experience.</p>
-                            <a href="slay-your-shift.html" class="inline-block bg-gold text-pine px-12 py-6 text-sm uppercase tracking-widest font-bold hover:scale-105 transition-all shadow-xl">Secure Your Spot</a>
+                            <h3 class="text-3xl md:text-4xl uppercase mb-6 leading-tight">
+                                You’ve survived the shift.<br/>
+                                <span class="italic text-gold">Now, Slay Your Shift.</span>
+                            </h3>
+
+                            <p class="text-gold italic mb-10 text-lg opacity-90">
+                                A live, 5-day execution experience for nurses ready to turn experience into income and earn a paycheck that reflects their value.
+                            </p>
+
+                            <a
+                                href="slay-your-shift.html"
+                                class="inline-block bg-gold text-pine px-12 py-6 text-sm uppercase tracking-widest font-bold hover:scale-105 transition-all shadow-xl"
+                            >
+                                Execute My Exit Plan
+                            </a>
                         </div>
-                        <button onClick=${() => setStep('landing')} class="mt-12 flex items-center mx-auto text-[10px] uppercase tracking-widest text-pine/30 hover:text-gold transition-colors">Restart Assessment</button>
+
+                        <button
+                            onClick=${() => {
+                                setAnswers({ fatigue: null, skills: [], vision: null });
+                                setFormData({ name: '', email: '' });
+                                setStep('landing');
+                            }}
+                            class="mt-12 flex items-center mx-auto text-[10px] uppercase tracking-widest text-pine/30 hover:text-gold transition-colors"
+                        >
+                            Restart Assessment
+                        </button>
                     </main>
-                </div>`;
+                </div>
+            `;
         }
 
         render(html`<${App} />`, document.getElementById('app'));
