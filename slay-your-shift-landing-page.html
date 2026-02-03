@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slay Your Shift Guide | Dr. TMac</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-green: #1B3022; 
+            --brand-gold: #C5A059;
+            --gold-gradient: linear-gradient(135deg, #d4b475 0%, #c5a059 50%, #b38d45 100%);
+            --text-main: #2D2D2D;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            line-height: 1.6;
+            background-color: var(--white);
+        }
+
+        header {
+            padding: 80px 20px 60px;
+            text-align: center;
+            background-color: var(--white);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            max-width: 200px;
+            margin-bottom: 30px;
+        }
+
+        .kicker {
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--brand-gold);
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.2rem;
+            margin-bottom: 24px;
+            color: var(--brand-green);
+            line-height: 1.1;
+        }
+
+        .sub-headline {
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 0 auto 50px;
+            color: #555;
+            font-weight: 400;
+            line-height: 1.7;
+        }
+
+        /* Form Section */
+        .form-container {
+            background: linear-gradient(135deg, rgba(27,48,34,0.03) 0%, rgba(197,160,89,0.05) 100%);
+            padding: 60px 20px;
+            border-top: 2px solid #f0f0f0;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .form-wrapper {
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .form-wrapper h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--brand-green);
+            margin-bottom: 16px;
+        }
+
+        .form-wrapper p {
+            margin-bottom: 32px;
+            color: #666;
+            font-size: 1.05rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: var(--brand-green);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 16px 18px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus {
+            outline: none;
+            border-color: var(--brand-gold);
+            box-shadow: 0 0 0 3px rgba(197,160,89,0.1);
+        }
+
+        .cta-button {
+            background: var(--gold-gradient);
+            color: var(--brand-green);
+            padding: 18px 45px;
+            text-decoration: none;
+            font-weight: 800;
+            border-radius: 50px;
+            font-size: 1rem;
+            display: inline-block;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            box-shadow: 0 4px 15px rgba(197, 160, 89, 0.3);
+            width: 100%;
+            margin-top: 12px;
+        }
+
+        .cta-button:hover:not(:disabled) {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(197, 160, 89, 0.4);
+        }
+
+        .cta-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Benefits Section */
+        .benefits-section {
+            padding: 80px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .benefits-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--brand-green);
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 28px;
+        }
+
+        .benefit-card {
+            padding: 32px;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            background: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            border-color: var(--brand-gold);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+        }
+
+        .benefit-card strong {
+            color: var(--brand-green);
+            display: block;
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .benefit-card p {
+            color: #555;
+            line-height: 1.7;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(27,48,34,0.05) 0%, rgba(197,160,89,0.08) 100%);
+            border: 2px solid rgba(197,160,89,0.2);
+            border-radius: 16px;
+            padding: 50px 40px;
+            margin: 60px auto;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .highlight-box h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--brand-green);
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .highlight-box p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 16px;
+        }
+
+        .highlight-box strong {
+            color: var(--brand-green);
+        }
+
+        /* Success/Error Messages */
+        .message {
+            padding: 16px 20px;
+            border-radius: 10px;
+            margin-bottom: 24px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 60px 20px;
+            border-top: 1px solid #eee;
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        .footer p {
+            margin-bottom: 8px;
+        }
+
+        .footer .tagline {
+            letter-spacing: 2px;
+            font-weight: 700;
+            color: var(--brand-gold);
+            margin-top: 16px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            .highlight-box {
+                padding: 35px 25px;
+            }
+            .benefit-card {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <!-- Replace YOUR_LOGO_LINK with your actual logo URL -->
+        <img src="YOUR_LOGO_LINK" alt="TMac Inspired" class="logo">
+        <p class="kicker">A Guide For The Ready Nurse</p>
+        <h1>Stop Waiting for a "Doctor's Order" to Start Your Life.</h1>
+        <p class="sub-headline">Whether you've been at the bedside for 5 years or 25, it's time to use your clinical brain to build your own bridge.</p>
+    </header>
+
+    <div class="highlight-box">
+        <h3>You are a Successful Business Owner in a Staff Member's Uniform.</h3>
+        <p>The "second signature" culture of nursing has you paralyzed. You think you need more research, more consensus, or more years of service before you're ready to lead.</p>
+        <p><strong>The Truth:</strong> You don't need more time in the system. You need a signature—yours.</p>
+    </div>
+
+    <div class="form-container">
+        <div class="form-wrapper">
+            <h2>Get Your Free Guide</h2>
+            <p>Enter your details to receive the <strong>Slay Your Shift PDF</strong> immediately.</p>
+            
+            <div id="message" class="message"></div>
+            
+            <form id="optinForm">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" name="firstName" required placeholder="Your first name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required placeholder="your@email.com">
+                </div>
+                
+                <button type="submit" class="cta-button" id="submitBtn">
+                    <span id="btnText">Send Me The Guide</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="benefits-section">
+        <h2>Inside the Guide:</h2>
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <strong>The Clinical Brain Advantage</strong>
+                <p>Understand why your nursing logic is the absolute perfect foundation for a high-profit business.</p>
+            </div>
+            <div class="benefit-card">
+                <strong>AI-Enhanced Speed</strong>
+                <p>How to use AI as your "digital intern" so you can skip the tech-stress and move twice as fast.</p>
+            </div>
+            <div class="benefit-card">
+                <strong>The Weekend Move</strong>
+                <p>10 out-of-the-box business ideas you can actually execute before your next clock-in.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2026 TMac Inspired™</p>
+        <p class="tagline">YOU CAN HAVE IT ALL!</p>
+    </div>
+
+    <script>
+        // Replace with your actual Google Apps Script Web App URL
+        const SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+
+        const form = document.getElementById('optinForm');
+        const messageDiv = document.getElementById('message');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Disable button
+            submitBtn.disabled = true;
+            btnText.textContent = 'Sending...';
+            
+            // Get form data
+            const formData = new FormData(form);
+            const data = {
+                firstName: formData.get('firstName'),
+                email: formData.get('email'),
+                source: 'Slay Your Shift Lead Magnet',
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                // Show success message
+                showMessage('success', '🎉 Success! Check your email for the Slay Your Shift Guide.');
+                form.reset();
+                
+                // Reset button after 3 seconds
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    btnText.textContent = 'Send Me The Guide';
+                }, 3000);
+
+            } catch (error) {
+                showMessage('error', 'Something went wrong. Please try again or email hello@tmacinspired.com');
+                submitBtn.disabled = false;
+                btnText.textContent = 'Send Me The Guide';
+            }
+        });
+
+        function showMessage(type, text) {
+            messageDiv.className = `message ${type} show`;
+            messageDiv.textContent = text;
+            
+            // Hide after 8 seconds
+            setTimeout(() => {
+                messageDiv.classList.remove('show');
+            }, 8000);
+        }
+    </script>
+
+</body>
+</html>
