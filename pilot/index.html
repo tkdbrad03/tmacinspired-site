@@ -252,7 +252,64 @@
 </head>
 
 <body>
-const PILOT_CODE = "PHARMPILOT75";  
+   <!-- PILOT GATE OVERLAY (PASTE THIS RIGHT AFTER <body>) -->
+  <div id="gate" style="
+    position:fixed; inset:0; z-index:9999;
+    display:flex; align-items:center; justify-content:center;
+    background: rgba(248,249,250,.96);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+  ">
+    <div style="
+      width:min(420px, 92vw);
+      background:#fff;
+      border:1px solid rgba(0,0,0,.08);
+      border-radius:18px;
+      box-shadow: 0 18px 45px rgba(0,0,0,.12);
+      padding:22px;
+      text-align:left;
+      font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+    ">
+      <div style="font-weight:900; font-size:16px; color:#111; letter-spacing:.2px;">
+        Pilot Access
+      </div>
+      <div style="margin-top:6px; color:#666; font-weight:700; font-size:13px; line-height:1.35;">
+        Enter the pilot code to access this beta study tool.
+      </div>
+
+      <div style="margin-top:14px; display:flex; gap:10px;">
+        <input id="pilotCode" type="password" placeholder="Enter code"
+          style="
+            flex:1;
+            padding:12px 12px;
+            border-radius:12px;
+            border:1px solid rgba(0,0,0,.18);
+            font-weight:800;
+            font-size:14px;
+            outline:none;
+          " />
+        <button id="pilotBtn"
+          style="
+            padding:12px 14px;
+            border-radius:12px;
+            border:none;
+            background:#111;
+            color:#fff;
+            font-weight:900;
+            cursor:pointer;
+          ">Unlock</button>
+      </div>
+
+      <div id="pilotErr" style="display:none; margin-top:10px; color:#a63b3b; font-weight:800; font-size:13px;">
+        Incorrect code. Try again.
+      </div>
+
+      <div style="margin-top:14px; color:#888; font-weight:800; font-size:12px;">
+        Pilot use only. Do not share.
+      </div>
+    </div>
+  </div>
+  <!-- END PILOT GATE OVERLAY -->
 <div class="header">
     <div class="titleBlock">
       <h1>Pharm Flashcards</h1>
@@ -1581,6 +1638,52 @@ function setFrontTextForPrimary(primaryHex){
   applyTheme(state.category);
   ensureOrder();
   render();
+</script>
+  <script>
+  const PILOT_CODE = "PHARMPILOT75"; // change anytime
+  const KEY = "pilot_access_ok_v1";
+  const TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+
+  function setAccess(){
+    localStorage.setItem(KEY, String(Date.now()));
+    document.getElementById("gate").style.display = "none";
+  }
+
+  function hasAccess(){
+    const v = localStorage.getItem(KEY);
+    if(!v) return false;
+    const t = Number(v);
+    return Number.isFinite(t) && (Date.now() - t) < TTL_MS;
+  }
+
+  function initGate(){
+    if (hasAccess()) {
+      document.getElementById("gate").style.display = "none";
+      return;
+    }
+
+    const input = document.getElementById("pilotCode");
+    const btn = document.getElementById("pilotBtn");
+    const err = document.getElementById("pilotErr");
+
+    function tryUnlock(){
+      const ok = (input.value || "").trim().toUpperCase() === PILOT_CODE.toUpperCase();
+
+      if(ok){
+        err.style.display = "none";
+        setAccess();
+      } else {
+        err.style.display = "block";
+      }
+    }
+
+    btn.addEventListener("click", tryUnlock);
+    input.addEventListener("keydown", (e) => {
+      if(e.key === "Enter") tryUnlock();
+    });
+  }
+
+  initGate();
 </script>
 </body>
 </html>
