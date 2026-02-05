@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pharm Flashcards</title>
+
+  <style>
+    :root{
+      --primary:#2d6a4f;
+      --secondary:#d4a373;
+      --bg:#f8f9fa;
+      --ink:#0f1714;
+      --muted:#6a6f6c;
+    }
+
+    body{
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      background: var(--bg);
+      margin:0;
+      padding:20px 16px 28px;
+      color: var(--ink);
+    }
+
+    .header{
+      width:min(980px, 100%);
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:14px;
+      margin-bottom:14px;
+    }
+    .titleBlock h1{
+      margin:0;
+      font-size:18px;
+      letter-spacing:.2px;
+      font-weight:850;
+      color: var(--primary);
+    }
+    .titleBlock p{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.4;
+      font-weight:600;
+    }
+
+    .topControls{
+      width:min(980px, 100%);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+
+    select{
+      padding:10px 12px;
+      border-radius:10px;
+      border:2px solid var(--primary);
+      background:#fff;
+      font-size:1rem;
+      font-weight:750;
+      color: var(--ink);
+      min-width: 260px;
+    }
+
+    .pillStats{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:flex-end;
+      flex:1;
+    }
+
+    .pill{
+      padding:10px 12px;
+      border-radius:999px;
+      background:#fff;
+      border:1px solid rgba(0,0,0,.08);
+      box-shadow: 0 10px 25px rgba(0,0,0,.06);
+      font-weight:850;
+      color: #1f2a26;
+      font-size:12.5px;
+      letter-spacing:.2px;
+      min-width: 170px;
+      text-align:center;
+    }
+
+    /* Card */
+    .card-container{
+      perspective: 1000px;
+      width: 380px;
+      height: 520px;
+      cursor: pointer;
+      position: relative;
+    }
+    .card-inner{
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+      border-radius: 24px;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.12);
+    }
+    .card-container.flipped .card-inner{
+      transform: rotateY(180deg);
+    }
+
+    .card-front, .card-back{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 24px;
+      padding: 28px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-front{
+     background: var(--primary);
+     color: var(--frontText, #ffffff);
+     justify-content: flex-start;
+  }
+
+
+
+    .card-back{
+      background: white;
+      color: var(--primary);
+      transform: rotateY(180deg);
+      border: 4px solid var(--primary);
+      justify-content: center;
+      align-items: center;
+      text-align:center;
+    }
+
+    .mnemonic-box{
+      background: rgba(255,255,255,0.14);
+      padding: 16px 16px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      border-left: 6px solid var(--secondary);
+      font-style: italic;
+      font-size: 1.05rem;
+      line-height:1.35;
+      font-weight:650;
+    }
+
+    .details{
+      margin-top: 2px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .detailRow{
+      display:flex;
+      gap:10px;
+      line-height:1.35;
+      font-size: 0.98rem;
+      font-weight:650;
+    }
+    .detailLabel{
+      min-width: 92px;
+      font-weight:900;
+      opacity:.95;
+    }
+    .detailValue{
+      flex:1;
+      opacity:.95;
+    }
+
+    .backLabel{
+      font-size: 0.95rem;
+      font-weight:800;
+      opacity:.9;
+      margin-bottom: 8px;
+    }
+    .drug-name{
+      font-size: 2.45rem;
+      font-weight: 900;
+      line-height:1.05;
+      letter-spacing:.2px;
+      margin:0;
+      text-transform: none;
+    }
+    .subtle{
+      margin-top: 14px;
+      font-size: 12px;
+      color: rgba(31,66,54,.72);
+      font-weight:800;
+    }
+
+    /* Buttons */
+    .controls{
+      display:flex;
+      gap:10px;
+      margin-top:18px;
+      flex-wrap: wrap;
+      justify-content: center;
+      width:min(980px, 100%);
+    }
+
+    button{
+      padding: 12px 18px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 850;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 0.92rem;
+      letter-spacing:.15px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.08);
+    }
+    button:hover{ opacity: 0.95; transform: translateY(-1px); }
+    button:active{ transform: translateY(0px); }
+
+    .btn-nav{ background: var(--primary); color: white; }
+    .btn-shuffle{ background: var(--secondary); color: white; }
+    .btn-good{ background: #0c6f54; color:#fff; }
+    .btn-bad{ background: #a63b3b; color:#fff; }
+    .btn-master{ background: #111; color:#fff; }
+    .btn-reset{ background: #fff; color: var(--primary); border: 2px solid var(--primary); }
+
+    .footerNote{
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight:700;
+      text-align:center;
+      width:min(980px, 100%);
+    }
+
+    .emptyState{
+      margin-top:12px;
+      font-size:13px;
+      color: var(--muted);
+      font-weight:800;
+      display:none;
+      text-align:center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <div class="titleBlock">
+      <h1>Pharm Flashcards</h1>
+      <p>Front = clues only. Back = drug reveal. Tap card to flip.</p>
+    </div>
+  </div>
+
+  <div class="topControls">
+    <select id="category"></select>
+
+    <div class="pillStats">
+      <div class="pill" id="scorePill">Correct 0 • Incorrect 0 • 0%</div>
+      <div class="pill" id="progressPill">0 / 0 available</div>
+    </div>
+  </div>
+
+  <div class="card-container" id="cardContainer" title="Click to flip">
+    <div class="card-inner" id="cardInner">
+      <!-- FRONT (NO DRUG NAME) -->
+      <div class="card-front">
+        <div class="mnemonic-box" id="mnemonicBox">Memory Trick will appear here.</div>
+
+        <div class="details">
+          <div class="detailRow">
+            <div class="detailLabel">Category:</div>
+            <div class="detailValue" id="frontCategory">—</div>
+          </div>
+          <div class="detailRow">
+            <div class="detailLabel">Action:</div>
+            <div class="detailValue" id="frontAction">—</div>
+          </div>
+          <div class="detailRow">
+            <div class="detailLabel">Watch For:</div>
+            <div class="detailValue" id="frontWatch">—</div>
+          </div>
+          <div class="detailRow">
+            <div class="detailLabel">Nursing:</div>
+            <div class="detailValue" id="frontNursing">—</div>
+          </div>
+
+          <!-- Signature row: appears only when a card has signature text -->
+          <div class="detailRow" id="sigRow" style="display:none;">
+            <div class="detailLabel">Signature:</div>
+            <div class="detailValue" id="frontSignature">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BACK (DRUG REVEAL) -->
+      <div class="card-back">
+        <div class="backLabel">The Drug is:</div>
+        <h2 class="drug-name" id="drugName">—</h2>
+        <div class="subtle" id="drugSub">Tap to flip back</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn-shuffle" id="shuffleBtn">Shuffle</button>
+    <button class="btn-nav" id="nextBtn">Next</button>
+    <button class="btn-good" id="correctBtn">Correct</button>
+    <button class="btn-bad" id="incorrectBtn">Incorrect</button>
+    <button class="btn-master" id="masteredBtn">Mastered</button>
+    <button class="btn-reset" id="resetMasteredBtn">Bring Back Mastered</button>
+  </div>
+
+  <div class="emptyState" id="emptyState">No cards left in this category. Bring back mastered or switch categories.</div>
+
+  <div class="footerNote">
+    Keyboard: Space = Flip • N = Next • Y = Correct • U = Incorrect • M = Mastered
+  </div>
+
+<script>
+  // Category themes (lux muted tones)
+  const THEMES = {
+    "Cardiac Drugs": { primary:"#1d3f73", secondary:"#d4a373", bg:"#f8f9fa" },
+    "Respiratory Drugs": { primary:"#2d6a4f", secondary:"#d4a373", bg:"#f8f9fa" },
+    "Antibiotics/Infectious": { primary:"#f5c84c", secondary:"#111111", bg:"#f8f9fa" },
+    "Endocrine Drugs": { primary:"#4b2f6f", secondary:"#d4a373", bg:"#f8f9fa" },
+    "GI/Liver Drugs": { primary:"#b05a2b", secondary:"#d4a373", bg:"#f8f9fa" }
+  };
+
+  function applyTheme(category){
+   const t = THEMES[category] || THEMES["Cardiac Drugs"];
+   document.documentElement.style.setProperty("--primary", t.primary);
+   document.documentElement.style.setProperty("--secondary", t.secondary);
+   document.documentElement.style.setProperty("--bg", t.bg);
+   setFrontTextForPrimary(t.primary);
+}
+
+function setFrontTextForPrimary(primaryHex){
+  const hex = primaryHex.replace("#","").trim();
+  const r = parseInt(hex.slice(0,2),16);
+  const g = parseInt(hex.slice(2,4),16);
+  const b = parseInt(hex.slice(4,6),16);
+  // perceived brightness
+  const luminance = (0.2126*r + 0.7152*g + 0.0722*b);
+  const frontText = luminance > 170 ? "#111111" : "#ffffff";
+  document.documentElement.style.setProperty("--frontText", frontText);
+}
+
+
+
+  // Decks
+  const DECKS = {
+    // Full clinical completeness (major names) with Signature only for shared-front meds
+    "Cardiac Drugs": (() => {
+      const mk = (id, drug, front, signature="") => ({
+        id,
+        drug,
+        category: "Cardiac",
+        action: front.action,
+        watch: front.watch,
+        nursing: front.nursing,
+        memory: front.memory,
+        signature
+      });
+
+      const FRONT = {
+        ACE: {
+          action: "ACE inhibitor → ↓ Ang II / ↓ aldosterone",
+          watch: "Dry cough; hyperkalemia; angioedema risk",
+          nursing: "Monitor BP + K+/creatinine; avoid salt substitutes unless ordered",
+          memory: "Ends in “-pril” → cough + potassium watch."
+        },
+        ARB: {
+          action: "ARB → blocks Ang II receptors",
+          watch: "Hyperkalemia; hypotension (cough less common)",
+          nursing: "Monitor BP + K+/creatinine; avoid potassium add-ons unless ordered",
+          memory: "Ends in “-sartan” → potassium watch."
+        },
+        BB: {
+          action: "Beta blocker → ↓ HR / ↓ workload",
+          watch: "Bradycardia; hypotension; fatigue",
+          nursing: "Check HR/BP first; taper to stop; report wheeze/weight gain",
+          memory: "Beta = brake for HR."
+        },
+        CCB: {
+          action: "CCB → relaxes vessels; some slow AV node",
+          watch: "Edema; hypotension (rate-slowing types can slow HR)",
+          nursing: "Monitor BP; if rate-slowing, check HR; don’t crush ER forms",
+          memory: "Vessels relax; ankles can swell."
+        },
+        DIUR: {
+          action: "Diuretic → offloads fluid/salt → ↓ BP/edema",
+          watch: "Dehydration; electrolyte shifts (often ↓ K+)",
+          nursing: "Daily weights/I&O; electrolytes; dose earlier to reduce nocturia",
+          memory: "Water pill = weight + electrolytes."
+        },
+        ALDO: {
+          action: "Aldosterone antagonist → K+ sparing; HF support",
+          watch: "Hyperkalemia",
+          nursing: "Monitor K+; avoid potassium supplements unless ordered",
+          memory: "K+ stays → potassium watch."
+        },
+        ANTIARR: {
+          action: "Antiarrhythmic → rhythm control",
+          watch: "Bradycardia and rhythm changes need monitoring",
+          nursing: "Take exactly as ordered; many require ongoing follow-up",
+          memory: "Rhythm meds = monitoring meds."
+        },
+        ANTICOAG: {
+          action: "Anticoagulant → slows clot formation",
+          watch: "Bleeding/bruising",
+          nursing: "Bleeding precautions; follow lab plan if ordered",
+          memory: "Thinner = bleed watch."
+        },
+        ANTIPLT: {
+          action: "Antiplatelet → reduces platelet stickiness",
+          watch: "Bleeding; GI irritation possible",
+          nursing: "Bleeding precautions; don’t stop without guidance",
+          memory: "Platelets don’t stick."
+        },
+        STATIN: {
+          action: "Statin → lowers LDL",
+          watch: "Report unexplained muscle pain/weakness",
+          nursing: "Reinforce adherence; check interactions per plan",
+          memory: "Statins: muscles matter."
+        },
+        LIPID_OTHER: {
+          action: "Lipid med → lowers cholesterol/triglycerides by class",
+          watch: "GI effects; interactions vary by class",
+          nursing: "Reinforce diet plan; follow ordered monitoring",
+          memory: "Lipids: diet + meds."
+        },
+        NITRATE: {
+          action: "Nitrate → vasodilation → angina relief",
+          watch: "Headache; hypotension; dizziness",
+          nursing: "If SL: dissolve; sit down; check BP; store properly",
+          memory: "Sit, dissolve, pressure watch."
+        },
+        ANTIANG: {
+          action: "Antianginal → symptom relief (interaction-heavy)",
+          watch: "Interactions can be significant",
+          nursing: "Medication list review is critical; follow guidance",
+          memory: "Angina helper: interaction checker."
+        },
+        DIG: {
+          action: "Digitalis → stronger contraction; supports rhythm control",
+          watch: "Toxicity risk; many interactions",
+          nursing: "Medication reconciliation + monitoring plan is key",
+          memory: "Strong beat… level watch."
+        }
+      };
+
+      // Signature cues (no drug names)
+      const SIG = {
+        // ACE
+        "captopril": "Shorter-acting; dosing can be more frequent.",
+        "ramipril": "Often used in long-term risk reduction plans.",
+        "lisinopril": "Common once-daily option in many regimens.",
+        // ARB
+        "losartan": "Common ARB option; potassium monitoring still matters.",
+        "valsartan": "Often seen in HF/HTN regimens depending on plan.",
+        // Beta blockers
+        "propranolol": "Nonselective beta blockade.",
+        "nadolol": "Longer-acting nonselective option.",
+        "carvedilol": "Alpha + beta blockade (more vasodilation).",
+        "labetalol": "Alpha + beta blockade; used in acute BP settings.",
+        "metoprolol succinate": "Extended-release form.",
+        "metoprolol tartrate": "Immediate-release form.",
+        "sotalol": "Also antiarrhythmic behavior; monitoring-heavy.",
+        // CCB
+        "amlodipine": "Edema is a classic issue.",
+        "verapamil": "Constipation + AV-node slowing profile.",
+        "diltiazem": "Rate-control style (AV node) profile.",
+        // Diuretics
+        "furosemide": "High-yield loop; strong fluid offload.",
+        "bumetanide": "Very potent loop option.",
+        "ethacrynic acid": "Loop option used when sulfa allergy is a concern.",
+        // Statins
+        "atorvastatin": "High-potency LDL lowering.",
+        "rosuvastatin": "High-potency LDL lowering.",
+        "pravastatin": "Often chosen for fewer interaction concerns.",
+        // Anticoags / antiplatelets
+        "warfarin": "Requires INR monitoring and consistency.",
+        "heparin": "Often IV in acute settings; monitoring plan varies.",
+        "enoxaparin": "Common LMWH injection option.",
+        "clopidogrel": "Common post-stent antiplatelet option.",
+        // Nitrates
+        "nitroglycerin (sublingual)": "Fast-acting for acute chest pain episodes.",
+        "nitroglycerin (patch)": "Longer coverage; rotate sites to protect skin."
+      };
+
+      // Major names lists
+      const ACE = ["benazepril","captopril","enalapril","lisinopril","quinapril","ramipril"];
+      const ARB = ["candesartan","eprosartan","irbesartan","losartan","telmisartan","valsartan"];
+
+      const BETA_BLOCKERS = [
+        "acebutolol","atenolol","betaxolol","bisoprolol","carvedilol","labetalol",
+        "metoprolol succinate","metoprolol tartrate","nadolol","nebivolol",
+        "pindolol","propranolol","sotalol","timolol"
+      ];
+
+      const CCB = ["amlodipine","bepridil","diltiazem","felodipine","isradipine","nicardipine","nifedipine","nisoldipine","verapamil"];
+
+      const DIURETICS = ["amiloride","bumetanide","chlorothiazide","ethacrynic acid","furosemide","hydrochlorothiazide","indapamide","metolazone","triamterene","torsemide"];
+      const ALDO = ["eplerenone","spironolactone"];
+
+      const ANTIARR = ["amiodarone","disopyramide","dofetilide","flecainide","mexiletine","procainamide","propafenone","propafenone SR","quinidine gluconate","sotalol","tocainide"];
+
+      const ANTICOAG = ["dalteparin","enoxaparin","fondaparinux","heparin","warfarin"];
+      const ANTIPLT  = ["aspirin","cilostazol","clopidogrel","dipyridamole","prasugrel","ticlopidine"];
+
+      const STATINS = ["atorvastatin","fluvastatin","lovastatin","pravastatin","rosuvastatin","simvastatin"];
+      const LIPID_OTHER = ["fenofibrate","gemfibrozil","colesevelam","cholestyramine","colestipol","niacin"];
+
+      const NITRATES = ["nitroglycerin (oral)","nitroglycerin (ointment)","nitroglycerin (patch)","nitroglycerin (sublingual)","nitroglycerin (spray/tablet)"];
+      const OTHER_ANTIANG = ["ranolazine"];
+      const DIGOXIN = ["digoxin"];
+
+      let out = [];
+      ACE.forEach((d,i)=> out.push(mk(`cv-ace-${i+1}`, d, FRONT.ACE, SIG[d] || "")));
+      ARB.forEach((d,i)=> out.push(mk(`cv-arb-${i+1}`, d, FRONT.ARB, SIG[d] || "")));
+
+      BETA_BLOCKERS.forEach((d,i)=> out.push(mk(`cv-bb-${i+1}`, d, FRONT.BB, SIG[d] || "")));
+      CCB.forEach((d,i)=> out.push(mk(`cv-ccb-${i+1}`, d, FRONT.CCB, SIG[d] || "")));
+
+      DIURETICS.forEach((d,i)=> out.push(mk(`cv-diur-${i+1}`, d, FRONT.DIUR, SIG[d] || "")));
+      ALDO.forEach((d,i)=> out.push(mk(`cv-aldo-${i+1}`, d, FRONT.ALDO, SIG[d] || "")));
+
+      ANTIARR.forEach((d,i)=> out.push(mk(`cv-arr-${i+1}`, d, FRONT.ANTIARR, SIG[d] || "")));
+
+      ANTICOAG.forEach((d,i)=> out.push(mk(`cv-ac-${i+1}`, d, FRONT.ANTICOAG, SIG[d] || "")));
+      ANTIPLT.forEach((d,i)=> out.push(mk(`cv-ap-${i+1}`, d, FRONT.ANTIPLT, SIG[d] || "")));
+
+      STATINS.forEach((d,i)=> out.push(mk(`cv-statin-${i+1}`, d, FRONT.STATIN, SIG[d] || "")));
+      LIPID_OTHER.forEach((d,i)=> out.push(mk(`cv-lipid-${i+1}`, d, FRONT.LIPID_OTHER, SIG[d] || "")));
+
+      NITRATES.forEach((d,i)=> out.push(mk(`cv-nitrate-${i+1}`, d, FRONT.NITRATE, SIG[d] || "")));
+      OTHER_ANTIANG.forEach((d,i)=> out.push(mk(`cv-ang-${i+1}`, d, FRONT.ANTIANG, "")));
+
+      DIGOXIN.forEach((d,i)=> out.push(mk(`cv-dig-${i+1}`, d, FRONT.DIG, "")));
+
+      return out;
+    })(),
+
+    // Minimal placeholders (we can expand next like we did cardiac)
+    "Respiratory Drugs": (() => {
+  const mk = (id, drug, front, signature="") => ({
+    id,
+    drug,
+    category: front.categoryLabel,   // what shows on card front
+    action: front.action,
+    watch: front.watch,
+    nursing: front.nursing,
+    memory: front.memory,
+    signature
+  });
+
+  // Tight, premium “fronts” by class (clue-only)
+  const FRONT = {
+    SABA: {
+      categoryLabel: "SABA / Rescue",
+      action: "Quick bronchodilation; works in ~15–20 min",
+      watch: "Tremor, ↑HR, headache",
+      nursing: "More frequent use can signal poor control",
+      memory: "Rescue = fast + short."
+    },
+    SAMA_SABA: {
+      categoryLabel: "Rescue Combo",
+      action: "Short-acting bronchodilators combined",
+      watch: "Dry mouth, tremor, ↑HR",
+      nursing: "Rescue use increases when control is poor",
+      memory: "Two bronchodilators, one device."
+    },
+    LABA_LAMA: {
+      categoryLabel: "Controller",
+      action: "Long-acting bronchodilation; lasts ~12–24 hrs",
+      watch: "Dry mouth, tremor, ↑HR (varies)",
+      nursing: "Not for acute attacks; scheduled use",
+      memory: "Controller = steady coverage."
+    },
+    ICS: {
+      categoryLabel: "ICS / Steroid",
+      action: "Reduces airway inflammation (controller)",
+      watch: "Hoarseness, throat irritation, thrush risk",
+      nursing: "Rinse/gargle after; not for acute attacks; bronchodilator first",
+      memory: "Rinse after steroid inhalers."
+    },
+    LABA_ICS: {
+      categoryLabel: "LABA + ICS",
+      action: "Controller combo: bronchodilation + anti-inflammatory",
+      watch: "Thrush risk + tremor/↑HR (varies)",
+      nursing: "Rinse after; not rescue; daily schedule",
+      memory: "Combo controller—rinsing still matters."
+    },
+    TRIPLE: {
+      categoryLabel: "Triple Therapy",
+      action: "ICS + two bronchodilator types (controller)",
+      watch: "Thrush risk; dry mouth; tremor (varies)",
+      nursing: "Daily schedule; rinse after; not for acute attacks",
+      memory: "Triple = big maintenance."
+    },
+    DUAL_BRONCH: {
+      categoryLabel: "Dual Bronchodilator",
+      action: "Two bronchodilator types in one inhaler (controller)",
+      watch: "Dry mouth, tremor, ↑HR (varies)",
+      nursing: "Not rescue; scheduled use",
+      memory: "Two bronchodilators—steady, not sudden."
+    },
+    MUCOLYTIC: {
+      categoryLabel: "Mucolytic",
+      action: "Breaks up thick mucus bonds to clear easier",
+      watch: "GI upset (varies by product)",
+      nursing: "Hydration + assess sputum characteristics",
+      memory: "Mucus out = cough it out."
+    },
+    ANTIHIST: {
+      categoryLabel: "Antihistamine",
+      action: "Blocks histamine effects to reduce allergy symptoms",
+      watch: "Sedation (some), dry mouth",
+      nursing: "Caution with driving/sleepiness; watch anticholinergic effects",
+      memory: "Histamine blocked = less swelling/mucus."
+    }
+  };
+
+  // Signature cues ONLY when shared-front meds need differentiation
+  const SIG = {
+    // SABA/SAMA items from PDF list
+    "ipratropium (Atrovent)": "Short-acting anticholinergic; MDI or nebulizer.",
+    "albuterol (ProAir/Proventil/Ventolin)": "Common rescue inhaler family names.",
+    "levalbuterol (Xopenex)": "SABA option; MDI or nebulizer.",
+    "albuterol + ipratropium (Combivent Respimat)": "Rescue combo in SMI device.",
+    "albuterol + ipratropium (DuoNeb)": "Nebulized form of the rescue combo.",
+    "albuterol + budesonide (Airsupra)": "Rescue paired with an ICS component.",
+
+    // LABA/LAMA items
+    "tiotropium (Spiriva)": "Avoid getting powder in eyes (device handling).",
+    "unmeclidinium (Incruse Ellipta)": "DPI device type.",
+    "aclidinium (Tudorza Pressair)": "DPI device type.",
+    "olodaterol (Striverdi Respimat)": "SMI device type.",
+    "formoterol (Perforomist)": "Nebulized LABA option.",
+    "aformoterol (Brovana)": "Nebulized LABA option.",
+    "salmeterol (Serevent)": "LABA option; DPI/MDI formats vary.",
+
+    // ICS items
+    "fluticasone propionate (Flovent)": "Diskus or MDI forms.",
+    "budesonide (Pulmicort)": "DPI or nebulizer option.",
+    "beclomethasone (QVAR)": "MDI format.",
+    "mometasone (Asmanex)": "MDI option.",
+    "ciclesonide (Alvesco)": "MDI option.",
+    "fluticasone furoate (Arnuity Ellipta)": "DPI format."
+  };
+
+  // Drug lists pulled directly from your PDF pages
+  const SABAS_SAMA = [
+    "ipratropium (Atrovent)",
+    "albuterol + ipratropium (Combivent Respimat)",
+    "albuterol + ipratropium (DuoNeb)",
+    "albuterol (ProAir/Proventil/Ventolin)",
+    "albuterol + budesonide (Airsupra)",
+    "levalbuterol (Xopenex)"
+  ]; // :contentReference[oaicite:1]{index=1}
+
+  const LABA_LAMA = [
+    "salmeterol (Serevent)",
+    "formoterol (Perforomist)",
+    "aformoterol (Brovana)",
+    "tiotropium (Spiriva)",
+    "olodaterol (Striverdi Respimat)",
+    "unmeclidinium (Incruse Ellipta)",
+    "aclidinium (Tudorza Pressair)"
+  ]; // :contentReference[oaicite:2]{index=2}
+
+  const ICS = [
+    "ciclesonide (Alvesco)",
+    "fluticasone furoate (Arnuity Ellipta)",
+    "mometasone (Asmanex)",
+    "fluticasone propionate (Flovent)",
+    "budesonide (Pulmicort)",
+    "beclomethasone (QVAR)"
+  ]; // :contentReference[oaicite:3]{index=3}
+
+  const LABA_ICS = [
+    "fluticasone + salmeterol (Advair Diskus)",
+    "fluticasone + vilanterol (Breo Ellipta)",
+    "mometasone + formoterol (Dulera)",
+    "budesonide + formoterol (Symbicort)"
+  ]; // :contentReference[oaicite:4]{index=4}
+
+  const TRIPLE = [
+    "fluticasone combo triple (Trelegy Ellipta)",
+    "budesonide combo triple (Breztri Aerosphere)"
+  ]; // :contentReference[oaicite:5]{index=5}
+
+  const DUAL_BRONCH = [
+    "umeclidinium + vilanterol (Anoro Ellipta)",
+    "tiotropium + olodaterol (Stiolto Respimat)",
+    "glycopyrrolate + formoterol (Bevespi Aerosphere)"
+  ]; // :contentReference[oaicite:6]{index=6}
+
+  const MUCOLYTICS = [
+    "guaifenesin (Mucinex)",
+    "acetylcysteine (Mucomyst)"
+  ]; // :contentReference[oaicite:7]{index=7}
+
+  const ANTIHISTAMINES = [
+    "cetirizine (Zyrtec)",
+    "loratadine (Claritin)",
+    "fexofenadine (Allegra)",
+    "azelastine (Astelin)",
+    "chlorpheniramine (Chlor-Trimeton)",
+    "diphenhydramine (Benadryl)",
+    "hydroxyzine (Atarax)",
+    "desloratadine (Clarinex)",
+    "brompheniramine (Dimetapp)"
+  ]; // :contentReference[oaicite:8]{index=8}
+
+  let out = [];
+
+  // Build cards (fronts shared by class, signature only when needed)
+  // SABAs/SAMA combos: some are pure SABA, some combo—split for cleaner fronts
+  SABAS_SAMA.forEach((d,i) => {
+    const isCombo = d.includes("+");
+    out.push(mk(`resp-saba-${i+1}`, d, isCombo ? FRONT.SAMA_SABA : FRONT.SABA, SIG[d] || ""));
+  });
+
+  LABA_LAMA.forEach((d,i) => out.push(mk(`resp-laba-${i+1}`, d, FRONT.LABA_LAMA, SIG[d] || "")));
+  ICS.forEach((d,i)      => out.push(mk(`resp-ics-${i+1}`,  d, FRONT.ICS,      SIG[d] || "")));
+
+  LABA_ICS.forEach((d,i) => out.push(mk(`resp-ci-${i+1}`, d, FRONT.LABA_ICS, "")));
+  TRIPLE.forEach((d,i)   => out.push(mk(`resp-tri-${i+1}`, d, FRONT.TRIPLE, "")));
+  DUAL_BRONCH.forEach((d,i)=> out.push(mk(`resp-dual-${i+1}`, d, FRONT.DUAL_BRONCH, "")));
+
+  MUCOLYTICS.forEach((d,i)=> out.push(mk(`resp-muc-${i+1}`, d, FRONT.MUCOLYTIC, "")));
+  ANTIHISTAMINES.forEach((d,i)=> out.push(mk(`resp-ah-${i+1}`, d, FRONT.ANTIHIST, "")));
+
+  return out;
+})(),
+
+
+    "Antibiotics/Infectious": (() => {
+  const mk = (id, drug, front, signature="") => ({
+    id,
+    drug,                       // shown ONLY on back
+    category: front.categoryLabel,
+    action: front.action,
+    watch: front.watch,
+    nursing: front.nursing,
+    memory: front.memory,
+    signature
+  });
+
+  // Shared premium fronts (clue-only)
+  const FRONT = {
+    PEN: {
+      categoryLabel: "Penicillins (β-lactam)",
+      action: "Cell wall synthesis inhibitor (bactericidal)",
+      watch: "Allergy/rash; diarrhea",
+      nursing: "Confirm penicillin allergy; teach full course completion",
+      memory: "Break the wall → bacteria fall."
+    },
+    TETRA: {
+      categoryLabel: "Tetracyclines",
+      action: "Protein synthesis inhibitor (30S)",
+      watch: "GI upset; photosensitivity",
+      nursing: "Avoid taking with dairy/iron/calcium at same time; sun protection",
+      memory: "Tetra = ‘sun + stomach’ watch."
+    },
+    CEPH: {
+      categoryLabel: "Cephalosporins (β-lactam)",
+      action: "Cell wall synthesis inhibitor (bactericidal)",
+      watch: "Allergy/rash; diarrhea",
+      nursing: "Check allergy history; reinforce full course; watch severe diarrhea",
+      memory: "Ceph = cell wall control."
+    },
+    FQ: {
+      categoryLabel: "Fluoroquinolones",
+      action: "Broad-spectrum bactericidal class",
+      watch: "Serious adverse effect warnings (class-wide)",
+      nursing: "Reserve when appropriate per plan; review risk warnings with patient",
+      memory: "‘Quinolones’ = powerful… respect the warnings."
+    },
+    LINC: {
+      categoryLabel: "Lincomycins",
+      action: "Protein synthesis inhibitor (class)",
+      watch: "GI effects; diarrhea",
+      nursing: "Report severe diarrhea; assess for tolerance",
+      memory: "Good coverage, but gut watch."
+    },
+    MAC: {
+      categoryLabel: "Macrolides / Ketolide",
+      action: "Protein synthesis inhibitor (50S class)",
+      watch: "GI upset; interactions vary",
+      nursing: "Review interaction list; reinforce adherence",
+      memory: "Macro = ‘many interactions’ check."
+    },
+    SULFA: {
+      categoryLabel: "Sulfonamides",
+      action: "Antibacterial class (varies by drug)",
+      watch: "Allergy risk; resistance common",
+      nursing: "Avoid if sulfa allergy; reinforce hydration as directed",
+      memory: "Sulfa = allergy check first."
+    },
+    GLYCO: {
+      categoryLabel: "Glycopeptides",
+      action: "Serious Gram+ coverage (class; often IV)",
+      watch: "Infusion reactions; kidney effects (varies)",
+      nursing: "Follow infusion guidance; monitor renal function per plan",
+      memory: "Slow + steady infusion approach."
+    },
+    AMINO: {
+      categoryLabel: "Aminoglycosides",
+      action: "Protein synthesis inhibitor (30S); rapid bactericidal (often IV)",
+      watch: "Kidney + ear toxicity risk (class)",
+      nursing: "Monitor renal/hearing per plan; dosing/levels per protocol",
+      memory: "Amino = ears + kidneys watch."
+    },
+    CARBA: {
+      categoryLabel: "Carbapenems (β-lactam)",
+      action: "Very broad-spectrum injectable class",
+      watch: "GI effects; resistance considerations",
+      nursing: "Often reserved for serious infections; follow stewardship plan",
+      memory: "Carba = ‘big gun’ antibiotic."
+    }
+  };
+
+  // Signature cues ONLY when shared-front meds need differentiation (no drug name leak on front)
+  const SIG = {
+    // Penicillins
+    "amoxicillin (Amoxil)": "Aminopenicillin; very common outpatient use.",
+    "amoxicillin + clavulanate (Augmentin)": "β-lactam + β-lactamase inhibitor combo.",
+    "ampicillin (Unasyn)": "Often seen in inpatient regimens (context-dependent).",
+    "dicloxacillin": "Penicillinase-resistant option.",
+    "oxacillin (Bactocill injection)": "Penicillinase-resistant; injectable form noted.",
+    "penicillin V potassium (Penicillin VK)": "Classic ‘penicillin V’ oral option.",
+    "piperacillin + tazobactam (Zosyn)": "Antipseudomonal penicillin + inhibitor combo.",
+
+    // Tetracyclines
+    "doxycycline (Doryx / Vibramycin)": "High-yield tetracycline option.",
+    "minocycline (Minocin)": "Often used in dermatology contexts.",
+    "tetracycline (Achromycin)": "Older tetracycline option.",
+
+    // Cephalosporins (use generation as signature)
+    "cefadroxil (Duricef)": "1st generation.",
+    "cefazolin (Ancef)": "1st generation.",
+    "cephalexin (Keflex)": "1st generation.",
+    "cefaclor": "2nd generation.",
+    "cefprozil (Cefzil)": "2nd generation.",
+    "cefuroxime (Ceftin/Zinacef)": "2nd generation.",
+    "cefotetan (Cefotan)": "2nd generation.",
+    "cefoxitin": "2nd generation.",
+    "cefdinir": "3rd generation.",
+    "cefotaxime": "3rd generation.",
+    "ceftazidime (Avycaz/Fortaz/Tazicef)": "3rd generation (Avycaz includes inhibitor).",
+    "ceftriaxone": "3rd generation.",
+    "cefepime (Maxipime)": "4th generation.",
+    "cefepime + enmetazobactam (Exblifep)": "4th gen + β-lactamase inhibitor.",
+    "cefiderocol (Fetroja)": "Advanced coverage within later generations.",
+    "ceftobiprole medocaril (Zevtera)": "5th generation.",
+    "ceftaroline (Teflaro)": "5th generation.",
+    "ceftolozane + tazobactam (Zerbaxa)": "5th gen + β-lactamase inhibitor.",
+    "cefixime (Suprax)": "Common oral cephalosporin option (generation varies by reference).",
+
+    // Fluoroquinolones
+    "ciprofloxacin (Cipro/Cipro XR)": "Classic quinolone option.",
+    "levofloxacin (Levaquin)": "High-yield quinolone option.",
+    "moxifloxacin (Avelox)": "Respiratory quinolone context in many plans.",
+    "ofloxacin": "Older quinolone option.",
+    "delafloxacin (Baxdela)": "Newer option.",
+    "gemifloxacin (Factive)": "Older option; availability varies.",
+
+    // Lincomycins
+    "clindamycin (Cleocin)": "High-yield; broad anaerobe coverage context.",
+    "lincomycin (Lincocin)": "Less common compared to clindamycin.",
+
+    // Macrolides / ketolide
+    "azithromycin (Zithromax)": "Very common macrolide option.",
+    "clarithromycin (Biaxin)": "Interaction-prone macrolide option.",
+    "erythromycin (E.E.S./Ery-Tab)": "Older macrolide option.",
+    "fidaxomicin (Dificid)": "Used for C. diff-associated diarrhea.",
+
+    // Sulfonamides
+    "sulfamethoxazole + trimethoprim (Bactrim/Septra)": "High-yield combo; allergy check important.",
+    "sulfacetamide topical (Klaron/Ovace)": "Topical option.",
+    "sulfadiazine": "Standalone sulfa option.",
+    "sulfasalazine (Azulfidine)": "Has non-antibiotic uses too (context varies).",
+
+    // Glycopeptides
+    "vancomycin (IV)": "Infusion-related reaction risk; infusion rate matters.",
+    "vancomycin (oral)": "Oral form used for GI-targeted infections (context).",
+    "dalbavancin (Dalvance)": "Long-acting IV option.",
+    "oritavancin (Orbactiv/Kimyrsa)": "Long-acting IV option.",
+    "telavancin (Vibativ)": "IV option; monitoring plan varies.",
+
+    // Aminoglycosides
+    "gentamicin (IV)": "High-yield aminoglycoside option.",
+    "tobramycin (TOBI/Tobrex)": "Inhaled/ophthalmic forms exist.",
+    "amikacin (Amikin/Arikayce)": "Often reserved for resistant infections.",
+
+    // Carbapenems
+    "imipenem + cilastatin (Primaxin)": "Combo includes cilastatin.",
+    "meropenem (Merrem)": "Common inpatient broad-spectrum option.",
+    "ertapenem (Invanz)": "Often once-daily dosing in some protocols.",
+    "imipenem + cilastatin + relebactam (Recarbrio)": "Carbapenem combo + inhibitor.",
+    "meropenem + vaborbactam (Vabomere)": "Carbapenem combo + inhibitor."
+  };
+
+  // Lists (from your uploaded content)
+  const PENICILLINS = [
+    "amoxicillin (Amoxil)",
+    "amoxicillin + clavulanate (Augmentin)",
+    "ampicillin (Unasyn)",
+    "dicloxacillin",
+    "oxacillin (Bactocill injection)",
+    "penicillin V potassium (Penicillin VK)",
+    "piperacillin + tazobactam (Zosyn)"
+  ];
+
+  const TETRACYCLINES = [
+    "demeclocycline",
+    "doxycycline (Doryx / Vibramycin)",
+    "eravacycline (Xerava)",
+    "minocycline (Minocin)",
+    "omadacycline (Nuzyra)",
+    "sarecycline (Seysara)",
+    "tetracycline (Achromycin)"
+  ];
+
+  const CEPHALOSPORINS = [
+    "cefaclor",
+    "cefadroxil (Duricef)",
+    "cefazolin (Ancef)",
+    "cefdinir",
+    "cephalexin (Keflex)",
+    "cefprozil (Cefzil)",
+    "cefepime (Maxipime)",
+    "cefepime + enmetazobactam (Exblifep)",
+    "cefiderocol (Fetroja)",
+    "cefixime (Suprax)",
+    "cefotaxime",
+    "cefotetan (Cefotan)",
+    "cefoxitin",
+    "ceftobiprole medocaril (Zevtera)",
+    "ceftolozane + tazobactam (Zerbaxa)",
+    "ceftaroline (Teflaro)",
+    "ceftazidime (Avycaz/Fortaz/Tazicef)",
+    "ceftriaxone",
+    "cefuroxime (Ceftin/Zinacef)"
+  ];
+
+  const FLUOROQUINOLONES = [
+    "ciprofloxacin (Cipro/Cipro XR)",
+    "delafloxacin (Baxdela)",
+    "levofloxacin (Levaquin)",
+    "moxifloxacin (Avelox)",
+    "ofloxacin",
+    "gemifloxacin (Factive)"
+  ];
+
+  const LINCOMYCINS = [
+    "clindamycin (Cleocin)",
+    "lincomycin (Lincocin)"
+  ];
+
+  const MACROLIDES = [
+    "azithromycin (Zithromax)",
+    "clarithromycin (Biaxin)",
+    "erythromycin (E.E.S./Ery-Tab)",
+    "fidaxomicin (Dificid)"
+  ];
+
+  const SULFONAMIDES = [
+    "sulfacetamide topical (Klaron/Ovace)",
+    "sulfadiazine",
+    "sulfamethoxazole + trimethoprim (Bactrim/Septra)",
+    "sulfasalazine (Azulfidine)"
+  ];
+
+  const GLYCOPEPTIDES = [
+    "dalbavancin (Dalvance)",
+    "oritavancin (Orbactiv/Kimyrsa)",
+    "telavancin (Vibativ)",
+    "vancomycin (oral)",
+    "vancomycin (IV)"
+  ];
+
+  const AMINOGLYCOSIDES = [
+    "gentamicin (IV)",
+    "tobramycin (TOBI/Tobrex)",
+    "amikacin (Amikin/Arikayce)"
+  ];
+
+  const CARBAPENEMS = [
+    "imipenem + cilastatin (Primaxin)",
+    "meropenem (Merrem)",
+    "ertapenem (Invanz)",
+    "imipenem + cilastatin + relebactam (Recarbrio)",
+    "meropenem + vaborbactam (Vabomere)"
+  ];
+
+  let out = [];
+  PENICILLINS.forEach((d,i)=> out.push(mk(`abx-pen-${i+1}`, d, FRONT.PEN, SIG[d] || "")));
+  TETRACYCLINES.forEach((d,i)=> out.push(mk(`abx-tet-${i+1}`, d, FRONT.TETRA, SIG[d] || "")));
+  CEPHALOSPORINS.forEach((d,i)=> out.push(mk(`abx-ceph-${i+1}`, d, FRONT.CEPH, SIG[d] || "")));
+  FLUOROQUINOLONES.forEach((d,i)=> out.push(mk(`abx-fq-${i+1}`, d, FRONT.FQ, SIG[d] || "")));
+  LINCOMYCINS.forEach((d,i)=> out.push(mk(`abx-linc-${i+1}`, d, FRONT.LINC, SIG[d] || "")));
+  MACROLIDES.forEach((d,i)=> out.push(mk(`abx-mac-${i+1}`, d, FRONT.MAC, SIG[d] || "")));
+  SULFONAMIDES.forEach((d,i)=> out.push(mk(`abx-sulfa-${i+1}`, d, FRONT.SULFA, SIG[d] || "")));
+  GLYCOPEPTIDES.forEach((d,i)=> out.push(mk(`abx-gly-${i+1}`, d, FRONT.GLYCO, SIG[d] || "")));
+  AMINOGLYCOSIDES.forEach((d,i)=> out.push(mk(`abx-amino-${i+1}`, d, FRONT.AMINO, SIG[d] || "")));
+  CARBAPENEMS.forEach((d,i)=> out.push(mk(`abx-carba-${i+1}`, d, FRONT.CARBA, SIG[d] || "")));
+
+  return out;
+})(),
+
+
+    "Endocrine Drugs": (() => {
+  const mk = (id, drug, front, signature="") => ({
+    id,
+    drug,
+    category: front.categoryLabel,
+    action: front.action,
+    watch: front.watch,
+    nursing: front.nursing,
+    memory: front.memory,
+    signature
+  });
+
+  /* ======================
+     SHARED PREMIUM FRONTS
+     ====================== */
+  const FRONT = {
+    INSULIN: {
+      categoryLabel: "Insulin",
+      action: "Lowers blood glucose by driving glucose into cells",
+      watch: "Hypoglycemia",
+      nursing: "Check glucose before admin; verify timing with meals",
+      memory: "Too much insulin → low sugar."
+    },
+    ORAL_DM: {
+      categoryLabel: "Oral Diabetes Med",
+      action: "Improves glucose control via insulin sensitivity or secretion",
+      watch: "Hypoglycemia (varies by class)",
+      nursing: "Monitor glucose trends; reinforce diet + adherence",
+      memory: "Orals support—not replace—insulin."
+    },
+    THYROID: {
+      categoryLabel: "Thyroid Hormone",
+      action: "Replaces or suppresses thyroid hormone",
+      watch: "Over/under replacement symptoms",
+      nursing: "AM dosing; consistent brand/formulation matters",
+      memory: "Thyroid meds love routine."
+    },
+    ANTITHYROID: {
+      categoryLabel: "Antithyroid",
+      action: "Suppresses thyroid hormone production",
+      watch: "Agranulocytosis; liver effects",
+      nursing: "Report sore throat/fever immediately",
+      memory: "Sore throat = stop + call."
+    },
+    CORTICO: {
+      categoryLabel: "Corticosteroid",
+      action: "Anti-inflammatory; immune suppression",
+      watch: "Hyperglycemia; infection risk",
+      nursing: "Taper—never stop abruptly",
+      memory: "Steroids raise sugar + stress body."
+    },
+    SEX_HORMONE: {
+      categoryLabel: "Sex Hormone Therapy",
+      action: "Alters estrogen/progesterone/testosterone levels",
+      watch: "Thromboembolic risk; hormonal effects",
+      nursing: "Assess history; reinforce adherence",
+      memory: "Hormones = clot awareness."
+    },
+    PITUITARY: {
+      categoryLabel: "Pituitary Hormone",
+      action: "Replaces or suppresses pituitary hormones",
+      watch: "Fluid/electrolyte shifts",
+      nursing: "Monitor labs and I&O closely",
+      memory: "Pituitary = master control."
+    }
+  };
+
+  /* ======================
+     SIGNATURE CLUES (ONLY WHEN NEEDED)
+     ====================== */
+  const SIG = {
+    // Insulins
+    "regular insulin": "Short-acting; can be given IV.",
+    "insulin lispro": "Rapid-acting; give with meals.",
+    "insulin aspart": "Rapid-acting; meal-time insulin.",
+    "insulin glargine": "Long-acting; no peak.",
+    "insulin detemir": "Long-acting; often once or twice daily.",
+    "NPH insulin": "Intermediate-acting; cloudy suspension.",
+
+    // Oral DM
+    "metformin": "First-line biguanide; GI effects common.",
+    "glyburide": "Sulfonylurea; hypoglycemia risk.",
+    "glipizide": "Sulfonylurea; shorter acting.",
+    "sitagliptin": "DPP-4 inhibitor class.",
+    "pioglitazone": "TZD class; fluid retention risk.",
+
+    // Thyroid
+    "levothyroxine": "Synthetic T4; most common replacement.",
+    "liothyronine": "Synthetic T3; faster onset.",
+
+    // Antithyroid
+    "methimazole": "Preferred antithyroid except in early pregnancy.",
+    "propylthiouracil": "Used in thyroid storm or early pregnancy.",
+
+    // Corticosteroids
+    "prednisone": "Common oral steroid.",
+    "hydrocortisone": "Short-acting; stress-dose use.",
+    "dexamethasone": "Long-acting; strong potency.",
+
+    // Sex hormones
+    "estrogen": "Clot risk increases with smoking.",
+    "progesterone": "Often paired with estrogen.",
+    "testosterone": "Monitor hematocrit and PSA.",
+
+    // Pituitary
+    "desmopressin": "ADH analog; affects water balance.",
+    "somatropin": "Growth hormone replacement."
+  };
+
+  /* ======================
+     DRUG LISTS
+     ====================== */
+  const INSULINS = [
+    "regular insulin",
+    "insulin lispro",
+    "insulin aspart",
+    "insulin glargine",
+    "insulin detemir",
+    "NPH insulin"
+  ];
+
+  const ORAL_DM = [
+    "metformin",
+    "glyburide",
+    "glipizide",
+    "sitagliptin",
+    "pioglitazone"
+  ];
+
+  const THYROID = [
+    "levothyroxine",
+    "liothyronine"
+  ];
+
+  const ANTITHYROID = [
+    "methimazole",
+    "propylthiouracil"
+  ];
+
+  const CORTICO = [
+    "prednisone",
+    "hydrocortisone",
+    "dexamethasone"
+  ];
+
+  const SEX_HORMONES = [
+    "estrogen",
+    "progesterone",
+    "testosterone"
+  ];
+
+  const PITUITARY = [
+    "desmopressin",
+    "somatropin"
+  ];
+
+  let out = [];
+  INSULINS.forEach((d,i)=> out.push(mk(`endo-ins-${i+1}`, d, FRONT.INSULIN, SIG[d] || "")));
+  ORAL_DM.forEach((d,i)=> out.push(mk(`endo-dm-${i+1}`, d, FRONT.ORAL_DM, SIG[d] || "")));
+  THYROID.forEach((d,i)=> out.push(mk(`endo-thy-${i+1}`, d, FRONT.THYROID, SIG[d] || "")));
+  ANTITHYROID.forEach((d,i)=> out.push(mk(`endo-anti-${i+1}`, d, FRONT.ANTITHYROID, SIG[d] || "")));
+  CORTICO.forEach((d,i)=> out.push(mk(`endo-st-${i+1}`, d, FRONT.CORTICO, SIG[d] || "")));
+  SEX_HORMONES.forEach((d,i)=> out.push(mk(`endo-sex-${i+1}`, d, FRONT.SEX_HORMONE, SIG[d] || "")));
+  PITUITARY.forEach((d,i)=> out.push(mk(`endo-pit-${i+1}`, d, FRONT.PITUITARY, SIG[d] || "")));
+
+  return out;
+})(),
+
+
+    "GI / Liver Drugs": (() => {
+  const mk = (id, drug, front, signature="") => ({
+    id,
+    drug,
+    category: front.categoryLabel,
+    action: front.action,
+    watch: front.watch,
+    nursing: front.nursing,
+    memory: front.memory,
+    signature
+  });
+
+  /* ======================
+     SHARED FRONT (CLASS-BASED)
+     ====================== */
+  const FRONT = {
+    ANTACID: {
+      categoryLabel: "Antacids",
+      action: "Neutralize gastric acid",
+      watch: "Electrolyte imbalance",
+      nursing: "Separate from other meds by 1–2 hours",
+      memory: "Antacids affect absorption."
+    },
+    H2: {
+      categoryLabel: "H2 Receptor Blocker",
+      action: "Decreases acid secretion",
+      watch: "Confusion (elderly)",
+      nursing: "Assess mental status in older adults",
+      memory: "H2 = less acid."
+    },
+    PPI: {
+      categoryLabel: "Proton Pump Inhibitor",
+      action: "Suppresses gastric acid production",
+      watch: "Long-term fracture/infection risk",
+      nursing: "Give before meals; short-term use preferred",
+      memory: "PPIs shut down acid pumps."
+    },
+    PROKINETIC: {
+      categoryLabel: "Prokinetic",
+      action: "Increases GI motility",
+      watch: "Extrapyramidal symptoms",
+      nursing: "Monitor for involuntary movements",
+      memory: "Moves the gut."
+    },
+    LAXATIVE: {
+      categoryLabel: "Laxative",
+      action: "Promotes bowel evacuation",
+      watch: "Electrolyte imbalance",
+      nursing: "Encourage fluids and fiber",
+      memory: "Laxatives drain fluid."
+    },
+    ANTIDIARRHEAL: {
+      categoryLabel: "Antidiarrheal",
+      action: "Slows intestinal motility",
+      watch: "Constipation; masking infection",
+      nursing: "Rule out infection before use",
+      memory: "Stop the flow — carefully."
+    },
+    ANTIEMETIC: {
+      categoryLabel: "Antiemetic",
+      action: "Prevents nausea and vomiting",
+      watch: "Sedation; QT effects (varies)",
+      nursing: "Safety precautions if sedating",
+      memory: "Quiet the vomiting center."
+    },
+    LIVER: {
+      categoryLabel: "Liver / Biliary Agent",
+      action: "Supports liver or bile function",
+      watch: "Liver labs",
+      nursing: "Monitor AST/ALT and bilirubin",
+      memory: "Protect the liver."
+    }
+  };
+
+  /* ======================
+     SIGNATURE CLUES
+     ====================== */
+  const SIG = {
+    // Antacids
+    "calcium carbonate": "Can cause constipation.",
+    "magnesium hydroxide": "Often causes diarrhea.",
+    "aluminum hydroxide": "Constipating; phosphate binding.",
+
+    // H2 blockers
+    "cimetidine": "Highest interaction risk.",
+    "ranitidine": "Less CNS effects (historically common).",
+    "famotidine": "Most commonly used now.",
+
+    // PPIs
+    "omeprazole": "Classic PPI.",
+    "pantoprazole": "Often IV in hospital.",
+    "esomeprazole": "S-isomer formulation.",
+
+    // Prokinetic
+    "metoclopramide": "EPS risk.",
+
+    // Laxatives
+    "docusate": "Stool softener.",
+    "senna": "Stimulant laxative.",
+    "polyethylene glycol": "Osmotic laxative.",
+
+    // Antidiarrheal
+    "loperamide": "Peripheral opioid effect.",
+    "diphenoxylate + atropine": "Schedule-controlled combo.",
+
+    // Antiemetics
+    "ondansetron": "QT prolongation risk.",
+    "promethazine": "Highly sedating.",
+
+    // Liver
+    "lactulose": "Used for hepatic encephalopathy.",
+    "ursodiol": "Dissolves cholesterol gallstones."
+  };
+
+  /* ======================
+     DRUG LISTS
+     ====================== */
+  const ANTACIDS = [
+    "calcium carbonate",
+    "magnesium hydroxide",
+    "aluminum hydroxide"
+  ];
+
+  const H2 = [
+    "cimetidine",
+    "ranitidine",
+    "famotidine"
+  ];
+
+  const PPI = [
+    "omeprazole",
+    "pantoprazole",
+    "esomeprazole"
+  ];
+
+  const PROKINETIC = [
+    "metoclopramide"
+  ];
+
+  const LAXATIVE = [
+    "docusate",
+    "senna",
+    "polyethylene glycol"
+  ];
+
+  const ANTIDIARRHEAL = [
+    "loperamide",
+    "diphenoxylate + atropine"
+  ];
+
+  const ANTIEMETIC = [
+    "ondansetron",
+    "promethazine"
+  ];
+
+  const LIVER = [
+    "lactulose",
+    "ursodiol"
+  ];
+
+  let out = [];
+  ANTACIDS.forEach((d,i)=> out.push(mk(`gi-antacid-${i+1}`, d, FRONT.ANTACID, SIG[d])));
+  H2.forEach((d,i)=> out.push(mk(`gi-h2-${i+1}`, d, FRONT.H2, SIG[d])));
+  PPI.forEach((d,i)=> out.push(mk(`gi-ppi-${i+1}`, d, FRONT.PPI, SIG[d])));
+  PROKINETIC.forEach((d,i)=> out.push(mk(`gi-prok-${i+1}`, d, FRONT.PROKINETIC, SIG[d])));
+  LAXATIVE.forEach((d,i)=> out.push(mk(`gi-lax-${i+1}`, d, FRONT.LAXATIVE, SIG[d])));
+  ANTIDIARRHEAL.forEach((d,i)=> out.push(mk(`gi-antiD-${i+1}`, d, FRONT.ANTIDIARRHEAL, SIG[d])));
+  ANTIEMETIC.forEach((d,i)=> out.push(mk(`gi-antiE-${i+1}`, d, FRONT.ANTIEMETIC, SIG[d])));
+  LIVER.forEach((d,i)=> out.push(mk(`gi-liver-${i+1}`, d, FRONT.LIVER, SIG[d])));
+
+  return out;
+})(),
+
+  };
+
+  // State (persist score + mastered)
+  const STORAGE_KEY = "lux_pharm_flashcards_v2";
+  const state = {
+    category: "Cardiac Drugs",
+    order: [],
+    index: 0,
+    flipped: false,
+    correct: 0,
+    incorrect: 0,
+    masteredIds: new Set()
+  };
+
+  function save(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      category: state.category,
+      index: state.index,
+      correct: state.correct,
+      incorrect: state.incorrect,
+      masteredIds: Array.from(state.masteredIds)
+    }));
+  }
+
+  function load(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return;
+      const p = JSON.parse(raw);
+      if(p.category && DECKS[p.category]) state.category = p.category;
+      state.index = Number(p.index || 0);
+      state.correct = Number(p.correct || 0);
+      state.incorrect = Number(p.incorrect || 0);
+      state.masteredIds = new Set(Array.isArray(p.masteredIds) ? p.masteredIds : []);
+    }catch(e){}
+  }
+
+  function shuffleArray(arr){
+    for(let i = arr.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  function getActiveDeck(category){
+    return (DECKS[category] || []).filter(c => !state.masteredIds.has(c.id));
+  }
+
+  function ensureOrder(){
+    const active = getActiveDeck(state.category);
+    state.order = active.map((_, i) => i);
+    shuffleArray(state.order);
+    state.index = 0;
+  }
+
+  function currentCard(){
+    const active = getActiveDeck(state.category);
+    if(active.length === 0) return null;
+    if(state.index >= active.length) state.index = 0;
+    const idx = state.order[state.index] ?? 0;
+    return active[idx] ?? active[0];
+  }
+
+  function setFlipped(isFlipped){
+    state.flipped = isFlipped;
+    document.getElementById("cardContainer").classList.toggle("flipped", isFlipped);
+  }
+
+  function updatePills(){
+    const total = state.correct + state.incorrect;
+    const acc = total === 0 ? 0 : Math.round((state.correct / total) * 100);
+    document.getElementById("scorePill").textContent =
+      `Correct ${state.correct} • Incorrect ${state.incorrect} • ${acc}%`;
+
+    const active = getActiveDeck(state.category).length;
+    const totalInCat = (DECKS[state.category] || []).length;
+    document.getElementById("progressPill").textContent = `${active} / ${totalInCat} available`;
+  }
+
+  function render(){
+    applyTheme(state.category);
+
+    const c = currentCard();
+    const empty = document.getElementById("emptyState");
+
+    const sigRow = document.getElementById("sigRow");
+    const sigVal = document.getElementById("frontSignature");
+
+    if(!c){
+      empty.style.display = "block";
+      document.getElementById("mnemonicBox").textContent = "All mastered in this category.";
+      document.getElementById("frontCategory").textContent = "—";
+      document.getElementById("frontAction").textContent = "—";
+      document.getElementById("frontWatch").textContent = "—";
+      document.getElementById("frontNursing").textContent = "—";
+      document.getElementById("drugName").textContent = "—";
+      document.getElementById("drugSub").textContent = "Bring back mastered or switch categories.";
+
+      sigRow.style.display = "none";
+      sigVal.textContent = "—";
+
+      updatePills();
+      setFlipped(false);
+      return;
+    }
+
+    empty.style.display = "none";
+
+    // FRONT: clue-only fields (no drug name)
+    document.getElementById("mnemonicBox").textContent = c.memory;
+    document.getElementById("frontCategory").textContent = c.category;
+    document.getElementById("frontAction").textContent = c.action;
+    document.getElementById("frontWatch").textContent = c.watch;
+    document.getElementById("frontNursing").textContent = c.nursing;
+
+    // Signature only if present
+    if (c.signature && c.signature.trim()) {
+      sigRow.style.display = "flex";
+      sigVal.textContent = c.signature;
+    } else {
+      sigRow.style.display = "none";
+      sigVal.textContent = "—";
+    }
+
+    // BACK: drug reveal
+    document.getElementById("drugName").textContent = c.drug;
+    document.getElementById("drugSub").textContent = "Tap the card to flip back";
+
+    updatePills();
+    setFlipped(false);
+  }
+
+  function nextCard(){
+    const active = getActiveDeck(state.category);
+    if(active.length === 0){ render(); return; }
+    state.index = (state.index + 1) % active.length;
+    render();
+  }
+
+  function initDropdown(){
+    const sel = document.getElementById("category");
+    const cats = Object.keys(DECKS);
+    sel.innerHTML = cats.map(c => `<option value="${c}">${c}</option>`).join("");
+    sel.value = state.category;
+
+    sel.addEventListener("change", () => {
+      state.category = sel.value;
+      ensureOrder();
+      save();
+      render();
+    });
+  }
+
+  // Click to flip
+  document.getElementById("cardContainer").addEventListener("click", () => {
+    setFlipped(!state.flipped);
+  });
+
+  // Buttons
+  document.getElementById("shuffleBtn").addEventListener("click", () => {
+    ensureOrder();
+    save();
+    render();
+  });
+
+  document.getElementById("nextBtn").addEventListener("click", () => {
+    nextCard();
+    save();
+  });
+
+  document.getElementById("correctBtn").addEventListener("click", () => {
+    state.correct += 1;
+    nextCard();
+    save();
+  });
+
+  document.getElementById("incorrectBtn").addEventListener("click", () => {
+    state.incorrect += 1;
+    nextCard();
+    save();
+  });
+
+  document.getElementById("masteredBtn").addEventListener("click", () => {
+    const c = currentCard();
+    if(!c) return;
+    state.masteredIds.add(c.id);
+    ensureOrder();
+    save();
+    render();
+  });
+
+  document.getElementById("resetMasteredBtn").addEventListener("click", () => {
+    state.masteredIds.clear();
+    ensureOrder();
+    save();
+    render();
+  });
+
+  // Keyboard
+  window.addEventListener("keydown", (e) => {
+    const k = e.key.toLowerCase();
+    if(e.key === " "){ e.preventDefault(); setFlipped(!state.flipped); }
+    if(k === "n"){ nextCard(); save(); }
+    if(k === "y"){ state.correct++; nextCard(); save(); }
+    if(k === "u"){ state.incorrect++; nextCard(); save(); }
+    if(k === "m"){
+      const c = currentCard();
+      if(c){ state.masteredIds.add(c.id); ensureOrder(); save(); render(); }
+    }
+  });
+
+  // Boot
+  load();
+  initDropdown();
+  applyTheme(state.category);
+  ensureOrder();
+  render();
+</script>
+</body>
+</html>
