@@ -252,7 +252,8 @@
 </head>
 
 <body>
-  <div class="header">
+const PILOT_CODE = "PHARMPILOT75";  
+<div class="header">
     <div class="titleBlock">
       <h1>Pharm Flashcards</h1>
       <p>Front = clues only. Back = drug reveal. Tap card to flip.</p>
