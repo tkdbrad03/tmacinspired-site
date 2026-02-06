@@ -69,17 +69,6 @@
       min-width: 260px;
     }
 
-    select{
-      padding:10px 12px;
-      border-radius:10px;
-      border:2px solid var(--primary);
-      background:#fff;
-      font-size:1rem;
-      font-weight:750;
-      color: var(--ink);
-      min-width: 260px;
-    }
-
     .pillStats{
       display:flex;
       gap:10px;
@@ -465,6 +454,21 @@
       <div class="pill" id="scorePill">Correct 0 • Incorrect 0 • 0%</div>
       <div class="pill" id="progressPill">0 / 0 available</div>
     </div>
+  </div>
+
+  <!-- NEW: Confidence Meter -->
+  <div class="confidence-container">
+    <div class="confidence-label">Confidence Level</div>
+    <div class="confidence-bar-bg">
+      <div class="confidence-bar-fill" id="confidenceBar"></div>
+    </div>
+    <div class="confidence-text" id="confidenceText">Build confidence by answering correctly!</div>
+  </div>
+
+  <!-- NEW: Challenge Mode Banner -->
+  <div class="challenge-banner" id="challengeBanner">
+    <div class="challenge-info">🎯 5-Card Challenge Active</div>
+    <div class="challenge-progress" id="challengeProgress">0/5</div>
   </div>
 
   <div class="card-container" id="cardContainer" title="Click to flip">
@@ -1630,6 +1634,7 @@ function setFrontTextForPrimary(primaryHex){
 
   // State (persist score + mastered)
   const STORAGE_KEY = "lux_pharm_flashcards_v2";
+  const state = {
   category: "Cardiac Drugs",
   order: [],
   index: 0,
@@ -1660,6 +1665,21 @@ function setFrontTextForPrimary(primaryHex){
 }
 
   function load(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return;
+      const p = JSON.parse(raw);
+      if(p.category && DECKS[p.category]) state.category = p.category;
+      state.index = Number(p.index || 0);
+      state.correct = Number(p.correct || 0);
+      state.incorrect = Number(p.incorrect || 0);
+      state.masteredIds = new Set(Array.isArray(p.masteredIds) ? p.masteredIds : []);
+      state.recentAnswers = Array.isArray(p.recentAnswers) ? p.recentAnswers : [];
+      
+      const soundsPref = localStorage.getItem('sounds_enabled');
+      if(soundsPref !== null) sounds.enabled = soundsPref === 'true';
+    }catch(e){}
+  }
 
   function shuffleArray(arr){
     for(let i = arr.length - 1; i > 0; i--){
