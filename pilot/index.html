@@ -57,6 +57,7 @@
       flex-wrap:wrap;
       margin-bottom:16px;
     }
+
     select{
       padding:10px 12px;
       border-radius:10px;
@@ -90,122 +91,6 @@
       min-width: 170px;
       text-align:center;
     }
-    /* NEW: Confidence Meter */
-.confidence-container{
-  width:min(980px, 100%);
-  margin-bottom:16px;
-  background:#fff;
-  border-radius:12px;
-  padding:14px 18px;
-  box-shadow: 0 10px 25px rgba(0,0,0,.06);
-}
-.confidence-label{
-  font-size:12px;
-  font-weight:800;
-  color:var(--muted);
-  margin-bottom:8px;
-  text-transform:uppercase;
-  letter-spacing:.3px;
-}
-.confidence-bar-bg{
-  width:100%;
-  height:12px;
-  background:#e9ecef;
-  border-radius:999px;
-  overflow:hidden;
-  position:relative;
-}
-.confidence-bar-fill{
-  height:100%;
-  background:linear-gradient(90deg, #dc3545 0%, #ffc107 50%, #28a745 100%);
-  border-radius:999px;
-  transition: width 0.4s ease;
-  width:0%;
-}
-.confidence-text{
-  margin-top:6px;
-  font-size:11px;
-  font-weight:800;
-  color:var(--ink);
-  text-align:center;
-}
-
-/* NEW: Challenge Mode Banner */
-.challenge-banner{
-  width:min(980px, 100%);
-  background:linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-  color:#fff;
-  padding:14px 18px;
-  border-radius:12px;
-  margin-bottom:16px;
-  display:none;
-  align-items:center;
-  justify-content:space-between;
-  box-shadow: 0 10px 25px rgba(0,0,0,.12);
-}
-.challenge-banner.active{ display:flex; }
-.challenge-info{
-  font-weight:800;
-  font-size:13px;
-  letter-spacing:.2px;
-}
-.challenge-progress{
-  font-weight:900;
-  font-size:15px;
-}
-
-/* NEW: Challenge Complete Modal */
-.modal-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.7);
-  backdrop-filter:blur(8px);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:9998;
-}
-.modal-overlay.active{ display:flex; }
-.modal-content{
-  background:#fff;
-  border-radius:18px;
-  padding:28px;
-  max-width:420px;
-  width:90%;
-  text-align:center;
-  box-shadow:0 20px 50px rgba(0,0,0,0.3);
-}
-.modal-title{
-  font-size:24px;
-  font-weight:900;
-  color:#111;
-  margin-bottom:12px;
-}
-.modal-score{
-  font-size:48px;
-  font-weight:900;
-  background:linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  margin:16px 0;
-}
-.modal-message{
-  font-size:14px;
-  font-weight:700;
-  color:#666;
-  margin-bottom:24px;
-  line-height:1.4;
-}
-.modal-btn{
-  padding:14px 24px;
-  background:linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-  color:#fff;
-  border:none;
-  border-radius:10px;
-  font-weight:900;
-  cursor:pointer;
-  font-size:14px;
-}
 
     /* Card */
     .card-container{
@@ -345,10 +230,6 @@
     .btn-bad{ background: #a63b3b; color:#fff; }
     .btn-master{ background: #111; color:#fff; }
     .btn-reset{ background: #fff; color: var(--primary); border: 2px solid var(--primary); }
-    .btn-challenge{ background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); color:#fff; }
-    .btn-sound-toggle{ background: #fff; color: var(--primary); border: 2px solid var(--primary); min-width:44px; padding:12px 14px; }
-    .btn-sound-toggle.muted{ opacity:0.5;
-}
 
     .footerNote{
       margin-top: 12px;
@@ -429,15 +310,6 @@
     </div>
   </div>
   <!-- END PILOT GATE OVERLAY -->
-  <!-- NEW: Challenge Complete Modal -->
-<div class="modal-overlay" id="challengeModal">
-  <div class="modal-content">
-    <div class="modal-title">🎯 Challenge Complete!</div>
-    <div class="modal-score" id="modalScore">4/5</div>
-    <div class="modal-message" id="modalMessage">Great job! Keep studying.</div>
-    <button class="modal-btn" id="modalCloseBtn">Continue Studying</button>
-  </div>
-</div>
 <div class="header">
     <div class="titleBlock">
       <h1>Pharm Flashcards</h1>
@@ -449,25 +321,9 @@
     <select id="category"></select>
 
     <div class="pillStats">
-      <button class="btn-sound-toggle" id="soundToggle" title="Toggle sound">🔊</button>
       <div class="pill" id="scorePill">Correct 0 • Incorrect 0 • 0%</div>
       <div class="pill" id="progressPill">0 / 0 available</div>
     </div>
-  </div>
-
-  <!-- NEW: Confidence Meter -->
-  <div class="confidence-container">
-    <div class="confidence-label">Confidence Level</div>
-    <div class="confidence-bar-bg">
-      <div class="confidence-bar-fill" id="confidenceBar"></div>
-    </div>
-    <div class="confidence-text" id="confidenceText">Build confidence by answering correctly!</div>
-  </div>
-
-  <!-- NEW: Challenge Mode Banner -->
-  <div class="challenge-banner" id="challengeBanner">
-    <div class="challenge-info">🎯 5-Card Challenge Active</div>
-    <div class="challenge-progress" id="challengeProgress">0/5</div>
   </div>
 
   <div class="card-container" id="cardContainer" title="Click to flip">
@@ -513,7 +369,6 @@
 
   <div class="controls">
     <button class="btn-shuffle" id="shuffleBtn">Shuffle</button>
-    <button class="btn-challenge" id="challengeBtn">5-Card Challenge</button>
     <button class="btn-nav" id="nextBtn">Next</button>
     <button class="btn-good" id="correctBtn">Correct</button>
     <button class="btn-bad" id="incorrectBtn">Incorrect</button>
@@ -524,74 +379,10 @@
   <div class="emptyState" id="emptyState">No cards left in this category. Bring back mastered or switch categories.</div>
 
   <div class="footerNote">
-    Keyboard: Space = Flip • N = Next • Y = Correct • U = Incorrect • M = Mastered • C = Challenge
+    Keyboard: Space = Flip • N = Next • Y = Correct • U = Incorrect • M = Mastered
   </div>
 
 <script>
-  // ==================== SOUND SYSTEM ====================
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
-const sounds = {
-  enabled: true,
-  
-  playFlip() {
-    if (!this.enabled) return;
-    const osc = audioContext.createOscillator();
-    const gain = audioContext.createGain();
-    osc.connect(gain);
-    gain.connect(audioContext.destination);
-    osc.frequency.value = 600;
-    gain.gain.value = 0.1;
-    osc.start();
-    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-    osc.stop(audioContext.currentTime + 0.1);
-  },
-  
-  playCorrect() {
-    if (!this.enabled) return;
-    const osc = audioContext.createOscillator();
-    const gain = audioContext.createGain();
-    osc.connect(gain);
-    gain.connect(audioContext.destination);
-    osc.frequency.value = 800;
-    gain.gain.value = 0.15;
-    osc.start();
-    osc.frequency.exponentialRampToValueAtTime(1000, audioContext.currentTime + 0.15);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
-    osc.stop(audioContext.currentTime + 0.15);
-  },
-  
-  playIncorrect() {
-    if (!this.enabled) return;
-    const osc = audioContext.createOscillator();
-    const gain = audioContext.createGain();
-    osc.connect(gain);
-    gain.connect(audioContext.destination);
-    osc.frequency.value = 300;
-    gain.gain.value = 0.15;
-    osc.start();
-    osc.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.2);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
-    osc.stop(audioContext.currentTime + 0.2);
-  },
-  
-  playChallengeComplete() {
-    if (!this.enabled) return;
-    [0, 0.1, 0.2].forEach((delay, i) => {
-      setTimeout(() => {
-        const osc = audioContext.createOscillator();
-        const gain = audioContext.createGain();
-        osc.connect(gain);
-        gain.connect(audioContext.destination);
-        osc.frequency.value = 800 + (i * 100);
-        gain.gain.value = 0.15;
-        osc.start();
-        gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
-        osc.stop(audioContext.currentTime + 0.2);
-      }, delay * 1000);
-    });
-  }
-};
   // Category themes (lux muted tones)
   const THEMES = {
     "Cardiac Drugs": { primary:"#1d3f73", secondary:"#d4a373", bg:"#f8f9fa" },
@@ -1634,34 +1425,24 @@ function setFrontTextForPrimary(primaryHex){
   // State (persist score + mastered)
   const STORAGE_KEY = "lux_pharm_flashcards_v2";
   const state = {
-  category: "Cardiac Drugs",
-  order: [],
-  index: 0,
-  flipped: false,
-  correct: 0,
-  incorrect: 0,
-  masteredIds: new Set(),
-  // NEW: Challenge mode
-  challengeMode: false,
-  challengeCards: [],
-  challengeIndex: 0,
-  challengeScore: 0,
-  // NEW: Confidence tracking (recent 10 answers)
-  recentAnswers: []
-};
-  
+    category: "Cardiac Drugs",
+    order: [],
+    index: 0,
+    flipped: false,
+    correct: 0,
+    incorrect: 0,
+    masteredIds: new Set()
+  };
 
   function save(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({
-    category: state.category,
-    index: state.index,
-    correct: state.correct,
-    incorrect: state.incorrect,
-    masteredIds: Array.from(state.masteredIds),
-    recentAnswers: state.recentAnswers
-  }));
-  localStorage.setItem('sounds_enabled', sounds.enabled);
-}
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      category: state.category,
+      index: state.index,
+      correct: state.correct,
+      incorrect: state.incorrect,
+      masteredIds: Array.from(state.masteredIds)
+    }));
+  }
 
   function load(){
     try{
@@ -1673,10 +1454,6 @@ function setFrontTextForPrimary(primaryHex){
       state.correct = Number(p.correct || 0);
       state.incorrect = Number(p.incorrect || 0);
       state.masteredIds = new Set(Array.isArray(p.masteredIds) ? p.masteredIds : []);
-      state.recentAnswers = Array.isArray(p.recentAnswers) ? p.recentAnswers : [];
-      
-      const soundsPref = localStorage.getItem('sounds_enabled');
-      if(soundsPref !== null) sounds.enabled = soundsPref === 'true';
     }catch(e){}
   }
 
@@ -1700,104 +1477,17 @@ function setFrontTextForPrimary(primaryHex){
   }
 
   function currentCard(){
-  if(state.challengeMode){
-    if(state.challengeIndex >= state.challengeCards.length) return null;
-    return state.challengeCards[state.challengeIndex];
+    const active = getActiveDeck(state.category);
+    if(active.length === 0) return null;
+    if(state.index >= active.length) state.index = 0;
+    const idx = state.order[state.index] ?? 0;
+    return active[idx] ?? active[0];
   }
-  
-  const active = getActiveDeck(state.category);
-  if(active.length === 0) return null;
-  if(state.index >= active.length) state.index = 0;
-  const idx = state.order[state.index] ?? 0;
-  return active[idx] ?? active[0];
-    updateConfidenceMeter();
-if(state.challengeMode) updateChallengeProgress();
-}
 
   function setFlipped(isFlipped){
-  state.flipped = isFlipped;
-  document.getElementById("cardContainer").classList.toggle("flipped", isFlipped);
-  if(isFlipped) sounds.playFlip();
-}
-    // ==================== CONFIDENCE METER ====================
-function updateConfidenceMeter(){
-  const recent = state.recentAnswers.slice(-10);
-  if(recent.length === 0){
-    document.getElementById("confidenceBar").style.width = "0%";
-    document.getElementById("confidenceText").textContent = "Build confidence by answering correctly!";
-    return;
+    state.flipped = isFlipped;
+    document.getElementById("cardContainer").classList.toggle("flipped", isFlipped);
   }
-  
-  const correctCount = recent.filter(a => a).length;
-  const percentage = (correctCount / recent.length) * 100;
-  
-  document.getElementById("confidenceBar").style.width = percentage + "%";
-  
-  let message = "";
-  if(percentage >= 80) message = "🔥 Excellent! You're crushing it!";
-  else if(percentage >= 60) message = "💪 Great progress! Keep it up!";
-  else if(percentage >= 40) message = "📚 Getting there! Stay focused!";
-  else message = "🎯 Keep practicing! You've got this!";
-  
-  document.getElementById("confidenceText").textContent = `${Math.round(percentage)}% accuracy (last ${recent.length} cards) • ${message}`;
-}
-
-function trackAnswer(isCorrect){
-  state.recentAnswers.push(isCorrect);
-  if(state.recentAnswers.length > 10){
-    state.recentAnswers.shift();
-  }
-  updateConfidenceMeter();
-}
-
-// ==================== CHALLENGE MODE ====================
-function startChallenge(){
-  const active = getActiveDeck(state.category);
-  if(active.length < 5){
-    alert("Need at least 5 cards available to start a challenge!");
-    return;
-  }
-  
-  // Select 5 random cards
-  const shuffled = [...active];
-  shuffleArray(shuffled);
-  state.challengeCards = shuffled.slice(0, 5);
-  state.challengeMode = true;
-  state.challengeIndex = 0;
-  state.challengeScore = 0;
-  
-  document.getElementById("challengeBanner").classList.add("active");
-  updateChallengeProgress();
-  render();
-}
-
-function updateChallengeProgress(){
-  document.getElementById("challengeProgress").textContent = 
-    `${state.challengeIndex}/${state.challengeCards.length}`;
-}
-
-function endChallenge(){
-  sounds.playChallengeComplete();
-  
-  const score = state.challengeScore;
-  const total = state.challengeCards.length;
-  const percentage = Math.round((score / total) * 100);
-  
-  document.getElementById("modalScore").textContent = `${score}/${total}`;
-  
-  let message = "";
-  if(percentage === 100) message = "🌟 Perfect score! You've mastered these cards!";
-  else if(percentage >= 80) message = "🎉 Excellent work! You really know your stuff!";
-  else if(percentage >= 60) message = "👍 Good job! Keep reviewing to improve!";
-  else message = "💡 Keep studying! Review these cards again.";
-  
-  document.getElementById("modalMessage").textContent = message;
-  document.getElementById("challengeModal").classList.add("active");
-  
-  state.challengeMode = false;
-  state.challengeCards = [];
-  document.getElementById("challengeBanner").classList.remove("active");
-}
 
   function updatePills(){
     const total = state.correct + state.incorrect;
@@ -1831,11 +1521,7 @@ function endChallenge(){
 
       sigRow.style.display = "none";
       sigVal.textContent = "—";
-   if(!c){
-  if(state.challengeMode){
-    endChallenge();
-    return;
-  }
+
       updatePills();
       setFlipped(false);
       return;
@@ -1867,22 +1553,12 @@ function endChallenge(){
     setFlipped(false);
   }
 
-  ffunction nextCard(){
-  if(state.challengeMode){
-    state.challengeIndex++;
-    if(state.challengeIndex >= state.challengeCards.length){
-      endChallenge();
-      ensureOrder();
-      render();
-      return;
-    }
-  } else {
+  function nextCard(){
     const active = getActiveDeck(state.category);
     if(active.length === 0){ render(); return; }
     state.index = (state.index + 1) % active.length;
+    render();
   }
-  render();
-}
 
   function initDropdown(){
     const sel = document.getElementById("category");
@@ -1891,16 +1567,11 @@ function endChallenge(){
     sel.value = state.category;
 
     sel.addEventListener("change", () => {
-  state.category = sel.value;
-  if(state.challengeMode){
-    state.challengeMode = false;
-    state.challengeCards = [];
-    document.getElementById("challengeBanner").classList.remove("active");
-  }
-  ensureOrder();
-  save();
-  render();
-});
+      state.category = sel.value;
+      ensureOrder();
+      save();
+      render();
+    });
   }
 
   // Click to flip
@@ -1921,21 +1592,10 @@ function endChallenge(){
   });
 
   document.getElementById("correctBtn").addEventListener("click", () => {
-  sounds.playCorrect();
-  trackAnswer(true);
-  state.correct += 1;
-  if(state.challengeMode) state.challengeScore++;
-  nextCard();
-  save();
-});
-
-document.getElementById("incorrectBtn").addEventListener("click", () => {
-  sounds.playIncorrect();
-  trackAnswer(false);
-  state.incorrect += 1;
-  nextCard();
-  save();
-});
+    state.correct += 1;
+    nextCard();
+    save();
+  });
 
   document.getElementById("incorrectBtn").addEventListener("click", () => {
     state.incorrect += 1;
@@ -1958,36 +1618,6 @@ document.getElementById("incorrectBtn").addEventListener("click", () => {
     save();
     render();
   });
-    document.getElementById("soundToggle").addEventListener("click", () => {
-  sounds.enabled = !sounds.enabled;
-  const btn = document.getElementById("soundToggle");
-  btn.textContent = sounds.enabled ? "🔊" : "🔇";
-  btn.classList.toggle("muted", !sounds.enabled);
-  save();
-      // Update sound button state
-document.getElementById("soundToggle").textContent = sounds.enabled ? "🔊" : "🔇";
-document.getElementById("soundToggle").classList.toggle("muted", !sounds.enabled);
-});
-
-document.getElementById("challengeBtn").addEventListener("click", () => {
-  if(state.challengeMode){
-    if(confirm("Exit current challenge?")){
-      state.challengeMode = false;
-      state.challengeCards = [];
-      document.getElementById("challengeBanner").classList.remove("active");
-      ensureOrder();
-      render();
-    }
-  } else {
-    startChallenge();
-  }
-});
-
-document.getElementById("modalCloseBtn").addEventListener("click", () => {
-  document.getElementById("challengeModal").classList.remove("active");
-  ensureOrder();
-  render();
-});
 
   // Keyboard
   window.addEventListener("keydown", (e) => {
@@ -2000,7 +1630,6 @@ document.getElementById("modalCloseBtn").addEventListener("click", () => {
       const c = currentCard();
       if(c){ state.masteredIds.add(c.id); ensureOrder(); save(); render(); }
     }
-    if(k === "c"){ document.getElementById("challengeBtn").click(); }
   });
 
   // Boot
@@ -2008,11 +1637,6 @@ document.getElementById("modalCloseBtn").addEventListener("click", () => {
   initDropdown();
   applyTheme(state.category);
   ensureOrder();
-  
-  // Update sound button state
-  document.getElementById("soundToggle").textContent = sounds.enabled ? "🔊" : "🔇";
-  document.getElementById("soundToggle").classList.toggle("muted", !sounds.enabled);
-  
   render();
 </script>
   <script>
