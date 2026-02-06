@@ -57,7 +57,6 @@
       flex-wrap:wrap;
       margin-bottom:16px;
     }
-
     select{
       padding:10px 12px;
       border-radius:10px;
@@ -2009,6 +2008,11 @@ document.getElementById("modalCloseBtn").addEventListener("click", () => {
   initDropdown();
   applyTheme(state.category);
   ensureOrder();
+  
+  // Update sound button state
+  document.getElementById("soundToggle").textContent = sounds.enabled ? "🔊" : "🔇";
+  document.getElementById("soundToggle").classList.toggle("muted", !sounds.enabled);
+  
   render();
 </script>
   <script>
