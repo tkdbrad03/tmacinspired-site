@@ -354,8 +354,7 @@
     </div>
 
     <script>
-  // Replace with your actual Google Apps Script Web App URL
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx1tFa60JphZwYWwhICT3qNxrA8RVMJSzPAgUqEEpl_1dpV70uNqX1wsJ5Web8fLavV/exec';
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx1tFa60JphZwYWwhICT3qNxrA8RVMJSzPAgUqEEpl_1dpV70uNqX1wsJ5Web8fLavV/exec";
 
   const form = document.getElementById("optinForm");
   const messageDiv = document.getElementById("message");
@@ -371,48 +370,38 @@
     const firstName = document.getElementById("firstName").value.trim();
     const email = document.getElementById("email").value.trim();
 
-    // Use a "simple" POST to avoid CORS/preflight issues
+    // simple POST (no headers) -> avoids CORS/preflight
     const body = new URLSearchParams({
-  firstName: data.firstName || "",
-  email: data.email || "",
-  source: data.source || "",
-  timestamp: data.timestamp || ""
-});
+      firstName,
+      email,
+      source: "Slay Your Shift Lead Magnet",
+      timestamp: new Date().toISOString(),
+    });
 
-await fetch(SCRIPT_URL, {
-  method: 'POST',
-  mode: 'no-cors',
-  body
-});
+    try {
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body,
+      });
 
-
-      // With no-cors we can't read the response, so we show a confirmation message
       showMessage("success", "Submitted. Check your email for the Slay Your Shift Guide.");
       form.reset();
 
-      setTimeout(() => {
-        submitBtn.disabled = false;
-        btnText.textContent = "Send Me The Guide";
-      }, 1500);
-
     } catch (error) {
+      console.error(error);
       showMessage("error", "Something went wrong. Please try again or email hello@tmacinspired.com.");
+    } finally {
       submitBtn.disabled = false;
       btnText.textContent = "Send Me The Guide";
-      console.error(error);
     }
   });
 
   function showMessage(type, text) {
     messageDiv.className = `message ${type} show`;
     messageDiv.textContent = text;
-
-    setTimeout(() => {
-      messageDiv.classList.remove("show");
-    }, 8000);
+    setTimeout(() => messageDiv.classList.remove("show"), 8000);
   }
 </script>
-
-
 </body>
 </html>
