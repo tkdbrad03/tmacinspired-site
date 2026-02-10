@@ -355,7 +355,7 @@
 
     <script>
   // Replace with your actual Google Apps Script Web App URL
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx1tFa60JphZwYWwhICT3qNxrA8RVMJSzPAgUqEEpl_1dpV70uNqX1wsJ5Web8fLavV/exec";
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx1tFa60JphZwYWwhICT3qNxrA8RVMJSzPAgUqEEpl_1dpV70uNqX1wsJ5Web8fLavV/exec';
 
   const form = document.getElementById("optinForm");
   const messageDiv = document.getElementById("message");
@@ -373,18 +373,18 @@
 
     // Use a "simple" POST to avoid CORS/preflight issues
     const body = new URLSearchParams({
-      firstName,
-      email,
-      source: "Slay Your Shift Lead Magnet",
-      timestamp: new Date().toISOString(),
-    });
+  firstName: data.firstName || "",
+  email: data.email || "",
+  source: data.source || "",
+  timestamp: data.timestamp || ""
+});
 
-    try {
-      await fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        body,
-      });
+await fetch(SCRIPT_URL, {
+  method: 'POST',
+  mode: 'no-cors',
+  body
+});
+
 
       // With no-cors we can't read the response, so we show a confirmation message
       showMessage("success", "Submitted. Check your email for the Slay Your Shift Guide.");
