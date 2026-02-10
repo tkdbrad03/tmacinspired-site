@@ -354,67 +354,65 @@
     </div>
 
     <script>
-        // Replace with your actual Google Apps Script Web App URL
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx1tFa60JphZwYWwhICT3qNxrA8RVMJSzPAgUqEEpl_1dpV70uNqX1wsJ5Web8fLavV/exec;
+  // Replace with your actual Google Apps Script Web App URL
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx1tFa60JphZwYWwhICT3qNxrA8RVMJSzPAgUqEEpl_1dpV70uNqX1wsJ5Web8fLavV/exec";
 
-        const form = document.getElementById('optinForm');
-        const messageDiv = document.getElementById('message');
-        const submitBtn = document.getElementById('submitBtn');
-        const btnText = document.getElementById('btnText');
+  const form = document.getElementById("optinForm");
+  const messageDiv = document.getElementById("message");
+  const submitBtn = document.getElementById("submitBtn");
+  const btnText = document.getElementById("btnText");
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            // Disable button
-            submitBtn.disabled = true;
-            btnText.textContent = 'Sending...';
-            
-            // Get form data
-            const formData = new FormData(form);
-            const data = {
-                firstName: formData.get('firstName'),
-                email: formData.get('email'),
-                source: 'Slay Your Shift Lead Magnet',
-                timestamp: new Date().toISOString()
-            };
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-            try {
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                });
+    submitBtn.disabled = true;
+    btnText.textContent = "Sending...";
 
-                // Show success message
-                showMessage('success', '🎉 Success! Check your email for the Slay Your Shift Guide.');
-                form.reset();
-                
-                // Reset button after 3 seconds
-                setTimeout(() => {
-                    submitBtn.disabled = false;
-                    btnText.textContent = 'Send Me The Guide';
-                }, 3000);
+    const firstName = document.getElementById("firstName").value.trim();
+    const email = document.getElementById("email").value.trim();
 
-            } catch (error) {
-                showMessage('error', 'Something went wrong. Please try again or email hello@tmacinspired.com');
-                submitBtn.disabled = false;
-                btnText.textContent = 'Send Me The Guide';
-            }
-        });
+    // Use a "simple" POST to avoid CORS/preflight issues
+    const body = new URLSearchParams({
+      firstName,
+      email,
+      source: "Slay Your Shift Lead Magnet",
+      timestamp: new Date().toISOString(),
+    });
 
-        function showMessage(type, text) {
-            messageDiv.className = `message ${type} show`;
-            messageDiv.textContent = text;
-            
-            // Hide after 8 seconds
-            setTimeout(() => {
-                messageDiv.classList.remove('show');
-            }, 8000);
-        }
-    </script>
+    try {
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body,
+      });
+
+      // With no-cors we can't read the response, so we show a confirmation message
+      showMessage("success", "Submitted. Check your email for the Slay Your Shift Guide.");
+      form.reset();
+
+      setTimeout(() => {
+        submitBtn.disabled = false;
+        btnText.textContent = "Send Me The Guide";
+      }, 1500);
+
+    } catch (error) {
+      showMessage("error", "Something went wrong. Please try again or email hello@tmacinspired.com.");
+      submitBtn.disabled = false;
+      btnText.textContent = "Send Me The Guide";
+      console.error(error);
+    }
+  });
+
+  function showMessage(type, text) {
+    messageDiv.className = `message ${type} show`;
+    messageDiv.textContent = text;
+
+    setTimeout(() => {
+      messageDiv.classList.remove("show");
+    }, 8000);
+  }
+</script>
+
 
 </body>
 </html>
