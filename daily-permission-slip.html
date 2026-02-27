@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Daily Permission Slip</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FAF7F2;
+    --warm-white: #FDF9F4;
+    --sage: #8FAF8C;
+    --sage-light: #C4D9C2;
+    --blush: #E8C4B0;
+    --blush-light: #F5E6DC;
+    --gold: #C9A96E;
+    --gold-light: #EDD9B5;
+    --text-dark: #3A3228;
+    --text-mid: #6B5D52;
+    --text-light: #9B8E87;
+    --shadow: rgba(58, 50, 40, 0.08);
+  }
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+font-family: ‘DM Sans’, sans-serif;
+background-color: var(–cream);
+color: var(–text-dark);
+min-height: 100vh;
+padding: 2rem 1rem 4rem;
+position: relative;
+overflow-x: hidden;
+}
+
+/* Organic background texture */
+body::before {
+content: ‘’;
+position: fixed;
+top: -50%;
+right: -20%;
+width: 70vw;
+height: 100vh;
+background: radial-gradient(ellipse at center, #F0EAE0 0%, transparent 70%);
+pointer-events: none;
+z-index: 0;
+}
+body::after {
+content: ‘’;
+position: fixed;
+bottom: -20%;
+left: -10%;
+width: 60vw;
+height: 80vh;
+background: radial-gradient(ellipse at center, #E8EDE5 0%, transparent 70%);
+pointer-events: none;
+z-index: 0;
+}
+
+.container {
+max-width: 680px;
+margin: 0 auto;
+position: relative;
+z-index: 1;
+}
+
+/* Header */
+.header {
+text-align: center;
+margin-bottom: 3rem;
+padding: 3rem 2rem 2.5rem;
+background: var(–warm-white);
+border-radius: 24px;
+box-shadow: 0 8px 40px var(–shadow);
+position: relative;
+overflow: hidden;
+animation: fadeUp 0.7s ease both;
+}
+.header::before {
+content: ‘’;
+position: absolute;
+top: 0; left: 0; right: 0;
+height: 4px;
+background: linear-gradient(90deg, var(–blush), var(–gold), var(–sage));
+}
+.header-decoration {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: 3.5rem;
+color: var(–gold-light);
+line-height: 1;
+margin-bottom: 0.5rem;
+letter-spacing: -1px;
+}
+.header h1 {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: 2.1rem;
+font-weight: 400;
+color: var(–text-dark);
+line-height: 1.2;
+margin-bottom: 0.6rem;
+}
+.header h1 em {
+font-style: italic;
+color: var(–gold);
+}
+.header p {
+font-size: 0.85rem;
+color: var(–text-light);
+font-weight: 300;
+letter-spacing: 0.08em;
+text-transform: uppercase;
+}
+
+/* Progress bar */
+.progress-section {
+background: var(–warm-white);
+border-radius: 16px;
+padding: 1.25rem 1.75rem;
+margin-bottom: 2rem;
+box-shadow: 0 4px 20px var(–shadow);
+animation: fadeUp 0.7s 0.1s ease both;
+display: flex;
+align-items: center;
+gap: 1.25rem;
+}
+.progress-label {
+font-size: 0.8rem;
+color: var(–text-light);
+letter-spacing: 0.06em;
+text-transform: uppercase;
+white-space: nowrap;
+flex-shrink: 0;
+}
+.progress-bar-wrap {
+flex: 1;
+background: var(–cream);
+border-radius: 100px;
+height: 8px;
+overflow: hidden;
+}
+.progress-bar-fill {
+height: 100%;
+width: 0%;
+border-radius: 100px;
+background: linear-gradient(90deg, var(–blush), var(–gold));
+transition: width 0.5s cubic-bezier(.4,0,.2,1);
+}
+.progress-count {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: 1.3rem;
+font-weight: 500;
+color: var(–gold);
+white-space: nowrap;
+flex-shrink: 0;
+}
+
+/* Sections */
+.section {
+background: var(–warm-white);
+border-radius: 20px;
+margin-bottom: 1.5rem;
+box-shadow: 0 4px 24px var(–shadow);
+overflow: hidden;
+animation: fadeUp 0.7s ease both;
+}
+.section:nth-child(3) { animation-delay: 0.15s; }
+.section:nth-child(4) { animation-delay: 0.25s; }
+.section:nth-child(5) { animation-delay: 0.35s; }
+.section:nth-child(6) { animation-delay: 0.45s; }
+
+.section-header {
+padding: 1.5rem 1.75rem 1.25rem;
+border-bottom: 1px solid rgba(58,50,40,0.06);
+display: flex;
+align-items: flex-start;
+gap: 0.75rem;
+}
+.section-num {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: 2.4rem;
+font-weight: 300;
+line-height: 1;
+margin-top: -4px;
+flex-shrink: 0;
+}
+.section-1 .section-num { color: var(–blush); }
+.section-2 .section-num { color: var(–sage); }
+.section-3 .section-num { color: var(–gold); }
+
+.section-title-wrap {}
+.section-title {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: 1.25rem;
+font-weight: 500;
+color: var(–text-dark);
+line-height: 1.2;
+}
+.section-subtitle {
+font-size: 0.78rem;
+color: var(–text-light);
+font-weight: 300;
+font-style: italic;
+margin-top: 0.2rem;
+}
+
+/* Checklist items */
+.checklist {
+padding: 0.5rem 0;
+}
+.check-item {
+display: flex;
+align-items: flex-start;
+padding: 0.85rem 1.75rem;
+gap: 1rem;
+cursor: pointer;
+transition: background 0.2s;
+border-bottom: 1px solid rgba(58,50,40,0.04);
+user-select: none;
+}
+.check-item:last-child { border-bottom: none; }
+.check-item:hover { background: rgba(201,169,110,0.04); }
+.check-item.checked { background: rgba(201,169,110,0.06); }
+
+.checkbox {
+width: 22px;
+height: 22px;
+border: 1.5px solid var(–gold-light);
+border-radius: 6px;
+flex-shrink: 0;
+margin-top: 1px;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: all 0.25s cubic-bezier(.4,0,.2,1);
+background: white;
+}
+.check-item.checked .checkbox {
+background: var(–gold);
+border-color: var(–gold);
+}
+.checkbox svg {
+opacity: 0;
+transform: scale(0.5);
+transition: all 0.2s cubic-bezier(.4,0,.2,1);
+}
+.check-item.checked .checkbox svg {
+opacity: 1;
+transform: scale(1);
+}
+
+.check-content { flex: 1; }
+.check-title {
+font-weight: 500;
+font-size: 0.92rem;
+color: var(–text-dark);
+margin-bottom: 0.15rem;
+transition: color 0.2s;
+line-height: 1.4;
+}
+.check-item.checked .check-title {
+color: var(–text-light);
+text-decoration: line-through;
+text-decoration-color: var(–gold-light);
+}
+.check-desc {
+font-size: 0.8rem;
+color: var(–text-light);
+font-weight: 300;
+line-height: 1.5;
+transition: color 0.2s;
+}
+.check-time {
+font-size: 0.72rem;
+color: var(–gold);
+font-weight: 500;
+letter-spacing: 0.05em;
+text-transform: uppercase;
+margin-top: 0.25rem;
+display: inline-block;
+}
+
+/* Affirmations */
+.affirmations-section {
+background: var(–warm-white);
+border-radius: 20px;
+margin-bottom: 1.5rem;
+box-shadow: 0 4px 24px var(–shadow);
+padding: 1.75rem;
+animation: fadeUp 0.7s 0.45s ease both;
+}
+.affirmations-section h3 {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: 1.1rem;
+font-weight: 400;
+color: var(–text-mid);
+margin-bottom: 1.25rem;
+letter-spacing: 0.04em;
+text-transform: uppercase;
+font-style: italic;
+}
+.affirmation {
+display: flex;
+align-items: flex-start;
+gap: 0.75rem;
+padding: 0.7rem 0;
+border-bottom: 1px solid rgba(58,50,40,0.05);
+cursor: pointer;
+transition: all 0.25s;
+}
+.affirmation:last-of-type { border-bottom: none; }
+.affirmation-dot {
+width: 8px;
+height: 8px;
+border-radius: 50%;
+background: var(–gold-light);
+flex-shrink: 0;
+margin-top: 5px;
+transition: background 0.25s;
+}
+.affirmation.active .affirmation-dot { background: var(–gold); }
+.affirmation-text {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: 1.05rem;
+font-weight: 400;
+color: var(–text-mid);
+line-height: 1.5;
+font-style: italic;
+transition: color 0.25s;
+}
+.affirmation.active .affirmation-text { color: var(–text-dark); }
+.affirmation-note {
+font-size: 0.75rem;
+color: var(–text-light);
+margin-top: 0.2rem;
+font-style: normal;
+font-family: ‘DM Sans’, sans-serif;
+}
+
+/* Instructions */
+.instructions {
+background: var(–warm-white);
+border-radius: 20px;
+padding: 1.75rem;
+box-shadow: 0 4px 24px var(–shadow);
+animation: fadeUp 0.7s 0.55s ease both;
+border-left: 3px solid var(–sage-light);
+}
+.instructions h3 {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: 1rem;
+font-weight: 500;
+color: var(–text-mid);
+margin-bottom: 0.9rem;
+letter-spacing: 0.06em;
+text-transform: uppercase;
+}
+.instructions p {
+font-size: 0.84rem;
+color: var(–text-light);
+line-height: 1.7;
+margin-bottom: 0.5rem;
+}
+.instructions p:last-child { margin-bottom: 0; }
+.instructions strong { color: var(–text-mid); font-weight: 500; }
+
+/* Celebration overlay */
+.celebration {
+display: none;
+position: fixed;
+top: 0; left: 0; right: 0; bottom: 0;
+background: rgba(250,247,242,0.95);
+z-index: 100;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+text-align: center;
+padding: 2rem;
+animation: fadeIn 0.4s ease;
+}
+.celebration.show { display: flex; }
+.celebration-emoji {
+font-size: 4rem;
+margin-bottom: 1.5rem;
+animation: bounce 0.6s ease;
+}
+.celebration h2 {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: 2.5rem;
+font-weight: 300;
+color: var(–text-dark);
+margin-bottom: 0.75rem;
+}
+.celebration p {
+font-size: 1rem;
+color: var(–text-light);
+max-width: 400px;
+line-height: 1.6;
+margin-bottom: 2rem;
+}
+.close-btn {
+background: var(–gold);
+color: white;
+border: none;
+padding: 0.75rem 2rem;
+border-radius: 100px;
+font-family: ‘DM Sans’, sans-serif;
+font-size: 0.9rem;
+cursor: pointer;
+transition: background 0.2s;
+}
+.close-btn:hover { background: var(–text-mid); }
+
+/* Reset */
+.reset-btn {
+display: block;
+margin: 1.5rem auto 0;
+background: transparent;
+color: var(–text-light);
+border: 1px solid var(–gold-light);
+padding: 0.6rem 1.75rem;
+border-radius: 100px;
+font-family: ‘DM Sans’, sans-serif;
+font-size: 0.8rem;
+cursor: pointer;
+transition: all 0.2s;
+letter-spacing: 0.05em;
+animation: fadeUp 0.7s 0.65s ease both;
+}
+.reset-btn:hover { background: var(–warm-white); color: var(–text-mid); }
+
+/* Footer */
+.footer {
+text-align: center;
+margin-top: 2rem;
+padding: 1.5rem;
+animation: fadeUp 0.7s 0.75s ease both;
+}
+.footer-divider {
+display: flex;
+align-items: center;
+gap: 0.75rem;
+justify-content: center;
+margin-bottom: 1rem;
+}
+.footer-line {
+height: 1px;
+width: 60px;
+background: linear-gradient(90deg, transparent, var(–gold-light));
+}
+.footer-line.right {
+background: linear-gradient(90deg, var(–gold-light), transparent);
+}
+.footer-star { color: var(–gold-light); font-size: 0.65rem; }
+.footer-text {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: 0.82rem;
+color: var(–text-light);
+letter-spacing: 0.14em;
+text-transform: uppercase;
+font-style: italic;
+}
+.footer-name {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: 1.15rem;
+font-weight: 500;
+color: var(–gold);
+letter-spacing: 0.06em;
+margin-top: 0.25rem;
+}
+
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(20px); }
+to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+from { opacity: 0; }
+to { opacity: 1; }
+}
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+40% { transform: translateY(-20px); }
+70% { transform: translateY(-8px); }
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div class="header-decoration">✦</div>
+    <h1>My Daily <em>Permission Slip</em></h1>
+    <p>Reclaiming my energy, one small shift at a time</p>
+  </div>
+
+  <div class="progress-section">
+    <span class="progress-label">Today's Progress</span>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+    <span class="progress-count" id="progressCount">0 / 10</span>
+  </div>
+
+  <!-- Part 1 -->
+
+  <div class="section section-1">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="section-title-wrap">
+        <div class="section-title">Daytime Micro-Transitions</div>
+        <div class="section-subtitle">Interrupting the burnout cycle.</div>
+      </div>
+    </div>
+    <div class="checklist">
+      <div class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4L4.5 7.5L11 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-content">
+          <div class="check-title">Sensory Reset</div>
+          <div class="check-desc">Focus on one physical sensation (feet on floor, wind on face) to ground your nervous system.</div>
+          <span class="check-time">2 mins</span>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4L4.5 7.5L11 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-content">
+          <div class="check-title">The Bridge Ritual</div>
+          <div class="check-desc">Create a physical "barrier" between roles: wash your hands or change your clothes when finishing work.</div>
+          <span class="check-time">5 mins</span>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4L4.5 7.5L11 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-content">
+          <div class="check-title">Digital Fast</div>
+          <div class="check-desc">Put the phone in a drawer. Sit in the quiet without consuming any new information.</div>
+          <span class="check-time">10 mins</span>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4L4.5 7.5L11 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-content">
+          <div class="check-title">Mindful Sipping</div>
+          <div class="check-desc">Drink half your beverage in total silence. No scrolling, no planning, just tasting.</div>
+          <span class="check-time">5 mins</span>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4L4.5 7.5L11 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-content">
+          <div class="check-title">The 20-20 Rule</div>
+          <div class="check-desc">Every hour, look at something 20 feet away for 20 seconds to give your brain a micro-break.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Part 2 -->
+
+  <div class="section section-2">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div class="section-title-wrap">
+        <div class="section-title">Evening Wind-Down</div>
+        <div class="section-subtitle">Closing the day with intention.</div>
+      </div>
+    </div>
+    <div class="checklist">
+      <div class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4L4.5 7.5L11 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-content">
+          <div class="check-title">Screen Curfew</div>
+          <div class="check-desc">Power down devices 60 minutes before bed to allow melatonin to rise naturally.</div>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4L4.5 7.5L11 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-content">
+          <div class="check-title">Brain Dump</div>
+          <div class="check-desc">Write every lingering "to-do" or worry on paper so your brain can stop "holding" them.</div>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4L4.5 7.5L11 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-content">
+          <div class="check-title">Sensory Shift</div>
+          <div class="check-desc">Dim the overhead lights and use lamps or candles to signal your body it is nighttime.</div>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4L4.5 7.5L11 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-content">
+          <div class="check-title">Temperature Reset</div>
+          <div class="check-desc">A warm shower or bath 90 minutes before bed to trigger biological sleepiness.</div>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggle(this)">
+        <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4L4.5 7.5L11 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-content">
+          <div class="check-title">Physical Release</div>
+          <div class="check-desc">5 minutes of gentle stretching to unlock tension in the jaw, neck, and shoulders.</div>
+          <span class="check-time">5 mins</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Part 3 Affirmations -->
+
+  <div class="affirmations-section section-3">
+    <div style="display:flex;align-items:flex-start;gap:0.75rem;margin-bottom:1.25rem;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:300;color:var(--gold);line-height:1;margin-top:-4px;flex-shrink:0;">03</div>
+      <div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:500;color:var(--text-dark);">Today's Permission Slip</div>
+        <div style="font-size:0.78rem;color:var(--text-light);font-style:italic;margin-top:0.2rem;">I am a human being, not a "human doing."</div>
+      </div>
+    </div>
+    <h3>My Affirmations for Today</h3>
+    <div class="affirmation" onclick="this.classList.toggle('active')">
+      <div class="affirmation-dot"></div>
+      <div>
+        <div class="affirmation-text">I have done enough; I am allowed to leave the rest for tomorrow.</div>
+        <div class="affirmation-note">Tap to claim this as yours today</div>
+      </div>
+    </div>
+    <div class="affirmation" onclick="this.classList.toggle('active')">
+      <div class="affirmation-dot"></div>
+      <div>
+        <div class="affirmation-text">My worth is not defined by my productivity.</div>
+        <div class="affirmation-note">Tap to claim this as yours today</div>
+      </div>
+    </div>
+    <div class="affirmation" onclick="this.classList.toggle('active')">
+      <div class="affirmation-dot"></div>
+      <div>
+        <div class="affirmation-text">I am safe to let go and rest.</div>
+        <div class="affirmation-note">Tap to claim this as yours today</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="instructions">
+    <h3>How to Use This</h3>
+    <p><strong>Don't aim for perfection.</strong> If you only check off one box, that is a win.</p>
+    <p><strong>Listen to your body.</strong> Which of these feels like a "sigh of relief"? Start there.</p>
+  </div>
+
+<button class="reset-btn" onclick="resetAll()">Reset for a new day</button>
+
+  <div class="footer">
+    <div class="footer-divider">
+      <div class="footer-line"></div>
+      <span class="footer-star">✦</span>
+      <div class="footer-line right"></div>
+    </div>
+    <div class="footer-text">A TMac Inspired Experience</div>
+    <div class="footer-name">Dr. TMac</div>
+  </div>
+
+</div>
+
+<!-- Celebration -->
+
+<div class="celebration" id="celebration">
+  <div class="celebration-emoji">🌸</div>
+  <h2>You showed up for yourself.</h2>
+  <p>Every box you checked was an act of self-compassion. Rest well, and know that your worth was never on that checklist.</p>
+  <button class="close-btn" onclick="document.getElementById('celebration').classList.remove('show')">Receive this ✦</button>
+</div>
+
+<script>
+  const TOTAL = 10;
+
+  function toggle(el) {
+    el.classList.toggle('checked');
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const checked = document.querySelectorAll('.check-item.checked').length;
+    const pct = (checked / TOTAL) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressCount').textContent = checked + ' / ' + TOTAL;
+    if (checked === TOTAL) {
+      setTimeout(() => document.getElementById('celebration').classList.add('show'), 400);
+    }
+  }
+
+  function resetAll() {
+    document.querySelectorAll('.check-item.checked').forEach(el => el.classList.remove('checked'));
+    document.querySelectorAll('.affirmation.active').forEach(el => el.classList.remove('active'));
+    updateProgress();
+  }
+</script>
+
+</body>
+</html>
