@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nurse Ownership Roadmap | Dr. TMac</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pine: #1f4236;
+            --pine-mid: #2a5a48;
+            --gold: #c5a059;
+            --gold-light: #dfc080;
+            --gold-pale: #f5e8c8;
+            --white: #ffffff;
+            --off-white: #faf8f4;
+            --text-mid: #4a6a5a;
+            --text-light: #7a9a8a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            background-color: var(--white);
+            color: var(--pine);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .page-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 1rem 3rem;
+        }
+
+        .topbar {
+            width: 100%;
+            max-width: 760px;
+            display: flex;
+            justify-content: center;
+            padding: 1.5rem 0 0;
+            animation: fadeDown 0.6s ease both;
+        }
+        .brand-mark { display: flex; align-items: center; justify-content: center; }
+        .brand-logo { height: 64px; width: auto; display: block; }
+
+            color: var(--pine);
+        }
+
+        .hero {
+            max-width: 760px;
+            width: 100%;
+            text-align: center;
+            padding: 2.5rem 0.5rem 1.5rem;
+            animation: fadeUp 0.7s 0.1s ease both;
+        }
+
+        .eyebrow {
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--pine);
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+        .eyebrow::before, .eyebrow::after {
+            content: '';
+            display: inline-block;
+            width: 32px;
+            height: 1px;
+            background: var(--pine);
+            opacity: 0.35;
+        }
+
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.4rem, 6vw, 3.8rem);
+            font-weight: 400;
+            line-height: 1.1;
+            color: var(--pine);
+            margin-bottom: 1.25rem;
+        }
+        .hero h1 em { font-style: italic; color: var(--gold); }
+
+        .hero-sub {
+            font-size: 1rem;
+            font-weight: 300;
+            color: var(--text-mid);
+            max-width: 520px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .divider {
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 2rem auto;
+        }
+
+        .video-section {
+            max-width: 760px;
+            width: 100%;
+            animation: fadeUp 0.7s 0.25s ease both;
+        }
+
+        .video-wrapper {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 0 0 1px rgba(197,160,89,0.25), 0 24px 60px rgba(31,66,54,0.12);
+        }
+        .video-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            border: 1px solid rgba(197,160,89,0.2);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            background: #000;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border: 0;
+        }
+
+        .cta-section {
+            max-width: 760px;
+            width: 100%;
+            text-align: center;
+            padding: 2rem 1rem 0;
+            animation: fadeUp 0.7s 0.4s ease both;
+        }
+        .cta-label {
+            font-size: 0.72rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 1.1rem 3rem;
+            background: var(--pine);
+            color: var(--white);
+            text-decoration: none;
+            font-family: 'Jost', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(31,66,54,0.2);
+        }
+        .cta-button:hover {
+            background: var(--gold);
+            color: var(--pine);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 16px 40px rgba(197,160,89,0.35);
+        }
+
+        .quote-section {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            margin-top: 2.5rem;
+            padding: 1.5rem 1.25rem;
+            background: var(--off-white);
+            border-radius: 16px;
+            border: 1px solid var(--gold-pale);
+            animation: fadeUp 0.7s 0.5s ease both;
+        }
+        .quote-mark {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4rem;
+            color: var(--gold);
+            opacity: 0.4;
+            line-height: 0.5;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        .quote-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.25rem, 3vw, 1.55rem);
+            font-weight: 300;
+            font-style: italic;
+            color: var(--pine-mid);
+            line-height: 1.55;
+            margin-bottom: 1rem;
+        }
+        .quote-attr {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 500;
+        }
+
+        .footer {
+            margin-top: 3.5rem;
+            text-align: center;
+            animation: fadeUp 0.7s 0.6s ease both;
+        }
+        .footer-divider {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        .footer-line { height: 1px; width: 50px; background: linear-gradient(90deg, transparent, rgba(197,160,89,0.5)); }
+        .footer-line.r { background: linear-gradient(90deg, rgba(197,160,89,0.5), transparent); }
+        .footer-star-sm { color: var(--gold); font-size: 0.55rem; opacity: 0.7; }
+        .footer-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-style: italic;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mobile-first base styles already set; enhance for larger screens */
+        @media (min-width: 480px) {
+            .hero { padding: 4rem 1.5rem 3rem; }
+            .brand-logo { height: 90px; }
+        }
+        @media (min-width: 768px) {
+            .hero { padding: 5rem 2rem 3rem; }
+            .brand-logo { height: 100px; }
+            .cta-button { padding: 1.2rem 3.5rem; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrap">
+
+    <div class="topbar">
+        <div class="brand-mark">
+            <img class="brand-logo" src="https://raw.githubusercontent.com/tkdbrad03/tmacinspired-site/main/tmac-logo.png" alt="TMac Inspired" />
+        </div>
+    </div>
+
+    <div class="hero">
+        <div class="eyebrow">From Nurse to Owner</div>
+        <h1>Your Roadmap to <em>Ownership</em></h1>
+        <p class="hero-sub">I'm not just a nurse with a laptop. I'm doing real estate deals and building exit strategies that work.</p>
+        <div class="divider"></div>
+    </div>
+
+    <div class="video-section">
+        <div class="video-wrapper">
+            <div class="video-container">
+                <iframe
+                    src="https://www.youtube.com/embed/KoQ-S7DSCJQ?rel=0&modestbranding=1"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <div class="cta-section">
+        <p class="cta-label">Ready to take the first step?</p>
+        <a href="https://calendar.app.google/dzKzciyJusRosk1H9" class="cta-button">
+            Book My Strategy Session
+        </a>
+    </div>
+
+    <div class="quote-section">
+        <span class="quote-mark">"</span>
+        <p class="quote-text">You aren't a worker bee. You're a business owner in training.</p>
+        <span class="quote-attr">— Dr. TMac</span>
+    </div>
+
+    <div class="footer">
+        <div class="footer-divider">
+            <div class="footer-line"></div>
+            <span class="footer-star-sm">✦</span>
+            <div class="footer-line r"></div>
+        </div>
+        <p class="footer-text">A TMac Inspired Experience</p>
+    </div>
+
+</div>
+</body>
+</html>
