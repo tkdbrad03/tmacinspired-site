@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "TMac Inspired Fasting App",
   "engines": {
-    "node": "18.x"
+    "node": "22.x"
   },
   "scripts": {
     "postinstall": "prisma generate"
