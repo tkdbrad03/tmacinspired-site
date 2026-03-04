@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fast & Still | TMac Inspired</title>
+
+  <!-- Fonts (kept elegant + readable) -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ───────────────────────────────────────────────────────────────
+      TMAC INSPIRED BRAND THEME
+      Palette: soft rose, deep mauve, warm brown, off-white, black
+    ─────────────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* Core */
+      --cream: #fbf7f4;          /* off-white */
+      --warm-white: #f7f0ec;     /* warm off-white */
+      --stone: #eadfd9;          /* soft border neutral */
+      --taupe: #c9b6ad;          /* warm taupe */
+      --warm-gray: #8b7c74;      /* muted text */
+      --charcoal: #141210;       /* near-black */
+      --black: #0b0a09;
+
+      /* Brand accents */
+      --rose: #e1b6b6;           /* soft rose */
+      --mauve: #6e3d51;          /* deep mauve */
+      --brown: #5a3b2e;          /* warm brown */
+
+      /* UI accents */
+      --accent: var(--mauve);
+      --accent-light: rgba(110, 61, 81, 0.08);
+      --gold: #c9a961;           /* subtle luxe */
+      --danger: #b56a5a;         /* warm alert */
+
+      /* Ring */
+      --ring-track: var(--stone);
+      --ring-early: rgba(20, 18, 16, 0.35);
+      --ring-mid: var(--mauve);
+      --ring-late: var(--gold);
+
+      /* Shadows */
+      --shadow: 0 14px 40px rgba(0,0,0,0.10);
+      --shadow-soft: 0 10px 28px rgba(0,0,0,0.08);
+
+      /* Radius */
+      --r-lg: 18px;
+      --r-md: 14px;
+      --r-pill: 999px;
+    }
+
+    body {
+      font-family: "DM Sans", sans-serif;
+      background: radial-gradient(1200px 600px at 30% -10%, rgba(225,182,182,0.25), transparent 55%),
+                  radial-gradient(900px 520px at 95% 0%, rgba(110,61,81,0.12), transparent 55%),
+                  var(--cream);
+      color: var(--charcoal);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 28px;
+      border-bottom: 1px solid var(--stone);
+      position: sticky;
+      top: 0;
+      background: rgba(251,247,244,0.92);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+    }
+
+    .logo {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      line-height: 1.1;
+    }
+
+    .logo .brand {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--charcoal);
+    }
+
+    .logo .brand em {
+      color: var(--mauve);
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    .logo .sub {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--warm-white);
+      border-radius: var(--r-pill);
+      padding: 4px;
+      border: 1px solid var(--stone);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .nav-tab {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 7px 16px;
+      border-radius: var(--r-pill);
+      border: none;
+      background: transparent;
+      color: var(--warm-gray);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .nav-tab.active {
+      background: linear-gradient(135deg, rgba(110,61,81,0.95), rgba(90,59,46,0.95));
+      color: white;
+    }
+
+    /* VIEWS */
+    .view {
+      display: none;
+      padding: 38px 28px;
+      max-width: 720px;
+      margin: 0 auto;
+      animation: fadeIn 0.28s ease;
+    }
+    .view.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* SECTION HEADERS */
+    .section-title {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 30px;
+      font-weight: 400;
+      margin-bottom: 6px;
+      letter-spacing: 0.02em;
+    }
+    .section-sub {
+      font-size: 13px;
+      color: var(--warm-gray);
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    /* TIMER VIEW */
+    .fast-select {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 34px;
+    }
+
+    .fast-option {
+      flex: 1;
+      padding: 16px;
+      border: 1.5px solid var(--stone);
+      border-radius: var(--r-lg);
+      background: rgba(255,255,255,0.82);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .fast-option:hover { border-color: rgba(110,61,81,0.35); transform: translateY(-1px); }
+    .fast-option.selected {
+      border-color: rgba(110,61,81,0.55);
+      background: linear-gradient(180deg, rgba(110,61,81,0.08), rgba(225,182,182,0.10));
+    }
+
+    .fast-option .hours {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 40px;
+      font-weight: 400;
+      color: var(--charcoal);
+      line-height: 1;
+    }
+
+    .fast-option .label {
+      font-size: 11px;
+      color: var(--warm-gray);
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .fast-option .badge {
+      display: inline-block;
+      font-size: 10px;
+      background: linear-gradient(135deg, rgba(201,169,97,0.98), rgba(110,61,81,0.92));
+      color: white;
+      border-radius: var(--r-pill);
+      padding: 3px 10px;
+      margin-top: 8px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.10);
+    }
+
+    /* MOTIVATION */
+    .motivation-card {
+      background: rgba(247,240,236,0.86);
+      border: 1px solid var(--stone);
+      border-radius: var(--r-lg);
+      padding: 18px 22px;
+      margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .motivation-card::before {
+      content: "“";
+      font-family: "Cormorant Garamond", serif;
+      font-size: 120px;
+      color: rgba(234,223,217,0.95);
+      position: absolute;
+      top: -24px;
+      left: 12px;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .motivation-kicker {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+    }
+
+    .motivation-text {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 18px;
+      font-style: italic;
+      color: var(--charcoal);
+      line-height: 1.45;
+      padding-left: 24px;
+      padding-right: 64px;
+      transition: opacity 0.35s ease;
+    }
+
+    /* CLOCK */
+    .clock-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 34px 0 10px;
+    }
+
+    .clock-ring {
+      position: relative;
+      width: 270px;
+      height: 270px;
+      margin-bottom: 26px;
+    }
+
+    .clock-ring svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+      filter: drop-shadow(0 14px 26px rgba(0,0,0,0.12));
+    }
+
+    .clock-ring .track { fill: none; stroke: var(--ring-track); stroke-width: 4; }
+    .clock-ring .progress {
+      fill: none;
+      stroke: var(--ring-mid);
+      stroke-width: 4;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1s linear, stroke 0.6s ease;
+    }
+
+    .clock-inner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      width: 78%;
+    }
+
+    .phase-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--mauve);
+      background: rgba(110,61,81,0.10);
+      border: 1px solid rgba(110,61,81,0.18);
+      border-radius: var(--r-pill);
+      padding: 6px 14px;
+      margin-bottom: 12px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .phase-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--mauve);
+      border-radius: 50%;
+      animation: pulse 2.4s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(0.84); }
+    }
+
+    .time-display {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 54px;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: var(--charcoal);
+    }
+
+    .time-label {
+      font-size: 11px;
+      color: var(--warm-gray);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    /* Start time */
+    .start-info {
+      text-align: center;
+      margin-bottom: 18px;
+      font-size: 13px;
+      color: var(--warm-gray);
+    }
+    .start-info span { color: var(--charcoal); font-weight: 600; }
+
+    /* BUTTONS */
+    .btn-primary {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, rgba(110,61,81,0.98), rgba(90,59,46,0.98));
+      color: white;
+      border: none;
+      border-radius: var(--r-md);
+      font-family: "DM Sans", sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform 0.15s ease, filter 0.15s ease;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.16);
+    }
+
+    .btn-primary:hover { transform: translateY(-1px); filter: brightness(1.02); }
+
+    .btn-primary.running {
+      background: linear-gradient(135deg, rgba(181,106,90,0.98), rgba(110,61,81,0.92));
+    }
+
+    .btn-secondary {
+      width: 100%;
+      padding: 14px;
+      background: transparent;
+      color: var(--warm-gray);
+      border: 1.5px solid var(--stone);
+      border-radius: var(--r-md);
+      font-family: "DM Sans", sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      margin-top: 10px;
+    }
+
+    .btn-secondary:hover { border-color: rgba(110,61,81,0.35); color: var(--charcoal); }
+
+    /* TRACKER VIEW */
+    .week-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .week-nav { display: flex; gap: 8px; align-items: center; }
+    .week-nav button {
+      background: rgba(247,240,236,0.86);
+      border: 1px solid var(--stone);
+      border-radius: 10px;
+      width: 34px;
+      height: 34px;
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--warm-gray);
+      transition: all 0.15s ease;
+      box-shadow: var(--shadow-soft);
+    }
+    .week-nav button:hover { border-color: rgba(110,61,81,0.30); color: var(--charcoal); }
+
+    .week-label { font-size: 13px; font-weight: 700; color: var(--charcoal); letter-spacing: 0.02em; }
+
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    .day-cell {
+      aspect-ratio: 1;
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px solid var(--stone);
+      background: rgba(255,255,255,0.86);
+      transition: all 0.18s ease;
+      cursor: default;
+      position: relative;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .day-cell .day-name {
+      font-size: 10px;
+      color: var(--warm-gray);
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+
+    .day-cell .day-icon { font-size: 18px; color: var(--charcoal); }
+
+    .day-cell.complete-16 {
+      border-color: rgba(110,61,81,0.45);
+      background: linear-gradient(180deg, rgba(110,61,81,0.08), rgba(255,255,255,0.70));
+    }
+    .day-cell.complete-24 {
+      border-color: rgba(201,169,97,0.70);
+      background: linear-gradient(180deg, rgba(201,169,97,0.14), rgba(255,255,255,0.70));
+    }
+    .day-cell.today { box-shadow: 0 0 0 2px rgba(20,18,16,0.85), var(--shadow-soft); }
+
+    /* GOAL CARDS */
+    .goal-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 10px; }
+
+    .goal-card {
+      background: rgba(255,255,255,0.88);
+      border: 1.5px solid var(--stone);
+      border-radius: var(--r-lg);
+      padding: 18px;
+      transition: border-color 0.2s, transform 0.2s;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .goal-card.met {
+      border-color: rgba(110,61,81,0.55);
+      background: linear-gradient(180deg, rgba(110,61,81,0.10), rgba(255,255,255,0.78));
+    }
+    .goal-card.met-gold {
+      border-color: rgba(201,169,97,0.70);
+      background: linear-gradient(180deg, rgba(201,169,97,0.16), rgba(255,255,255,0.78));
+    }
+
+    .goal-card-label {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      margin-bottom: 8px;
+      font-weight: 800;
+    }
+
+    .goal-card-value {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 42px;
+      font-weight: 400;
+      line-height: 1;
+      color: var(--charcoal);
+    }
+
+    .goal-card-sub { font-size: 12px; color: var(--warm-gray); margin-top: 6px; line-height: 1.45; }
+
+    .goal-dots { display: flex; gap: 6px; margin-top: 10px; }
+    .goal-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: rgba(234,223,217,0.95);
+      border: 1px solid rgba(201,182,173,0.55);
+    }
+    .goal-dot.filled { background: var(--mauve); border-color: rgba(110,61,81,0.45); }
+    .goal-dot.filled-gold { background: var(--gold); border-color: rgba(201,169,97,0.55); }
+
+    /* HISTORY VIEW */
+    .history-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .history-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255,255,255,0.88);
+      border: 1px solid var(--stone);
+      border-radius: 16px;
+      padding: 14px 16px;
+      transition: border-color 0.2s, transform 0.2s;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .history-item:hover { border-color: rgba(110,61,81,0.26); transform: translateY(-1px); }
+
+    .history-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+      border: 1px solid var(--stone);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.07);
+      background: rgba(247,240,236,0.86);
+    }
+
+    .history-icon.h16 { background: rgba(110,61,81,0.08); border-color: rgba(110,61,81,0.18); }
+    .history-icon.h24 { background: rgba(201,169,97,0.14); border-color: rgba(201,169,97,0.35); }
+
+    .history-info { flex: 1; }
+
+    .history-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--charcoal);
+      margin-bottom: 2px;
+      letter-spacing: 0.01em;
+    }
+
+    .history-date { font-size: 12px; color: var(--warm-gray); line-height: 1.4; }
+
+    .history-duration {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--charcoal);
+      letter-spacing: 0.01em;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 56px 18px;
+      color: var(--warm-gray);
+    }
+
+    .empty-state .empty-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 16px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(225,182,182,0.35), rgba(110,61,81,0.12));
+      border: 1px solid rgba(234,223,217,0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-soft);
+      color: var(--mauve);
+      font-family: "Cormorant Garamond", serif;
+      font-size: 28px;
+    }
+
+    .empty-state p { font-size: 14px; line-height: 1.6; }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 26px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(20,18,16,0.95);
+      color: white;
+      padding: 12px 18px;
+      border-radius: var(--r-pill);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      z-index: 999;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      white-space: nowrap;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.20);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* Mobile */
+    @media (max-width: 480px) {
+      nav { padding: 16px 18px; }
+      .view { padding: 26px 18px; }
+      .fast-select { gap: 8px; }
+      .time-display { font-size: 46px; }
+      .clock-ring { width: 230px; height: 230px; }
+      .goal-cards { gap: 10px; }
+      .logo .sub { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <div class="logo">
+      <div class="brand">Fast <em>&</em> Still</div>
+      <div class="sub">TMac Inspired</div>
+    </div>
+
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="switchView('timer', this)">Fast</button>
+      <button class="nav-tab" onclick="switchView('tracker', this)">Week</button>
+      <button class="nav-tab" onclick="switchView('history', this)">Log</button>
+    </div>
+  </nav>
+
+  <!-- TIMER VIEW -->
+  <div class="view active" id="view-timer">
+    <div class="fast-select">
+      <div class="fast-option selected" onclick="selectFast(16, this)">
+        <div class="hours">16</div>
+        <div class="label">hours</div>
+        <div class="badge">4 per week</div>
+      </div>
+      <div class="fast-option" onclick="selectFast(24, this)">
+        <div class="hours">24</div>
+        <div class="label">hours</div>
+        <div class="badge">1 per week</div>
+      </div>
+    </div>
+
+    <div class="motivation-card">
+      <div class="motivation-kicker">Stillness guidance</div>
+      <div class="motivation-text" id="motivationText">Every hour of fasting is a quiet act of self-mastery.</div>
+    </div>
+
+    <div class="clock-container">
+      <div id="phaseBadge" class="phase-badge" style="display:none">
+        <div class="phase-dot"></div>
+        <span id="phaseText">Fasting</span>
+      </div>
+
+      <div class="clock-ring">
+        <svg viewBox="0 0 260 260" aria-label="Fasting progress">
+          <circle class="track" cx="130" cy="130" r="116"></circle>
+          <circle class="progress" id="progressRing" cx="130" cy="130" r="116"
+                  stroke-dasharray="729"
+                  stroke-dashoffset="729"></circle>
+        </svg>
+
+        <div class="clock-inner">
+          <div class="time-display" id="timeDisplay">00:00:00</div>
+          <div class="time-label" id="timeLabel">ready to begin</div>
+        </div>
+      </div>
+
+      <div class="start-info" id="startInfo" style="display:none">
+        Started at <span id="startTimeDisplay">—</span>
+        &nbsp;·&nbsp; Ends at <span id="endTimeDisplay">—</span>
+      </div>
+    </div>
+
+    <button class="btn-primary" id="mainBtn" onclick="toggleFast()">Begin Fast</button>
+    <button class="btn-secondary" id="cancelBtn" style="display:none" onclick="cancelFast()">Cancel Fast</button>
+  </div>
+
+  <!-- TRACKER VIEW -->
+  <div class="view" id="view-tracker">
+    <div class="section-title">This Week</div>
+    <div class="section-sub">Track your 16-hour and 24-hour fasting goals.</div>
+
+    <div class="week-header">
+      <div class="week-label" id="weekRangeLabel">—</div>
+      <div class="week-nav">
+        <button onclick="changeWeek(-1)" aria-label="Previous week">‹</button>
+        <button onclick="changeWeek(1)" aria-label="Next week">›</button>
+      </div>
+    </div>
+
+    <div class="week-grid" id="weekGrid"></div>
+
+    <div class="goal-cards">
+      <div class="goal-card" id="goalCard16">
+        <div class="goal-card-label">16-hour fasts</div>
+        <div class="goal-card-value" id="count16">0<span style="font-size:20px;color:var(--taupe)">/4</span></div>
+        <div class="goal-card-sub" id="sub16">0 of 4 this week</div>
+        <div class="goal-dots" id="dots16"></div>
+      </div>
+
+      <div class="goal-card" id="goalCard24">
+        <div class="goal-card-label">24-hour fast</div>
+        <div class="goal-card-value" id="count24">0<span style="font-size:20px;color:var(--taupe)">/1</span></div>
+        <div class="goal-card-sub" id="sub24">0 of 1 this week</div>
+        <div class="goal-dots" id="dots24"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORY VIEW -->
+  <div class="view" id="view-history">
+    <div class="section-title">Fasting Log</div>
+    <div class="section-sub">Your completed fasts.</div>
+    <div class="history-list" id="historyList"></div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ─── STATE ───────────────────────────────────────────────────────────
+    const STORAGE_KEY = "fastAndStill_tmac_v1";
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : { history: [], activeFast: null };
+      } catch {
+        return { history: [], activeFast: null };
+      }
+    }
+
+    function saveState() {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch {}
+    }
+
+    let state = loadState();
+    let selectedHours = 16;
+    let timerInterval = null;
+    let currentWeekOffset = 0;
+    let motivationInterval = null;
+
+    // ─── MOTIVATIONS ─────────────────────────────────────────────────────
+    const motivations = [
+      "Every hour of fasting is a quiet act of self-mastery.",
+      "Stillness is where your body does its best healing.",
+      "You are not hungry. You are becoming.",
+      "Your discipline today is your energy tomorrow.",
+      "This silence feeds something deeper than appetite.",
+      "The body knows how to heal. Give it space.",
+      "Restraint is a refined strength.",
+      "Each fast is a conversation with your highest self.",
+      "The hunger passes. The clarity stays.",
+      "You have done harder things. This is just time.",
+      "Fasting is not missing out. It is waking up.",
+      "Let the discomfort be evidence of your power.",
+      "You do not negotiate with cravings."
+    ];
+
+    function rotateMotive() {
+      const el = document.getElementById("motivationText");
+      el.style.opacity = "0";
+      setTimeout(() => {
+        el.textContent = motivations[Math.floor(Math.random() * motivations.length)];
+        el.style.opacity = "1";
+      }, 350);
+    }
+
+    // ─── NAV ─────────────────────────────────────────────────────────────
+    function switchView(name, btnEl) {
+      document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+      document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+
+      document.getElementById("view-" + name).classList.add("active");
+      if (btnEl) btnEl.classList.add("active");
+
+      if (name === "tracker") renderTracker();
+      if (name === "history") renderHistory();
+    }
+
+    // ─── FAST SELECT ─────────────────────────────────────────────────────
+    function selectFast(hours, el) {
+      if (state.activeFast) return;
+      selectedHours = hours;
+      document.querySelectorAll(".fast-option").forEach(o => o.classList.remove("selected"));
+      el.classList.add("selected");
+    }
+
+    // ─── TIMER ───────────────────────────────────────────────────────────
+    function toggleFast() {
+      if (state.activeFast) {
+        completeFast();
+      } else {
+        startFast();
+      }
+    }
+
+    function startFast() {
+      state.activeFast = { startTime: Date.now(), hours: selectedHours };
+      saveState();
+
+      document.getElementById("mainBtn").textContent = "Complete Fast";
+      document.getElementById("mainBtn").classList.add("running");
+      document.getElementById("cancelBtn").style.display = "block";
+      document.getElementById("phaseBadge").style.display = "inline-flex";
+      document.getElementById("startInfo").style.display = "block";
+      document.querySelectorAll(".fast-option").forEach(o => o.style.pointerEvents = "none");
+
+      startTimerTick();
+      showToast("Fast started");
+      motivationInterval = setInterval(rotateMotive, 12000);
+    }
+
+    function completeFast() {
+      const { startTime, hours } = state.activeFast;
+      const elapsed = Date.now() - startTime;
+      const targetMs = hours * 3600000;
+
+      if (elapsed < targetMs * 0.5) {
+        showToast("Fast too short to log. Keep going.");
+        return;
+      }
+
+      const record = {
+        id: Date.now(),
+        startTime,
+        endTime: Date.now(),
+        targetHours: hours,
+        actualMs: elapsed
+      };
+
+      state.history.unshift(record);
+      clearFastState();
+      saveState();
+      showToast("Fast complete. Well done.");
+    }
+
+    function cancelFast() {
+      if (!confirm("Cancel this fast?")) return;
+      clearFastState();
+      saveState();
+      showToast("Fast cancelled");
+    }
+
+    function clearFastState() {
+      state.activeFast = null;
+      clearInterval(timerInterval);
+      clearInterval(motivationInterval);
+
+      document.getElementById("mainBtn").textContent = "Begin Fast";
+      document.getElementById("mainBtn").classList.remove("running");
+      document.getElementById("cancelBtn").style.display = "none";
+      document.getElementById("phaseBadge").style.display = "none";
+      document.getElementById("startInfo").style.display = "none";
+      document.getElementById("timeDisplay").textContent = "00:00:00";
+      document.getElementById("timeLabel").textContent = "ready to begin";
+      document.getElementById("progressRing").style.strokeDashoffset = "729";
+      document.querySelectorAll(".fast-option").forEach(o => o.style.pointerEvents = "");
+
+      // Reset ring color
+      document.getElementById("progressRing").style.stroke = "var(--ring-mid)";
+      rotateMotive();
+    }
+
+    function startTimerTick() {
+      clearInterval(timerInterval);
+      timerInterval = setInterval(tickTimer, 1000);
+      tickTimer();
+    }
+
+    function tickTimer() {
+      if (!state.activeFast) return;
+
+      const { startTime, hours } = state.activeFast;
+      const elapsed = Date.now() - startTime;
+      const targetMs = hours * 3600000;
+      const remaining = Math.max(0, targetMs - elapsed);
+
+      // Display elapsed
+      const h = Math.floor(elapsed / 3600000);
+      const m = Math.floor((elapsed % 3600000) / 60000);
+      const s = Math.floor((elapsed % 60000) / 1000);
+      document.getElementById("timeDisplay").textContent =
+        String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+
+      // Label
+      const remH = Math.floor(remaining / 3600000);
+      const remM = Math.floor((remaining % 3600000) / 60000);
+      document.getElementById("timeLabel").textContent =
+        remaining > 0 ? (remH + "h " + remM + "m remaining") : "Goal reached";
+
+      // Phase + ring color (simple, readable, premium)
+      const pct = elapsed / targetMs;
+      let phase = "Fasting";
+      let ringColor = "var(--ring-mid)";
+
+      if (hours === 16) {
+        if (pct < 0.5) { phase = "Glycogen"; ringColor = "var(--ring-early)"; }
+        else if (pct < 0.875) { phase = "Fat Burning"; ringColor = "var(--ring-mid)"; }
+        else { phase = "Deep Repair"; ringColor = "var(--ring-late)"; }
+      } else {
+        if (pct < 0.33) { phase = "Glycogen"; ringColor = "var(--ring-early)"; }
+        else if (pct < 0.67) { phase = "Fat Burning"; ringColor = "var(--ring-mid)"; }
+        else { phase = "Deep Repair"; ringColor = "var(--ring-late)"; }
+      }
+
+      document.getElementById("phaseText").textContent = phase;
+      document.getElementById("progressRing").style.stroke = (remaining <= 0) ? "var(--ring-late)" : ringColor;
+
+      // Progress ring (circumference = 729)
+      const progress = Math.min(1, pct);
+      document.getElementById("progressRing").style.strokeDashoffset = 729 - (729 * progress);
+
+      // Start/end times
+      const startD = new Date(startTime);
+      const endD = new Date(startTime + targetMs);
+      document.getElementById("startTimeDisplay").textContent = fmt12(startD);
+      document.getElementById("endTimeDisplay").textContent = fmt12(endD);
+    }
+
+    function fmt12(d) {
+      let h = d.getHours();
+      const m = d.getMinutes();
+      const ap = h >= 12 ? "pm" : "am";
+      h = h % 12 || 12;
+      return h + ":" + String(m).padStart(2, "0") + " " + ap;
+    }
+
+    // ─── TRACKER ─────────────────────────────────────────────────────────
+    function changeWeek(dir) {
+      currentWeekOffset += dir;
+      renderTracker();
+    }
+
+    function renderTracker() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const anchor = new Date(today);
+      anchor.setDate(today.getDate() - today.getDay() + currentWeekOffset * 7);
+
+      const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+      const grid = document.getElementById("weekGrid");
+      grid.innerHTML = "";
+
+      const weekStart = new Date(anchor);
+      const weekEnd = new Date(anchor);
+      weekEnd.setDate(weekEnd.getDate() + 6);
+
+      document.getElementById("weekRangeLabel").textContent =
+        weekStart.toLocaleDateString("en-US", { month: "short", day: "numeric" }) + " – " +
+        weekEnd.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+
+      let count16 = 0, count24 = 0;
+      const completedDays = {};
+
+      state.history.forEach(f => {
+        const d = new Date(f.endTime);
+        d.setHours(0, 0, 0, 0);
+
+        if (d >= weekStart && d <= weekEnd) {
+          const key = d.toDateString();
+          completedDays[key] = completedDays[key] || { h16: false, h24: false };
+
+          if (f.targetHours >= 24) completedDays[key].h24 = true;
+          else if (f.targetHours >= 16) completedDays[key].h16 = true;
+        }
+      });
+
+      Object.values(completedDays).forEach(v => {
+        if (v.h24) count24++;
+        if (v.h16) count16++;
+      });
+
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(anchor);
+        d.setDate(anchor.getDate() + i);
+        const key = d.toDateString();
+        const isToday = d.toDateString() === today.toDateString();
+        const info = completedDays[key] || {};
+
+        const cell = document.createElement("div");
+        cell.className = "day-cell";
+        if (isToday) cell.classList.add("today");
+        if (info.h24) cell.classList.add("complete-24");
+        else if (info.h16) cell.classList.add("complete-16");
+
+        // No emojis; keep it clean
+        const icon = info.h24 ? "24" : info.h16 ? "16" : isToday ? "•" : "";
+        cell.innerHTML = `<div class="day-name">${days[d.getDay()]}</div>
+                          <div class="day-icon">${icon}</div>`;
+        grid.appendChild(cell);
+      }
+
+      // Update cards
+      document.getElementById("count16").innerHTML = count16 + `<span style="font-size:20px;color:var(--taupe)">/4</span>`;
+      document.getElementById("sub16").textContent = count16 + " of 4 this week";
+      document.getElementById("count24").innerHTML = count24 + `<span style="font-size:20px;color:var(--taupe)">/1</span>`;
+      document.getElementById("sub24").textContent = count24 + " of 1 this week";
+
+      // Dots
+      const d16 = document.getElementById("dots16");
+      d16.innerHTML = "";
+      for (let i = 0; i < 4; i++) {
+        const dot = document.createElement("div");
+        dot.className = "goal-dot" + (i < count16 ? " filled" : "");
+        d16.appendChild(dot);
+      }
+
+      const d24 = document.getElementById("dots24");
+      d24.innerHTML = "";
+      const dot = document.createElement("div");
+      dot.className = "goal-dot" + (count24 >= 1 ? " filled-gold" : "");
+      d24.appendChild(dot);
+
+      document.getElementById("goalCard16").className = "goal-card" + (count16 >= 4 ? " met" : "");
+      document.getElementById("goalCard24").className = "goal-card" + (count24 >= 1 ? " met-gold" : "");
+    }
+
+    // ─── HISTORY ─────────────────────────────────────────────────────────
+    function renderHistory() {
+      const list = document.getElementById("historyList");
+      list.innerHTML = "";
+
+      if (!state.history.length) {
+        list.innerHTML = `<div class="empty-state">
+          <div class="empty-icon">FS</div>
+          <p>No completed fasts yet.<br>Start your first fast to build your log.</p>
+        </div>`;
+        return;
+      }
+
+      state.history.forEach(f => {
+        const hrs = f.actualMs / 3600000;
+        const displayHrs = hrs.toFixed(1);
+        const is24 = f.targetHours >= 24;
+        const date = new Date(f.endTime);
+
+        const item = document.createElement("div");
+        item.className = "history-item";
+        item.innerHTML = `
+          <div class="history-icon ${is24 ? "h24" : "h16"}">${is24 ? "24" : "16"}</div>
+          <div class="history-info">
+            <div class="history-title">${f.targetHours}-Hour Fast</div>
+            <div class="history-date">
+              ${date.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })}
+              · ${fmt12(new Date(f.startTime))} → ${fmt12(date)}
+            </div>
+          </div>
+          <div class="history-duration">${displayHrs}h</div>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    // ─── TOAST ───────────────────────────────────────────────────────────
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2800);
+    }
+
+    // ─── INIT ────────────────────────────────────────────────────────────
+    // If a fast is active, restore UI state
+    if (state.activeFast) {
+      selectedHours = state.activeFast.hours;
+      const opt = selectedHours === 24 ? document.querySelectorAll(".fast-option")[1] : document.querySelectorAll(".fast-option")[0];
+      document.querySelectorAll(".fast-option").forEach(o => o.classList.remove("selected"));
+      opt.classList.add("selected");
+
+      document.getElementById("mainBtn").textContent = "Complete Fast";
+      document.getElementById("mainBtn").classList.add("running");
+      document.getElementById("cancelBtn").style.display = "block";
+      document.getElementById("phaseBadge").style.display = "inline-flex";
+      document.getElementById("startInfo").style.display = "block";
+      document.querySelectorAll(".fast-option").forEach(o => o.style.pointerEvents = "none");
+
+      startTimerTick();
+      motivationInterval = setInterval(rotateMotive, 12000);
+    }
+  </script>
+</body>
+</html>
