@@ -347,6 +347,22 @@ body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--c
 .invite-url-box { background: white; border: 1.5px solid var(--stone); border-radius: 12px; padding: 11px 14px; font-size: 11px; color: var(--taupe); word-break: break-all; margin-bottom: 14px; line-height: 1.5; }
 .setup-note { background: var(--gold-pale); border: 1px solid rgba(196,164,107,0.4); border-radius: 12px; padding: 13px 15px; font-size: 12px; color: #7a5a20; line-height: 1.75; margin-bottom: 18px; }
 .setup-note code { font-family: monospace; font-size: 11px; background: rgba(196,164,107,0.25); padding: 1px 5px; border-radius: 4px; }
+
+  .badge-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 10px;border-radius:999px;
+  border:1.5px solid var(--stone);
+  background: var(--warm-white);
+  font-size:11px;color:var(--charcoal);
+}
+.badge-pill.locked{
+  opacity:0.45;
+}
+.badge-pill .bicon{font-size:13px}
+.badge-pill.unlocked{
+  border-color: rgba(196,164,107,0.55);
+  background: var(--win-bg);
+}
 </style>
 </head>
 <body>
@@ -449,6 +465,27 @@ body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--c
         <div>Eat: <strong id="ewEat">&#8212;</strong></div>
       </div>
     </div>
+        <!-- STREAKS + BADGES -->
+    <div class="eating-card vis" id="streakBadgeCard" style="display:block;">
+      <div class="eating-label">Streaks & Badges</div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div class="goal-chip" id="streakChip" style="margin:0;">
+          <div class="gc-label">Current streak</div>
+          <div class="gc-val"><span id="streakNow">0</span><span style="font-size:13px;color:var(--taupe);"> days</span></div>
+          <div class="gc-dots" id="streakDots"></div>
+        </div>
+
+        <div class="goal-chip" id="bestChip" style="margin:0;">
+          <div class="gc-label">Best streak</div>
+          <div class="gc-val"><span id="streakBest">0</span><span style="font-size:13px;color:var(--taupe);"> days</span></div>
+          <div class="gc-dots" id="bestDots"></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:8px;" id="badgeRow"></div>
+    </div>
+
     <button class="btn btn-forest" id="mainBtn" onclick="toggleFast()">Begin Fast</button>
     <button class="btn btn-ghost" id="cancelBtn" style="display:none" onclick="cancelFast()">Cancel Fast</button>
     <button class="btn btn-ghost" id="adjustBtn" style="display:none" onclick="showAdjustModal()">Adjust Start Time</button>
@@ -726,6 +763,7 @@ function pollFasts() {
     if (d.player1) sess.player1=d.player1;
     if (d.player2) sess.player2=d.player2;
     save(); setSyncLive(true);
+    renderStreaksAndBadges();
     if (document.getElementById('view-board').classList.contains('active')) renderBoard();
     if (document.getElementById('view-log').classList.contains('active')) renderLog();
   })
@@ -750,6 +788,7 @@ function switchTab(name, btn) {
   document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
   document.getElementById('view-'+name).classList.add('active');
   btn.classList.add('active');
+  if (name==='fast'){pollFasts(); renderStreaksAndBadges();}
   if (name==='board'){pollFasts();renderBoard();}
   if (name==='log'){pollFasts();renderLog();}
 }
@@ -1067,7 +1106,144 @@ function toast(msg){
   var t=document.getElementById('toast');t.innerHTML=msg;t.classList.add('show');
   clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},3200);
 }
+function ymdLocal(d){
+  // local YYYY-MM-DD
+  return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+}
 
+function getPlayerFasts(name){
+  if(!name) return [];
+  var nm = String(name).toLowerCase();
+  return (remoteFasts||[]).filter(function(f){
+    return (String(f.player_name||'').toLowerCase() === nm);
+  });
+}
+
+function getCompletedDaysForPlayer(name){
+  var days = {};
+  getPlayerFasts(name).forEach(function(f){
+    var ed = new Date(f.ended_at);
+    ed.setHours(0,0,0,0);
+    days[ymdLocal(ed)] = true;
+  });
+  return Object.keys(days).sort(); // ascending
+}
+
+function calcStreaks(name){
+  var days = getCompletedDaysForPlayer(name);
+  if(!days.length) return { current:0, best:0 };
+
+  // convert to day numbers
+  var nums = days.map(function(s){
+    var parts = s.split('-');
+    var d = new Date(Number(parts[0]), Number(parts[1])-1, Number(parts[2]));
+    d.setHours(0,0,0,0);
+    return Math.floor(d.getTime()/86400000);
+  });
+
+  // best streak
+  var best = 1, run = 1;
+  for(var i=1;i<nums.length;i++){
+    if(nums[i] === nums[i-1] + 1){ run++; best = Math.max(best, run); }
+    else run = 1;
+  }
+
+  // current streak: must include today or yesterday to be “active”
+  var today = new Date(); today.setHours(0,0,0,0);
+  var todayNum = Math.floor(today.getTime()/86400000);
+  var last = nums[nums.length-1];
+
+  var current = 1;
+  if(last < todayNum-1) current = 0; // streak broken (no fast today or yesterday)
+  else {
+    // walk backwards while consecutive
+    current = 1;
+    for(var j=nums.length-1;j>0;j--){
+      if(nums[j] === nums[j-1] + 1) current++;
+      else break;
+    }
+  }
+
+  return { current: current, best: best };
+}
+
+function calcBadges(name){
+  var fasts = getPlayerFasts(name);
+  var days = getCompletedDaysForPlayer(name);
+  var has16 = fasts.some(function(f){ return Number(f.target_hours) >= 16; });
+  var has24 = fasts.some(function(f){ return Number(f.target_hours) >= 24; });
+  var streaks = calcStreaks(name);
+
+  // weekly win (same logic as board): any week where 4 unique days have 16+ and at least 1 day has 24+
+  var winWeek = false;
+  (function(){
+    var byWeek = {}; // key: anchor date string
+    fasts.forEach(function(f){
+      var ed = new Date(f.ended_at); ed.setHours(0,0,0,0);
+      // sunday start
+      var wk = new Date(ed); wk.setDate(ed.getDate() - ed.getDay()); wk.setHours(0,0,0,0);
+      var k = ymdLocal(wk);
+      byWeek[k] = byWeek[k] || { d16:{}, d24:{} };
+      if(Number(f.target_hours) >= 24) byWeek[k].d24[ymdLocal(ed)] = true;
+      else if(Number(f.target_hours) >= 16) byWeek[k].d16[ymdLocal(ed)] = true;
+    });
+    Object.keys(byWeek).forEach(function(k){
+      var w = byWeek[k];
+      var c16 = Object.keys(w.d16).length;
+      var c24 = Object.keys(w.d24).length;
+      if(c16 >= 4 && c24 >= 1) winWeek = true;
+    });
+  })();
+
+  return [
+    { id:'first',  label:'First Fast',      icon:'🌿', unlocked: fasts.length >= 1 },
+    { id:'st3',    label:'3-Day Streak',    icon:'🔥', unlocked: streaks.best >= 3 },
+    { id:'st7',    label:'7-Day Streak',    icon:'🏆', unlocked: streaks.best >= 7 },
+    { id:'club16', label:'16-Hour Club',    icon:'⏳', unlocked: has16 },
+    { id:'club24', label:'24-Hour Club',    icon:'⭐', unlocked: has24 },
+    { id:'week',   label:'Week Won',        icon:'✨', unlocked: winWeek }
+  ];
+}
+
+function renderStreaksAndBadges(){
+  var name = sess && sess.myName ? sess.myName : null;
+  if(!name) return;
+
+  var st = calcStreaks(name);
+  var b = calcBadges(name);
+
+  var nowEl = document.getElementById('streakNow');
+  var bestEl = document.getElementById('streakBest');
+  if(nowEl) nowEl.textContent = st.current;
+  if(bestEl) bestEl.textContent = st.best;
+
+  // dots (cap at 7)
+  function dots(elId, n){
+    var el = document.getElementById(elId);
+    if(!el) return;
+    el.innerHTML = '';
+    var cap = 7;
+    for(var i=0;i<cap;i++){
+      var d = document.createElement('div');
+      d.className = 'gc-dot' + (i < Math.min(n, cap) ? ' on' : '');
+      el.appendChild(d);
+    }
+  }
+  dots('streakDots', st.current);
+  dots('bestDots', st.best);
+
+  // badges
+  var row = document.getElementById('badgeRow');
+  if(row){
+    row.innerHTML = '';
+    b.forEach(function(x){
+      var pill = document.createElement('div');
+      pill.className = 'badge-pill ' + (x.unlocked ? 'unlocked' : 'locked');
+      pill.innerHTML = '<span class="bicon">'+x.icon+'</span><span>'+esc(x.label)+'</span>';
+      row.appendChild(pill);
+    });
+  }
+}
 // ══ METABOLIC JOURNEY DATA ════════════════════════════════
 var JOURNEY = [
   {
