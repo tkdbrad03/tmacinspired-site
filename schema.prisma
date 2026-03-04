@@ -1,0 +1,36 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Session {
+  code      String   @id
+  player1   String
+  player2   String?
+  createdAt DateTime @default(now()) @map("created_at")
+  fasts     Fast[]
+
+  @@map("sessions")
+}
+
+model Fast {
+  id          Int      @id @default(autoincrement())
+  sessionCode String   @map("session_code")
+  playerName  String   @map("player_name")
+  playerSlot  Int      @map("player_slot")
+  targetHours Int      @map("target_hours")
+  actualMs    BigInt   @map("actual_ms")
+  startedAt   DateTime @map("started_at")
+  endedAt     DateTime @map("ended_at")
+  session     Session  @relation(fields: [sessionCode], references: [code])
+
+  @@index([sessionCode])
+  @@map("fasts")
+}
