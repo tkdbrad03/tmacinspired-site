@@ -1,5 +1,4 @@
-// api/session.js
-const { prisma } = require(’../lib/prisma’)
+const { prisma } = require(’../lib/prisma.cjs’)
 
 function randCode() {
 var chars = ‘ABCDEFGHJKLMNPQRSTUVWXYZ23456789’
