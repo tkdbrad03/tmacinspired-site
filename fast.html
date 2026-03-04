@@ -299,6 +299,7 @@ body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--c
     </div>
     <button class="btn btn-forest" id="mainBtn" onclick="toggleFast()">Begin Fast</button>
     <button class="btn btn-ghost" id="cancelBtn" style="display:none" onclick="cancelFast()">Cancel Fast</button>
+    <button class="btn btn-ghost" id="adjustBtn" style="display:none" onclick="showAdjustModal()">Adjust Start Time</button>
   </div>
 
   <!-- BOARD TAB -->
@@ -397,6 +398,31 @@ body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--c
   </div>
 </div>
 
+<!-- ADJUST START TIME MODAL -->
+<div class="modal-bg" id="adjustModal" onclick="closeMod('adjustModal',event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Adjust Start Time</div>
+    <div class="modal-sub">Update the start time for your current fast. This updates your timer and goal time instantly.</div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Start Date</label>
+        <input class="form-input" type="date" id="adjustStartDate">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Start Time</label>
+        <input class="form-input" type="time" id="adjustStartTime">
+      </div>
+    </div>
+
+    <div class="modal-btns">
+      <button class="btn btn-forest" onclick="applyAdjustStart()">Save</button>
+      <button class="btn btn-ghost" onclick="closeMod('adjustModal')">Cancel</button>
+    </div>
+  </div>
+</div>  
+  
 <!-- SETUP MODAL -->
 <div class="modal-bg" id="setupModal">
   <div class="modal">
@@ -517,6 +543,7 @@ function launchApp() {
     document.getElementById('mainBtn').textContent='Complete Fast';
     document.getElementById('mainBtn').className='btn btn-stop';
     document.getElementById('cancelBtn').style.display='block';
+    document.getElementById('adjustBtn').style.display='block';
     document.getElementById('phasePill').classList.add('vis');
     lockOpts(); startTick();
   }
@@ -579,6 +606,7 @@ function startFast() {
   document.getElementById('mainBtn').textContent='Complete Fast';
   document.getElementById('mainBtn').className='btn btn-stop';
   document.getElementById('cancelBtn').style.display='block';
+  document.getElementById('adjustBtn').style.display='block';
   document.getElementById('phasePill').classList.add('vis');
   lockOpts(); startTick();
   clearInterval(motiveTimer); motiveTimer=setInterval(rotateMotive,12000);
@@ -616,6 +644,7 @@ function clearFastState() {
   document.getElementById('mainBtn').textContent='Begin Fast';
   document.getElementById('mainBtn').className='btn btn-forest';
   document.getElementById('cancelBtn').style.display='none';
+  document.getElementById('adjustBtn').style.display='none';
   document.getElementById('phasePill').classList.remove('vis');
   document.getElementById('timeBig').textContent='00:00:00';
   document.getElementById('timeBig').classList.remove('celeb');
@@ -871,6 +900,41 @@ function toast(msg){
   var t=document.getElementById('toast');t.innerHTML=msg;t.classList.add('show');
   clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},3200);
 }
+// ══ ADJUST START TIME ═════════════════════════════════════
+function showAdjustModal() {
+  if (!sess.active) { toast('Start a fast first'); return; }
+
+  var sd = new Date(sess.active.startTime);
+  document.getElementById('adjustStartDate').value = datePart(sd);
+  document.getElementById('adjustStartTime').value = timePart(sd);
+
+  openMod('adjustModal');
+}
+
+function applyAdjustStart() {
+  if (!sess.active) { closeMod('adjustModal'); return; }
+
+  var sd = document.getElementById('adjustStartDate').value;
+  var st = document.getElementById('adjustStartTime').value;
+  if (!sd || !st) { toast('Please fill in date and time'); return; }
+
+  var newStart = new Date(sd + 'T' + st).getTime();
+  if (!isFinite(newStart)) { toast('Invalid time'); return; }
+
+  // Safety: don’t allow a start time in the future
+  if (newStart > Date.now()) { toast('Start time cannot be in the future'); return; }
+
+  // Optional guard: avoid absurdly old starts (e.g., weeks ago by mistake)
+  // If you want it, uncomment:
+  // if (Date.now() - newStart > 1000*60*60*24*7) { toast('That start time looks too far back'); return; }
+
+  sess.active.startTime = newStart;
+  save();
+
+  closeMod('adjustModal');
+  tick(); // immediately refresh UI
+  toast('Start time updated');
+}  
 </script>
 </body>
 </html>
