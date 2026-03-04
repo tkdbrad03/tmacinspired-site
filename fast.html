@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>TMac Inspired &middot; Fast</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+–forest: #1e3329;
+–forest-mid: #2a4a3a;
+–forest-light: #3a6050;
+–gold: #c4a46b;
+–gold-light: #e0c48a;
+–gold-pale: #f5edd8;
+–cream: #faf8f3;
+–warm-white: #f3efe6;
+–stone: #e2dbd0;
+–taupe: #b8b0a2;
+–charcoal: #1c1a17;
+–win-bg: #fffbf0;
+–danger: #7a3030;
+}
+
+body {
+font-family: ‘Jost’, sans-serif;
+background: var(–cream);
+color: var(–charcoal);
+min-height: 100vh;
+min-height: 100dvh;
+overflow-x: hidden;
+}
+
+/* ── ONBOARDING ── */
+#onboarding {
+min-height: 100dvh;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+padding: 32px 24px 48px;
+background: var(–forest);
+}
+
+.ob-logo { margin-bottom: 40px; text-align: center; }
+.ob-eyebrow { font-size: 10px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(–gold); opacity: 0.8; margin-bottom: 6px; }
+.ob-name { font-family: ‘Cormorant Garamond’, serif; font-size: 32px; font-weight: 400; color: white; letter-spacing: 0.04em; }
+.ob-name em { font-style: italic; color: var(–gold-light); }
+
+.ob-card { background: var(–cream); border-radius: 24px; padding: 28px 24px 32px; width: 100%; max-width: 380px; }
+.ob-title { font-family: ‘Cormorant Garamond’, serif; font-size: 24px; font-weight: 400; color: var(–charcoal); margin-bottom: 6px; }
+.ob-sub { font-size: 13px; color: var(–taupe); margin-bottom: 24px; line-height: 1.55; }
+
+.ob-input {
+width: 100%; padding: 14px 16px;
+border: 1.5px solid var(–stone); border-radius: 12px;
+font-family: ‘Jost’, sans-serif; font-size: 15px; color: var(–charcoal);
+background: white; outline: none; margin-bottom: 14px;
+transition: border-color 0.2s;
+-webkit-appearance: none;
+}
+.ob-input:focus { border-color: var(–forest-light); }
+.ob-input::placeholder { color: var(–taupe); }
+
+.ob-divider { display: flex; align-items: center; gap: 12px; margin: 16px 0; font-size: 11px; color: var(–taupe); letter-spacing: 0.08em; }
+.ob-divider::before, .ob-divider::after { content: “”; flex: 1; height: 1px; background: var(–stone); }
+
+.ob-code-row { display: flex; gap: 8px; }
+.ob-code-input {
+flex: 1; padding: 13px 14px;
+border: 1.5px solid var(–stone); border-radius: 12px;
+font-family: ‘Jost’, sans-serif; font-size: 15px; font-weight: 600;
+letter-spacing: 0.14em; text-transform: uppercase; color: var(–charcoal);
+background: white; outline: none; transition: border-color 0.2s;
+-webkit-appearance: none;
+}
+.ob-code-input:focus { border-color: var(–forest-light); }
+.ob-code-input::placeholder { letter-spacing: 0.04em; font-weight: 400; color: var(–taupe); }
+
+.ob-error { font-size: 12px; color: #c0442a; margin-top: -8px; margin-bottom: 10px; min-height: 16px; }
+
+/* ── BUTTONS ── */
+.btn-primary {
+width: 100%; padding: 15px;
+background: var(–forest); color: white; border: none; border-radius: 13px;
+font-family: ‘Jost’, sans-serif; font-size: 13px; font-weight: 600;
+letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer;
+transition: all 0.2s; -webkit-tap-highlight-color: transparent;
+-webkit-appearance: none;
+}
+.btn-primary:active { transform: scale(0.98); opacity: 0.9; }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-primary.gold { background: var(–gold); }
+.btn-primary.stop { background: var(–danger); }
+
+.btn-ghost {
+width: 100%; padding: 13px; background: transparent; color: var(–taupe);
+border: 1.5px solid var(–stone); border-radius: 13px;
+font-family: ‘Jost’, sans-serif; font-size: 12px; font-weight: 500;
+letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s;
+margin-top: 10px; -webkit-tap-highlight-color: transparent; -webkit-appearance: none;
+}
+
+.btn-join {
+flex: 0 0 auto; width: auto; padding: 13px 18px;
+background: var(–forest); color: white; border: none; border-radius: 12px;
+font-family: ‘Jost’, sans-serif; font-size: 13px; font-weight: 600;
+letter-spacing: 0.08em; cursor: pointer; -webkit-appearance: none;
+-webkit-tap-highlight-color: transparent;
+}
+
+/* ── APP ── */
+#app { display: none; }
+
+.header {
+background: var(–forest); padding: 16px 20px 14px;
+display: flex; align-items: center; justify-content: space-between;
+position: sticky; top: 0; z-index: 100;
+}
+
+.brand-eyebrow { font-size: 9px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(–gold); opacity: 0.8; }
+.brand-name { font-family: ‘Cormorant Garamond’, serif; font-size: 20px; font-weight: 400; color: white; line-height: 1; letter-spacing: 0.03em; }
+.brand-name em { font-style: italic; color: var(–gold-light); }
+
+.header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+
+.session-pill {
+font-size: 10px; font-weight: 600; letter-spacing: 0.14em; color: var(–gold-light);
+background: rgba(196,164,107,0.15); border: 1px solid rgba(196,164,107,0.25);
+border-radius: 100px; padding: 4px 10px; cursor: pointer; transition: background 0.2s;
+-webkit-tap-highlight-color: transparent;
+}
+.session-pill:active { background: rgba(196,164,107,0.25); }
+
+.sync-dot { display: flex; align-items: center; gap: 4px; font-size: 9px; color: rgba(255,255,255,0.35); letter-spacing: 0.06em; justify-content: flex-end; }
+.sync-dot .dot { width: 5px; height: 5px; border-radius: 50%; background: var(–taupe); transition: background 0.3s; }
+.sync-dot.live .dot { background: #6dbf82; }
+.sync-dot.live { color: rgba(255,255,255,0.5); }
+
+.tabs { background: var(–forest); display: flex; padding: 0 20px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+.tab {
+flex: 1; padding: 11px 4px; background: transparent;
+border: none; border-bottom: 2px solid transparent;
+color: rgba(255,255,255,0.38); font-family: ‘Jost’, sans-serif;
+font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+cursor: pointer; transition: all 0.2s; -webkit-tap-highlight-color: transparent;
+}
+.tab.active { color: var(–gold-light); border-bottom-color: var(–gold); }
+
+/* ── VIEWS ── */
+.view { display: none; padding: 22px 20px 100px; animation: fadeUp 0.28s ease both; }
+.view.active { display: block; }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── FAST SELECT ── */
+.fast-select { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+.fast-option {
+border: 1.5px solid var(–stone); border-radius: 16px; background: white;
+padding: 16px 12px; cursor: pointer; transition: all 0.2s; text-align: center;
+-webkit-tap-highlight-color: transparent;
+}
+.fast-option:active { transform: scale(0.97); }
+.fast-option.sel16 { border-color: var(–forest-light); background: #eef4f0; }
+.fast-option.sel24 { border-color: var(–gold); background: var(–gold-pale); }
+.fhours { font-family: ‘Cormorant Garamond’, serif; font-size: 38px; font-weight: 300; line-height: 1; color: var(–charcoal); }
+.funit { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(–taupe); margin-top: 2px; }
+.fbadge { display: inline-block; margin-top: 8px; font-size: 9px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; }
+#opt16 .fbadge { background: #ddeee3; color: var(–forest-mid); }
+#opt24 .fbadge { background: #f0e0c0; color: #8a6020; }
+
+/* ── MOTIVATION ── */
+.motive-card { background: var(–forest); border-radius: 16px; padding: 16px 18px; margin-bottom: 18px; position: relative; overflow: hidden; }
+.motive-card::before { content: “”; position: absolute; top: 0; right: 0; width: 80px; height: 80px; background: radial-gradient(circle at top right, rgba(196,164,107,0.18), transparent 70%); pointer-events: none; }
+.motive-label { font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(–gold); opacity: 0.8; margin-bottom: 7px; }
+.motive-text { font-family: ‘Cormorant Garamond’, serif; font-size: 15px; font-style: italic; font-weight: 300; color: rgba(255,255,255,0.88); line-height: 1.55; transition: opacity 0.35s; }
+
+/* ── CLOCK ── */
+.clock-wrap { display: flex; flex-direction: column; align-items: center; padding: 4px 0 20px; }
+.phase-pill { display: inline-flex; align-items: center; gap: 6px; background: var(–gold-pale); border: 1px solid rgba(196,164,107,0.35); border-radius: 100px; padding: 5px 14px; font-size: 11px; font-weight: 500; color: #7a5a20; letter-spacing: 0.05em; margin-bottom: 14px; opacity: 0; transition: opacity 0.3s; }
+.phase-pill.vis { opacity: 1; }
+.pdot { width: 6px; height: 6px; background: var(–gold); border-radius: 50%; animation: pdotAnim 2s ease-in-out infinite; }
+@keyframes pdotAnim { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.3;transform:scale(0.7);} }
+.ring-container { position: relative; display: inline-block; }
+.ring-svg { width: 210px; height: 210px; }
+.ring-track { fill: none; stroke: var(–stone); stroke-width: 5; }
+.ring-prog { fill: none; stroke: var(–forest-light); stroke-width: 5; stroke-linecap: round; transition: stroke-dashoffset 1s linear, stroke 0.5s; }
+.ring-inner { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; width: 130px; }
+.time-big { font-family: ‘Cormorant Garamond’, serif; font-size: 42px; font-weight: 300; letter-spacing: -0.01em; line-height: 1; color: var(–charcoal); }
+.time-sub { font-size: 11px; color: var(–taupe); letter-spacing: 0.05em; margin-top: 6px; }
+.time-meta { font-size: 11px; color: var(–taupe); margin-top: 10px; text-align: center; min-height: 16px; }
+.time-meta strong { color: var(–charcoal); font-weight: 500; }
+
+/* ── EATING WINDOW ── */
+.eating-card { background: white; border: 1.5px solid var(–stone); border-radius: 14px; padding: 14px 16px; margin-bottom: 18px; display: none; }
+.eating-card.vis { display: block; }
+.eating-label { font-size: 9px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(–forest-mid); margin-bottom: 10px; }
+.eating-bars { display: flex; gap: 3px; align-items: flex-end; height: 28px; }
+.eating-bar { flex: 1; border-radius: 2px; background: var(–stone); transition: all 0.4s; }
+.eating-bar.bfast { background: var(–forest-light); opacity: 0.5; }
+.eating-bar.beat { background: var(–gold); opacity: 1; height: 100% !important; }
+.eating-bar.bnow { background: var(–gold-light); box-shadow: 0 0 7px rgba(196,164,107,0.55); }
+.eating-info { display: flex; justify-content: space-between; margin-top: 7px; font-size: 11px; color: var(–taupe); }
+.eating-info strong { color: var(–charcoal); font-weight: 500; }
+
+/* ── BURST ── */
+.burst-container { position: fixed; inset: 0; pointer-events: none; z-index: 999; display: flex; align-items: center; justify-content: center; }
+@keyframes burstAnim { 0%{transform:scale(0.7);opacity:0.9;} 100%{transform:scale(2.4);opacity:0;} }
+.burst-ring { position: absolute; width: 90px; height: 90px; border-radius: 50%; border: 2px solid var(–gold); animation: burstAnim 0.9s ease-out forwards; }
+.burst-ring:nth-child(2) { animation-delay: 0.14s; border-color: var(–forest-light); }
+.burst-ring:nth-child(3) { animation-delay: 0.28s; border-color: var(–gold-light); }
+@keyframes goalGlow { 0%,100%{stroke-width:5;} 50%{stroke-width:8;filter:drop-shadow(0 0 6px rgba(196,164,107,0.7));} }
+.ring-prog.reached { stroke: var(–gold) !important; animation: goalGlow 1.1s ease-in-out 4; }
+@keyframes celebPulse { 0%,100%{transform:scale(1);color:var(–charcoal);} 50%{transform:scale(1.04);color:var(–gold);} }
+.time-big.celeb { animation: celebPulse 0.65s ease-in-out 4; }
+
+/* ── SCOREBOARD ── */
+.board-title { font-family: ‘Cormorant Garamond’, serif; font-size: 24px; font-weight: 400; margin-bottom: 4px; }
+.board-sub { font-size: 12px; color: var(–taupe); margin-bottom: 18px; }
+.week-nav-row { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+.week-nav-btn { width: 30px; height: 30px; border-radius: 8px; background: white; border: 1px solid var(–stone); font-size: 16px; color: var(–taupe); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
+.week-nav-btn:active { transform: scale(0.9); }
+.week-label { font-size: 12px; color: var(–taupe); flex: 1; text-align: center; font-weight: 500; }
+.week-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 5px; margin-bottom: 20px; }
+.day-cell { aspect-ratio: 1; border-radius: 10px; border: 1.5px solid var(–stone); background: white; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+.dc-name { font-size: 8px; letter-spacing: 0.06em; text-transform: uppercase; color: var(–taupe); }
+.dc-icon { font-size: 13px; }
+.day-cell.d16 { border-color: var(–forest-light); background: #eef4f0; }
+.day-cell.d24 { border-color: var(–gold); background: var(–gold-pale); }
+.day-cell.today { box-shadow: 0 0 0 2px var(–forest); }
+.player-cards { display: flex; flex-direction: column; gap: 12px; }
+.player-card { background: white; border: 1.5px solid var(–stone); border-radius: 18px; padding: 16px; position: relative; overflow: hidden; transition: border-color 0.3s; }
+.player-card.winner { border-color: var(–gold); background: var(–win-bg); }
+.player-card.winner::before { content: “”; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(–gold), var(–gold-light), var(–gold)); }
+.player-card.me-card::after { content: “YOU”; position: absolute; top: 14px; right: 14px; font-size: 8px; font-weight: 700; letter-spacing: 0.14em; color: var(–taupe); background: var(–warm-white); border: 1px solid var(–stone); border-radius: 100px; padding: 2px 7px; }
+.player-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.player-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(–forest); display: flex; align-items: center; justify-content: center; font-family: ‘Cormorant Garamond’, serif; font-size: 14px; color: var(–gold-light); flex-shrink: 0; }
+.player-card.winner .player-avatar { background: var(–gold); color: white; }
+.player-name { font-weight: 600; font-size: 14px; color: var(–charcoal); display: flex; align-items: center; gap: 6px; }
+.player-role { font-size: 10px; color: var(–taupe); letter-spacing: 0.04em; margin-top: 1px; }
+.win-badge { display: none; font-size: 9px; font-weight: 700; letter-spacing: 0.08em; background: var(–gold); color: white; padding: 2px 8px; border-radius: 100px; text-transform: uppercase; }
+.player-card.winner .win-badge { display: inline-block; }
+.goals-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.goal-chip { background: var(–warm-white); border: 1px solid var(–stone); border-radius: 12px; padding: 10px 12px; transition: all 0.3s; }
+.goal-chip .gc-label { font-size: 9px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(–taupe); margin-bottom: 3px; }
+.goal-chip .gc-val { font-family: ‘Cormorant Garamond’, serif; font-size: 24px; font-weight: 300; line-height: 1; color: var(–charcoal); }
+.goal-chip .gc-val span { font-size: 13px; color: var(–taupe); }
+.goal-chip .gc-dots { display: flex; gap: 4px; margin-top: 6px; }
+.gc-dot { width: 7px; height: 7px; border-radius: 50%; background: var(–stone); transition: background 0.3s; }
+.gc-dot.on { background: var(–forest-light); }
+.gc-dot.ong { background: var(–gold); }
+.goal-chip.m16 { border-color: var(–forest-light); background: #eef4f0; }
+.goal-chip.m24 { border-color: var(–gold); background: var(–gold-pale); }
+.sync-banner { display: flex; align-items: center; gap: 8px; background: var(–warm-white); border: 1px solid var(–stone); border-radius: 10px; padding: 10px 14px; margin-bottom: 16px; font-size: 11px; color: var(–taupe); }
+.sync-banner .sb-dot { width: 7px; height: 7px; border-radius: 50%; background: var(–stone); flex-shrink: 0; transition: background 0.3s; }
+.sync-banner.live { border-color: rgba(109,191,130,0.4); }
+.sync-banner.live .sb-dot { background: #6dbf82; }
+
+/* ── LOG ── */
+.log-title { font-family: ‘Cormorant Garamond’, serif; font-size: 24px; font-weight: 400; margin-bottom: 4px; }
+.log-sub { font-size: 12px; color: var(–taupe); margin-bottom: 20px; }
+.hist-list { display: flex; flex-direction: column; gap: 9px; }
+.hist-item { display: flex; align-items: center; gap: 12px; background: white; border: 1px solid var(–stone); border-radius: 13px; padding: 13px 14px; }
+.hist-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+.hist-icon.h16 { background: #eef4f0; }
+.hist-icon.h24 { background: var(–gold-pale); }
+.hist-info { flex: 1; min-width: 0; }
+.hist-title { font-size: 13px; font-weight: 600; color: var(–charcoal); }
+.hist-date { font-size: 11px; color: var(–taupe); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hist-who { font-size: 10px; color: var(–forest-light); font-weight: 600; margin-top: 1px; letter-spacing: 0.04em; }
+.hist-dur { font-family: ‘Cormorant Garamond’, serif; font-size: 20px; font-weight: 300; color: var(–charcoal); flex-shrink: 0; }
+.empty-state { text-align: center; padding: 48px 16px; }
+.ei { font-size: 34px; margin-bottom: 12px; }
+.empty-state p { font-size: 13px; color: var(–taupe); line-height: 1.65; }
+
+/* ── TOAST ── */
+.toast { position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(–forest); border: 1px solid rgba(196,164,107,0.3); color: rgba(255,255,255,0.9); padding: 10px 20px; border-radius: 100px; font-size: 12px; font-weight: 500; letter-spacing: 0.05em; z-index: 500; transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1); white-space: nowrap; pointer-events: none; }
+.toast .tg { color: var(–gold-light); font-style: italic; }
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── MODAL ── */
+.modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 300; align-items: flex-end; justify-content: center; }
+.modal-bg.open { display: flex; }
+.modal { background: var(–cream); border-radius: 24px 24px 0 0; padding: 24px 22px 40px; width: 100%; max-width: 480px; animation: slideUp 0.3s cubic-bezier(0.34,1.2,0.64,1) both; }
+@keyframes slideUp { from{transform:translateY(100%);} to{transform:translateY(0);} }
+.modal-handle { width: 36px; height: 4px; background: var(–stone); border-radius: 100px; margin: 0 auto 18px; }
+.modal-title { font-family: ‘Cormorant Garamond’, serif; font-size: 22px; font-weight: 400; margin-bottom: 6px; color: var(–charcoal); }
+.modal-sub { font-size: 12px; color: var(–taupe); margin-bottom: 18px; line-height: 1.6; }
+.code-display { background: var(–forest); border-radius: 14px; padding: 18px; text-align: center; margin-bottom: 14px; }
+.code-label { font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(–gold); opacity: 0.8; margin-bottom: 6px; }
+.code-value { font-family: ‘Cormorant Garamond’, serif; font-size: 38px; font-weight: 300; color: white; letter-spacing: 0.18em; }
+.invite-url-box { background: white; border: 1.5px solid var(–stone); border-radius: 12px; padding: 12px 14px; font-size: 11px; color: var(–taupe); word-break: break-all; margin-bottom: 14px; line-height: 1.5; }
+.modal-btns { display: flex; flex-direction: column; gap: 9px; }
+</style>
+
+</head>
+<body>
+
+<!-- BURST -->
+
+<div class="burst-container" id="burstEl" style="display:none">
+  <div class="burst-ring"></div>
+  <div class="burst-ring"></div>
+  <div class="burst-ring"></div>
+</div>
+
+<!-- ══ ONBOARDING ══ -->
+
+<div id="onboarding">
+  <div class="ob-logo">
+    <div class="ob-eyebrow">Fasting with</div>
+    <div class="ob-name">TMac <em>Inspired</em></div>
+  </div>
+  <div class="ob-card">
+    <div class="ob-title" id="obTitle">Welcome</div>
+    <div class="ob-sub" id="obSub">Enter your name to begin. Start a new session or join your partner.</div>
+    <input class="ob-input" type="text" id="obName" placeholder="Your name" maxlength="24" autocomplete="off" autocorrect="off" autocapitalize="words">
+    <div class="ob-error" id="obError"></div>
+    <button class="btn-primary" id="obCreateBtn" onclick="createSession()">Start New Session</button>
+    <div class="ob-divider">or join a partner</div>
+    <div class="ob-code-row">
+      <input class="ob-code-input" type="text" id="obCode" placeholder="Enter code" maxlength="6" autocomplete="off" autocorrect="off" autocapitalize="characters"
+        oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+      <button class="btn-join" onclick="joinSession()">Join</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ APP ══ -->
+
+<div id="app">
+  <header class="header">
+    <div>
+      <div class="brand-eyebrow">Fasting with</div>
+      <div class="brand-name">TMac <em>Inspired</em></div>
+    </div>
+    <div class="header-right">
+      <div class="session-pill" id="sessionPill" onclick="showShareModal()">&#9654; ------</div>
+      <div class="sync-dot" id="syncDot"><div class="dot"></div><span id="syncLabel">syncing</span></div>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" onclick="switchTab('fast',this)">Fast</button>
+    <button class="tab" onclick="switchTab('board',this)">Board</button>
+    <button class="tab" onclick="switchTab('log',this)">Log</button>
+  </nav>
+
+  <!-- FAST TAB -->
+
+  <div class="view active" id="view-fast">
+    <div class="fast-select">
+      <div class="fast-option sel16" id="opt16" onclick="selectType(16)">
+        <div class="fhours">16</div><div class="funit">hours</div><div class="fbadge">4x goal</div>
+      </div>
+      <div class="fast-option" id="opt24" onclick="selectType(24)">
+        <div class="fhours">24</div><div class="funit">hours</div><div class="fbadge">1x goal</div>
+      </div>
+    </div>
+    <div class="motive-card">
+      <div class="motive-label">Today&rsquo;s Intention</div>
+      <div class="motive-text" id="motiveText">Every hour of fasting is a quiet act of self-mastery.</div>
+    </div>
+    <div class="clock-wrap">
+      <div class="phase-pill" id="phasePill"><div class="pdot"></div><span id="phaseSpan">Fasting</span></div>
+      <div class="ring-container">
+        <svg class="ring-svg" viewBox="0 0 210 210">
+          <circle class="ring-track" cx="105" cy="105" r="96"/>
+          <circle class="ring-prog" id="ringProg" cx="105" cy="105" r="96"
+            stroke-dasharray="603" stroke-dashoffset="603" transform="rotate(-90 105 105)"/>
+        </svg>
+        <div class="ring-inner">
+          <div class="time-big" id="timeBig">00:00:00</div>
+          <div class="time-sub" id="timeSub">ready to begin</div>
+        </div>
+      </div>
+      <div class="time-meta" id="timeMeta"></div>
+    </div>
+    <div class="eating-card" id="eatingCard">
+      <div class="eating-label">Eating Window</div>
+      <div class="eating-bars" id="eatingBars"></div>
+      <div class="eating-info">
+        <div>Fast: <strong id="ewFast">&#8212;</strong></div>
+        <div>Eat: <strong id="ewEat">&#8212;</strong></div>
+      </div>
+    </div>
+    <button class="btn-primary" id="mainBtn" onclick="toggleFast()">Begin Fast</button>
+    <button class="btn-ghost" id="cancelBtn" style="display:none" onclick="cancelFast()">Cancel Fast</button>
+  </div>
+
+  <!-- BOARD TAB -->
+
+  <div class="view" id="view-board">
+    <div class="board-title">Weekly Board</div>
+    <div class="board-sub" id="boardSub">Loading...</div>
+    <div class="sync-banner" id="syncBanner">
+      <div class="sb-dot"></div>
+      <span id="syncBannerText">Connecting to partner...</span>
+    </div>
+    <div class="week-nav-row">
+      <button class="week-nav-btn" onclick="changeWeek(-1)">&#8249;</button>
+      <div class="week-label" id="weekLabel">&#8212;</div>
+      <button class="week-nav-btn" onclick="changeWeek(1)">&#8250;</button>
+    </div>
+    <div class="week-grid" id="weekGrid"></div>
+    <div class="player-cards" id="playerCards"></div>
+  </div>
+
+  <!-- LOG TAB -->
+
+  <div class="view" id="view-log">
+    <div class="log-title">Fasting Log</div>
+    <div class="log-sub">All completed fasts in this session</div>
+    <div class="hist-list" id="histList"></div>
+  </div>
+</div>
+
+<!-- SHARE MODAL -->
+
+<div class="modal-bg" id="shareModal" onclick="closeShareModal(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Invite Your Partner</div>
+    <div class="modal-sub">Share the code or link. Your partner opens it, types their name, and joins your live board.</div>
+    <div class="code-display">
+      <div class="code-label">Session Code</div>
+      <div class="code-value" id="shareCode">------</div>
+    </div>
+    <div class="invite-url-box" id="shareUrl">tmacinspired.com/fast</div>
+    <div class="modal-btns">
+      <button class="btn-primary gold" onclick="copyLink()">Copy Invite Link</button>
+      <button class="btn-ghost" onclick="closeShareModal()">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CONSTANTS ─────────────────────────────────────────────
+var BASE_URL = 'https://www.tmacinspired.com/fast';
+var SK = 'tmacFast_v4';
+
+// ── STATE ─────────────────────────────────────────────────
+function loadLocal() {
+  try { var r = localStorage.getItem(SK); return r ? JSON.parse(r) : null; } catch(e) { return null; }
+}
+function saveLocal() {
+  try { localStorage.setItem(SK, JSON.stringify(sess)); } catch(e) {}
+}
+
+var sess = loadLocal() || { code: null, slot: null, myName: null, player1: null, player2: null, active: null, myFasts: [] };
+var remoteFasts = [];
+var weekOffset = 0;
+var ticker = null;
+var motiveTimer = null;
+var pollTimer = null;
+var selHours = 16;
+
+// ── ONBOARDING ────────────────────────────────────────────
+(function init() {
+  var params = new URLSearchParams(window.location.search);
+  var urlCode = params.get('code');
+  if (urlCode) {
+    document.getElementById('obCode').value = urlCode.toUpperCase();
+    document.getElementById('obTitle').textContent = 'Join Session';
+    document.getElementById('obSub').textContent = 'Enter your name to join your partner\'s fasting session.';
+  }
+  if (sess.code && sess.slot && sess.myName) {
+    launchApp();
+  }
+})();
+
+function createSession() {
+  var name = document.getElementById('obName').value.trim();
+  if (!name) { obErr('Please enter your name'); return; }
+  obErr('');
+  var btn = document.getElementById('obCreateBtn');
+  btn.disabled = true; btn.textContent = 'Creating...';
+  fetch('/api/session', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'create', name: name })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (data.error) { obErr(data.error); btn.disabled=false; btn.textContent='Start New Session'; return; }
+    sess.code=data.code; sess.slot=1; sess.myName=name; sess.player1=name; sess.player2=null;
+    saveLocal(); launchApp();
+  })
+  .catch(function() { obErr('Connection failed. Check your network.'); btn.disabled=false; btn.textContent='Start New Session'; });
+}
+
+function joinSession() {
+  var name = document.getElementById('obName').value.trim();
+  var code = document.getElementById('obCode').value.trim().toUpperCase();
+  if (!name) { obErr('Please enter your name'); return; }
+  if (!code || code.length < 4) { obErr('Please enter the session code'); return; }
+  obErr('');
+  fetch('/api/session', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'join', name: name, code: code })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (data.error) { obErr(data.error); return; }
+    sess.code=data.code; sess.slot=data.slot; sess.myName=name;
+    sess.player1=data.player1; sess.player2=data.player2||name;
+    saveLocal(); launchApp();
+  })
+  .catch(function() { obErr('Connection failed. Check your network.'); });
+}
+
+function obErr(msg) { document.getElementById('obError').textContent = msg; }
+
+// ── APP LAUNCH ────────────────────────────────────────────
+function launchApp() {
+  document.getElementById('onboarding').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('sessionPill').textContent = '\u25B6 ' + sess.code;
+  if (sess.active) {
+    selHours = sess.active.hours;
+    selectType(selHours);
+    document.getElementById('mainBtn').textContent = 'Complete Fast';
+    document.getElementById('mainBtn').className = 'btn-primary stop';
+    document.getElementById('cancelBtn').style.display = 'block';
+    document.getElementById('phasePill').classList.add('vis');
+    lockOpts();
+    startTick();
+    motiveTimer = setInterval(rotateMotive, 12000);
+  }
+  pollFasts();
+  pollTimer = setInterval(pollFasts, 30000);
+  if (!motiveTimer) motiveTimer = setInterval(rotateMotive, 12000);
+}
+
+// ── POLLING ───────────────────────────────────────────────
+function pollFasts() {
+  if (!sess.code) return;
+  fetch('/api/fasts?code=' + encodeURIComponent(sess.code))
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (data.error) return;
+    remoteFasts = data.fasts || [];
+    if (data.player1) sess.player1 = data.player1;
+    if (data.player2) sess.player2 = data.player2;
+    saveLocal();
+    setSyncLive(true);
+    if (document.getElementById('view-board').classList.contains('active')) renderBoard();
+    if (document.getElementById('view-log').classList.contains('active')) renderLog();
+  })
+  .catch(function() { setSyncLive(false); });
+}
+
+function setSyncLive(live) {
+  var dot = document.getElementById('syncDot');
+  var lbl = document.getElementById('syncLabel');
+  var ban = document.getElementById('syncBanner');
+  var bt  = document.getElementById('syncBannerText');
+  if (live) {
+    dot.classList.add('live'); lbl.textContent = 'live';
+    ban.classList.add('live');
+    bt.textContent = 'Live with ' + (sess.player2 || 'partner') + ' \u00b7 updates every 30s';
+  } else {
+    dot.classList.remove('live'); lbl.textContent = 'offline';
+    ban.classList.remove('live'); bt.textContent = 'Reconnecting...';
+  }
+}
+
+// ── TABS ──────────────────────────────────────────────────
+function switchTab(name, btn) {
+  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  document.getElementById('view-'+name).classList.add('active');
+  btn.classList.add('active');
+  if (name==='board') { pollFasts(); renderBoard(); }
+  if (name==='log') renderLog();
+}
+
+// ── FAST SELECT ───────────────────────────────────────────
+function selectType(h) {
+  if (sess.active) return;
+  selHours = h;
+  document.getElementById('opt16').className = 'fast-option' + (h===16?' sel16':'');
+  document.getElementById('opt24').className = 'fast-option' + (h===24?' sel24':'');
+}
+
+// ── FAST LIFECYCLE ────────────────────────────────────────
+function toggleFast() { if (sess.active) { completeFast(); } else { startFast(); } }
+
+function startFast() {
+  sess.active = { startTime: Date.now(), hours: selHours };
+  saveLocal();
+  document.getElementById('mainBtn').textContent = 'Complete Fast';
+  document.getElementById('mainBtn').className = 'btn-primary stop';
+  document.getElementById('cancelBtn').style.display = 'block';
+  document.getElementById('phasePill').classList.add('vis');
+  lockOpts(); startTick();
+  clearInterval(motiveTimer);
+  motiveTimer = setInterval(rotateMotive, 12000);
+  toast('Fast started \u2014 <span class="tg">you got this</span>');
+}
+
+function completeFast() {
+  if (!sess.active) return;
+  var elapsed = Date.now() - sess.active.startTime;
+  if (elapsed < sess.active.hours * 3600000 * 0.4) { toast('Keep going \u2014 <span class="tg">almost there</span>'); return; }
+  var rec = { startTime: sess.active.startTime, endTime: Date.now(), targetHours: sess.active.hours, actualMs: elapsed };
+  postFast(rec);
+  sess.myFasts = sess.myFasts || [];
+  sess.myFasts.unshift(rec);
+  clearFastState(); triggerBurst();
+  toast('\u2728 Fast complete \u2014 <span class="tg">well done, queen</span>');
+}
+
+function postFast(rec) {
+  if (!sess.code) return;
+  fetch('/api/fasts', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      sessionCode: sess.code, playerName: sess.myName, playerSlot: sess.slot,
+      targetHours: rec.targetHours, actualMs: rec.actualMs,
+      startedAt: new Date(rec.startTime).toISOString(),
+      endedAt: new Date(rec.endTime).toISOString()
+    })
+  }).then(function() { pollFasts(); }).catch(function() { setSyncLive(false); });
+}
+
+function cancelFast() {
+  if (!confirm('Cancel this fast?')) return;
+  clearFastState(); toast('Fast cancelled');
+}
+
+function clearFastState() {
+  sess.active = null; saveLocal();
+  clearInterval(ticker);
+  document.getElementById('mainBtn').textContent = 'Begin Fast';
+  document.getElementById('mainBtn').className = 'btn-primary';
+  document.getElementById('cancelBtn').style.display = 'none';
+  document.getElementById('phasePill').classList.remove('vis');
+  document.getElementById('timeBig').textContent = '00:00:00';
+  document.getElementById('timeBig').classList.remove('celeb');
+  document.getElementById('timeSub').textContent = 'ready to begin';
+  document.getElementById('timeMeta').textContent = '';
+  document.getElementById('ringProg').style.strokeDashoffset = '603';
+  document.getElementById('ringProg').classList.remove('reached');
+  document.getElementById('eatingCard').classList.remove('vis');
+  unlockOpts(); rotateMotive();
+}
+
+function lockOpts() { document.querySelectorAll('.fast-option').forEach(function(o) { o.style.pointerEvents='none'; o.style.opacity='0.6'; }); }
+function unlockOpts() { document.querySelectorAll('.fast-option').forEach(function(o) { o.style.pointerEvents=''; o.style.opacity=''; }); }
+
+// ── TICK ──────────────────────────────────────────────────
+function startTick() { clearInterval(ticker); tick(); ticker = setInterval(tick, 1000); }
+
+function tick() {
+  if (!sess.active) return;
+  var now = Date.now();
+  var elapsed = now - sess.active.startTime;
+  var target = sess.active.hours * 3600000;
+  var remaining = Math.max(0, target - elapsed);
+  var pct = Math.min(1, elapsed / target);
+  var h=Math.floor(elapsed/3600000), m=Math.floor((elapsed%3600000)/60000), s=Math.floor((elapsed%60000)/1000);
+  document.getElementById('timeBig').textContent = pad(h)+':'+pad(m)+':'+pad(s);
+  if (remaining > 0) {
+    var rh=Math.floor(remaining/3600000), rm=Math.floor((remaining%3600000)/60000);
+    document.getElementById('timeSub').textContent = rh+'h '+rm+'m remaining';
+    document.getElementById('ringProg').classList.remove('reached');
+    document.getElementById('timeBig').classList.remove('celeb');
+  } else {
+    document.getElementById('timeSub').textContent = 'Goal reached!';
+    document.getElementById('ringProg').classList.add('reached');
+    document.getElementById('timeBig').classList.add('celeb');
+  }
+  var phases = sess.active.hours===16
+    ? [{t:0,l:'Glycogen Burning'},{t:0.5,l:'Fat Burning'},{t:0.875,l:'Deep Autophagy'}]
+    : [{t:0,l:'Glycogen Burning'},{t:0.33,l:'Fat Burning'},{t:0.67,l:'Deep Autophagy'}];
+  var phase=phases[0].l;
+  for (var i=phases.length-1;i>=0;i--) { if (pct>=phases[i].t) { phase=phases[i].l; break; } }
+  document.getElementById('phaseSpan').textContent = phase;
+  document.getElementById('ringProg').style.strokeDashoffset = 603-(603*pct);
+  if (!document.getElementById('ringProg').classList.contains('reached'))
+    document.getElementById('ringProg').style.stroke = 'var(--forest-light)';
+  var sd=new Date(sess.active.startTime), ed=new Date(sess.active.startTime+target);
+  document.getElementById('timeMeta').innerHTML = 'Started <strong>'+fmt12(sd)+'</strong> &middot; Goal <strong>'+fmt12(ed)+'</strong>';
+  renderEatingWindow(sess.active.startTime, sess.active.hours, now);
+}
+
+function renderEatingWindow(startMs, fastHrs, nowMs) {
+  document.getElementById('eatingCard').classList.add('vis');
+  var eatHrs=24-fastHrs, fastEnd=startMs+fastHrs*3600000, eatEnd=fastEnd+eatHrs*3600000;
+  document.getElementById('ewFast').textContent = fastHrs+'h ('+fmt12(new Date(startMs))+' \u2013 '+fmt12(new Date(fastEnd))+')';
+  document.getElementById('ewEat').textContent = eatHrs+'h ('+fmt12(new Date(fastEnd))+' \u2013 '+fmt12(new Date(eatEnd))+')';
+  var bars=document.getElementById('eatingBars'); bars.innerHTML='';
+  var nowOff=(nowMs-startMs)/3600000;
+  for (var i=0;i<24;i++) {
+    var bar=document.createElement('div'), hOff=i+0.5;
+    if (i===Math.min(23,Math.floor(nowOff))) bar.className='eating-bar bnow';
+    else if (hOff<=fastHrs) bar.className='eating-bar bfast';
+    else bar.className='eating-bar beat';
+    bar.style.height=(hOff<=fastHrs?Math.round(48+30*(1-hOff/fastHrs)):100)+'%';
+    bars.appendChild(bar);
+  }
+}
+
+// ── BURST ─────────────────────────────────────────────────
+function triggerBurst() {
+  var bc=document.getElementById('burstEl');
+  bc.style.display='flex';
+  setTimeout(function(){bc.style.display='none';},1300);
+  if (navigator.vibrate) navigator.vibrate([30,50,60]);
+}
+
+// ── SCOREBOARD ────────────────────────────────────────────
+function changeWeek(d) { weekOffset+=d; renderBoard(); }
+
+function allFasts() {
+  var all=remoteFasts.slice(), seen={};
+  remoteFasts.forEach(function(f){seen[f.started_at]=true;});
+  (sess.myFasts||[]).forEach(function(f){
+    var iso=new Date(f.startTime).toISOString();
+    if (!seen[iso]) all.push({player_name:sess.myName,player_slot:sess.slot,target_hours:f.targetHours,actual_ms:f.actualMs,started_at:iso,ended_at:new Date(f.endTime).toISOString()});
+  });
+  return all;
+}
+
+function renderBoard() {
+  var today=new Date(); today.setHours(0,0,0,0);
+  var anchor=new Date(today); anchor.setDate(today.getDate()-today.getDay()+weekOffset*7);
+  var wEnd=new Date(anchor); wEnd.setDate(wEnd.getDate()+6);
+  document.getElementById('weekLabel').textContent=anchor.toLocaleDateString('en-US',{month:'short',day:'numeric'})+' \u2013 '+wEnd.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  var p1=sess.player1||'Player 1', p2=sess.player2||'Partner';
+  document.getElementById('boardSub').textContent=p1+' & '+p2;
+  var fasts=allFasts(), days=['Su','Mo','Tu','We','Th','Fr','Sa'], comp={};
+  fasts.forEach(function(f){
+    var d=new Date(f.ended_at); d.setHours(0,0,0,0);
+    if (d>=anchor&&d<=wEnd){var k=d.toDateString();comp[k]=comp[k]||{};if((f.target_hours||0)>=24)comp[k].h24=true;else comp[k].h16=true;}
+  });
+  var grid=document.getElementById('weekGrid'); grid.innerHTML='';
+  for (var i=0;i<7;i++){
+    var dd=new Date(anchor); dd.setDate(anchor.getDate()+i);
+    var k=dd.toDateString(), info=comp[k]||{}, isT=dd.toDateString()===today.toDateString();
+    var cell=document.createElement('div');
+    cell.className='day-cell'+(info.h24?' d24':info.h16?' d16':'')+(isT?' today':'');
+    cell.innerHTML='<div class="dc-name">'+days[dd.getDay()]+'</div><div class="dc-icon">'+(info.h24?'&#11088;':info.h16?'&#10003;':isT?'&middot;':'')+'</div>';
+    grid.appendChild(cell);
+  }
+  function getStats(slot,name){
+    var c16=0,c24=0,seen={};
+    fasts.filter(function(f){return f.player_slot===slot||(f.player_name||'').toLowerCase()===name.toLowerCase();})
+    .forEach(function(f){
+      var d=new Date(f.ended_at); d.setHours(0,0,0,0);
+      if(d>=anchor&&d<=wEnd){var kk=d.toDateString();seen[kk]=seen[kk]||{};var t=f.target_hours||0;if(t>=24&&!seen[kk].h24){c24++;seen[kk].h24=true;}else if(t>=16&&!seen[kk].h16){c16++;seen[kk].h16=true;}}
+    });
+    return {c16:c16,c24:c24};
+  }
+  var s1=getStats(1,p1),s2=getStats(2,p2);
+  var pc=document.getElementById('playerCards'); pc.innerHTML='';
+  [[p1,1,s1],[p2,2,s2]].forEach(function(pl){
+    var name=pl[0],slot=pl[1],stats=pl[2],win=stats.c16>=4&&stats.c24>=1,isMe=slot===sess.slot;
+    var init=name.split(' ').map(function(w){return w[0]||'';}).join('').substring(0,2).toUpperCase();
+    var d16=''; for(var d=0;d<4;d++) d16+='<div class="gc-dot'+(d<stats.c16?' on':'')+'"></div>';
+    var d24='<div class="gc-dot'+(stats.c24>=1?' ong':'')+'"></div>';
+    var card=document.createElement('div');
+    card.className='player-card'+(win?' winner':'')+(isMe?' me-card':'');
+    card.innerHTML='<div class="player-row"><div class="player-avatar">'+esc(init)+'</div><div><div class="player-name">'+esc(name)+' <span class="win-badge">&#10024; Week Won</span></div><div class="player-role">'+(isMe?"Your progress":"Partner's progress")+'</div></div></div><div class="goals-row"><div class="goal-chip'+(stats.c16>=4?' m16':'')+'"><div class="gc-label">16-hr fasts</div><div class="gc-val">'+stats.c16+'<span>/4</span></div><div class="gc-dots">'+d16+'</div></div><div class="goal-chip'+(stats.c24>=1?' m24':'')+'"><div class="gc-label">24-hr fast</div><div class="gc-val">'+stats.c24+'<span>/1</span></div><div class="gc-dots">'+d24+'</div></div></div>';
+    pc.appendChild(card);
+  });
+}
+
+// ── LOG ───────────────────────────────────────────────────
+function renderLog() {
+  var list=document.getElementById('histList'); list.innerHTML='';
+  var fasts=allFasts();
+  if (!fasts.length){list.innerHTML='<div class="empty-state"><div class="ei">&#127807;</div><p>No completed fasts yet.<br>Begin your first fast to build your log.</p></div>';return;}
+  fasts.slice().sort(function(a,b){return new Date(b.ended_at)-new Date(a.ended_at);}).forEach(function(f){
+    var tgt=f.target_hours||0,hrs=(f.actual_ms/3600000).toFixed(1),is24=tgt>=24;
+    var sd=new Date(f.started_at),ed=new Date(f.ended_at);
+    var item=document.createElement('div'); item.className='hist-item';
+    item.innerHTML='<div class="hist-icon '+(is24?'h24':'h16')+'">'+(is24?'&#11088;':'&#127807;')+'</div><div class="hist-info"><div class="hist-title">'+tgt+'-Hour Fast</div><div class="hist-date">'+ed.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})+' &middot; '+fmt12(sd)+' &rarr; '+fmt12(ed)+'</div><div class="hist-who">'+esc(f.player_name||sess.myName)+'</div></div><div class="hist-dur">'+hrs+'h</div>';
+    list.appendChild(item);
+  });
+}
+
+// ── SHARE MODAL ───────────────────────────────────────────
+function showShareModal() {
+  document.getElementById('shareCode').textContent = sess.code || '------';
+  document.getElementById('shareUrl').textContent = BASE_URL + '?code=' + (sess.code||'');
+  document.getElementById('shareModal').classList.add('open');
+}
+
+function copyLink() {
+  var url = BASE_URL + '?code=' + (sess.code||'');
+  var done = function() { toast('Link copied \u2014 <span class="tg">send to your partner</span>'); closeShareModal(); };
+  if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(url).then(done).catch(fallbackCopy.bind(null,url,done)); }
+  else { fallbackCopy(url,done); }
+}
+
+function fallbackCopy(text,cb) {
+  var ta=document.createElement('textarea'); ta.value=text;
+  ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try { document.execCommand('copy'); } catch(e){}
+  document.body.removeChild(ta); if(cb) cb();
+}
+
+function closeShareModal(e) {
+  if (e && e.target!==document.getElementById('shareModal')) return;
+  document.getElementById('shareModal').classList.remove('open');
+}
+
+// ── MOTIVATIONS ───────────────────────────────────────────
+var quotes = [
+  "Every hour of fasting is a quiet act of self-mastery.",
+  "Stillness is where your body does its deepest healing.",
+  "You are not hungry \u2014 you are becoming.",
+  "Your discipline today is your energy tomorrow.",
+  "This silence feeds something deeper than appetite.",
+  "The body knows how to heal. Give it space.",
+  "Restraint is the highest form of strength.",
+  "Each fast is a conversation with your highest self.",
+  "The hunger passes. The clarity stays.",
+  "You have done harder things. This is just time.",
+  "Fasting is not missing out \u2014 it is waking up.",
+  "A queen does not negotiate with cravings.",
+  "Your commitment is the most powerful thing in the room.",
+  "Living in the end of your healthiest self.",
+  "Silence the noise. Trust the process."
+];
+
+function rotateMotive() {
+  var el=document.getElementById('motiveText');
+  el.style.opacity='0';
+  setTimeout(function(){el.textContent=quotes[Math.floor(Math.random()*quotes.length)];el.style.opacity='1';},350);
+}
+
+// ── HELPERS ───────────────────────────────────────────────
+function pad(n) { return String(n).padStart(2,'0'); }
+
+function fmt12(d) {
+  var h=d.getHours(),m=d.getMinutes(),ap=h>=12?'pm':'am';
+  h=h%12||12; return h+':'+pad(m)+ap;
+}
+
+function esc(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function toast(msg) {
+  var t=document.getElementById('toast');
+  t.innerHTML=msg; t.classList.add('show');
+  clearTimeout(t._t); t._t=setTimeout(function(){t.classList.remove('show');},3200);
+}
+</script>
+
+</body>
+</html>
