@@ -1,13 +1,15 @@
 {
-“name”: “tmacinspired-site”,
-“version”: “1.0.0”,
-“description”: “TMac Inspired Fasting App”,
-“engines”: { “node”: “18.x” },
-“scripts”: {
-“postinstall”: “prisma generate”
-},
-“dependencies”: {
-“@prisma/client”: “^5.22.0”,
-“prisma”: “^5.22.0”
-}
+  "name": "tmacinspired-site",
+  "version": "1.0.0",
+  "description": "TMac Inspired Fasting App",
+  "engines": {
+    "node": "18.x"
+  },
+  "scripts": {
+    "postinstall": "prisma generate"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "prisma": "^5.22.0"
+  }
 }
