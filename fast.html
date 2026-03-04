@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -870,7 +869,7 @@ function startTick(){clearInterval(ticker);tick();ticker=setInterval(tick,1000);
 function tick() {
   if (!sess.active) return;
   var now=Date.now(), elapsed=now-sess.active.startTime;
-updateJourney(elapsed / 3600000);
+updateJourney(elapsed / 3600000, sess.active.hours);
   var target=sess.active.hours*3600000, rem=Math.max(0,target-elapsed), pct=Math.min(1,elapsed/target);
   var h=Math.floor(elapsed/3600000),m=Math.floor((elapsed%3600000)/60000),s=Math.floor((elapsed%60000)/1000);
   document.getElementById('timeBig').textContent=pad(h)+':'+pad(m)+':'+pad(s);
@@ -1329,25 +1328,32 @@ function setStageCard(stage){
   });
 }
 
-function updateJourney(elapsedHours){
+function updateJourney(elapsedHours, fastTargetHours){
   if (!window.JOURNEY || !Array.isArray(JOURNEY) || !JOURNEY.length) return;
 
-  // Clamp progress for the visual line (0 to 48)
-  var maxH = 48;
+  // Scale thresholds proportionally to the fast target.
+  // Base thresholds are tuned for a 16hr fast; scale accordingly.
+  var scale = fastTargetHours ? (fastTargetHours / 16) : 1;
+  var scaled = JOURNEY.map(function(s){
+    return { key:s.key, at:s.at*scale, label:s.label, title:s.title, body:s.body, benefits:s.benefits };
+  });
+
+  // Progress line
+  var maxH = scaled[scaled.length-1].at || 48*scale;
   var pct = Math.max(0, Math.min(1, elapsedHours / maxH));
   var fill = document.getElementById('journeyFill');
   if (fill) fill.style.width = (pct * 100) + '%';
 
-  // Determine current stage based on elapsed hours
-  var current = JOURNEY[0];
-  for (var i = 0; i < JOURNEY.length; i++){
-    if (elapsedHours >= JOURNEY[i].at) current = JOURNEY[i];
+  // Current stage
+  var current = scaled[0];
+  for (var i = 0; i < scaled.length; i++){
+    if (elapsedHours >= scaled[i].at) current = scaled[i];
   }
 
   // Next stage countdown
   var next = null;
-  for (var j = 0; j < JOURNEY.length; j++){
-    if (elapsedHours < JOURNEY[j].at) { next = JOURNEY[j]; break; }
+  for (var j = 0; j < scaled.length; j++){
+    if (elapsedHours < scaled[j].at) { next = scaled[j]; break; }
   }
 
   var nextEl = document.getElementById('journeyNext');
@@ -1361,12 +1367,12 @@ function updateJourney(elapsedHours){
     nextEl.textContent = 'Next stage in: ' + hh + 'h ' + pad(mm) + 'm';
   }
 
-  // Update dot states
+  // Update dot states using scaled thresholds
   var dots = document.querySelectorAll('.jdot');
   dots.forEach(function(d){
     d.classList.remove('done','current');
     var key = d.getAttribute('data-key');
-    var stage = JOURNEY.find(function(x){ return x.key === key; });
+    var stage = scaled.find ? scaled.find(function(x){ return x.key===key; }) : (function(){ for(var k=0;k<scaled.length;k++){if(scaled[k].key===key)return scaled[k];}return null; })();
     if (!stage) return;
     if (elapsedHours >= stage.at) d.classList.add('done');
     if (current.key === key) d.classList.add('current');
