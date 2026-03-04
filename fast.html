@@ -678,6 +678,12 @@ body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--c
 <div class="toast" id="toast"></div>
 
 <script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js');
+  });
+}
+  
 // ══ CONFIG ════════════════════════════════════════════════
 var BASE_URL = 'https://www.tmacinspired.com/fast';
 var SK = 'fastAndStill_v2';
