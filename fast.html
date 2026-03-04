@@ -704,34 +704,77 @@ function apiPost(data) {
 function createSession() {
   var name = document.getElementById('obName').value.trim();
   if (!name) { obErr('Please enter your name'); return; }
+
   obErr('');
   var btn = document.getElementById('obCreateBtn');
-  btn.disabled=true; btn.textContent='Creating...';
+  btn.disabled = true;
+  btn.textContent = 'Creating...';
+
   apiPost({ action:'createSession', name:name })
   .then(function(d) {
-    if (d.error) { obErr(d.error); btn.disabled=false; btn.textContent='Start New Session'; return; }
-    sess.code=d.code; sess.slot=1; sess.myName=name; sess.player1=name; sess.player2=null;
-    save(); launchApp();
+
+    // handle bad or empty responses safely
+    if (!d || d.error || !d.code) {
+      obErr((d && d.error) ? d.error : 'Unable to create session.');
+      btn.disabled = false;
+      btn.textContent = 'Start New Session';
+      return;
+    }
+
+    sess.code = d.code;
+    sess.slot = 1;
+    sess.myName = name;
+    sess.player1 = name;
+    sess.player2 = null;
+
+    save();
+    launchApp();
+
   })
-  .catch(function(){ obErr('Connection failed. Check your script URL.'); btn.disabled=false; btn.textContent='Start New Session'; });
+  .catch(function(){
+    obErr('Connection failed. Check your script URL.');
+    btn.disabled = false;
+    btn.textContent = 'Start New Session';
+  });
 }
+
 
 function joinSession() {
   var name = document.getElementById('obName').value.trim();
   var code = document.getElementById('obCode').value.trim().toUpperCase();
+
   if (!name) { obErr('Please enter your name'); return; }
-  if (!code||code.length<4) { obErr('Please enter the session code'); return; }
+  if (!code || code.length < 4) { obErr('Please enter the session code'); return; }
+
   obErr('');
+
   apiPost({ action:'joinSession', code:code, name:name })
   .then(function(d) {
-    if (d.error) { obErr(d.error); return; }
-    sess.code=d.code; sess.slot=2; sess.myName=name; sess.player1=d.player1; sess.player2=d.player2||name;
-    save(); launchApp();
+
+    // handle bad or empty responses safely
+    if (!d || d.error || !d.code) {
+      obErr((d && d.error) ? d.error : 'Unable to join session.');
+      return;
+    }
+
+    sess.code = d.code;
+    sess.slot = 2;
+    sess.myName = name;
+    sess.player1 = d.player1;
+    sess.player2 = d.player2 || name;
+
+    save();
+    launchApp();
+
   })
-  .catch(function(){ obErr('Connection failed.'); });
+  .catch(function(){
+    obErr('Connection failed. Check your script URL.');
+  });
 }
 
-function obErr(msg) { document.getElementById('obError').textContent=msg; }
+function obErr(msg) {
+  document.getElementById('obError').textContent = msg;
+}
 
 // ══ LAUNCH ════════════════════════════════════════════════
 function launchApp() {
