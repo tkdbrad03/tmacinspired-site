@@ -607,6 +607,7 @@
 
   <button class="btn-primary" id="mainBtn" onclick="toggleFast()">Begin Fast</button>
   <button class="btn-secondary" id="cancelBtn" style="display:none" onclick="cancelFast()">Cancel Fast</button>
+  <button class="btn-secondary" id="adjustBtn" style="display:none" onclick="adjustStartTime()">Adjust Start Time</button>
 </div>
 
 <!-- TRACKER VIEW -->
@@ -808,7 +809,8 @@ function startFast(){
   document.getElementById("phaseBadge").style.display = "inline-flex";
   document.getElementById("startInfo").style.display = "block";
   document.querySelectorAll(".fast-option").forEach(o=>o.style.pointerEvents="none");
-
+  document.getElementById('adjustBtn').style.display = 'block';
+  
   startTimerTick();
   showToast("Fast started");
   motivationInterval = setInterval(rotateMotive, 12000);
@@ -859,7 +861,7 @@ function clearFastState(){
   document.getElementById("progressRing").style.strokeDashoffset = "729";
   document.getElementById("progressRing").style.stroke = "var(--ring-fat)";
   document.querySelectorAll(".fast-option").forEach(o=>o.style.pointerEvents="");
-
+  document.getElementById('adjustBtn').style.display = 'none';
   rotateMotive();
 }
 
@@ -1268,6 +1270,40 @@ if(state.activeFast){
   document.querySelectorAll(".fast-option").forEach(o=>o.style.pointerEvents="none");
   startTimerTick();
   motivationInterval = setInterval(rotateMotive, 12000);
+}
+function adjustStartTime(){
+  if (!state.activeFast) { showToast("No active fast"); return; }
+
+  const current = new Date(state.activeFast.startTime);
+  const defaultVal = toLocalInputValue(current);
+
+  const input = prompt("Enter start time (YYYY-MM-DD HH:MM) in your local time:", defaultVal.replace("T"," "));
+  if (!input) return;
+
+  // Accept "YYYY-MM-DD HH:MM"
+  const normalized = input.trim().replace(" ", "T");
+  const d = new Date(normalized);
+
+  if (isNaN(d.getTime())) {
+    showToast("Invalid time format");
+    return;
+  }
+
+  // Don’t allow start in the future
+  if (d.getTime() > Date.now()) {
+    showToast("Start time can't be in the future");
+    return;
+  }
+
+  state.activeFast.startTime = d.getTime();
+  saveState();
+  tickTimer();
+  showToast("Start time updated");
+}
+
+function toLocalInputValue(d){
+  const pad = n => String(n).padStart(2,"0");
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
 // prefill partner UI values if/when opened
