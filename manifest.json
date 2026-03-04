@@ -1,0 +1,22 @@
+{
+  "name": "Fast & Still",
+  "short_name": "Fast & Still",
+  "description": "Intentional fasting with your partner",
+  "start_url": "/fast",
+  "display": "standalone",
+  "background_color": "#1e3329",
+  "theme_color": "#1e3329",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
