@@ -621,18 +621,14 @@ var pollTimer = null;
 var selHours = 16;
 
 // ══ INIT ══════════════════════════════════════════════════
-(function init() {
+function init() {
   var params = new URLSearchParams(window.location.search);
   var urlCode = params.get('code');
   var surl = params.get('surl');
 
-  // Auto-save script URL from invite link
-  if (surl) {
-    try { surl = decodeURIComponent(surl); } catch(e) {}
-    if (!sess.scriptUrl) {
-      sess.scriptUrl = surl;
-      save();
-    }
+  if (surl && !sess.scriptUrl) {
+    sess.scriptUrl = surl;
+    save();
   }
 
   if (urlCode) {
@@ -641,14 +637,12 @@ var selHours = 16;
     document.getElementById('obSub').textContent = 'Enter your name to join your partner\'s session.';
   }
 
-  // If we now have a scriptUrl, make sure setup modal is closed
-  if (sess.scriptUrl) {
-    document.getElementById('setupModal').classList.remove('open');
-  }
-
   if (!sess.scriptUrl) { openMod('setupModal'); return; }
   if (sess.code && sess.myName) { launchApp(); }
-})();
+}
+
+// run AFTER everything (including JOURNEY) is defined
+window.addEventListener('DOMContentLoaded', init);
 
 // ══ SETUP ═════════════════════════════════════════════════
 function saveScriptUrl() {
@@ -1159,7 +1153,7 @@ function setStageCard(stage){
 }
 
 function updateJourney(elapsedHours){
-  buildJourneyUI();
+  if (!window.JOURNEY || !Array.isArray(JOURNEY) || !JOURNEY.length) return;
 
   // Clamp progress for the visual line (0 to 48)
   var maxH = 48;
