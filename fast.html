@@ -472,11 +472,28 @@ var selHours = 16;
 (function init() {
   var params = new URLSearchParams(window.location.search);
   var urlCode = params.get('code');
+  var surl = params.get('surl');
+
+  // Auto-save script URL from invite link
+  if (surl) {
+    try { surl = decodeURIComponent(surl); } catch(e) {}
+    if (!sess.scriptUrl) {
+      sess.scriptUrl = surl;
+      save();
+    }
+  }
+
   if (urlCode) {
     document.getElementById('obCode').value = urlCode.toUpperCase();
     document.getElementById('obTitle').textContent = 'Join Session';
     document.getElementById('obSub').textContent = 'Enter your name to join your partner\'s session.';
   }
+
+  // If we now have a scriptUrl, make sure setup modal is closed
+  if (sess.scriptUrl) {
+    document.getElementById('setupModal').classList.remove('open');
+  }
+
   if (!sess.scriptUrl) { openMod('setupModal'); return; }
   if (sess.code && sess.myName) { launchApp(); }
 })();
@@ -848,13 +865,14 @@ function deleteFast(id){
 // ══ SHARE ═════════════════════════════════════════════════
 function showShareModal(){
   document.getElementById('shareCode').textContent=sess.code||'------';
-  document.getElementById('shareUrl').textContent=BASE_URL+'?code='+(sess.code||'');
+  var url = BASE_URL+'?code='+(sess.code||'') + (sess.scriptUrl ? '&surl='+encodeURIComponent(sess.scriptUrl) : '');
+  document.getElementById('shareUrl').textContent = url;
   openMod('shareModal');
 }
 
 function copyLink(){
-  var url=BASE_URL+'?code='+(sess.code||'');
-  var done=function(){toast('Link copied \u2014 <span class="tg">send to your partner</span>');closeMod('shareModal');};
+  var url = BASE_URL+'?code='+(sess.code||'') + (sess.scriptUrl ? '&surl='+encodeURIComponent(sess.scriptUrl) : '');
+  var done=function(){toast('Link copied — <span class="tg">send to your partner</span>');closeMod('shareModal');};
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(done).catch(function(){fbCopy(url,done);});}
   else{fbCopy(url,done);}
 }
