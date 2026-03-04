@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -704,77 +705,34 @@ function apiPost(data) {
 function createSession() {
   var name = document.getElementById('obName').value.trim();
   if (!name) { obErr('Please enter your name'); return; }
-
   obErr('');
   var btn = document.getElementById('obCreateBtn');
-  btn.disabled = true;
-  btn.textContent = 'Creating...';
-
+  btn.disabled=true; btn.textContent='Creating...';
   apiPost({ action:'createSession', name:name })
   .then(function(d) {
-
-    // handle bad or empty responses safely
-    if (!d || d.error || !d.code) {
-      obErr((d && d.error) ? d.error : 'Unable to create session.');
-      btn.disabled = false;
-      btn.textContent = 'Start New Session';
-      return;
-    }
-
-    sess.code = d.code;
-    sess.slot = 1;
-    sess.myName = name;
-    sess.player1 = name;
-    sess.player2 = null;
-
-    save();
-    launchApp();
-
+    if (d.error) { obErr(d.error); btn.disabled=false; btn.textContent='Start New Session'; return; }
+    sess.code=d.code; sess.slot=1; sess.myName=name; sess.player1=name; sess.player2=null;
+    save(); launchApp();
   })
-  .catch(function(){
-    obErr('Connection failed. Check your script URL.');
-    btn.disabled = false;
-    btn.textContent = 'Start New Session';
-  });
+  .catch(function(){ obErr('Connection failed. Check your script URL.'); btn.disabled=false; btn.textContent='Start New Session'; });
 }
-
 
 function joinSession() {
   var name = document.getElementById('obName').value.trim();
   var code = document.getElementById('obCode').value.trim().toUpperCase();
-
   if (!name) { obErr('Please enter your name'); return; }
-  if (!code || code.length < 4) { obErr('Please enter the session code'); return; }
-
+  if (!code||code.length<4) { obErr('Please enter the session code'); return; }
   obErr('');
-
   apiPost({ action:'joinSession', code:code, name:name })
   .then(function(d) {
-
-    // handle bad or empty responses safely
-    if (!d || d.error || !d.code) {
-      obErr((d && d.error) ? d.error : 'Unable to join session.');
-      return;
-    }
-
-    sess.code = d.code;
-    sess.slot = 2;
-    sess.myName = name;
-    sess.player1 = d.player1;
-    sess.player2 = d.player2 || name;
-
-    save();
-    launchApp();
-
+    if (d.error) { obErr(d.error); return; }
+    sess.code=d.code; sess.slot=2; sess.myName=name; sess.player1=d.player1; sess.player2=d.player2||name;
+    save(); launchApp();
   })
-  .catch(function(){
-    obErr('Connection failed. Check your script URL.');
-  });
+  .catch(function(){ obErr('Connection failed.'); });
 }
 
-function obErr(msg) {
-  document.getElementById('obError').textContent = msg;
-}
+function obErr(msg) { document.getElementById('obError').textContent=msg; }
 
 // ══ LAUNCH ════════════════════════════════════════════════
 function launchApp() {
@@ -911,18 +869,11 @@ function startTick(){clearInterval(ticker);tick();ticker=setInterval(tick,1000);
 
 function tick() {
   if (!sess.active) return;
-
-  var now = Date.now(),
-      elapsed = now - sess.active.startTime,
-      target = sess.active.hours * 3600000,
-      rem = Math.max(0, target - elapsed),
-      pct = Math.min(1, elapsed / target);
-
-  updateJourney(elapsed / 3600000, pct, sess.active.hours);
-
+  var now=Date.now(), elapsed=now-sess.active.startTime;
+updateJourney(elapsed / 3600000);
+  var target=sess.active.hours*3600000, rem=Math.max(0,target-elapsed), pct=Math.min(1,elapsed/target);
   var h=Math.floor(elapsed/3600000),m=Math.floor((elapsed%3600000)/60000),s=Math.floor((elapsed%60000)/1000);
   document.getElementById('timeBig').textContent=pad(h)+':'+pad(m)+':'+pad(s);
-
   if (rem>0) {
     var rh=Math.floor(rem/3600000),rm2=Math.floor((rem%3600000)/60000);
     document.getElementById('timeSub').textContent=rh+'h '+rm2+'m remaining';
@@ -933,23 +884,17 @@ function tick() {
     document.getElementById('ringProg').classList.add('reached');
     document.getElementById('timeBig').classList.add('celeb');
   }
-
   var phases=sess.active.hours===16
     ?[{t:0,l:'Glycogen Burning'},{t:0.5,l:'Fat Burning'},{t:0.875,l:'Deep Autophagy'}]
     :[{t:0,l:'Glycogen Burning'},{t:0.33,l:'Fat Burning'},{t:0.67,l:'Deep Autophagy'}];
-
   var phase=phases[0].l;
   for(var i=phases.length-1;i>=0;i--){if(pct>=phases[i].t){phase=phases[i].l;break;}}
-
   document.getElementById('phaseSpan').textContent=phase;
   document.getElementById('ringProg').style.strokeDashoffset=CIRC-(CIRC*pct);
-
   if(!document.getElementById('ringProg').classList.contains('reached'))
     document.getElementById('ringProg').style.stroke='var(--forest-light)';
-
   var sd=new Date(sess.active.startTime),ed=new Date(sess.active.startTime+target);
   document.getElementById('timeMeta').innerHTML='Started <strong>'+fmt12(sd)+'</strong> &middot; Goal <strong>'+fmt12(ed)+'</strong>';
-
   renderEW(sess.active.startTime,sess.active.hours,now);
 }
 
@@ -1385,54 +1330,13 @@ function setStageCard(stage){
 }
 
 function updateJourney(elapsedHours){
+  if (!window.JOURNEY || !Array.isArray(JOURNEY) || !JOURNEY.length) return;
 
-  const stageEl = document.querySelector('#journeyStage');
-  const descEl = document.querySelector('#journeyDescription');
-  const tagsEl = document.querySelector('#journeyTags');
-
-  if(!stageEl) return;
-
-  let stage = "";
-  let desc = "";
-  let tags = [];
-
-  if(elapsedHours < 4){
-    stage = "Fed State";
-    desc = "Your body is still using energy from your last meal.";
-    tags = ["digestion", "insulin active"];
-  }
-
-  else if(elapsedHours < 12){
-    stage = "Glycogen Burn";
-    desc = "Your body is using stored glycogen for energy and insulin trends down.";
-    tags = ["blood sugar stability","reduced snacking","digestive rest"];
-  }
-
-  else if(elapsedHours < 16){
-    stage = "Fat Adaptation";
-    desc = "Your body begins shifting toward stored fat for fuel.";
-    tags = ["fat metabolism","mental clarity","energy stabilization"];
-  }
-
-  else if(elapsedHours < 24){
-    stage = "Deep Autophagy";
-    desc = "Your body increases cellular repair and cleanup.";
-    tags = ["cell repair","immune reset","anti-aging"];
-  }
-
-  else{
-    stage = "Extended Repair";
-    desc = "Longer fasting activates deeper metabolic repair systems.";
-    tags = ["growth hormone","cell regeneration"];
-  }
-
-  stageEl.innerText = stage;
-  descEl.innerText = desc;
-
-  tagsEl.innerHTML = tags
-    .map(t => `<span class="tag">${t}</span>`)
-    .join("");
-}
+  // Clamp progress for the visual line (0 to 48)
+  var maxH = 48;
+  var pct = Math.max(0, Math.min(1, elapsedHours / maxH));
+  var fill = document.getElementById('journeyFill');
+  if (fill) fill.style.width = (pct * 100) + '%';
 
   // Determine current stage based on elapsed hours
   var current = JOURNEY[0];
