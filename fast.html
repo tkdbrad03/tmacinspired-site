@@ -112,6 +112,140 @@ body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--c
 .eating-bar.bnow { background: var(--gold-light); box-shadow: 0 0 7px rgba(196,164,107,0.55); }
 .eating-info { display: flex; justify-content: space-between; margin-top: 6px; font-size: 11px; color: var(--taupe); }
 .eating-info strong { color: var(--charcoal); font-weight: 500; }
+/* METABOLIC JOURNEY */
+.journey-card{
+  background: white;
+  border: 1.5px solid var(--stone);
+  border-radius: 16px;
+  padding: 14px 14px 16px;
+  margin: 6px 0 16px;
+}
+.journey-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:10px;
+}
+.journey-title{
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--charcoal);
+}
+.journey-next{
+  font-size: 11px;
+  color: var(--taupe);
+  text-align:right;
+  line-height:1.3;
+  white-space:nowrap;
+}
+.journey-track{
+  position: relative;
+  padding: 14px 6px 6px;
+}
+.journey-line{
+  position:absolute;
+  left:10px;
+  right:10px;
+  top: 22px;
+  height: 2px;
+  background: var(--stone);
+  border-radius: 2px;
+}
+.journey-line-fill{
+  position:absolute;
+  left:10px;
+  top: 22px;
+  height: 2px;
+  background: var(--forest-light);
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.6s ease;
+}
+.journey-dots{
+  display:grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0;
+  position: relative;
+  z-index: 1;
+}
+.jdot{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  min-width:0;
+}
+.jdot .dot{
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid var(--stone);
+  transition: background 0.35s, border-color 0.35s, transform 0.35s;
+}
+.jdot.done .dot{
+  background: var(--forest-light);
+  border-color: var(--forest-light);
+}
+.jdot.current .dot{
+  background: var(--gold);
+  border-color: var(--gold);
+  transform: scale(1.08);
+  box-shadow: 0 0 10px rgba(196,164,107,0.35);
+}
+.jdot .lbl{
+  font-size: 9px;
+  color: var(--taupe);
+  text-align:center;
+  line-height:1.2;
+  letter-spacing: 0.02em;
+  width: 56px;
+}
+.jdot.current .lbl{ color: var(--charcoal); font-weight: 600; }
+
+.stage-card{
+  margin-top: 12px;
+  background: var(--warm-white);
+  border: 1px solid var(--stone);
+  border-radius: 14px;
+  padding: 12px 12px 12px;
+}
+.stage-eyebrow{
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--taupe);
+  margin-bottom: 6px;
+}
+.stage-title{
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--charcoal);
+  margin-bottom: 6px;
+}
+.stage-body{
+  font-size: 12px;
+  color: var(--charcoal);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+.stage-benefits{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+.sbenefit{
+  font-size: 10px;
+  color: var(--forest-mid);
+  background: #eef4f0;
+  border: 1px solid rgba(58,96,80,0.25);
+  padding: 5px 8px;
+  border-radius: 100px;
+}
 
 /* BURST */
 .burst-container { position: fixed; inset: 0; pointer-events: none; z-index: 999; display: flex; align-items: center; justify-content: center; }
@@ -289,6 +423,24 @@ body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--c
       </div>
       <div class="time-meta" id="timeMeta"></div>
     </div>
+    <!-- METABOLIC JOURNEY -->
+<div class="journey-card" id="journeyCard">
+  <div class="journey-top">
+    <div class="journey-title">Metabolic Journey</div>
+    <div class="journey-next" id="journeyNext">Next stage in: --</div>
+  </div>
+
+  <div class="journey-track" id="journeyTrack">
+    <!-- JS builds dots and labels -->
+  </div>
+
+  <div class="stage-card" id="stageCard">
+    <div class="stage-eyebrow" id="stageEyebrow">Current stage</div>
+    <div class="stage-title" id="stageTitle">Glycogen Burn</div>
+    <div class="stage-body" id="stageBody">Your body is using stored glycogen for energy while insulin begins to trend down.</div>
+    <div class="stage-benefits" id="stageBenefits"></div>
+  </div>
+</div>
     <div class="eating-card" id="eatingCard">
       <div class="eating-label">Eating Window</div>
       <div class="eating-bars" id="eatingBars"></div>
@@ -567,6 +719,7 @@ function launchApp() {
   pollFasts();
   pollTimer = setInterval(pollFasts, 30000);
   motiveTimer = setInterval(rotateMotive, 12000);
+  updateJourney(0);
 }
 
 // ══ POLL ══════════════════════════════════════════════════
@@ -671,6 +824,7 @@ function clearFastState() {
   document.getElementById('ringProg').classList.remove('reached');
   document.getElementById('eatingCard').classList.remove('vis');
   unlockOpts(); rotateMotive();
+  updateJourney(0);
 }
 
 function lockOpts(){document.querySelectorAll('.fast-option').forEach(function(o){o.style.pointerEvents='none';o.style.opacity='0.6';});}
@@ -682,6 +836,7 @@ function startTick(){clearInterval(ticker);tick();ticker=setInterval(tick,1000);
 function tick() {
   if (!sess.active) return;
   var now=Date.now(), elapsed=now-sess.active.startTime;
+updateJourney(elapsed / 3600000);
   var target=sess.active.hours*3600000, rem=Math.max(0,target-elapsed), pct=Math.min(1,elapsed/target);
   var h=Math.floor(elapsed/3600000),m=Math.floor((elapsed%3600000)/60000),s=Math.floor((elapsed%60000)/1000);
   document.getElementById('timeBig').textContent=pad(h)+':'+pad(m)+':'+pad(s);
@@ -918,6 +1073,138 @@ function toast(msg){
   var t=document.getElementById('toast');t.innerHTML=msg;t.classList.add('show');
   clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},3200);
 }
+
+// ══ METABOLIC JOURNEY DATA ════════════════════════════════
+var JOURNEY = [
+  {
+    key: 'start', at: 0,
+    label: 'Start',
+    title: 'Start',
+    body: 'You have begun. Hydrate, keep it simple, and let the process work.',
+    benefits: ['hydration focus','digestive rest']
+  },
+  {
+    key: 'glycogen', at: 12,
+    label: 'Glycogen',
+    title: 'Glycogen Burn',
+    body: 'Your body is using stored glycogen for energy and insulin trends down.',
+    benefits: ['blood sugar stability','reduced snacking','digestive rest']
+  },
+  {
+    key: 'fat', at: 18,
+    label: 'Fat Burn',
+    title: 'Fat Burning',
+    body: 'Stored fat becomes a more dominant fuel source as glucose reliance drops.',
+    benefits: ['fat utilization','steadier energy','reduced cravings']
+  },
+  {
+    key: 'ketosis', at: 24,
+    label: 'Ketosis',
+    title: 'Ketosis',
+    body: 'Ketone production rises and the brain may feel clearer and more steady.',
+    benefits: ['mental clarity','metabolic flexibility','hunger reduction']
+  },
+  {
+    key: 'autophagy', at: 36,
+    label: 'Autophagy',
+    title: 'Autophagy',
+    body: 'Cellular cleanup processes increase as the fast extends beyond one day.',
+    benefits: ['cellular cleanup','repair support','metabolic health']
+  },
+  {
+    key: 'deep', at: 48,
+    label: 'Deep Repair',
+    title: 'Deep Repair',
+    body: 'Longer fasts may deepen cellular maintenance processes. Move carefully and listen to your body.',
+    benefits: ['deeper cleanup','recovery focus','discipline mastery']
+  }
+];
+
+var journeyBuilt = false;
+
+function buildJourneyUI(){
+  if (journeyBuilt) return;
+  var track = document.getElementById('journeyTrack');
+  if (!track) return;
+
+  track.innerHTML =
+    '<div class="journey-line"></div>' +
+    '<div class="journey-line-fill" id="journeyFill"></div>' +
+    '<div class="journey-dots" id="journeyDots"></div>';
+
+  var dots = document.getElementById('journeyDots');
+  JOURNEY.forEach(function(s){
+    var el = document.createElement('div');
+    el.className = 'jdot';
+    el.setAttribute('data-key', s.key);
+    el.innerHTML = '<div class="dot"></div><div class="lbl">'+esc(s.label)+'</div>';
+    dots.appendChild(el);
+  });
+
+  journeyBuilt = true;
+}
+
+function setStageCard(stage){
+  document.getElementById('stageTitle').textContent = stage.title;
+  document.getElementById('stageBody').textContent = stage.body;
+
+  var benefits = document.getElementById('stageBenefits');
+  benefits.innerHTML = '';
+  (stage.benefits || []).forEach(function(b){
+    var chip = document.createElement('div');
+    chip.className = 'sbenefit';
+    chip.textContent = b;
+    benefits.appendChild(chip);
+  });
+}
+
+function updateJourney(elapsedHours){
+  buildJourneyUI();
+
+  // Clamp progress for the visual line (0 to 48)
+  var maxH = 48;
+  var pct = Math.max(0, Math.min(1, elapsedHours / maxH));
+  var fill = document.getElementById('journeyFill');
+  if (fill) fill.style.width = (pct * 100) + '%';
+
+  // Determine current stage based on elapsed hours
+  var current = JOURNEY[0];
+  for (var i = 0; i < JOURNEY.length; i++){
+    if (elapsedHours >= JOURNEY[i].at) current = JOURNEY[i];
+  }
+
+  // Next stage countdown
+  var next = null;
+  for (var j = 0; j < JOURNEY.length; j++){
+    if (elapsedHours < JOURNEY[j].at) { next = JOURNEY[j]; break; }
+  }
+
+  var nextEl = document.getElementById('journeyNext');
+  if (!next) {
+    nextEl.textContent = 'All stages unlocked';
+  } else {
+    var diffHrs = next.at - elapsedHours;
+    var totalMin = Math.max(0, Math.round(diffHrs * 60));
+    var hh = Math.floor(totalMin / 60);
+    var mm = totalMin % 60;
+    nextEl.textContent = 'Next stage in: ' + hh + 'h ' + pad(mm) + 'm';
+  }
+
+  // Update dot states
+  var dots = document.querySelectorAll('.jdot');
+  dots.forEach(function(d){
+    d.classList.remove('done','current');
+    var key = d.getAttribute('data-key');
+    var stage = JOURNEY.find(function(x){ return x.key === key; });
+    if (!stage) return;
+    if (elapsedHours >= stage.at) d.classList.add('done');
+    if (current.key === key) d.classList.add('current');
+  });
+
+  // Update stage card
+  setStageCard(current);
+}
+
 // ══ ADJUST START TIME ═════════════════════════════════════
 function showAdjustModal() {
   if (!sess.active) { toast('Start a fast first'); return; }
