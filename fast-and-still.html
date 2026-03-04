@@ -58,7 +58,70 @@
     min-height:100vh;
     overflow-x:hidden;
   }
+/* Modal */
+.modal-backdrop{
+  position:fixed; inset:0;
+  background:rgba(0,0,0,0.35);
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  padding:18px;
+  z-index:2000;
+}
 
+.modal-card{
+  width:min(520px, 100%);
+  background:rgba(255,255,255,0.98);
+  border:1px solid var(--stone);
+  border-radius:18px;
+  box-shadow:0 24px 60px rgba(0,0,0,0.22);
+  padding:18px;
+}
+
+.modal-title{
+  font-family:"Cormorant Garamond", serif;
+  font-size:24px;
+  font-weight:400;
+  margin-bottom:4px;
+  color:var(--charcoal);
+}
+
+.modal-sub{
+  font-size:13px;
+  color:var(--warm-gray);
+  margin-bottom:14px;
+  line-height:1.5;
+}
+
+.modal-label{
+  display:block;
+  font-size:10px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--warm-gray);
+  font-weight:800;
+  margin-bottom:6px;
+}
+
+.modal-input{
+  width:100%;
+  padding:12px 12px;
+  border-radius:12px;
+  border:1.5px solid var(--stone);
+  background:var(--warm-white);
+  font-size:15px;
+  color:var(--charcoal);
+}
+
+.modal-actions{
+  display:flex;
+  gap:10px;
+  margin-top:14px;
+}
+.modal-actions .btn-secondary,
+.modal-actions .btn-primary{
+  width:50%;
+}
   /* NAV */
   nav{
     display:flex;
@@ -607,7 +670,7 @@
 
   <button class="btn-primary" id="mainBtn" onclick="toggleFast()">Begin Fast</button>
   <button class="btn-secondary" id="cancelBtn" style="display:none" onclick="cancelFast()">Cancel Fast</button>
-  <button class="btn-secondary" id="adjustBtn" style="display:none" onclick="adjustStartTime()">Adjust Start Time</button>
+  <button class="btn-secondary" id="adjustBtn" style="display:none" onclick="openAdjustModal()">ADJUST START TIME</button>
 </div>
 
 <!-- TRACKER VIEW -->
@@ -931,7 +994,42 @@ function fmt12(d){
   h = h % 12 || 12;
   return h + ":" + String(m).padStart(2,"0") + " " + ap;
 }
+function openAdjustModal(){
+  if (!state || !state.activeFast) { showToast("No active fast"); return; }
 
+  // Pre-fill with current start time
+  const d = new Date(state.activeFast.startTime);
+  document.getElementById("adjustDateTime").value = toDateTimeLocalValue(d);
+
+  document.getElementById("adjustModal").style.display = "flex";
+}
+
+function closeAdjustModal(){
+  document.getElementById("adjustModal").style.display = "none";
+}
+
+function saveAdjustedStartTime(){
+  if (!state || !state.activeFast) { closeAdjustModal(); return; }
+
+  const val = document.getElementById("adjustDateTime").value; // "YYYY-MM-DDTHH:MM"
+  if (!val) { showToast("Pick a time"); return; }
+
+  const d = new Date(val);
+  if (isNaN(d.getTime())) { showToast("Invalid time"); return; }
+  if (d.getTime() > Date.now()) { showToast("Start time can't be in the future"); return; }
+
+  state.activeFast.startTime = d.getTime();
+  saveState();
+
+  closeAdjustModal();
+  tickTimer();
+  showToast("Start time updated");
+}
+
+function toDateTimeLocalValue(d){
+  const pad = n => String(n).padStart(2,"0");
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
 /* ──────────────────────────────────────────────────────────────
   TRACKER (weekly counts)
 ────────────────────────────────────────────────────────────── */
@@ -1308,5 +1406,20 @@ function toLocalInputValue(d){
 
 // prefill partner UI values if/when opened
 </script>
+<!-- Adjust Start Time Modal -->
+<div id="adjustModal" class="modal-backdrop" style="display:none;">
+  <div class="modal-card">
+    <div class="modal-title">Adjust Start Time</div>
+    <div class="modal-sub">Set the time your fast started (local time).</div>
+
+    <label class="modal-label" for="adjustDateTime">Start time</label>
+    <input id="adjustDateTime" type="datetime-local" class="modal-input" />
+
+    <div class="modal-actions">
+      <button class="btn-secondary" type="button" onclick="closeAdjustModal()">Cancel</button>
+      <button class="btn-primary" type="button" onclick="saveAdjustedStartTime()">Save</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
