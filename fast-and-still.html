@@ -1366,6 +1366,7 @@ if(state.activeFast){
   document.getElementById("phaseBadge").style.display = "inline-flex";
   document.getElementById("startInfo").style.display = "block";
   document.querySelectorAll(".fast-option").forEach(o=>o.style.pointerEvents="none");
+  document.getElementById('adjustBtn').style.display = 'block';
   startTimerTick();
   motivationInterval = setInterval(rotateMotive, 12000);
 }
@@ -1405,6 +1406,19 @@ function toLocalInputValue(d){
 }
 
 // prefill partner UI values if/when opened
+// --- iOS Safari fix: ensure inline onclick handlers exist on window ---
+window.toggleFast = toggleFast;
+window.cancelFast = cancelFast;
+
+window.openAdjustModal = openAdjustModal;
+window.closeAdjustModal = closeAdjustModal;
+window.saveAdjustedStartTime = saveAdjustedStartTime;
+
+// If your file still uses these older names anywhere:
+if (typeof adjustStartTime === "function") window.adjustStartTime = adjustStartTime;
+if (typeof switchView === "function") window.switchView = switchView;
+if (typeof selectFast === "function") window.selectFast = selectFast;
+if (typeof changeWeek === "function") window.changeWeek = changeWeek;
 </script>
 <!-- Adjust Start Time Modal -->
 <div id="adjustModal" class="modal-backdrop" style="display:none;">
