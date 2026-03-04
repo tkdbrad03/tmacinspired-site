@@ -1245,48 +1245,36 @@ function renderStreaksAndBadges(){
   }
 }
 // ══ METABOLIC JOURNEY DATA ════════════════════════════════
+// JOURNEY stages defined as fraction of fast target (0.0 to 1.0)
+// so they work correctly for both 16hr and 24hr fasts
 var JOURNEY = [
   {
-    key: 'start', at: 0,
-    label: 'Start',
-    title: 'Start',
-    body: 'You have begun. Hydrate, keep it simple, and let the process work.',
-    benefits: ['hydration focus','digestive rest']
-  },
-  {
-    key: 'glycogen', at: 12,
+    key: 'glycogen', at: 0,
     label: 'Glycogen',
     title: 'Glycogen Burn',
-    body: 'Your body is using stored glycogen for energy and insulin trends down.',
+    body: 'Your body is using stored glycogen for energy and insulin begins to trend down.',
     benefits: ['blood sugar stability','reduced snacking','digestive rest']
   },
   {
-    key: 'fat', at: 18,
+    key: 'fat', at: 0.375,
     label: 'Fat Burn',
     title: 'Fat Burning',
     body: 'Stored fat becomes a more dominant fuel source as glucose reliance drops.',
     benefits: ['fat utilization','steadier energy','reduced cravings']
   },
   {
-    key: 'ketosis', at: 24,
+    key: 'ketosis', at: 0.625,
     label: 'Ketosis',
     title: 'Ketosis',
-    body: 'Ketone production rises and the brain may feel clearer and more steady.',
+    body: 'Ketone production rises. The brain feels clearer and hunger may ease.',
     benefits: ['mental clarity','metabolic flexibility','hunger reduction']
   },
   {
-    key: 'autophagy', at: 36,
+    key: 'autophagy', at: 0.875,
     label: 'Autophagy',
-    title: 'Autophagy',
-    body: 'Cellular cleanup processes increase as the fast extends beyond one day.',
+    title: 'Deep Autophagy',
+    body: 'Cellular cleanup processes activate. This is the deep work your body has been building toward.',
     benefits: ['cellular cleanup','repair support','metabolic health']
-  },
-  {
-    key: 'deep', at: 48,
-    label: 'Deep Repair',
-    title: 'Deep Repair',
-    body: 'Longer fasts may deepen cellular maintenance processes. Move carefully and listen to your body.',
-    benefits: ['deeper cleanup','recovery focus','discipline mastery']
   }
 ];
 
@@ -1331,50 +1319,46 @@ function setStageCard(stage){
 function updateJourney(elapsedHours, fastTargetHours){
   if (!window.JOURNEY || !Array.isArray(JOURNEY) || !JOURNEY.length) return;
 
-  // Scale thresholds proportionally to the fast target.
-  // Base thresholds are tuned for a 16hr fast; scale accordingly.
-  var scale = fastTargetHours ? (fastTargetHours / 16) : 1;
-  var scaled = JOURNEY.map(function(s){
-    return { key:s.key, at:s.at*scale, label:s.label, title:s.title, body:s.body, benefits:s.benefits };
-  });
+  // Convert elapsed hours to fraction of fast target
+  var target = fastTargetHours || sess.active.hours || 16;
+  var frac = Math.min(1, elapsedHours / target);
 
-  // Progress line
-  var maxH = scaled[scaled.length-1].at || 48*scale;
-  var pct = Math.max(0, Math.min(1, elapsedHours / maxH));
+  // Progress line (0–100%)
   var fill = document.getElementById('journeyFill');
-  if (fill) fill.style.width = (pct * 100) + '%';
+  if (fill) fill.style.width = (frac * 100) + '%';
 
-  // Current stage
-  var current = scaled[0];
-  for (var i = 0; i < scaled.length; i++){
-    if (elapsedHours >= scaled[i].at) current = scaled[i];
+  // Current stage: find highest stage whose threshold <= frac
+  var current = JOURNEY[0];
+  for (var i = 0; i < JOURNEY.length; i++){
+    if (frac >= JOURNEY[i].at) current = JOURNEY[i];
   }
 
   // Next stage countdown
   var next = null;
-  for (var j = 0; j < scaled.length; j++){
-    if (elapsedHours < scaled[j].at) { next = scaled[j]; break; }
+  for (var j = 0; j < JOURNEY.length; j++){
+    if (frac < JOURNEY[j].at) { next = JOURNEY[j]; break; }
   }
 
   var nextEl = document.getElementById('journeyNext');
   if (!next) {
     nextEl.textContent = 'All stages unlocked';
   } else {
-    var diffHrs = next.at - elapsedHours;
+    var diffHrs = (next.at - frac) * target;
     var totalMin = Math.max(0, Math.round(diffHrs * 60));
     var hh = Math.floor(totalMin / 60);
     var mm = totalMin % 60;
     nextEl.textContent = 'Next stage in: ' + hh + 'h ' + pad(mm) + 'm';
   }
 
-  // Update dot states using scaled thresholds
+  // Update dot states
   var dots = document.querySelectorAll('.jdot');
   dots.forEach(function(d){
     d.classList.remove('done','current');
     var key = d.getAttribute('data-key');
-    var stage = scaled.find ? scaled.find(function(x){ return x.key===key; }) : (function(){ for(var k=0;k<scaled.length;k++){if(scaled[k].key===key)return scaled[k];}return null; })();
+    var stage = null;
+    for (var k = 0; k < JOURNEY.length; k++){ if(JOURNEY[k].key===key){stage=JOURNEY[k];break;} }
     if (!stage) return;
-    if (elapsedHours >= stage.at) d.classList.add('done');
+    if (frac >= stage.at) d.classList.add('done');
     if (current.key === key) d.classList.add('current');
   });
 
