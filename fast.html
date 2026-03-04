@@ -265,6 +265,21 @@ body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--c
 .sync-banner .sb-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--stone); flex-shrink: 0; transition: background 0.3s; }
 .sync-banner.live { border-color: rgba(109,191,130,0.35); }
 .sync-banner.live .sb-dot { background: #6dbf82; }
+  .partner-fast-banner {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  background: var(--forest);
+  border-radius: 14px;
+  padding: 13px 16px;
+  margin-bottom: 16px;
+}
+.partner-fast-banner.vis { display: flex; }
+.pfb-avatar { width: 30px; height: 30px; border-radius: 50%; background: rgba(196,164,107,0.25); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 13px; color: var(--gold-light); flex-shrink: 0; }
+.pfb-info { flex: 1; }
+.pfb-name { font-size: 12px; font-weight: 600; color: white; margin-bottom: 2px; }
+.pfb-status { font-size: 11px; color: rgba(255,255,255,0.55); }
+.pfb-time { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; color: var(--gold-light); flex-shrink: 0; }
 .week-nav-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
 .week-nav-btn { width: 30px; height: 30px; border-radius: 8px; background: white; border: 1px solid var(--stone); font-size: 16px; color: var(--taupe); cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
 .week-nav-btn:active { transform: scale(0.9); }
@@ -485,7 +500,15 @@ body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--c
 
       <div style="display:flex;flex-wrap:wrap;gap:8px;" id="badgeRow"></div>
     </div>
-
+    <div class="partner-fast-banner" id="partnerFastBanner">
+  <div class="pfb-avatar" id="pfbAvatar">?</div>
+  <div class="pfb-info">
+    <div class="pfb-name" id="pfbName">Partner</div>
+    <div class="pfb-status" id="pfbStatus">is fasting</div>
+  </div>
+  <div class="pfb-time" id="pfbTime">0:00</div>
+</div>
+    
     <button class="btn btn-forest" id="mainBtn" onclick="toggleFast()">Begin Fast</button>
     <button class="btn btn-ghost" id="cancelBtn" style="display:none" onclick="cancelFast()">Cancel Fast</button>
     <button class="btn btn-ghost" id="adjustBtn" style="display:none" onclick="showAdjustModal()">Adjust Start Time</button>
@@ -765,11 +788,50 @@ function pollFasts() {
     save(); setSyncLive(true);
     renderStreaksAndBadges();
     if (document.getElementById('view-board').classList.contains('active')) renderBoard();
+    updatePartnerBanner();
     if (document.getElementById('view-log').classList.contains('active')) renderLog();
   })
   .catch(function(){ setSyncLive(false); });
 }
+function updatePartnerBanner() {
+  var banner = document.getElementById('partnerFastBanner');
+  if (!banner) return;
 
+  // Only show if partner exists and has an active fast in remote data
+  var partnerSlot = sess.slot === 1 ? 2 : 1;
+  var partnerName = partnerSlot === 1 ? sess.player1 : sess.player2;
+  if (!partnerName) { banner.classList.remove('vis'); return; }
+
+  // Look for partner's most recent fast that started but has no end
+  // Since we only log completed fasts, we check localStorage for partner active
+  // Instead: show partner's most recent completed fast if within last 24hrs
+  var now = Date.now();
+  var recentPartnerFast = null;
+  for (var i = 0; i < remoteFasts.length; i++) {
+    var f = remoteFasts[i];
+    if (f.player_slot === partnerSlot) {
+      var endedMs = new Date(f.ended_at).getTime();
+      if (now - endedMs < 24 * 3600000) { recentPartnerFast = f; break; }
+    }
+  }
+
+  // Also check if partner shared their active fast via a special key in the sheet
+  // For now show last completed fast within 24hrs as "recently completed"
+  if (!recentPartnerFast) { banner.classList.remove('vis'); return; }
+
+  var endedMs = new Date(recentPartnerFast.ended_at).getTime();
+  var startedMs = new Date(recentPartnerFast.started_at).getTime();
+  var hoursAgo = ((now - endedMs) / 3600000).toFixed(1);
+  var dur = (recentPartnerFast.actual_ms / 3600000).toFixed(1);
+  var init = partnerName.split(' ').map(function(w){return w[0]||'';}).join('').substring(0,2).toUpperCase();
+
+  document.getElementById('pfbAvatar').textContent = init;
+  document.getElementById('pfbName').textContent = partnerName;
+  document.getElementById('pfbStatus').textContent = 'completed a ' + recentPartnerFast.target_hours + 'hr fast \u00b7 ' + hoursAgo + 'h ago';
+  document.getElementById('pfbTime').textContent = dur + 'h';
+  banner.classList.add('vis');
+}
+  
 function setSyncLive(live) {
   var dot=document.getElementById('syncDot'), lbl=document.getElementById('syncLabel');
   var ban=document.getElementById('syncBanner'), bt=document.getElementById('syncBannerText');
