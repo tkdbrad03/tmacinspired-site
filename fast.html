@@ -693,7 +693,8 @@ var CIRC = 427; // 2*pi*68
 function load() { try { var r=localStorage.getItem(SK); return r?JSON.parse(r):null; } catch(e){return null;} }
 function save() { try { localStorage.setItem(SK, JSON.stringify(sess)); } catch(e){} }
 
-var sess = load() || { scriptUrl:null, code:null, slot:null, myName:null, player1:null, player2:null, active:null };
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyM2Sae3kG6ShC1Kgig0kllGplYEH2ZA5x0Ei4AP-3fQwRrwab6jzbHK7N6_JK1Bvss/exec';
+var sess = load() || { scriptUrl:SCRIPT_URL, code:null, slot:null, myName:null, player1:null, player2:null, active:null };
 var remoteFasts = [];
 var weekOffset = 0;
 var ticker = null;
@@ -718,7 +719,7 @@ function init() {
     document.getElementById('obSub').textContent = 'Enter your name to join your partner\'s session.';
   }
 
-  if (!sess.scriptUrl) { openMod('setupModal'); return; }
+  if (!sess.scriptUrl) { sess.scriptUrl = SCRIPT_URL; save(); }
   if (sess.code && sess.myName) { launchApp(); }
 }
 
