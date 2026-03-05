@@ -74,35 +74,35 @@ body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--c
 @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
 /* FAST SELECT */
-.fast-select { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.fast-select { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
 .fast-option { border: 1.5px solid var(--stone); border-radius: 16px; background: white; padding: 16px 12px; cursor: pointer; transition: all 0.2s; text-align: center; -webkit-tap-highlight-color: transparent; }
 .fast-option:active { transform: scale(0.97); }
 .fast-option.sel16 { border-color: var(--forest-light); background: #eef4f0; }
 .fast-option.sel24 { border-color: var(--gold); background: var(--gold-pale); }
-.fhours { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 300; line-height: 1; }
+.fhours { font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 300; line-height: 1; }
 .funit { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--taupe); margin-top: 2px; }
 .fbadge { display: inline-block; margin-top: 8px; font-size: 9px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; }
 #opt16 .fbadge { background: #ddeee3; color: var(--forest-mid); }
 #opt24 .fbadge { background: #f0e0c0; color: #8a6020; }
 
 /* MOTIVATION */
-.motive-card { background: var(--forest); border-radius: 16px; padding: 11px 16px; margin-bottom: 12px; position: relative; overflow: hidden; }
+.motive-card { background: var(--forest); border-radius: 16px; padding: 15px 18px; margin-bottom: 16px; position: relative; overflow: hidden; }
 .motive-card::before { content: ""; position: absolute; top: 0; right: 0; width: 80px; height: 80px; background: radial-gradient(circle at top right, rgba(196,164,107,0.18), transparent 70%); pointer-events: none; }
 .motive-label { font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); opacity: 0.8; margin-bottom: 6px; }
 .motive-text { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-style: italic; font-weight: 300; color: rgba(255,255,255,0.88); line-height: 1.55; transition: opacity 0.35s; }
 
 /* CLOCK */
-.clock-wrap { display: flex; flex-direction: column; align-items: center; padding: 2px 0 10px; }
+.clock-wrap { display: flex; flex-direction: column; align-items: center; padding: 4px 0 18px; }
 .phase-pill { display: inline-flex; align-items: center; gap: 6px; background: var(--gold-pale); border: 1px solid rgba(196,164,107,0.35); border-radius: 100px; padding: 5px 14px; font-size: 11px; font-weight: 500; color: #7a5a20; letter-spacing: 0.05em; margin-bottom: 12px; opacity: 0; transition: opacity 0.3s; }
 .phase-pill.vis { opacity: 1; }
 .pdot { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; animation: pdA 2s ease-in-out infinite; }
 @keyframes pdA { 0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.3;transform:scale(0.7);} }
 .ring-container { position: relative; display: inline-block; }
-.ring-svg { width: 160px; height: 160px; }
+.ring-svg { width: 206px; height: 206px; }
 .ring-track { fill: none; stroke: var(--stone); stroke-width: 5; }
 .ring-prog { fill: none; stroke: var(--forest-light); stroke-width: 5; stroke-linecap: round; transition: stroke-dashoffset 1s linear, stroke 0.5s; }
-.ring-inner { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; width: 100px; }
-.time-big { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; line-height: 1; color: var(--charcoal); }
+.ring-inner { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; width: 126px; }
+.time-big { font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 300; line-height: 1; color: var(--charcoal); }
 .time-sub { font-size: 11px; color: var(--taupe); letter-spacing: 0.04em; margin-top: 5px; }
 .time-meta { font-size: 11px; color: var(--taupe); margin-top: 9px; text-align: center; min-height: 16px; }
 .time-meta strong { color: var(--charcoal); font-weight: 500; }
@@ -448,10 +448,10 @@ body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--c
     <div class="clock-wrap">
       <div class="phase-pill" id="phasePill"><div class="pdot"></div><span id="phaseSpan">Fasting</span></div>
       <div class="ring-container">
-        <svg class="ring-svg" viewBox="0 0 160 160">
-          <circle class="ring-track" cx="80" cy="80" r="68"/>
-          <circle class="ring-prog" id="ringProg" cx="80" cy="80" r="68"
-            stroke-dasharray="427" stroke-dashoffset="591" transform="rotate(-90 80 80)"/>
+        <svg class="ring-svg" viewBox="0 0 206 206">
+          <circle class="ring-track" cx="103" cy="103" r="94"/>
+          <circle class="ring-prog" id="ringProg" cx="103" cy="103" r="94"
+            stroke-dasharray="591" stroke-dashoffset="591" transform="rotate(-90 103 103)"/>
         </svg>
         <div class="ring-inner">
           <div class="time-big" id="timeBig">00:00:00</div>
@@ -687,7 +687,7 @@ if ('serviceWorker' in navigator) {
 // ══ CONFIG ════════════════════════════════════════════════
 var BASE_URL = 'https://www.tmacinspired.com/fast';
 var SK = 'fastAndStill_v2';
-var CIRC = 427; // 2*pi*68
+var CIRC = 591; // 2*pi*94
 
 // ══ STATE ═════════════════════════════════════════════════
 function load() { try { var r=localStorage.getItem(SK); return r?JSON.parse(r):null; } catch(e){return null;} }
@@ -733,6 +733,11 @@ function saveScriptUrl() {
   }
   sess.scriptUrl = url; save();
   document.getElementById('setupModal').classList.remove('open');
+  // If no session yet, onboarding is already visible — nothing needed
+  // If somehow app is showing, stay there
+  if (!sess.code || !sess.myName) {
+    document.getElementById('onboarding').style.display = 'flex';
+  }
 }
 
 // ══ API ═══════════════════════════════════════════════════
@@ -766,13 +771,24 @@ function joinSession() {
   if (!name) { obErr('Please enter your name'); return; }
   if (!code||code.length<4) { obErr('Please enter the session code'); return; }
   obErr('');
+  var joinBtn = document.querySelector('.btn-join');
+  if (joinBtn) { joinBtn.disabled=true; joinBtn.textContent='Joining...'; }
   apiPost({ action:'joinSession', code:code, name:name })
   .then(function(d) {
+    if (joinBtn) { joinBtn.disabled=false; joinBtn.textContent='Join'; }
     if (d.error) { obErr(d.error); return; }
-    sess.code=d.code; sess.slot=2; sess.myName=name; sess.player1=d.player1; sess.player2=d.player2||name;
+    // Use slot returned by server so player1 rejoining gets slot=1
+    sess.code=d.code;
+    sess.slot=d.slot||2;
+    sess.myName=name;
+    sess.player1=d.player1;
+    sess.player2=d.player2||null;
     save(); launchApp();
   })
-  .catch(function(){ obErr('Connection failed.'); });
+  .catch(function(){
+    if (joinBtn) { joinBtn.disabled=false; joinBtn.textContent='Join'; }
+    obErr('Connection failed. Check your internet and try again.');
+  });
 }
 
 function obErr(msg) { document.getElementById('obError').textContent=msg; }
