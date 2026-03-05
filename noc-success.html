@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Welcome | Nurse Ownership Circle</title>
+  <meta name="description" content="Welcome to the Nurse Ownership Circle. Join the private Telegram group." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pine:  #1f4236;
+      --pine2: #163020;
+      --gold:  #c5a059;
+      --gold2: #a8864a;
+      --gold-light: rgba(197,160,89,.12);
+      --ink:   #0f1c15;
+      --muted: #4a5c52;
+      --card:  #ffffff;
+      --bg:    #ffffff;
+      --line:  rgba(31,66,54,.12);
+      --shadow: 0 24px 60px rgba(15,28,21,.09), 0 4px 16px rgba(15,28,21,.05);
+      --radius: 20px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 24px 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 40px 36px;
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+      animation: fadeUp .6s ease both;
+    }
+
+    .check-mark {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: var(--pine);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 22px;
+    }
+    .check-mark svg { width: 28px; height: 28px; stroke: var(--gold); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+    .eyebrow {
+      font-size: 11px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 34px; font-weight: 600;
+      color: var(--pine2);
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+    h1 em { font-style: italic; color: var(--gold); }
+
+    .sub {
+      font-size: 15px; font-weight: 300;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .telegram-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 16px 28px;
+      border-radius: 14px;
+      background: var(--pine);
+      color: #fff;
+      text-decoration: none;
+      font-size: 15px; font-weight: 600;
+      letter-spacing: .3px;
+      transition: background .2s, transform .15s;
+      margin-bottom: 24px;
+    }
+    .telegram-btn:hover {
+      background: var(--pine2);
+      transform: translateY(-1px);
+    }
+    .telegram-btn svg { width: 20px; height: 20px; fill: var(--gold); flex-shrink: 0; }
+
+    .divider {
+      height: 1px;
+      background: var(--line);
+      margin: 20px 0;
+    }
+
+    .sub-id-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+      display: block;
+    }
+    .sub-id-box {
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(31,66,54,.04);
+      border: 1px solid var(--line);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+      color: var(--pine);
+      word-break: break-all;
+      text-align: left;
+    }
+
+    .next-steps {
+      margin-top: 20px;
+      text-align: left;
+      background: rgba(197,160,89,.07);
+      border: 1px solid rgba(197,160,89,.2);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .next-steps p {
+      font-size: 13px; font-weight: 500;
+      color: var(--gold2);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      margin-bottom: 10px;
+    }
+    .next-steps ul {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .next-steps ul li {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: 13px; font-weight: 300;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .next-steps ul li::before {
+      content: '';
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--gold);
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+
+    .footer-note {
+      margin-top: 20px;
+      font-size: 12px; font-weight: 300;
+      color: var(--muted);
+    }
+    .footer-note a { color: var(--gold2); text-decoration: none; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+
+    <div class="check-mark">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+
+    <span class="eyebrow">Subscription Confirmed</span>
+    <h1>Welcome to the<br><em>Circle</em></h1>
+    <p class="sub">
+      Your membership is active. Your next step is joining the private Telegram community — that's where everything happens.
+    </p>
+
+    <a class="telegram-btn" href="https://t.me/+Ft5Z-nhjkNBjNWEx" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+      Join the Telegram Group
+    </a>
+
+    <div class="divider"></div>
+
+    <span class="sub-id-label">Your Subscription ID</span>
+    <div class="sub-id-box" id="subId">Loading…</div>
+
+    <div class="next-steps">
+      <p>Next Steps</p>
+      <ul>
+        <li>Click the Telegram button above to join the private group.</li>
+        <li>Introduce yourself and share what you want to build beyond bedside.</li>
+        <li>Watch for your first weekly strategy drop from Dr. TMac.</li>
+        <li>Save your subscription ID above in case you need support.</li>
+      </ul>
+    </div>
+
+    <p class="footer-note" style="margin-top:16px;">
+      Need help? Email <a href="mailto:support@tmacinspired.com">support@tmacinspired.com</a> with your subscription ID.
+    </p>
+
+  </div>
+
+  <script>
+    const url = new URL(window.location.href);
+    const sub = url.searchParams.get('sub')
+      || (function(){ try { return localStorage.getItem('pp_subscription_id'); } catch(e) { return ''; } })()
+      || '';
+    document.getElementById('subId').textContent = sub || 'Not available — please check your PayPal email.';
+  </script>
+
+</body>
+</html>
