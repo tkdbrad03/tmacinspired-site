@@ -451,7 +451,7 @@ body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--c
         <svg class="ring-svg" viewBox="0 0 160 160">
           <circle class="ring-track" cx="80" cy="80" r="68"/>
           <circle class="ring-prog" id="ringProg" cx="80" cy="80" r="68"
-            stroke-dasharray="427" stroke-dashoffset="591" transform="rotate(-90 80 80)"/>
+            stroke-dasharray="427" stroke-dashoffset="427" transform="rotate(-90 80 80)"/>
         </svg>
         <div class="ring-inner">
           <div class="time-big" id="timeBig">00:00:00</div>
@@ -769,7 +769,9 @@ function joinSession() {
   apiPost({ action:'joinSession', code:code, name:name })
   .then(function(d) {
     if (d.error) { obErr(d.error); return; }
-    sess.code=d.code; sess.slot=2; sess.myName=name; sess.player1=d.player1; sess.player2=d.player2||name;
+    // Use slot from server if available, otherwise detect from name
+    var mySlot = d.slot || (d.player1 && d.player1.toLowerCase()===name.toLowerCase() ? 1 : 2);
+    sess.code=d.code; sess.slot=mySlot; sess.myName=name; sess.player1=d.player1; sess.player2=d.player2||null;
     save(); launchApp();
   })
   .catch(function(){ obErr('Connection failed.'); });
@@ -839,7 +841,10 @@ function updatePartnerBanner() {
   var recentPartnerFast = null;
   for (var i = 0; i < remoteFasts.length; i++) {
     var f = remoteFasts[i];
-    if (f.player_slot === partnerSlot) {
+    // Match by name primarily, fall back to slot
+    var isPartner = (f.player_name && f.player_name.toLowerCase() === partnerName.toLowerCase())
+                 || (f.player_slot === partnerSlot && (!f.player_name || f.player_name.toLowerCase() !== (sess.myName||'').toLowerCase()));
+    if (isPartner) {
       var endedMs = new Date(f.ended_at).getTime();
       if (now - endedMs < 24 * 3600000) { recentPartnerFast = f; break; }
     }
