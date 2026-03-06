@@ -306,6 +306,32 @@
         }
 
         /* --- PAYPAL CONTAINERS --- */
+        /* --- CTA BUTTON --- */
+        .btn-cta {
+            display: inline-block;
+            background: var(--pine);
+            color: #fff;
+            padding: 18px 48px;
+            font-family: var(--font);
+            font-size: 1rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 0.5rem;
+        }
+        .btn-cta:hover { background: #163020; }
+
+        .hero-cta-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--gold);
+            margin-top: 2rem;
+            margin-bottom: 0.6rem;
+        }
+
         .pp-wrap { max-width: 400px; margin: 0 auto; }
     </style>
 </head>
@@ -327,7 +353,8 @@
         <p class="hero-eyebrow">Private Membership &nbsp;&middot;&nbsp; Nurses Only</p>
         <h1>You did not go through nursing school to live paycheck to paycheck.</h1>
         <p>The Nurse Ownership Circle is a private community where nurses learn to build real estate and business income without quitting the career they worked hard to build.</p>
-        <div class="pp-wrap" id="pp-hero"></div>
+        <p class="hero-cta-label">Nurse Ownership Circle &nbsp;&middot;&nbsp; $89/month</p>
+        <a href="#" class="btn-cta" id="btn-hero">Join the Circle</a>
     </section>
 
     <!-- WHAT THIS IS -->
@@ -399,7 +426,7 @@
             <h2 class="section-title">Your Guide Inside the Circle</h2>
             <div class="bio-inner">
                 <div class="bio-image-wrap">
-                    <img src="tmac-green.png" alt="Dr. Tasha McCray">
+                    <img src="tmac-stage-pink.png" alt="Dr. Tasha McCray">
                 </div>
                 <div>
                     <p class="bio-name">Dr. Tasha McCray, MSN-Ed., RN, PhD. &nbsp;&middot;&nbsp; Entrepreneur &nbsp;&middot;&nbsp; Real Estate Investor</p>
@@ -421,7 +448,7 @@
                 <div class="price-main">$89</div>
                 <p class="price-per">per month</p>
                 <p class="price-founding">Weekly insight. Real answers. A community that is building.</p>
-                <div id="pp-offer"></div>
+                <a href="#" class="btn-cta" id="btn-offer">Join the Circle</a>
             </div>
         </div>
     </section>
@@ -490,9 +517,9 @@
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://www.paypal.com/sdk/js?client-id=AXYovXwzGW-keQCgpgZWt67_9RP8maCKEfUWF-CZbKGVFLeQ-A6FxP7DY42mQQV3KdjgScu_KokghD0p&vault=true&intent=subscription"
             data-sdk-integration-source="button-factory"></script>
     <script>
-        function ppButton(containerId) {
-            paypal.Buttons({
-                style: { shape: 'rect', color: 'gold', layout: 'vertical', label: 'subscribe' },
+        // PayPal subscription triggered by custom buttons
+        window.addEventListener('load', function () {
+            var buttons = paypal.Buttons({
                 createSubscription: function(data, actions) {
                     return actions.subscription.create({ plan_id: 'P-7T482108PT489863CNGVAGKA' });
                 },
@@ -504,15 +531,26 @@
                     console.error(err);
                     alert('Payment could not be completed. Please try again.');
                 }
-            }).render(containerId);
-        }
+            });
 
-        ppButton('#pp-hero');
-        ppButton('#pp-offer');
+            document.getElementById('btn-hero').addEventListener('click', function(e) {
+                e.preventDefault();
+                buttons.render('#btn-hero').catch(function() {
+                    buttons.close();
+                    buttons.render('#btn-hero');
+                });
+            });
 
-    </script>
+            document.getElementById('btn-offer').addEventListener('click', function(e) {
+                e.preventDefault();
+                buttons.render('#btn-offer').catch(function() {
+                    buttons.close();
+                    buttons.render('#btn-offer');
+                });
+            });
+        });
 
-    <script>
+        // Accordion
         document.addEventListener('DOMContentLoaded', function () {
             document.querySelectorAll('.accordion-header').forEach(function (btn) {
                 btn.addEventListener('click', function () {
