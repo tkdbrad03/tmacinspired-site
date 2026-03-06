@@ -1,511 +1,518 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Nurse Ownership Circle | Early Enrollment</title>
-  <meta name="description" content="A private membership for nurses building ownership income beyond bedside. Early enrollment $89/month." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --pine:   #1f4236;
-      --pine2:  #163020;
-      --pine-light: rgba(31,66,54,.08);
-      --pine-mid:   rgba(31,66,54,.14);
-      --gold:   #c5a059;
-      --gold2:  #a8864a;
-      --gold-light: rgba(197,160,89,.12);
-      --ink:    #0f1c15;
-      --muted:  #4a5c52;
-      --card:   #ffffff;
-      --bg:     #ffffff;
-      --line:   rgba(31,66,54,.12);
-      --shadow: 0 24px 60px rgba(15,28,21,.09), 0 4px 16px rgba(15,28,21,.05);
-      --radius: 20px;
-      --max:    1020px;
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A private membership community for nurses building ownership income beyond bedside. Legacy rate $89/month.">
+    <title>Nurse Ownership Circle | TMac Inspired™</title>
+    <link rel="icon" type="image/png" href="tmac-logo.png">
+    <style>
+        :root {
+            --pine: #1f4236;
+            --gold: #c9a961;
+            --bg: #ffffff;
+            --bg-alt: #fcfbf9;
+            --text: #1f4236;
+            --text-light: #5c6b64;
+            --font: Georgia, serif;
+            --max-w: 1100px;
+        }
 
-    body {
-      font-family: 'Jost', sans-serif;
-      background: var(--bg);
-      color: var(--ink);
-      line-height: 1.4;
-      overflow-x: hidden;
-    }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ── TOP BAR ── */
-    .topbar {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(255,255,255,.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--line);
-      padding: 14px 24px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .brand {
-      display: flex; align-items: center; gap: 10px;
-    }
-    .brand-mark { display: none; }
-    .brand-name { display: none; }
-    .brand img {
-      height: 38px;
-      width: auto;
-    }
-    .pill {
-      font-size: 12px; font-weight: 500; letter-spacing: .4px;
-      padding: 7px 14px;
-      border-radius: 999px;
-      background: var(--gold-light);
-      border: 1px solid rgba(197,160,89,.3);
-      color: var(--gold2);
-      white-space: nowrap;
-      text-transform: uppercase;
-    }
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
 
-    /* ── HERO BAND ── */
-    .hero-band {
-      background: var(--pine);
-      padding: 64px 24px 56px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-band::before {
-      content: '';
-      position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 20% 50%, rgba(197,160,89,.08), transparent 70%),
-        radial-gradient(ellipse 60% 80% at 80% 30%, rgba(197,160,89,.06), transparent 65%);
-      pointer-events: none;
-    }
-    .hero-eyebrow {
-      display: inline-block;
-      font-size: 11px; font-weight: 600; letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--gold);
-      border: 1px solid rgba(197,160,89,.35);
-      padding: 6px 14px; border-radius: 999px;
-      margin-bottom: 20px;
-      position: relative;
-    }
-    .hero-band h1 {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(38px, 6vw, 64px);
-      font-weight: 600;
-      line-height: 1.05;
-      color: #ffffff;
-      letter-spacing: -.3px;
-      position: relative;
-      max-width: 760px;
-      margin: 0 auto 18px;
-    }
-    .hero-band h1 em {
-      font-style: italic;
-      color: var(--gold);
-    }
-    .hero-sub {
-      font-size: 17px; font-weight: 300;
-      color: rgba(255,255,255,.72);
-      max-width: 540px;
-      margin: 0 auto;
-      line-height: 1.55;
-      position: relative;
-    }
+        /* --- FOUNDING STRIP --- */
+        .founding-strip {
+            background: var(--pine);
+            color: rgba(255,255,255,0.8);
+            text-align: center;
+            padding: 14px 20px;
+            font-size: 0.82rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        .founding-strip span { color: var(--gold); font-weight: bold; }
 
-    /* ── MAIN LAYOUT ── */
-    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 20px 80px; }
+        /* --- HEADER --- */
+        .header-nav {
+            padding: 4rem 0 2rem;
+            text-align: center;
+        }
+        .logo-main { height: 90px; width: auto; }
 
-    .two-col {
-      display: grid;
-      grid-template-columns: 1.25fr .75fr;
-      gap: 20px;
-      margin-top: -32px;
-      align-items: start;
-    }
-    @media (max-width: 860px) {
-      .two-col { grid-template-columns: 1fr; }
-    }
+        /* --- HERO --- */
+        .hero {
+            padding: 2rem 1.5rem 7rem;
+            text-align: center;
+            max-width: var(--max-w);
+            margin: 0 auto;
+        }
+        .hero-eyebrow {
+            font-size: 0.85rem;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+        .hero h1 {
+            font-size: clamp(2.8rem, 8vw, 4.8rem);
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            font-weight: normal;
+        }
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            max-width: 680px;
+            margin: 0 auto 3.5rem;
+            font-style: italic;
+        }
+        .hero-cta-note {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 1rem;
+            font-style: italic;
+        }
 
-    /* ── CARDS ── */
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 28px;
-    }
+        /* --- CONTAINER --- */
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 0 25px;
+        }
 
-    /* ── LEFT CARD ── */
-    .section-label {
-      font-size: 10px; font-weight: 600; letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 14px;
-      display: block;
-    }
-    .left-card h2 {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 26px; font-weight: 600;
-      color: var(--pine2);
-      margin-bottom: 10px;
-      line-height: 1.15;
-    }
-    .left-card p {
-      color: var(--muted);
-      font-size: 15px; font-weight: 300;
-      line-height: 1.6;
-      margin-bottom: 18px;
-    }
+        /* --- SECTION TITLES --- */
+        .section-title {
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 4rem;
+        }
 
-    .tags {
-      display: flex; flex-wrap: wrap; gap: 8px;
-      margin-bottom: 24px;
-    }
-    .tag {
-      font-size: 12px; font-weight: 500;
-      padding: 7px 12px;
-      border-radius: 999px;
-      background: var(--pine-light);
-      border: 1px solid var(--pine-mid);
-      color: var(--pine);
-    }
+        /* --- WHAT THIS IS --- */
+        .what-section {
+            background: var(--bg-alt);
+            padding: 8rem 0;
+            text-align: center;
+        }
+        .what-section h2 {
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            font-weight: normal;
+            margin-bottom: 2rem;
+            line-height: 1.2;
+            max-width: 680px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .what-section p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 680px;
+            margin: 0 auto;
+        }
 
-    .divider {
-      height: 1px;
-      background: var(--line);
-      margin: 22px 0;
-    }
+        /* --- WHO IT'S FOR --- */
+        .for-section { padding: 8rem 0; }
 
-    .content-block h3 {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 20px; font-weight: 600;
-      color: var(--pine2);
-      margin-bottom: 12px;
-    }
-    .content-block ul {
-      list-style: none;
-      display: flex; flex-direction: column; gap: 10px;
-    }
-    .content-block ul li {
-      display: flex; align-items: flex-start; gap: 10px;
-      font-size: 14px; font-weight: 400;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-    .content-block ul li::before {
-      content: '';
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--gold);
-      margin-top: 7px;
-      flex-shrink: 0;
-    }
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+        @media (max-width: 640px) { .avatar-grid { grid-template-columns: 1fr; } }
 
-    /* ── RIGHT CARD ── */
-    .cta-box {
-      background: linear-gradient(160deg, var(--pine) 0%, var(--pine2) 100%);
-      border-radius: 14px;
-      padding: 22px;
-      margin-bottom: 20px;
-      position: relative;
-      overflow: hidden;
-    }
-    .cta-box::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 120% 80% at 80% 0%, rgba(197,160,89,.15), transparent 70%);
-      pointer-events: none;
-    }
-    .cta-label {
-      font-size: 11px; font-weight: 600; letter-spacing: 2px;
-      text-transform: uppercase;
-      color: rgba(197,160,89,.8);
-      display: block;
-      margin-bottom: 8px;
-      position: relative;
-    }
-    .price-display {
-      position: relative;
-      margin-bottom: 4px;
-    }
-    .price-display .amount {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 48px; font-weight: 600;
-      color: #ffffff;
-      letter-spacing: -1px;
-      line-height: 1;
-    }
-    .price-display .per {
-      font-size: 14px; font-weight: 300;
-      color: rgba(255,255,255,.6);
-      margin-left: 4px;
-    }
-    .price-note {
-      font-size: 12px; font-weight: 300;
-      color: rgba(255,255,255,.55);
-      line-height: 1.5;
-      position: relative;
-      margin-top: 10px;
-    }
-    .cta-divider {
-      height: 1px;
-      background: rgba(255,255,255,.12);
-      margin: 16px 0;
-    }
+        .avatar-box {
+            border-left: 2px solid var(--gold);
+            padding-left: 28px;
+        }
+        .avatar-box p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+        }
+        .closing-line {
+            text-align: center;
+            margin-top: 5rem;
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--pine);
+        }
 
-    #paypal-button-container-P-7T482108PT489863CNGVAGKA {
-      position: relative;
-      z-index: 1;
-    }
+        /* --- INSIDE --- */
+        .inside-section {
+            background: var(--bg-alt);
+            padding: 8rem 0;
+        }
+        .inside-item {
+            margin-bottom: 3rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid #ece8e0;
+        }
+        .inside-item:last-child { border-bottom: none; margin-bottom: 0; }
+        .inside-label {
+            color: var(--gold);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        .inside-title {
+            font-size: 1.9rem;
+            margin: 8px 0;
+            color: var(--pine);
+            font-weight: normal;
+        }
+        .inside-item p { color: var(--text-light); font-size: 1.05rem; }
 
-    .support-note {
-      font-size: 12px; font-weight: 300;
-      color: rgba(255,255,255,.45);
-      text-align: center;
-      margin-top: 10px;
-      position: relative;
-    }
+        /* --- BIO --- */
+        .bio-section { padding: 8rem 0; }
+        .bio-inner {
+            display: grid;
+            grid-template-columns: 1fr 1.6fr;
+            gap: 60px;
+            align-items: center;
+        }
+        @media (max-width: 700px) { .bio-inner { grid-template-columns: 1fr; } }
 
-    /* ── FAQ ── */
-    .faq-section h3 {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 20px; font-weight: 600;
-      color: var(--pine2);
-      margin-bottom: 12px;
-    }
-    details {
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin-bottom: 8px;
-      background: rgba(31,66,54,.02);
-      transition: background .2s;
-    }
-    details[open] { background: rgba(31,66,54,.04); }
-    summary {
-      cursor: pointer;
-      font-size: 14px; font-weight: 500;
-      color: var(--pine2);
-      list-style: none;
-      display: flex; justify-content: space-between; align-items: center;
-      gap: 12px;
-    }
-    summary::-webkit-details-marker { display: none; }
-    summary::after {
-      content: '+';
-      font-size: 18px; font-weight: 300;
-      color: var(--gold);
-      flex-shrink: 0;
-      transition: transform .2s;
-    }
-    details[open] summary::after {
-      transform: rotate(45deg);
-    }
-    details p {
-      margin-top: 10px;
-      font-size: 13px; font-weight: 300;
-      color: var(--muted);
-      line-height: 1.6;
-    }
+        .bio-image-wrap { text-align: center; }
+        .bio-image-wrap img {
+            width: 100%;
+            max-width: 320px;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+        }
+        .bio-name {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: var(--gold);
+            margin-bottom: 1.2rem;
+        }
+        .bio-inner h2 {
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            font-weight: normal;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        .bio-inner p {
+            font-size: 1.05rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
 
-    .bio-block {
-      margin-top: 4px;
-    }
-    .bio-name {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 16px; font-weight: 600;
-      color: var(--pine2);
-      margin-bottom: 8px !important;
-      line-height: 1.3;
-    }
-    .bio-body {
-      font-size: 14px; font-weight: 300;
-      color: var(--muted);
-      line-height: 1.7;
-      margin: 0 !important;
-    }
+        /* --- OFFER --- */
+        .offer-section {
+            background: var(--bg-alt);
+            padding: 8rem 0;
+            text-align: center;
+        }
+        .offer-box {
+            border: 1px solid rgba(201,169,97,.35);
+            padding: 56px 40px;
+            max-width: 560px;
+            margin: 0 auto;
+            background: #fff;
+        }
+        .price-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+        }
+        .price-main {
+            font-size: clamp(3rem, 8vw, 5rem);
+            color: var(--pine);
+            font-weight: normal;
+            line-height: 1;
+            margin-bottom: 0.3rem;
+        }
+        .price-per {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-bottom: 0.8rem;
+        }
+        .price-founding {
+            font-size: 0.88rem;
+            color: var(--gold);
+            margin-bottom: 2.5rem;
+            font-style: italic;
+        }
+        .price-note {
+            font-size: 0.88rem;
+            color: var(--text-light);
+            margin-top: 1.5rem;
+            font-style: italic;
+        }
 
-    .footer-note {
-      margin-top: 16px;
-      font-size: 12px; font-weight: 300;
-      color: var(--muted);
-      text-align: center;
-      letter-spacing: .3px;
-    }
-    .footer-note a { color: var(--gold); text-decoration: none; }
+        /* --- FAQ --- */
+        .faq-section { padding: 8rem 0; }
 
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(18px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .hero-band > * { animation: fadeUp .6s ease both; }
-    .hero-eyebrow  { animation-delay: .05s; }
-    .hero-band h1  { animation-delay: .15s; }
-    .hero-sub      { animation-delay: .25s; }
-    .two-col .card { animation: fadeUp .7s ease both; animation-delay: .35s; }
-  </style>
+        .accordion-item { border-bottom: 1px solid #e8e4dc; }
+        .accordion-header {
+            width: 100%;
+            background: none;
+            border: none;
+            padding: 24px 0;
+            text-align: left;
+            font-family: var(--font);
+            font-size: 1.1rem;
+            color: var(--pine);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+        .accordion-icon {
+            color: var(--gold);
+            font-size: 1.5rem;
+            font-weight: 300;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+        .accordion-item.active .accordion-icon { transform: rotate(45deg); }
+        .accordion-content { display: none; padding-bottom: 24px; }
+        .accordion-item.active .accordion-content { display: block; }
+        .accordion-content p { color: var(--text-light); font-size: 1rem; }
+
+        /* --- FOOTER --- */
+        footer {
+            background: var(--pine);
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+            padding: 60px 20px;
+            font-size: 0.9rem;
+        }
+        footer p { margin-bottom: 16px; font-style: italic; }
+        footer a { color: rgba(255,255,255,0.6); text-decoration: none; margin: 0 12px; }
+        footer a:hover { color: var(--gold); }
+        .footer-logo {
+            height: 55px;
+            width: auto;
+            filter: brightness(0) invert(1);
+            opacity: 0.55;
+            margin-bottom: 28px;
+        }
+
+        /* --- PAYPAL CONTAINERS --- */
+        .pp-wrap { max-width: 400px; margin: 0 auto; }
+    </style>
 </head>
 <body>
 
-  <!-- TOP BAR -->
-  <header class="topbar">
-    <div class="brand">
-      <img src="https://raw.githubusercontent.com/tkdbrad03/tmacinspired-site/main/tmac-logo.png" alt="TMac Inspired" />
+    <!-- FOUNDING RATE STRIP -->
+    <div class="founding-strip">
+        Legacy Rate: <span>$89/month</span> &nbsp;&middot;&nbsp; After the first 50 nurses, price increases to <span>$109/month</span>
     </div>
-    <div class="pill">Early Bird Rate · First 50 Only</div>
-  </header>
 
-  <!-- HERO -->
-  <section class="hero-band">
-    <div class="hero-eyebrow">Private Membership · Nurses Only</div>
-    <h1>Nurse Ownership<br><em>Circle</em></h1>
-    <p class="hero-sub">
-      Real estate. Leverage. Strategy. A room for nurses who are done playing small and ready to build income beyond bedside.
-    </p>
-  </section>
+    <!-- HEADER -->
+    <header class="header-nav">
+        <img src="https://raw.githubusercontent.com/tkdbrad03/tmacinspired-site/main/tmac-logo.png"
+             alt="TMac Inspired" class="logo-main">
+    </header>
 
-  <!-- MAIN -->
-  <div class="wrap">
-    <div class="two-col">
+    <!-- HERO -->
+    <section class="hero">
+        <p class="hero-eyebrow">Private Membership &nbsp;&middot;&nbsp; Nurses Only</p>
+        <h1>You did not go through nursing school to live paycheck to paycheck.</h1>
+        <p>The Nurse Ownership Circle is a private community where nurses learn to build real estate and business income without quitting the career they worked hard to build.</p>
+        <div class="pp-wrap" id="pp-hero"></div>
+    </section>
 
-      <!-- LEFT -->
-      <div class="card left-card">
-
-        <span class="section-label">What this is</span>
-        <h2>Ownership income starts with the right room.</h2>
-        <p>
-          The Nurse Ownership Circle is a private Telegram community for nurses who are ready to build income and ownership beyond the bedside. This is not a course, not a coaching program, and not another group full of noise. It's a focused space where nurses get consistent insight, real conversation, and a clear path toward financial ownership while still working in the career they've built.
-        </p>
-
-        <div class="tags">
-          <span class="tag">Private Telegram Community</span>
-          <span class="tag">Weekly Insight from Dr. TMac</span>
-          <span class="tag">Q&amp;A Threads</span>
-          <span class="tag">Real Opportunities Broken Down</span>
-          <span class="tag">Monthly Discussion Topic</span>
+    <!-- WHAT THIS IS -->
+    <section class="what-section">
+        <div class="container">
+            <h2 class="section-title">What This Is</h2>
+            <h2>A private room where nurses stop surviving their income and start building beyond it.</h2>
+            <br>
+            <p>This is not a course. It is not a coaching program. The Nurse Ownership Circle is a focused, private community where nurses get weekly teaching from Dr. TMac, real answers to real questions, and a clear path toward owning property, building a business, and creating income that does not depend on picking up another shift.</p>
         </div>
+    </section>
 
-        <div class="divider"></div>
-
-        <div class="content-block">
-          <h3>Who this is for</h3>
-          <ul>
-            <li>Nurses who want income beyond the hospital and don't know where to start.</li>
-            <li>Nurses who want real estate and ownership explained clearly, not theoretically.</li>
-            <li>Nurses who are tired of scattered advice and want a structured space to learn and grow.</li>
-            <li>Nurses who want to build long-term wealth without burning out or starting over.</li>
-          </ul>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="content-block">
-          <h3>What happens inside</h3>
-          <ul>
-            <li>Weekly insight from Dr. TMac: direct, actionable, no fluff.</li>
-            <li>Dedicated Q&amp;A thread where you can ask questions and get real answers.</li>
-            <li>Occasional breakdown of a real opportunity or strategy so you can see how it works in practice.</li>
-            <li>Monthly discussion topic to spark thinking and conversation across the community.</li>
-          </ul>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="content-block">
-          <h3>Your guide inside the Circle</h3>
-          <div class="bio-block">
-            <div class="bio-text">
-              <p class="bio-name">Dr. Tasha McCray, MSN-Ed., RN, PhD., Entrepreneur, Real Estate Investor</p>
-              <p class="bio-body">
-                Dr. Tasha McCray is a PhD-prepared nurse educator, serial entrepreneur, real estate investor, and 2x bestselling author with 31 years in nursing and 29 years in business. 
-                She holds her MSN in Nursing Education and has spent nearly three decades building ownership income while working in healthcare. She owns group homes, invests in real estate, and has taught over 1,100 nurses how to create financial independence through real estate and business ownership. 
-                She is the founder of CompliTrst, a compliance technology company serving assisted living and group home operators, and the creator of The Tee Elite Circle, a premium membership network for accomplished women. 
-                Dr. TMac knows exactly what it takes to build real wealth from a nursing income because she has done it, and she created the Nurse Ownership Circle to give nurses direct access to the insight, strategy, and community that makes the shift possible.
-              </p>
+    <!-- WHO IT'S FOR -->
+    <section class="for-section">
+        <div class="container">
+            <h2 class="section-title">Who This Is For</h2>
+            <div class="avatar-grid">
+                <div class="avatar-box">
+                    <p><strong>You are tired:</strong> Not just physically. You are tired of giving everything to a system that has a ceiling on what it will pay you no matter how good you are.</p>
+                </div>
+                <div class="avatar-box">
+                    <p><strong>You know there is another way:</strong> You have seen other nurses buying properties and building income outside the hospital. You want someone to show you how it actually works.</p>
+                </div>
+                <div class="avatar-box">
+                    <p><strong>You do not need more motivation:</strong> You need strategy. A real plan. And a community that is moving, not just talking about moving.</p>
+                </div>
+                <div class="avatar-box">
+                    <p><strong>You are not ready to quit nursing yet:</strong> You want to build something real alongside the career you have. One property. One income stream. One step at a time.</p>
+                </div>
             </div>
-          </div>
+            <p class="closing-line">If you have ever finished a shift and thought "there has to be more than this" — you are exactly who this is for.</p>
         </div>
+    </section>
 
-      </div>
+    <!-- WHAT HAPPENS INSIDE -->
+    <section class="inside-section">
+        <div class="container">
+            <h2 class="section-title">What Happens Inside</h2>
 
-      <!-- RIGHT -->
-      <div class="card">
+            <div class="inside-item">
+                <span class="inside-label">Weekly</span>
+                <div class="inside-title">Weekly Teaching from Dr. TMac</div>
+                <p>Every week Dr. TMac drops structured teaching directly inside the community. Real estate. Business building. Income strategy. Delivered in her voice, in her way, on a consistent schedule so you always have something to learn from and act on.</p>
+            </div>
 
-        <div class="cta-box">
-          <span class="cta-label">Early Bird Rate · First 50 Nurses</span>
-          <div class="price-display">
-            <span class="amount">$89</span>
-            <span class="per">/month</span>
-          </div>
-          <p class="price-note">
-            After checkout you'll be redirected to a confirmation page with the private Telegram access link. Cancel anytime through PayPal.
-          </p>
+            <div class="inside-item">
+                <span class="inside-label">Ongoing</span>
+                <div class="inside-title">Dedicated Q&amp;A Thread</div>
+                <p>Ask your questions and get real answers. The Q&amp;A thread is where the community gets specific so you can stop guessing and start moving.</p>
+            </div>
 
-          <p class="price-note" style="margin-top:6px; color: rgba(197,160,89,.9); font-weight:500;">
-            🔒 Early Bird rate: locked in for life. After the first 50 nurses, price increases to $109/month.
-          </p>
+            <div class="inside-item">
+                <span class="inside-label">Occasional</span>
+                <div class="inside-title">Real Opportunity Breakdowns</div>
+                <p>When a real strategy or opportunity is worth walking through in detail, Dr. TMac breaks it down inside the community. No theory. Just a real look at how it works in practice.</p>
+            </div>
 
-          <div class="cta-divider"></div>
-
-          <div id="paypal-button-container-P-7T482108PT489863CNGVAGKA"></div>
-
-          <p class="support-note">Need help? Email support with your PayPal subscription ID.</p>
+            <div class="inside-item">
+                <span class="inside-label">Monthly</span>
+                <div class="inside-title">Community Discussion Topic</div>
+                <p>A focused topic each month to spark conversation, sharpen your thinking, and connect you with nurses who are building alongside you.</p>
+            </div>
         </div>
+    </section>
 
-        <div class="faq-section">
-          <h3>FAQ</h3>
-
-          <details>
-            <summary>Is this coaching?</summary>
-            <p>No. This is a membership community with weekly insight, Q&amp;A threads, and real opportunity breakdowns. It's designed to help you learn, think, and move with clarity.</p>
-          </details>
-
-          <details>
-            <summary>How do I access Telegram after paying?</summary>
-            <p>After subscribing, you'll be redirected to a confirmation page that includes the private Telegram link and your next steps.</p>
-          </details>
-
-          <details>
-            <summary>Can I cancel?</summary>
-            <p>Yes. Your subscription renews monthly and you can cancel anytime through PayPal.</p>
-          </details>
-
-          <details>
-            <summary>Do I need a lot of money to start?</summary>
-            <p>No. You need a strategy and a plan. We focus on understanding leverage and ownership paths that fit your stage.</p>
-          </details>
+    <!-- BIO -->
+    <section class="bio-section">
+        <div class="container">
+            <h2 class="section-title">Your Guide Inside the Circle</h2>
+            <div class="bio-inner">
+                <div class="bio-image-wrap">
+                    <img src="tmac-stage-pink.png" alt="Dr. Tasha McCray">
+                </div>
+                <div>
+                    <p class="bio-name">Dr. Tasha McCray, MSN-Ed., RN, PhD. &nbsp;&middot;&nbsp; Entrepreneur &nbsp;&middot;&nbsp; Real Estate Investor</p>
+                    <h2>She did not read about this. She built it.</h2>
+                    <p>Dr. TMac is a MSN-prepared nurse educator, serial entrepreneur, real estate investor, and 2x bestselling author. She holds her MSN in Nursing Education and has spent nearly three decades building ownership income while working in healthcare.</p>
+                    <p>She opened two group homes in early 2000 serving disabled adults(SC) and aged-out females(Fl), invests in real estate, and has taught over 1,100 nurses how to create financial independence through real estate and business ownership. She is the founder of CompliTrst, a compliance technology company serving assisted living and group home operators, and the creator of The Tee Elite Circle, a premium membership network for accomplished women.</p>
+                    <p>Dr. TMac knows exactly what it takes to build real wealth from a nursing income because she has done it. She created the Nurse Ownership Circle to give nurses direct access to the insight, strategy, and community that makes the shift possible.</p>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <p class="footer-note" style="margin-top:20px;">
-          Questions? <a href="mailto:support@tmacinspired.com">support@tmacinspired.com</a>
-        </p>
+    <!-- OFFER -->
+    <section class="offer-section">
+        <div class="container">
+            <h2 class="section-title">Join the Circle</h2>
+            <div class="offer-box">
+                <p class="price-label">Nurse Ownership Circle</p>
+                <div class="price-main">$89</div>
+                <p class="price-per">per month</p>
+                <p class="price-founding">Weekly insight. Real answers. A community that is building.</p>
+                <div id="pp-offer"></div>
+            </div>
+        </div>
+    </section>
 
-      </div>
-    </div>
-  </div>
+    <!-- FAQ -->
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="accordion">
 
-  <!-- PayPal SDK -->
-  <script src="https://www.paypal.com/sdk/js?client-id=AXYovXwzGW-keQCgpgZWt67_9RP8maCKEfUWF-CZbKGVFLeQ-A6FxP7DY42mQQV3KdjgScu_KokghD0p&vault=true&intent=subscription"
-          data-sdk-integration-source="button-factory"></script>
-  <script>
-    paypal.Buttons({
-      style: { shape: 'pill', color: 'gold', layout: 'vertical', label: 'subscribe' },
-      createSubscription: function(data, actions) {
-        return actions.subscription.create({ plan_id: 'P-7T482108PT489863CNGVAGKA' });
-      },
-      onApprove: function(data, actions) {
-        try { localStorage.setItem('pp_subscription_id', data.subscriptionID); } catch(e) {}
-        window.location.href = '/noc-success.html?sub=' + encodeURIComponent(data.subscriptionID);
-      },
-      onError: function(err) {
-        console.error(err);
-        alert('Payment could not be completed. Please try again.');
-      }
-    }).render('#paypal-button-container-P-7T482108PT489863CNGVAGKA');
-  </script>
+                <div class="accordion-item">
+                    <button class="accordion-header">Is this coaching?<span class="accordion-icon">+</span></button>
+                    <div class="accordion-content">
+                        <p>No. This is a membership community with weekly insight, Q&amp;A threads, and real opportunity breakdowns. It is designed to help you learn, think, and move with clarity on your own schedule.</p>
+                    </div>
+                </div>
 
-</body>
-</html>
+                <div class="accordion-item">
+                    <button class="accordion-header">How do I get access to Telegram after paying?<span class="accordion-icon">+</span></button>
+                    <div class="accordion-content">
+                        <p>After you subscribe, you will be redirected to a confirmation page that includes the private Telegram link and your next steps. Everything you need will be right there.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">Can I cancel?<span class="accordion-icon">+</span></button>
+                    <div class="accordion-content">
+                        <p>Yes. Your subscription renews monthly and you can cancel anytime. If you joined at the legacy rate and cancel, the legacy rate is not guaranteed upon rejoining.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">Do I need a lot of money to get started with real estate?<span class="accordion-icon">+</span></button>
+                    <div class="accordion-content">
+                        <p>No. You need a strategy and a plan. Inside the community we focus on understanding leverage and ownership paths that fit where you are right now, not where you wish you were.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">I am a new nurse. Is this still for me?<span class="accordion-icon">+</span></button>
+                    <div class="accordion-content">
+                        <p>Yes. The nurses who build the most wealth are the ones who started thinking about ownership early. This community will help you build the mindset, knowledge, and network before you think you are ready.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <img src="https://raw.githubusercontent.com/tkdbrad03/tmacinspired-site/main/tmac-logo.png"
+                 alt="TMac Inspired" class="footer-logo">
+            <p>"You can have it all."</p>
+            TMac Inspired™ &copy; 2026<br>
+            <div style="margin-top:20px;">
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+                <a href="/cdn-cgi/l/email-protection#c5b6b0b5b5aab7b185b1a8a4a6acabb6b5acb7a0a1eba6aaa8">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- PayPal SDK -->
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://www.paypal.com/sdk/js?client-id=AXYovXwzGW-keQCgpgZWt67_9RP8maCKEfUWF-CZbKGVFLeQ-A6FxP7DY42mQQV3KdjgScu_KokghD0p&vault=true&intent=subscription"
+            data-sdk-integration-source="button-factory"></script>
+    <script>
+        function ppButton(containerId) {
+            paypal.Buttons({
+                style: { shape: 'rect', color: 'gold', layout: 'vertical', label: 'subscribe' },
+                createSubscription: function(data, actions) {
+                    return actions.subscription.create({ plan_id: 'P-7T482108PT489863CNGVAGKA' });
+                },
+                onApprove: function(data) {
+                    try { localStorage.setItem('pp_subscription_id', data.subscriptionID); } catch(e) {}
+                    window.location.href = '/noc-success.html?sub=' + encodeURIComponent(data.subscriptionID);
+                },
+                onError: function(err) {
+                    console.error(err);
+                    alert('Payment could not be completed. Please try again.');
+                }
+            }).render(containerId);
+        }
+
+        ppButton('#pp-hero');
+        ppButton('#pp-offer');
+
+        // Accordion
+        document.querySelectorAll('.accordion-header').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = btn.parentElement;
+                document.querySelectorAll('.accordion-item').forEach(function(i) {
+                    if (i !== item) i.c
