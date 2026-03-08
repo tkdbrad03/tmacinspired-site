@@ -85,6 +85,19 @@
             font-weight: 400;
         }
         .main-nav a.active-link { color: var(--gold); border-bottom: 1px solid var(--gold); }
+        .main-nav .btn-nav {
+    display: inline-block;
+    margin: 0 20px;
+    padding: 0.45rem 1.4rem;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 400;
+    transition: var(--transition);
+}
+.main-nav .btn-nav:hover { background: var(--gold); color: #fff; }
 
         header.hero { text-align: center; padding: 4rem 1rem 2rem 1rem; }
         .hero-statement { font-size: clamp(2rem, 4vw, 3rem); max-width: 800px; margin: 0 auto 1rem auto; }
@@ -139,6 +152,7 @@
     <a href="about.html">About</a>
     <a href="https://tmacmastermind.com/tee-room.html">Blog</a>
     <a href="mailto:support@tmacinspired.com">Contact</a>
+    <a href="https://tmacinspired.com/noc" class="btn-nav">Nurse Ownership Circle</a>
 </nav>
 
 <header class="hero container reveal">
