@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$1/Hole Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0d1f0f;
+    color: #f0ead6;
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 20px 16px 40px;
+  }
+  h1 {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 2.4rem;
+    color: #c9a86c;
+    letter-spacing: 2px;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #7a9e7e;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .players {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .player-card {
+    background: #1a2f1c;
+    border: 1px solid #2e4d30;
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+  }
+  .player-card label {
+    display: block;
+    font-size: 0.65rem;
+    color: #7a9e7e;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .player-card input[type="text"] {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #c9a86c;
+    color: #f0ead6;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.2rem;
+    text-align: center;
+    outline: none;
+    padding: 2px 0;
+  }
+  .winnings {
+    font-size: 1.5rem;
+    font-family: 'Bebas Neue', cursive;
+    margin-top: 6px;
+  }
+  .pos { color: #4caf50; }
+  .neg { color: #e57373; }
+  .zero { color: #7a9e7e; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+  }
+  thead th {
+    background: #1a2f1c;
+    padding: 8px 4px;
+    text-align: center;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    color: #c9a86c;
+    border-bottom: 2px solid #2e4d30;
+  }
+  thead th:first-child { text-align: left; padding-left: 8px; }
+  tbody tr { border-bottom: 1px solid #1e3320; }
+  tbody tr:hover { background: #162418; }
+  td {
+    padding: 6px 4px;
+    text-align: center;
+    vertical-align: middle;
+  }
+  td:first-child {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1rem;
+    color: #c9a86c;
+    padding-left: 8px;
+    text-align: left;
+    white-space: nowrap;
+  }
+  .score-input {
+    width: 42px;
+    background: #0d1f0f;
+    border: 1px solid #2e4d30;
+    border-radius: 6px;
+    color: #f0ead6;
+    font-size: 1rem;
+    text-align: center;
+    padding: 4px 2px;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .score-input:focus { border-color: #c9a86c; }
+  .result-cell {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .win-cell { color: #4caf50; }
+  .push-cell { color: #7a9e7e; }
+  .lose-cell { color: #e57373; }
+
+  .totals-row td {
+    background: #1a2f1c;
+    font-weight: 600;
+    padding: 10px 4px;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.1rem;
+  }
+  .totals-row td:first-child { color: #c9a86c; padding-left: 8px; }
+
+  .btn-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+  button {
+    background: #c9a86c;
+    color: #0d1f0f;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 22px;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  button:hover { background: #e0c080; }
+  button.secondary {
+    background: transparent;
+    border: 1px solid #2e4d30;
+    color: #7a9e7e;
+  }
+  button.secondary:hover { border-color: #c9a86c; color: #c9a86c; }
+
+  .note {
+    text-align: center;
+    font-size: 0.7rem;
+    color: #3d6340;
+    margin-top: 14px;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<h1>⛳ $1/Hole</h1>
+<p class="subtitle">Push = no carry · Winner takes the hole</p>
+
+<div class="players">
+  <div class="player-card">
+    <label>Player 1</label>
+    <input type="text" id="name0" value="Me" oninput="renderHeaders()">
+    <div class="winnings zero" id="win0">$0</div>
+  </div>
+  <div class="player-card">
+    <label>Player 2</label>
+    <input type="text" id="name1" value="Son" oninput="renderHeaders()">
+    <div class="winnings zero" id="win1">$0</div>
+  </div>
+  <div class="player-card">
+    <label>Player 3</label>
+    <input type="text" id="name2" value="Hubby" oninput="renderHeaders()">
+    <div class="winnings zero" id="win2">$0</div>
+  </div>
+</div>
+
+<table id="scoreTable">
+  <thead>
+    <tr>
+      <th>Hole</th>
+      <th id="h0">Me</th>
+      <th id="h1">Son</th>
+      <th id="h2">Hubby</th>
+      <th>Result</th>
+    </tr>
+  </thead>
+  <tbody id="tbody"></tbody>
+  <tfoot>
+    <tr class="totals-row">
+      <td>Total</td>
+      <td id="tot0">—</td>
+      <td id="tot1">—</td>
+      <td id="tot2">—</td>
+      <td></td>
+    </tr>
+  </tfoot>
+</table>
+
+<div class="btn-row">
+  <button onclick="calculate()">Calculate</button>
+  <button class="secondary" onclick="resetAll()">Reset</button>
+</div>
+<p class="note">Ties are a push — no money changes hands, no carry over.</p>
+
+<script>
+const HOLES = 18;
+const scores = Array.from({length: HOLES}, () => ['','','']);
+
+function renderHeaders() {
+  ['h0','h1','h2'].forEach((id,i) => {
+    document.getElementById(id).textContent = document.getElementById('name'+i).value || 'P'+(i+1);
+  });
+}
+
+function buildTable() {
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = '';
+  for (let h = 0; h < HOLES; h++) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>Hole ${h+1}</td>` +
+      [0,1,2].map(p => `<td><input class="score-input" type="number" min="1" max="15" placeholder="—"
+        value="${scores[h][p]}"
+        oninput="scores[${h}][${p}]=this.value"
+        onblur="calculate()"></td>`).join('') +
+      `<td class="result-cell" id="res${h}"></td>`;
+    tbody.appendChild(tr);
+  }
+}
+
+// 3-player: lowest score wins the hole ($1 from each of the other two)
+// Tie for low = push (no money moves)
+function calculate() {
+  let totals = [0, 0, 0];
+  let strokes = [0, 0, 0];
+
+  for (let h = 0; h < HOLES; h++) {
+    const cell = document.getElementById('res'+h);
+    const vals = scores[h].map(v => v === '' ? null : parseInt(v));
+    const filled = vals.filter(v => v !== null);
+    if (filled.length < 3) { cell.textContent = ''; cell.className='result-cell'; continue; }
+
+    vals.forEach((v,i) => strokes[i] += v);
+    const min = Math.min(...vals);
+    const winners = vals.map((v,i) => v === min ? i : -1).filter(i => i >= 0);
+
+    if (winners.length === 1) {
+      const w = winners[0];
+      totals[w] += 2;
+      vals.forEach((_,i) => { if (i !== w) totals[i] -= 1; });
+      const name = document.getElementById('name'+w).value || 'P'+(w+1);
+      cell.textContent = '🏆 ' + name;
+      cell.className = 'result-cell win-cell';
+    } else if (winners.length === 2) {
+      // Two-way tie for low: those two split? Simpler: push — no money moves
+      cell.textContent = 'Push';
+      cell.className = 'result-cell push-cell';
+    } else {
+      cell.textContent = 'Push';
+      cell.className = 'result-cell push-cell';
+    }
+  }
+
+  [0,1,2].forEach(i => {
+    const el = document.getElementById('win'+i);
+    const t = totals[i];
+    el.textContent = (t >= 0 ? '+' : '') + '$' + Math.abs(t) + (t !== 0 ? '' : '');
+    el.className = 'winnings ' + (t > 0 ? 'pos' : t < 0 ? 'neg' : 'zero');
+    const st = document.getElementById('tot'+i);
+    st.textContent = strokes[i] || '—';
+  });
+}
+
+function resetAll() {
+  for (let h=0;h<HOLES;h++) scores[h]=['','',''];
+  buildTable();
+  [0,1,2].forEach(i => {
+    document.getElementById('win'+i).textContent = '$0';
+    document.getElementById('win'+i).className = 'winnings zero';
+    document.getElementById('tot'+i).textContent = '—';
+  });
+}
+
+buildTable();
+renderHeaders();
+</script>
+</body>
+</html>
