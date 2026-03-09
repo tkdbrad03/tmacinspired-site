@@ -4,20 +4,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>$1/Hole Tracker</title>
+<title>Golf Skins Tracker</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    background: #0d1f0f;
-    color: #f0ead6;
+    background: #ffffff;
+    color: #1a2f1c;
     font-family: 'DM Sans', sans-serif;
     min-height: 100vh;
-    padding: 20px 16px 40px;
+    padding: 16px 12px 40px;
   }
   h1 {
-    font-family: 'DM Sans', sans-serif; font-weight: 700;
-    font-size: 2.4rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
     color: #c9a86c;
     letter-spacing: 2px;
     text-align: center;
@@ -25,234 +26,141 @@
   }
   .subtitle {
     text-align: center;
-    font-size: 0.8rem;
-    color: #7a9e7e;
+    font-size: 0.75rem;
+    color: #5a7a5a;
     margin-bottom: 6px;
     letter-spacing: 1px;
     text-transform: uppercase;
   }
-  .room-bar {
-    text-align: center;
-    font-size: 0.75rem;
-    color: #3d6340;
-    margin-bottom: 6px;
-  }
+  .room-bar { text-align: center; font-size: 0.75rem; color: #5a7a5a; margin-bottom: 4px; }
   .room-bar span { color: #c9a86c; font-weight: 600; }
   .status-dot {
-    display: inline-block;
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: #3d6340;
-    margin-right: 5px;
-    vertical-align: middle;
-    transition: background 0.3s;
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: #5a7a5a; margin-right: 5px; vertical-align: middle; transition: background 0.3s;
   }
   .status-dot.connected { background: #4caf50; }
-  .status-line {
-    text-align: center;
-    font-size: 0.7rem;
-    color: #3d6340;
-    margin-bottom: 16px;
-  }
+  .status-line { text-align: center; font-size: 0.7rem; color: #5a7a5a; margin-bottom: 12px; }
 
-.players {
-display: grid;
-grid-template-columns: repeat(3, 1fr);
-gap: 10px;
-margin-bottom: 20px;
+.setup-bar {
+display: flex; align-items: center; justify-content: center;
+gap: 12px; background: #f4f7f4; border: 1px solid #c8dac8;
+border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; flex-wrap: wrap;
 }
+.setup-bar label { font-size: 0.7rem; color: #5a7a5a; text-transform: uppercase; letter-spacing: 1px; }
+.setup-bar select, .setup-bar input[type=“number”] {
+background: #ffffff; border: 1px solid #c8dac8; border-radius: 6px;
+color: #1a2f1c; font-family: ‘DM Sans’, sans-serif; font-size: 0.9rem; padding: 4px 8px; outline: none;
+}
+.setup-bar input[type=“number”] { width: 60px; }
+.setup-bar select:focus, .setup-bar input:focus { border-color: #c9a86c; }
+
+.players { display: grid; gap: 8px; margin-bottom: 14px; }
+.players.p2 { grid-template-columns: repeat(2, 1fr); }
+.players.p3 { grid-template-columns: repeat(3, 1fr); }
+.players.p4 { grid-template-columns: repeat(4, 1fr); }
+
 .player-card {
-background: #1a2f1c;
-border: 1px solid #2e4d30;
-border-radius: 10px;
-padding: 12px;
-text-align: center;
+background: #f4f7f4; border: 1px solid #c8dac8;
+border-radius: 10px; padding: 10px 8px; text-align: center;
 }
 .player-card label {
-display: block;
-font-size: 0.65rem;
-color: #7a9e7e;
-text-transform: uppercase;
-letter-spacing: 1px;
-margin-bottom: 4px;
+display: block; font-size: 0.6rem; color: #5a7a5a;
+text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px;
 }
 .player-card input[type=“text”] {
-width: 100%;
-background: transparent;
-border: none;
-border-bottom: 1px solid #c9a86c;
-color: #f0ead6;
+width: 100%; background: transparent; border: none;
+border-bottom: 1px solid #c9a86c; color: #1a2f1c;
 font-family: ‘DM Sans’, sans-serif; font-weight: 700;
-font-size: 1.2rem;
-text-align: center;
-outline: none;
-padding: 2px 0;
+font-size: 1rem; text-align: center; outline: none; padding: 2px 0;
 }
-.winnings {
-font-size: 1.5rem;
-font-family: ‘DM Sans’, sans-serif; font-weight: 700;
-margin-top: 6px;
-}
+.winnings { font-size: 1.2rem; font-weight: 700; margin-top: 5px; }
+.skins-count { font-size: 0.65rem; color: #5a7a5a; margin-top: 2px; }
 .pos { color: #4caf50; }
 .neg { color: #e57373; }
-.zero { color: #7a9e7e; }
+.zero { color: #5a7a5a; }
 
-table {
-width: 100%;
-border-collapse: collapse;
-font-size: 0.85rem;
-margin-bottom: 20px;
-}
+.table-wrap { overflow-x: auto; margin-bottom: 16px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 320px; }
 thead th {
-background: #1a2f1c;
-padding: 8px 4px;
-text-align: center;
-font-family: ‘DM Sans’, sans-serif; font-weight: 700;
-font-size: 1rem;
-letter-spacing: 1px;
-color: #c9a86c;
-border-bottom: 2px solid #2e4d30;
+background: #f4f7f4; padding: 8px 4px; text-align: center;
+font-weight: 700; font-size: 0.85rem; letter-spacing: 0.5px;
+color: #c9a86c; border-bottom: 2px solid #c8dac8;
 }
-thead th:first-child { text-align: left; padding-left: 8px; }
-tbody tr { border-bottom: 1px solid #1e3320; }
-tbody tr:hover { background: #162418; }
-td {
-padding: 6px 4px;
-text-align: center;
-vertical-align: middle;
-}
+thead th:first-child { text-align: left; padding-left: 8px; min-width: 60px; }
+tbody tr { border-bottom: 1px solid #e8f0e8; }
+tbody tr:hover { background: #f0f5f0; }
+td { padding: 5px 3px; text-align: center; vertical-align: middle; }
 td:first-child {
-font-family: ‘DM Sans’, sans-serif; font-weight: 700;
-font-size: 1rem;
-color: #c9a86c;
-padding-left: 8px;
-text-align: left;
-white-space: nowrap;
+font-weight: 700; font-size: 0.85rem; color: #c9a86c;
+padding-left: 8px; text-align: left; white-space: nowrap;
 }
 .score-input {
-width: 42px;
-background: #0d1f0f;
-border: 1px solid #2e4d30;
-border-radius: 6px;
-color: #f0ead6;
-font-size: 1rem;
-text-align: center;
-padding: 4px 2px;
-font-family: ‘DM Sans’, sans-serif;
-outline: none;
-transition: border-color 0.2s;
+width: 38px; background: #ffffff; border: 1px solid #c8dac8;
+border-radius: 6px; color: #1a2f1c; font-size: 0.95rem;
+text-align: center; padding: 4px 2px; font-family: ‘DM Sans’, sans-serif;
+outline: none; transition: border-color 0.2s;
 }
 .score-input:focus { border-color: #c9a86c; }
-.result-cell {
-font-size: 0.7rem;
-font-weight: 600;
-letter-spacing: 0.5px;
-text-transform: uppercase;
-}
+.result-cell { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; min-width: 52px; }
 .win-cell { color: #4caf50; }
-.push-cell { color: #7a9e7e; }
-
-.totals-row td {
-background: #1a2f1c;
-font-weight: 600;
-padding: 10px 4px;
-font-family: ‘DM Sans’, sans-serif; font-weight: 700;
-font-size: 1.1rem;
-}
+.push-cell { color: #5a7a5a; }
+.totals-row td { background: #f4f7f4; font-weight: 700; padding: 8px 3px; font-size: 1rem; }
 .totals-row td:first-child { color: #c9a86c; padding-left: 8px; }
 
-.btn-row {
-display: flex;
-gap: 10px;
-justify-content: center;
-}
+.btn-row { display: flex; gap: 10px; justify-content: center; }
 button {
-background: #c9a86c;
-color: #0d1f0f;
-border: none;
-border-radius: 8px;
-padding: 10px 22px;
-font-family: ‘DM Sans’, sans-serif; font-weight: 700;
-font-size: 1.1rem;
-letter-spacing: 1px;
-cursor: pointer;
-transition: background 0.2s;
+background: #c9a86c; color: #0d1f0f; border: none; border-radius: 8px;
+padding: 10px 22px; font-family: ‘DM Sans’, sans-serif; font-weight: 700;
+font-size: 1rem; letter-spacing: 1px; cursor: pointer; transition: background 0.2s;
 }
 button:hover { background: #e0c080; }
-button.secondary {
-background: transparent;
-border: 1px solid #2e4d30;
-color: #7a9e7e;
-}
+button.secondary { background: transparent; border: 1px solid #c8dac8; color: #5a7a5a; }
 button.secondary:hover { border-color: #c9a86c; color: #c9a86c; }
-.note {
-text-align: center;
-font-size: 0.7rem;
-color: #3d6340;
-margin-top: 14px;
-font-style: italic;
-}
+.note { text-align: center; font-size: 0.7rem; color: #5a7a5a; margin-top: 14px; font-style: italic; }
 </style>
 
 </head>
 <body>
 
-<h1>⛳ $1/Hole</h1>
-<p class="subtitle">Push = no carry · Winner takes the hole</p>
+<h1>⛳ Golf Skins</h1>
+<p class="subtitle">Outright win = skin · Tie = no one gets it</p>
 <div class="room-bar">Room: <span id="roomLabel">—</span></div>
 <div class="status-line"><span class="status-dot" id="dot"></span><span id="statusText">Connecting…</span></div>
 
-<div class="players">
-  <div class="player-card">
-    <label>Player 1</label>
-    <input type="text" id="name0" value="Me" oninput="broadcastState()">
-    <div class="winnings zero" id="win0">$0</div>
-  </div>
-  <div class="player-card">
-    <label>Player 2</label>
-    <input type="text" id="name1" value="Son" oninput="broadcastState()">
-    <div class="winnings zero" id="win1">$0</div>
-  </div>
-  <div class="player-card">
-    <label>Player 3</label>
-    <input type="text" id="name2" value="Hubby" oninput="broadcastState()">
-    <div class="winnings zero" id="win2">$0</div>
-  </div>
+<div class="setup-bar">
+  <label>Players</label>
+  <select id="numPlayers" onchange="changeSetup()">
+    <option value="2">2 Players</option>
+    <option value="3" selected>3 Players</option>
+    <option value="4">4 Players</option>
+  </select>
+  <label>$ / Skin</label>
+  <input type="number" id="betAmount" value="1" min="1" max="100" step="1" oninput="changeSetup()">
 </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Hole</th>
-      <th id="h0">Me</th>
-      <th id="h1">Son</th>
-      <th id="h2">Hubby</th>
-      <th>Result</th>
-    </tr>
-  </thead>
-  <tbody id="tbody"></tbody>
-  <tfoot>
-    <tr class="totals-row">
-      <td>Total</td>
-      <td id="tot0">—</td>
-      <td id="tot1">—</td>
-      <td id="tot2">—</td>
-      <td></td>
-    </tr>
-  </tfoot>
-</table>
+<div class="players p3" id="playerCards"></div>
+
+<div class="table-wrap">
+  <table>
+    <thead><tr id="tableHeader"></tr></thead>
+    <tbody id="tbody"></tbody>
+    <tfoot><tr class="totals-row" id="totalsRow"></tr></tfoot>
+  </table>
+</div>
 
 <div class="btn-row">
   <button onclick="calculate()">Calculate</button>
   <button class="secondary" onclick="resetAll()">Reset</button>
 </div>
-<p class="note">Ties are a push — no money changes hands.</p>
+<p class="note">Ties are a push — no skin awarded.</p>
 
 <script>
 const HOLES = 18;
-const scores = Array.from({length: HOLES}, () => ['','','']);
+let numPlayers = 3;
+let betAmount = 1;
+let scores = Array.from({length: HOLES}, () => Array(4).fill(''));
+let names = ['Me', 'Player 2', 'Player 3', 'Player 4'];
 
-// --- Room setup from URL ---
 const params = new URLSearchParams(location.search);
 let room = params.get('room');
 if (!room) {
@@ -262,93 +170,63 @@ if (!room) {
 }
 document.getElementById('roomLabel').textContent = room;
 
-// --- WebSocket via socketsbay free relay ---
-const WS_URL = `wss://socketsbay.com/wss/v2/1/demo/`;
-// We use the room name as a channel prefix in the message
-let ws, reconnectTimer;
-let isBroadcasting = false;
-
-function connect() {
-  ws = new WebSocket(WS_URL);
-
-  ws.onopen = () => {
-    document.getElementById('dot').className = 'status-dot connected';
-    document.getElementById('statusText').textContent = 'Live — all phones synced';
-    // request current state from others
-    send({ type: 'request', room });
-  };
-
-  ws.onmessage = (e) => {
-    try {
-      const msg = JSON.parse(e.data);
-      if (msg.room !== room) return; // ignore other rooms
-      if (msg.type === 'state') {
-        applyState(msg);
-      } else if (msg.type === 'request') {
-        // someone joined, send them current state
-        broadcastState();
-      }
-    } catch {}
-  };
-
-  ws.onclose = () => {
-    document.getElementById('dot').className = 'status-dot';
-    document.getElementById('statusText').textContent = 'Reconnecting…';
-    reconnectTimer = setTimeout(connect, 3000);
-  };
-
-  ws.onerror = () => ws.close();
+function saveToURL() {
+  const state = { n: names.slice(0, numPlayers), s: scores.map(r => r.slice(0, numPlayers)), p: numPlayers, b: betAmount };
+  params.set('data', btoa(JSON.stringify(state)));
+  history.replaceState({}, '', '?' + params.toString());
 }
 
-function send(data) {
-  if (ws && ws.readyState === WebSocket.OPEN) {
-    ws.send(JSON.stringify(data));
-  }
+function loadFromURL() {
+  const data = params.get('data');
+  if (!data) return;
+  try {
+    const state = JSON.parse(atob(data));
+    if (state.p) { numPlayers = state.p; document.getElementById('numPlayers').value = state.p; }
+    if (state.b) { betAmount = state.b; document.getElementById('betAmount').value = state.b; }
+    if (state.n) state.n.forEach((n,i) => names[i] = n);
+    if (state.s) state.s.forEach((row,h) => row.forEach((v,p) => scores[h][p] = v));
+  } catch {}
 }
 
-function broadcastState() {
+function changeSetup() {
+  numPlayers = parseInt(document.getElementById('numPlayers').value);
+  betAmount = parseFloat(document.getElementById('betAmount').value) || 1;
+  buildAll();
+  broadcastState();
+}
+
+function buildAll() {
+  buildPlayerCards();
+  buildTable();
   renderHeaders();
   calculate();
-  send({
-    type: 'state',
-    room,
-    scores,
-    names: [
-      document.getElementById('name0').value,
-      document.getElementById('name1').value,
-      document.getElementById('name2').value,
-    ]
-  });
 }
 
-function applyState(msg) {
-  isBroadcasting = true;
-  // apply names
-  if (msg.names) {
-    msg.names.forEach((n, i) => {
-      document.getElementById('name'+i).value = n;
-    });
+function buildPlayerCards() {
+  const container = document.getElementById('playerCards');
+  container.className = 'players ' + (numPlayers === 4 ? 'p4' : numPlayers === 2 ? 'p2' : 'p3');
+  container.innerHTML = '';
+  for (let i = 0; i < numPlayers; i++) {
+    container.innerHTML += `
+      <div class="player-card">
+        <label>Player ${i+1}</label>
+        <input type="text" id="name${i}" value="${names[i]}" oninput="names[${i}]=this.value; broadcastState()">
+        <div class="winnings zero" id="win${i}">$0</div>
+        <div class="skins-count" id="skins${i}">0 skins</div>
+      </div>`;
   }
-  // apply scores
-  if (msg.scores) {
-    msg.scores.forEach((row, h) => {
-      row.forEach((v, p) => {
-        scores[h][p] = v;
-        const inp = document.querySelector(`#tbody tr:nth-child(${h+1}) td:nth-child(${p+2}) input`);
-        if (inp && inp !== document.activeElement) inp.value = v;
-      });
-    });
-  }
-  renderHeaders();
-  calculate();
-  isBroadcasting = false;
 }
 
-// --- Render ---
 function renderHeaders() {
-  ['h0','h1','h2'].forEach((id,i) => {
-    document.getElementById(id).textContent = document.getElementById('name'+i).value || 'P'+(i+1);
-  });
+  const hdr = document.getElementById('tableHeader');
+  hdr.innerHTML = '<th>Hole</th>';
+  for (let i = 0; i < numPlayers; i++) hdr.innerHTML += `<th id="h${i}">${names[i] || 'P'+(i+1)}</th>`;
+  hdr.innerHTML += '<th>Result</th>';
+
+  const tot = document.getElementById('totalsRow');
+  tot.innerHTML = '<td>Total</td>';
+  for (let i = 0; i < numPlayers; i++) tot.innerHTML += `<td id="tot${i}">—</td>`;
+  tot.innerHTML += '<td></td>';
 }
 
 function buildTable() {
@@ -356,64 +234,132 @@ function buildTable() {
   tbody.innerHTML = '';
   for (let h = 0; h < HOLES; h++) {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>Hole ${h+1}</td>` +
-      [0,1,2].map(p => `<td><input class="score-input" type="number" min="1" max="15" placeholder="—"
+    let cells = `<td>Hole ${h+1}</td>`;
+    for (let p = 0; p < numPlayers; p++) {
+      cells += `<td><input class="score-input" type="number" min="1" max="15" placeholder="—"
         value="${scores[h][p]}"
-        oninput="scores[${h}][${p}]=this.value; broadcastState();"
-        ></td>`).join('') +
-      `<td class="result-cell" id="res${h}"></td>`;
+        oninput="scores[${h}][${p}]=this.value; broadcastState();"></td>`;
+    }
+    cells += `<td class="result-cell" id="res${h}"></td>`;
+    tr.innerHTML = cells;
     tbody.appendChild(tr);
   }
 }
 
 function calculate() {
-  let totals = [0,0,0];
-  let strokes = [0,0,0];
+  const skinCounts = Array(numPlayers).fill(0);
+  const strokeTotals = Array(numPlayers).fill(0);
 
   for (let h = 0; h < HOLES; h++) {
     const cell = document.getElementById('res'+h);
-    const vals = scores[h].map(v => v === '' ? null : parseInt(v));
-    if (vals.filter(v => v !== null).length < 3) { cell.textContent = ''; cell.className='result-cell'; continue; }
+    if (!cell) continue;
+    const vals = [];
+    for (let p = 0; p < numPlayers; p++) vals.push(scores[h][p] === '' ? null : parseInt(scores[h][p]));
+    if (vals.filter(v => v !== null).length < numPlayers) { cell.textContent = ''; cell.className = 'result-cell'; continue; }
 
-    vals.forEach((v,i) => strokes[i] += v);
+    vals.forEach((v,i) => strokeTotals[i] += v);
     const min = Math.min(...vals);
     const winners = vals.map((v,i) => v === min ? i : -1).filter(i => i >= 0);
 
     if (winners.length === 1) {
-      const w = winners[0];
-      totals[w] += 2;
-      vals.forEach((_,i) => { if (i !== w) totals[i] -= 1; });
-      const name = document.getElementById('name'+w).value || 'P'+(w+1);
-      cell.textContent = '🏆 ' + name;
+      skinCounts[winners[0]]++;
+      cell.textContent = '🏆 ' + (names[winners[0]] || 'P'+(winners[0]+1));
       cell.className = 'result-cell win-cell';
     } else {
-      cell.textContent = 'Push';
+      cell.textContent = 'Tie';
       cell.className = 'result-cell push-cell';
     }
   }
 
-  [0,1,2].forEach(i => {
+  const totalSkins = skinCounts.reduce((a,b) => a+b, 0);
+
+  for (let i = 0; i < numPlayers; i++) {
+    const skinsWon = skinCounts[i];
+    const skinsLost = totalSkins - skinsWon;
+    const net = (skinsWon * (numPlayers - 1) * betAmount) - (skinsLost * betAmount);
+
     const el = document.getElementById('win'+i);
-    const t = totals[i];
-    el.textContent = (t >= 0 ? '+' : '-') + '$' + Math.abs(t);
-    el.className = 'winnings ' + (t > 0 ? 'pos' : t < 0 ? 'neg' : 'zero');
-    document.getElementById('tot'+i).textContent = strokes[i] || '—';
-  });
+    if (!el) continue;
+    el.textContent = (net >= 0 ? '+' : '-') + '$' + Math.abs(net).toFixed(net % 1 === 0 ? 0 : 2);
+    el.className = 'winnings ' + (net > 0 ? 'pos' : net < 0 ? 'neg' : 'zero');
+    document.getElementById('skins'+i).textContent = skinsWon + ' skin' + (skinsWon !== 1 ? 's' : '');
+    document.getElementById('tot'+i).textContent = strokeTotals[i] || '—';
+    const hdr = document.getElementById('h'+i);
+    if (hdr) hdr.textContent = names[i] || 'P'+(i+1);
+  }
+}
+
+// WebSocket
+const WS_URL = 'wss://socketsbay.com/wss/v2/1/demo/';
+let ws;
+
+function connect() {
+  ws = new WebSocket(WS_URL);
+  ws.onopen = () => {
+    document.getElementById('dot').className = 'status-dot connected';
+    document.getElementById('statusText').textContent = 'Live — all phones synced';
+    send({ type: 'request', room });
+  };
+  ws.onmessage = (e) => {
+    try {
+      const msg = JSON.parse(e.data);
+      if (msg.room !== room) return;
+      if (msg.type === 'state') applyState(msg);
+      else if (msg.type === 'request') broadcastState();
+    } catch {}
+  };
+  ws.onclose = () => {
+    document.getElementById('dot').className = 'status-dot';
+    document.getElementById('statusText').textContent = 'Reconnecting…';
+    setTimeout(connect, 3000);
+  };
+  ws.onerror = () => ws.close();
+}
+
+function send(data) {
+  if (ws && ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify(data));
+}
+
+function broadcastState() {
+  saveToURL();
+  calculate();
+  send({ type: 'state', room, scores, names: names.slice(0, numPlayers), numPlayers, betAmount });
+}
+
+function applyState(msg) {
+  let rebuild = false;
+  if (msg.numPlayers && msg.numPlayers !== numPlayers) {
+    numPlayers = msg.numPlayers;
+    document.getElementById('numPlayers').value = numPlayers;
+    rebuild = true;
+  }
+  if (msg.betAmount) { betAmount = msg.betAmount; document.getElementById('betAmount').value = betAmount; }
+  if (msg.names) msg.names.forEach((n,i) => { names[i] = n; });
+  if (msg.scores) msg.scores.forEach((row,h) => row.forEach((v,p) => scores[h][p] = v));
+  if (rebuild) buildAll();
+  else {
+    // update inputs without rebuilding
+    for (let i = 0; i < numPlayers; i++) { const el = document.getElementById('name'+i); if (el) el.value = names[i]; }
+    for (let h = 0; h < HOLES; h++) {
+      for (let p = 0; p < numPlayers; p++) {
+        const inp = document.querySelector(`#tbody tr:nth-child(${h+1}) td:nth-child(${p+2}) input`);
+        if (inp && inp !== document.activeElement) inp.value = scores[h][p];
+      }
+    }
+    calculate();
+  }
 }
 
 function resetAll() {
-  for (let h=0;h<HOLES;h++) scores[h]=['','',''];
-  buildTable();
-  [0,1,2].forEach(i => {
-    document.getElementById('win'+i).textContent = '$0';
-    document.getElementById('win'+i).className = 'winnings zero';
-    document.getElementById('tot'+i).textContent = '—';
-  });
+  scores = Array.from({length: HOLES}, () => Array(4).fill(''));
+  params.delete('data');
+  history.replaceState({}, '', '?' + params.toString());
+  buildAll();
   broadcastState();
 }
 
-buildTable();
-renderHeaders();
+loadFromURL();
+buildAll();
 connect();
 </script>
 
