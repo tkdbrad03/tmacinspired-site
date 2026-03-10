@@ -1,25 +1,200 @@
 /* ============================================================
    NURSE OWNERSHIP CIRCLE — app.js
    tmacinspired.com
-   Handles: navigation, calculators, deal tracker,
-            shift tracker, checklist, localStorage, PWA install
+   Firebase Auth + Firestore | Invite-only member access
    ============================================================ */
 
-'use strict';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getFirestore, doc, getDoc, setDoc, updateDoc, collection,
+         getDocs, addDoc, deleteDoc, serverTimestamp, onSnapshot }
+  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 /* ----------------------------------------------------------
-   SERVICE WORKER REGISTRATION
+   FIREBASE CONFIG — replace with your project values
    ---------------------------------------------------------- */
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
-      .then(reg => console.log('[NOC] Service worker registered:', reg.scope))
-      .catch(err => console.warn('[NOC] Service worker failed:', err));
-  });
+const firebaseConfig = {
+  apiKey:            "REPLACE_WITH_YOUR_API_KEY",
+  authDomain:        "REPLACE_WITH_YOUR_AUTH_DOMAIN",
+  projectId:         "REPLACE_WITH_YOUR_PROJECT_ID",
+  storageBucket:     "REPLACE_WITH_YOUR_STORAGE_BUCKET",
+  messagingSenderId: "REPLACE_WITH_YOUR_MESSAGING_SENDER_ID",
+  appId:             "REPLACE_WITH_YOUR_APP_ID"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+let currentUser = null;   // Firebase user object
+let unsubDeals  = null;   // Firestore real-time listener handle
+
+/* ----------------------------------------------------------
+   FIRESTORE HELPERS
+   ---------------------------------------------------------- */
+// User doc ref: users/{uid}
+const userRef  = () => doc(db, 'users', currentUser.uid);
+// Deals collection: users/{uid}/deals/{dealId}
+const dealsRef = () => collection(db, 'users', currentUser.uid, 'deals');
+const dealRef  = (id) => doc(db, 'users', currentUser.uid, 'deals', id);
+
+async function fsGet(path, fallback = null) {
+  try {
+    const snap = await getDoc(doc(db, ...path.split('/')));
+    return snap.exists() ? snap.data() : fallback;
+  } catch (e) { console.warn('[NOC] Firestore get failed:', e); return fallback; }
+}
+
+async function fsSet(path, data, merge = true) {
+  try {
+    await setDoc(doc(db, ...path.split('/')), data, { merge });
+  } catch (e) { console.warn('[NOC] Firestore set failed:', e); }
+}
+
+// Shorthand: save to users/{uid} with merge
+async function saveUserData(data) {
+  if (!currentUser) return;
+  await fsSet(`users/${currentUser.uid}`, data);
 }
 
 /* ----------------------------------------------------------
-   LOCALSTORAGE HELPERS
+   AUTH UI
+   ---------------------------------------------------------- */
+function showAuthGate() {
+  document.getElementById('auth-gate')?.classList.remove('hidden');
+}
+function hideAuthGate() {
+  const gate = document.getElementById('auth-gate');
+  if (gate) {
+    gate.classList.add('hidden');
+    setTimeout(() => gate.style.display = 'none', 400);
+  }
+}
+
+function toggleAuthPw() {
+  const input = document.getElementById('auth-password');
+  const icon  = document.getElementById('auth-pw-icon');
+  if (!input) return;
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>';
+  } else {
+    input.type = 'password';
+    icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+  }
+}
+
+function setAuthError(msg) {
+  const el = document.getElementById('auth-error');
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.toggle('hidden', !msg);
+}
+
+async function signIn() {
+  const email = document.getElementById('auth-email')?.value.trim();
+  const pass  = document.getElementById('auth-password')?.value;
+  const btn   = document.getElementById('auth-signin-btn');
+
+  if (!email || !pass) { setAuthError('Please enter your email and password.'); return; }
+  setAuthError('');
+  if (btn) { btn.textContent = 'Signing in…'; btn.classList.add('btn--loading'); }
+
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+    // onAuthStateChanged handles the rest
+  } catch (e) {
+    const msgs = {
+      'auth/user-not-found':  'No account found with that email.',
+      'auth/wrong-password':  'Incorrect password. Please try again.',
+      'auth/invalid-email':   'Please enter a valid email address.',
+      'auth/too-many-requests': 'Too many attempts. Please wait a moment and try again.',
+      'auth/invalid-credential': 'Incorrect email or password.',
+    };
+    setAuthError(msgs[e.code] || 'Sign-in failed. Please check your credentials.');
+    if (btn) { btn.textContent = 'Sign In'; btn.classList.remove('btn--loading'); }
+  }
+}
+
+async function signOutUser() {
+  if (unsubDeals) { unsubDeals(); unsubDeals = null; }
+  await signOut(auth);
+  currentUser = null;
+  state.deals = [];
+  showAuthGate();
+  navigateTo('dashboard');
+}
+
+// Allow Enter key on auth inputs
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('auth-gate') &&
+      !document.getElementById('auth-gate').classList.contains('hidden')) {
+    signIn();
+  }
+});
+
+/* ----------------------------------------------------------
+   AUTH STATE LISTENER — boots the app
+   ---------------------------------------------------------- */
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = user;
+    hideAuthGate();
+    await loadUserData();
+    renderUserHeader();
+    initApp();
+  } else {
+    showAuthGate();
+  }
+});
+
+/* ----------------------------------------------------------
+   LOAD ALL USER DATA FROM FIRESTORE
+   ---------------------------------------------------------- */
+async function loadUserData() {
+  const uid = currentUser.uid;
+
+  // User profile + app state
+  const userData = await fsGet(`users/${uid}`) || {};
+  state.userName     = userData.userName || null;
+  state.selectedPath = userData.selectedPath || null;
+  state.checklist    = userData.checklist || {};
+  state.tracker      = userData.tracker || null;
+  state.completedLessons = userData.completedLessons || [];
+
+  // Deals — real-time listener
+  if (unsubDeals) unsubDeals();
+  unsubDeals = onSnapshot(dealsRef(), (snap) => {
+    state.deals = snap.docs.map(d => ({ fsId: d.id, ...d.data() }))
+      .sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+    renderDeals();
+  });
+
+  // Show profile modal if first visit
+  if (!state.userName) {
+    setTimeout(() => document.getElementById('profile-modal')?.classList.remove('hidden'), 600);
+  }
+}
+
+/* ----------------------------------------------------------
+   RENDER USER NAME IN HEADER
+   ---------------------------------------------------------- */
+function renderUserHeader() {
+  const btn = document.getElementById('header-menu-btn');
+  if (!btn) return;
+  const email = currentUser.email || '';
+  const name  = state.userName || email.split('@')[0];
+  btn.innerHTML = `
+    <div class="header-user">
+      <span class="header-user-name">${escHtml(name)}</span>
+      <button class="header-signout" onclick="signOutUser()">Sign Out</button>
+    </div>`;
+}
+
+
+/* ----------------------------------------------------------
+   LOCAL STORAGE (non-synced prefs only)
    ---------------------------------------------------------- */
 const LS = {
   get(key, fallback = null) {
@@ -39,14 +214,16 @@ const LS = {
 };
 
 /* ----------------------------------------------------------
-   APP STATE
+   APP STATE (loaded from Firestore on auth)
    ---------------------------------------------------------- */
 const state = {
   currentSection: 'dashboard',
-  deals: LS.get('noc_deals', []),
-  checklist: LS.get('noc_checklist', {}),
-  selectedPath: LS.get('noc_selected_path', null),
-  userName: LS.get('noc_user_name', null),
+  deals:           [],
+  checklist:       {},
+  selectedPath:    null,
+  userName:        null,
+  tracker:         null,
+  completedLessons: [],
 };
 
 /* ----------------------------------------------------------
@@ -120,7 +297,7 @@ function updateWelcome() {
    ---------------------------------------------------------- */
 function selectPath(pathName) {
   state.selectedPath = pathName;
-  LS.set('noc_selected_path', pathName);
+  saveUserData({ selectedPath: pathName });
 
   // Update dashboard display
   const pathDisplay = document.getElementById('path-name-display');
@@ -166,7 +343,7 @@ function initChecklist() {
     // Listen for changes
     input.addEventListener('change', () => {
       state.checklist[key] = input.checked;
-      LS.set('noc_checklist', state.checklist);
+      saveUserData({ checklist: state.checklist });
       updateChecklistProgress();
     });
   });
@@ -244,15 +421,15 @@ function calculateShiftReplacement() {
 
   setText('tracker-note', note);
 
-  // Save to localStorage
-  LS.set('noc_tracker', { hourlyRate, hoursPerShift, shiftsPerMonth, passiveIncome });
+  // Save to Firestore
+  saveUserData({ tracker: { hourlyRate, hoursPerShift, shiftsPerMonth, passiveIncome } });
 
   // Show results
   document.getElementById('tracker-results')?.classList.remove('hidden');
 }
 
 function loadTrackerData() {
-  const saved = LS.get('noc_tracker', null);
+  const saved = state.tracker || null;
   if (!saved) return;
   if (saved.hourlyRate)     setValue('hourly-rate', saved.hourlyRate);
   if (saved.hoursPerShift)  setValue('hours-per-shift', saved.hoursPerShift);
@@ -440,9 +617,10 @@ function addDeal() {
     status,
     createdAt: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
   };
+  // Note: fsId assigned by Firestore; local id kept for in-session references
 
-  state.deals.unshift(deal);
-  LS.set('noc_deals', state.deals);
+  // Save to Firestore (listener updates state.deals automatically)
+  addDoc(dealsRef(), { ...deal, createdAt: serverTimestamp() }).catch(e => console.warn('[NOC] addDeal failed:', e));
 
   // Clear form
   setValue('deal-name', '');
@@ -454,9 +632,13 @@ function addDeal() {
 }
 
 function deleteDeal(id) {
-  state.deals = state.deals.filter(d => d.id !== id);
-  LS.set('noc_deals', state.deals);
-  renderDeals();
+  const deal = state.deals.find(d => d.id === id);
+  if (deal?.fsId) {
+    deleteDoc(dealRef(deal.fsId)).catch(e => console.warn('[NOC] deleteDeal failed:', e));
+  } else {
+    state.deals = state.deals.filter(d => d.id !== id);
+    renderDeals();
+  }
 }
 
 function renderDeals() {
@@ -2040,7 +2222,7 @@ function openLesson(id) {
   document.getElementById('lesson-body').innerHTML = lesson.body;
 
   // Check if already complete
-  const completed = LS.get('noc_completed_lessons', []);
+  const completed = state.completedLessons || [];
   const btn = document.getElementById('lesson-complete-btn');
   const note = document.getElementById('lesson-complete-note');
 
@@ -2070,10 +2252,11 @@ function closeLesson() {
 function markLessonComplete() {
   if (!currentLessonId) return;
 
-  const completed = LS.get('noc_completed_lessons', []);
+  const completed = state.completedLessons || [];
   if (!completed.includes(currentLessonId)) {
     completed.push(currentLessonId);
-    LS.set('noc_completed_lessons', completed);
+    state.completedLessons = completed;
+    saveUserData({ completedLessons: completed });
   }
 
   // Update lesson item in DOM
@@ -2090,7 +2273,7 @@ function markLessonComplete() {
 
 // On load: restore completed lesson states in UI
 function restoreCompletedLessons() {
-  const completed = LS.get('noc_completed_lessons', []);
+  const completed = state.completedLessons || [];
   completed.forEach(id => {
     document.querySelectorAll('.lesson-item').forEach(item => {
       const onclick = item.getAttribute('onclick') || '';
@@ -2102,6 +2285,13 @@ function restoreCompletedLessons() {
 }
 
 document.addEventListener('DOMContentLoaded', restoreCompletedLessons);
+  }; // end runInit
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runInit);
+  } else {
+    runInit();
+  }
+} // end initApp
 
 /* ----------------------------------------------------------
    DEAL WORKSPACE
@@ -2498,21 +2688,28 @@ function dwRecalc() {
 // Deal detail field persistence
 function getActiveDealDetail(fieldId) {
   if (!activeDealId) return '';
-  const details = LS.get(`noc_deal_details_${activeDealId}`, {});
-  return details[fieldId] || '';
+  const deal = state.deals.find(d => d.id === activeDealId);
+  return deal?.details?.[fieldId] || '';
 }
 function saveDealDetail(fieldId, value) {
   if (!activeDealId) return;
-  const details = LS.get(`noc_deal_details_${activeDealId}`, {});
-  details[fieldId] = value;
-  LS.set(`noc_deal_details_${activeDealId}`, details);
+  const deal = state.deals.find(d => d.id === activeDealId);
+  if (!deal?.fsId) return;
+  // Debounce writes
+  clearTimeout(saveDealDetail._t);
+  saveDealDetail._t = setTimeout(() => {
+    updateDoc(dealRef(deal.fsId), { [`details.${fieldId}`]: value })
+      .catch(e => console.warn('[NOC] saveDealDetail failed:', e));
+  }, 600);
 }
 function saveDealField(field, value) {
   if (!activeDealId) return;
   const deal = state.deals.find(d => d.id === activeDealId);
   if (!deal) return;
   deal[field] = value;
-  LS.set('noc_deals', state.deals);
+  if (deal.fsId) {
+    updateDoc(dealRef(deal.fsId), { [field]: value }).catch(e => console.warn('[NOC] saveDealField failed:', e));
+  }
   renderDeals();
 }
 
@@ -2524,7 +2721,7 @@ function renderDDChecklist(deal) {
   const container = document.getElementById('dw-diligence-list');
   if (!container) return;
   const checklist = getDDChecklist(deal.strategy);
-  const checked = LS.get(`noc_deal_dd_${activeDealId}`, []);
+  const checked = deal.ddChecked || [];
   const totalItems = checklist.reduce((sum, g) => sum + g.items.length, 0);
   const doneCount = checked.length;
   const pct = totalItems > 0 ? Math.round(doneCount/totalItems*100) : 0;
@@ -2553,11 +2750,16 @@ function renderDDChecklist(deal) {
 }
 function toggleDD(itemId) {
   if (!activeDealId) return;
-  const checked = LS.get(`noc_deal_dd_${activeDealId}`, []);
+  const deal = state.deals.find(d => d.id === activeDealId);
+  if (!deal) return;
+  const checked = [...(deal.ddChecked || [])];
   const idx = checked.indexOf(itemId);
   if (idx >= 0) checked.splice(idx, 1); else checked.push(itemId);
-  LS.set(`noc_deal_dd_${activeDealId}`, checked);
-  const deal = state.deals.find(d => d.id === activeDealId);
+  deal.ddChecked = checked;
+  if (deal.fsId) {
+    updateDoc(dealRef(deal.fsId), { ddChecked: checked })
+      .catch(e => console.warn('[NOC] toggleDD failed:', e));
+  }
   renderDDChecklist(deal);
 }
 
@@ -2565,7 +2767,8 @@ function toggleDD(itemId) {
 function renderTimeline() {
   const container = document.getElementById('dw-timeline-list');
   if (!container) return;
-  const entries = LS.get(`noc_deal_timeline_${activeDealId}`, []);
+  const deal = state.deals.find(d => d.id === activeDealId);
+  const entries = deal?.timeline || [];
   if (entries.length === 0) {
     container.innerHTML = '<p class="dw-timeline-empty">No entries yet. Status changes are logged automatically.</p>';
     return;
@@ -2581,12 +2784,18 @@ function renderTimeline() {
 }
 function addTimelineEntry(text, system=false) {
   if (!activeDealId) return;
+  const deal = state.deals.find(d => d.id === activeDealId);
+  if (!deal) return;
   const input = document.getElementById('dw-timeline-input');
   const entryText = text || (input ? input.value.trim() : '');
   if (!entryText) return;
-  const entries = LS.get(`noc_deal_timeline_${activeDealId}`, []);
+  const entries = [...(deal.timeline || [])];
   entries.push({ text: entryText, date: new Date().toLocaleString('en-US', {month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}), system });
-  LS.set(`noc_deal_timeline_${activeDealId}`, entries);
+  deal.timeline = entries;
+  if (deal.fsId) {
+    updateDoc(dealRef(deal.fsId), { timeline: entries })
+      .catch(e => console.warn('[NOC] addTimelineEntry failed:', e));
+  }
   if (input && !text) input.value = '';
   renderTimeline();
 }
@@ -2618,7 +2827,16 @@ function openDealWorkspace(id) {
   const notesArea = document.getElementById('dw-notes-area');
   if (notesArea) {
     notesArea.value = deal.notes || '';
-    notesArea.oninput = () => { deal.notes = notesArea.value; LS.set('noc_deals', state.deals); };
+    notesArea.oninput = () => {
+      deal.notes = notesArea.value;
+      if (deal.fsId) {
+        clearTimeout(notesArea._t);
+        notesArea._t = setTimeout(() => {
+          updateDoc(dealRef(deal.fsId), { notes: deal.notes })
+            .catch(e => console.warn('[NOC] notes save failed:', e));
+        }, 600);
+      }
+    };
   }
 
   // Load timeline
@@ -2651,12 +2869,13 @@ function confirmDeleteDeal() {
   const deal = state.deals.find(d => d.id === activeDealId);
   if (!deal) return;
   if (confirm(`Delete "${deal.name}"? This cannot be undone.`)) {
-    // Clean up associated data
-    localStorage.removeItem(`noc_deal_details_${activeDealId}`);
-    localStorage.removeItem(`noc_deal_dd_${activeDealId}`);
-    localStorage.removeItem(`noc_deal_timeline_${activeDealId}`);
-    state.deals = state.deals.filter(d => d.id !== activeDealId);
-    LS.set('noc_deals', state.deals);
+    const dealToDelete = state.deals.find(d => d.id === activeDealId);
+    if (dealToDelete?.fsId) {
+      deleteDoc(dealRef(dealToDelete.fsId)).catch(e => console.warn('[NOC] delete failed:', e));
+    } else {
+      state.deals = state.deals.filter(d => d.id !== activeDealId);
+      renderDeals();
+    }
     closeDealWorkspace();
   }
 }
