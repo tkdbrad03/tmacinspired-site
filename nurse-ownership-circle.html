@@ -1,0 +1,952 @@
+navigator.serviceWorker.register('./noc-sw.js')<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#1f4236" />
+  <meta name="description" content="Nurse Ownership Circle — A private wealth-building platform for nurses ready to replace shifts with passive income." />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Nurse Ownership" />
+
+  <title>Nurse Ownership Circle</title>
+
+  <!-- Manifest -->
+  <link rel="manifest" href="manifest.webmanifest" />
+
+  <!-- Apple touch icon (fallback) -->
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+  <!-- Google Fonts: Cormorant Garamond + Jost -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ============================================================
+       INSTALL BANNER
+  ============================================================ -->
+  <div id="install-banner" class="install-banner hidden">
+    <div class="install-banner__inner">
+      <div class="install-banner__text">
+        <span class="install-banner__title">Add to Home Screen</span>
+        <span class="install-banner__sub">Access your wealth dashboard anytime</span>
+      </div>
+      <div class="install-banner__actions">
+        <button id="install-btn" class="btn btn--gold btn--sm">Install</button>
+        <button id="install-dismiss" class="install-banner__dismiss">Not now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       TOP HEADER
+  ============================================================ -->
+  <header class="app-header">
+    <div class="app-header__inner">
+      <div class="app-header__brand">
+        <span class="brand-mark">NOC</span>
+        <div class="brand-text">
+          <span class="brand-title">Nurse Ownership Circle</span>
+          <span class="brand-sub">tmacinspired.com</span>
+        </div>
+      </div>
+      <button class="header-menu-btn" id="header-menu-btn" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       BOTTOM NAV (Mobile Primary Navigation)
+  ============================================================ -->
+  <nav class="bottom-nav" role="navigation" aria-label="Main Navigation">
+    <button class="nav-item active" data-section="dashboard">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span>Dashboard</span>
+    </button>
+    <button class="nav-item" data-section="tracker">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      <span>Shifts</span>
+    </button>
+    <button class="nav-item" data-section="paths">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Paths</span>
+    </button>
+    <button class="nav-item" data-section="learn">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+      <span>Learn</span>
+    </button>
+    <button class="nav-item" data-section="calculators">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="10" y2="18"/><line x1="14" y1="18" x2="16" y2="18"/></svg>
+      <span>Calculate</span>
+    </button>
+    <button class="nav-item" data-section="deals">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      <span>Deals</span>
+    </button>
+  </nav>
+
+  <!-- ============================================================
+       MAIN CONTENT
+  ============================================================ -->
+  <main class="app-main">
+
+    <!-- ==================== DASHBOARD ==================== -->
+    <section id="section-dashboard" class="section active">
+      <div class="section-inner">
+
+        <!-- Welcome -->
+        <div class="welcome-block">
+          <p class="welcome-label">Welcome back</p>
+          <h1 class="welcome-name" id="dashboard-name">Nurse Owner</h1>
+          <p class="welcome-sub">Your private wealth-building platform. Built for nurses. Designed for ownership.</p>
+        </div>
+
+        <!-- Path Selection -->
+        <div class="card card--bordered">
+          <div class="card__label">Your Selected Path</div>
+          <div class="selected-path" id="selected-path-display">
+            <span class="selected-path__name" id="path-name-display">No path selected yet</span>
+            <button class="btn btn--ghost btn--sm" data-section="paths" onclick="navigateTo('paths')">Choose a Path</button>
+          </div>
+        </div>
+
+        <!-- Weekly Action Checklist -->
+        <div class="card">
+          <h2 class="card__title">This Week's Action Plan</h2>
+          <ul class="checklist" id="weekly-checklist">
+            <li class="checklist__item">
+              <label class="check-label">
+                <input type="checkbox" class="check-input" data-key="wc1" />
+                <span class="check-box"></span>
+                <span class="check-text">Review one investment strategy module</span>
+              </label>
+            </li>
+            <li class="checklist__item">
+              <label class="check-label">
+                <input type="checkbox" class="check-input" data-key="wc2" />
+                <span class="check-box"></span>
+                <span class="check-text">Run a deal through the Cash Flow Calculator</span>
+              </label>
+            </li>
+            <li class="checklist__item">
+              <label class="check-label">
+                <input type="checkbox" class="check-input" data-key="wc3" />
+                <span class="check-box"></span>
+                <span class="check-text">Research one property in your target market</span>
+              </label>
+            </li>
+            <li class="checklist__item">
+              <label class="check-label">
+                <input type="checkbox" class="check-input" data-key="wc4" />
+                <span class="check-box"></span>
+                <span class="check-text">Log progress in your Shift Replacement Tracker</span>
+              </label>
+            </li>
+            <li class="checklist__item">
+              <label class="check-label">
+                <input type="checkbox" class="check-input" data-key="wc5" />
+                <span class="check-box"></span>
+                <span class="check-text">Share a win or question in the Telegram community</span>
+              </label>
+            </li>
+          </ul>
+          <div class="checklist-progress">
+            <div class="checklist-progress__bar">
+              <div class="checklist-progress__fill" id="checklist-fill"></div>
+            </div>
+            <span class="checklist-progress__label" id="checklist-label">0 of 5 complete</span>
+          </div>
+        </div>
+
+        <!-- Featured Deal Review -->
+        <div class="card card--featured">
+          <div class="card__label">Featured Strategy</div>
+          <h2 class="card__title">House Hacking: Your First Move</h2>
+          <p class="card__body">Live in one unit of a small multi-family property while tenants pay your mortgage. Many nurses begin here — low capital required, immediate cash flow offset, and a powerful first asset on your balance sheet.</p>
+          <div class="stat-row">
+            <div class="stat">
+              <span class="stat__value">$0–$10K</span>
+              <span class="stat__label">Typical out-of-pocket (FHA)</span>
+            </div>
+            <div class="stat">
+              <span class="stat__value">2–4 units</span>
+              <span class="stat__label">Ideal property size</span>
+            </div>
+            <div class="stat">
+              <span class="stat__value">Month 1</span>
+              <span class="stat__label">When income can start</span>
+            </div>
+          </div>
+          <button class="btn btn--outline btn--full" onclick="navigateTo('calculators')">Analyze a House Hack Deal</button>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="card">
+          <h2 class="card__title">Quick Access</h2>
+          <div class="quick-links">
+            <button class="quick-link" onclick="navigateTo('calculators')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/></svg>
+              <span>Calculators</span>
+            </button>
+            <button class="quick-link" onclick="navigateTo('tracker')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+              <span>Shift Tracker</span>
+            </button>
+            <button class="quick-link" onclick="navigateTo('deals')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>
+              <span>Deal Tracker</span>
+            </button>
+            <button class="quick-link" onclick="navigateTo('resources')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/></svg>
+              <span>Resources</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Telegram CTA -->
+        <div class="card card--dark">
+          <h2 class="card__title card__title--light">Join the Community</h2>
+          <p class="card__body card__body--light">Your private Telegram group. Ask questions, share wins, and stay accountable with nurses who are building alongside you.</p>
+          <a href="https://t.me/+Ft5Z-nhjkNBjNWEx" target="_blank" rel="noopener" class="btn btn--gold btn--full">Open Telegram Community</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== SHIFT REPLACEMENT TRACKER ==================== -->
+    <section id="section-tracker" class="section">
+      <div class="section-inner">
+
+        <div class="page-header">
+          <h1 class="page-title">Shift Replacement Tracker</h1>
+          <p class="page-sub">Measure your progress toward replacing nursing income with passive cash flow.</p>
+        </div>
+
+        <!-- Income Inputs -->
+        <div class="card">
+          <h2 class="card__title">Your Nursing Income</h2>
+          <div class="form-group">
+            <label class="form-label">Hourly Rate ($)</label>
+            <input type="number" class="form-input" id="hourly-rate" placeholder="e.g. 45" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Hours Per Shift</label>
+            <input type="number" class="form-input" id="hours-per-shift" placeholder="e.g. 12" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Shifts Per Month</label>
+            <input type="number" class="form-input" id="shifts-per-month" placeholder="e.g. 13" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Monthly Passive Income Earned ($)</label>
+            <input type="number" class="form-input" id="passive-income" placeholder="e.g. 800" />
+          </div>
+          <button class="btn btn--green btn--full" onclick="calculateShiftReplacement()">Calculate Progress</button>
+        </div>
+
+        <!-- Results -->
+        <div id="tracker-results" class="hidden">
+          <div class="card card--results">
+            <h2 class="card__title">Your Progress Report</h2>
+
+            <div class="result-row">
+              <span class="result-label">Monthly Nursing Income</span>
+              <span class="result-value" id="monthly-nursing-income">--</span>
+            </div>
+            <div class="result-row">
+              <span class="result-label">Passive Income</span>
+              <span class="result-value result-value--gold" id="passive-income-display">--</span>
+            </div>
+            <div class="result-row">
+              <span class="result-label">Income Still To Replace</span>
+              <span class="result-value" id="income-gap">--</span>
+            </div>
+            <div class="result-row">
+              <span class="result-label">Shifts Replaced</span>
+              <span class="result-value result-value--gold" id="shifts-replaced">--</span>
+            </div>
+            <div class="result-row">
+              <span class="result-label">Shifts Remaining</span>
+              <span class="result-value" id="shifts-remaining">--</span>
+            </div>
+
+            <!-- Progress bar -->
+            <div class="tracker-progress">
+              <div class="tracker-progress__header">
+                <span>Shift Replacement Progress</span>
+                <span id="tracker-percent">0%</span>
+              </div>
+              <div class="tracker-progress__bar">
+                <div class="tracker-progress__fill" id="tracker-fill"></div>
+              </div>
+              <p class="tracker-progress__note" id="tracker-note"></p>
+            </div>
+          </div>
+
+          <div class="card card--light">
+            <h2 class="card__title">What This Means</h2>
+            <p class="card__body" id="tracker-insight">Your passive income is building. Every dollar of rental income brings you one step closer to walking out of the hospital on your own terms.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== INVESTMENT PATHS ==================== -->
+    <section id="section-paths" class="section">
+      <div class="section-inner">
+
+        <div class="page-header">
+          <h1 class="page-title">Investment Paths</h1>
+          <p class="page-sub">Choose the strategy that fits your life, your schedule, and your goals.</p>
+        </div>
+
+        <!-- Path Cards -->
+        <div class="path-card" data-path="house-hacking">
+          <div class="path-card__header">
+            <div class="path-card__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div>
+              <h2 class="path-card__title">House Hacking</h2>
+              <span class="path-card__tag">Beginner Friendly</span>
+            </div>
+          </div>
+          <p class="path-card__summary">Buy a 2–4 unit property using an FHA loan. Live in one unit and rent the others. Your tenants cover your mortgage — and often generate profit from day one.</p>
+          <div class="path-card__section">
+            <span class="path-card__section-label">Why It Fits Nurses</span>
+            <p class="path-card__section-body">You already understand how to manage high-stress, high-stakes environments. Managing tenants is a skill set you can build quickly. FHA financing means low upfront costs — ideal for nurses who need capital preserved.</p>
+          </div>
+          <div class="path-card__section">
+            <span class="path-card__section-label">Potential Results</span>
+            <p class="path-card__section-body">$500–$2,000 per month in net offset or profit. One house hack can eliminate your entire housing cost while building equity and cash flow simultaneously.</p>
+          </div>
+          <button class="btn btn--outline btn--full" onclick="selectPath('House Hacking')">Select This Path</button>
+        </div>
+
+        <div class="path-card" data-path="shared-living">
+          <div class="path-card__header">
+            <div class="path-card__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            </div>
+            <div>
+              <h2 class="path-card__title">Shared Living Homes</h2>
+              <span class="path-card__tag">High Cash Flow</span>
+            </div>
+          </div>
+          <p class="path-card__summary">Lease or own a home and rent it by the room to tenants who need affordable, community-based housing. This model generates 2–3x the revenue of traditional single-family renting.</p>
+          <div class="path-card__section">
+            <span class="path-card__section-label">Why It Fits Nurses</span>
+            <p class="path-card__section-body">Your care background is an asset. You understand community, dignity, and structure — essential for running a quality shared living environment. Many nurses pivot into this from group home ownership experience.</p>
+          </div>
+          <div class="path-card__section">
+            <span class="path-card__section-label">Potential Results</span>
+            <p class="path-card__section-body">$3,000–$8,000+ per month from a single property with 4–6 rooms. A shared living portfolio of two or three homes can fully replace bedside nursing income.</p>
+          </div>
+          <button class="btn btn--outline btn--full" onclick="selectPath('Shared Living Homes')">Select This Path</button>
+        </div>
+
+        <div class="path-card" data-path="tax-liens">
+          <div class="path-card__header">
+            <div class="path-card__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            </div>
+            <div>
+              <h2 class="path-card__title">Tax Liens & Tax Deeds</h2>
+              <span class="path-card__tag">Creative Acquisition</span>
+            </div>
+          </div>
+          <p class="path-card__summary">Purchase government-issued tax lien certificates or acquire properties through tax deed auctions — often at a fraction of market value. This strategy can produce high-yield returns or distressed property acquisitions.</p>
+          <div class="path-card__section">
+            <span class="path-card__section-label">Why It Fits Nurses</span>
+            <p class="path-card__section-body">You're detail-oriented, systematic, and comfortable with research — skills that translate directly to analyzing lien certificates, tracking redemption timelines, and evaluating county auction properties.</p>
+          </div>
+          <div class="path-card__section">
+            <span class="path-card__section-label">Potential Results</span>
+            <p class="path-card__section-body">Tax lien certificates offer 8–36% state-mandated interest rates. Tax deed acquisitions can yield properties at 30–70% below market value when combined with a sound exit strategy.</p>
+          </div>
+          <button class="btn btn--outline btn--full" onclick="selectPath('Tax Liens & Tax Deeds')">Select This Path</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== LEARNING MODULES ==================== -->
+    <section id="section-learn" class="section">
+      <div class="section-inner">
+
+        <div class="page-header">
+          <h1 class="page-title">Learning Modules</h1>
+          <p class="page-sub">Structured education built specifically for nurses entering real estate ownership.</p>
+        </div>
+
+        <!-- Module 1 -->
+        <div class="module-card">
+          <div class="module-card__header" onclick="toggleModule('module-1')">
+            <div class="module-card__meta">
+              <span class="module-card__number">01</span>
+              <div>
+                <h2 class="module-card__title">Start Here — Nurse Wealth Blueprint</h2>
+                <span class="module-card__count">5 Lessons</span>
+              </div>
+            </div>
+            <svg class="module-card__chevron" id="chevron-module-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="module-card__lessons hidden" id="module-1">
+            <div class="lesson-item">
+              <span class="lesson-num">1.1</span>
+              <div>
+                <p class="lesson-title">Why Nurses Are Built for Ownership</p>
+                <p class="lesson-desc">The mindset shift from caregiver to asset owner. Why your clinical skills — attention to detail, systems thinking, crisis management — transfer directly to real estate investing.</p>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-num">1.2</span>
+              <div>
+                <p class="lesson-title">The Burnout-to-Ownership Framework</p>
+                <p class="lesson-desc">A practical path from shift dependency to passive income. Understand the three phases: Learn, Acquire, Scale — and where you are right now.</p>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-num">1.3</span>
+              <div>
+                <p class="lesson-title">Understanding Your Nurse Financial Picture</p>
+                <p class="lesson-desc">Analyze your current income, expenses, and savings rate. Identify how much capital you can mobilize within 90–180 days without compromising your household.</p>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-num">1.4</span>
+              <div>
+                <p class="lesson-title">Selecting Your First Ownership Strategy</p>
+                <p class="lesson-desc">How to match your available capital, risk tolerance, and schedule to the right starting strategy. Not every nurse starts with the same play.</p>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-num">1.5</span>
+              <div>
+                <p class="lesson-title">The 90-Day Nurse Owner Launch Plan</p>
+                <p class="lesson-desc">A week-by-week action framework for your first three months. Includes market research, lender relationships, and your first deal criteria.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Module 2 -->
+        <div class="module-card">
+          <div class="module-card__header" onclick="toggleModule('module-2')">
+            <div class="module-card__meta">
+              <span class="module-card__number">02</span>
+              <div>
+                <h2 class="module-card__title">Real Estate Fundamentals for Nurses</h2>
+                <span class="module-card__count">6 Lessons</span>
+              </div>
+            </div>
+            <svg class="module-card__chevron" id="chevron-module-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="module-card__lessons hidden" id="module-2">
+            <div class="lesson-item">
+              <span class="lesson-num">2.1</span>
+              <div>
+                <p class="lesson-title">How Real Estate Creates Wealth (and Why W2 Income Alone Cannot)</p>
+                <p class="lesson-desc">Appreciation, cash flow, leverage, tax advantages, and equity paydown — the five pillars of real estate wealth explained for nurses without a finance background.</p>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-num">2.2</span>
+              <div>
+                <p class="lesson-title">Reading a Market: What to Look for as a First-Time Nurse Investor</p>
+                <p class="lesson-desc">Population trends, employment anchors, rental demand indicators, and price-to-rent ratios. How to identify whether a city or neighborhood makes financial sense.</p>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-num">2.3</span>
+              <div>
+                <p class="lesson-title">Financing as a Nurse: FHA, Conventional, DSCR, and Private Money</p>
+                <p class="lesson-desc">Your full menu of financing options as a working nurse. When to use each, how lenders evaluate nurse income, and how to leverage your W2 to access capital others can not.</p>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-num">2.4</span>
+              <div>
+                <p class="lesson-title">Analyzing Your First Deal</p>
+                <p class="lesson-desc">Cash-on-cash return, cap rate, gross rent multiplier, and NOI. A practical breakdown of how to run numbers before you make an offer.</p>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-num">2.5</span>
+              <div>
+                <p class="lesson-title">Making and Negotiating Offers</p>
+                <p class="lesson-desc">How to structure an offer that protects you. Contingencies, earnest money, inspection periods, and how to negotiate from a position of knowledge.</p>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-num">2.6</span>
+              <div>
+                <p class="lesson-title">Closing and Managing Your First Property</p>
+                <p class="lesson-desc">What happens at closing, how to set up your property for rental, tenant screening fundamentals, and building systems that run without you.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Module 3 -->
+        <div class="module-card">
+          <div class="module-card__header" onclick="toggleModule('module-3')">
+            <div class="module-card__meta">
+              <span class="module-card__number">03</span>
+              <div>
+                <h2 class="module-card__title">Tax Liens & Tax Deeds Masterclass</h2>
+                <span class="module-card__count">5 Lessons</span>
+              </div>
+            </div>
+            <svg class="module-card__chevron" id="chevron-module-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="module-card__lessons hidden" id="module-3">
+            <div class="lesson-item">
+              <span class="lesson-num">3.1</span>
+              <div>
+                <p class="lesson-title">The Government's Role: How Tax Liens and Tax Deeds Work</p>
+                <p class="lesson-desc">When property owners fail to pay taxes, governments sell those debts or properties to investors. Learn the full lifecycle from delinquency to auction to ownership.</p>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-num">3.2</span>
+              <div>
+                <p class="lesson-title">Tax Lien Certificates: How to Earn 8–36% on Your Investment</p>
+                <p class="lesson-desc">State-by-state overview of lien-certificate states, how interest is earned, redemption periods, and what happens if the owner does not redeem. How to select quality liens.</p>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-num">3.3</span>
+              <div>
+                <p class="lesson-title">Tax Deed Auctions: Acquiring Property Below Market Value</p>
+                <p class="lesson-desc">How county tax deed auctions work. How to research properties, set a bid ceiling, and avoid the common traps that cause new investors to overpay at auction.</p>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-num">3.4</span>
+              <div>
+                <p class="lesson-title">Due Diligence for Tax Properties</p>
+                <p class="lesson-desc">Title research, property condition assessment, encumbrances, and how to determine whether a tax deed property is a wealth-builder or a liability.</p>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-num">3.5</span>
+              <div>
+                <p class="lesson-title">Exit Strategies: Flip, Rent, or Hold</p>
+                <p class="lesson-desc">Once you acquire a tax deed property, how to maximize its value. Selling at a profit, renting for cash flow, or using it as collateral for your next acquisition.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Module 4 -->
+        <div class="module-card">
+          <div class="module-card__header" onclick="toggleModule('module-4')">
+            <div class="module-card__meta">
+              <span class="module-card__number">04</span>
+              <div>
+                <h2 class="module-card__title">Shared Living Home Blueprint</h2>
+                <span class="module-card__count">5 Lessons</span>
+              </div>
+            </div>
+            <svg class="module-card__chevron" id="chevron-module-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="module-card__lessons hidden" id="module-4">
+            <div class="lesson-item">
+              <span class="lesson-num">4.1</span>
+              <div>
+                <p class="lesson-title">The Business Model: How Shared Living Outperforms Traditional Rentals</p>
+                <p class="lesson-desc">Room-by-room revenue versus whole-unit renting. Why shared living generates 2–3x the income of traditional rental on the same property footprint.</p>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-num">4.2</span>
+              <div>
+                <p class="lesson-title">Setting Up Your First Shared Living Property</p>
+                <p class="lesson-desc">Choosing the right property, furnishing for minimal cost, setting house rules, determining pricing by bed, and attracting quality tenants who stay long-term.</p>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-num">4.3</span>
+              <div>
+                <p class="lesson-title">Lease Strategies: Own vs. Master Lease</p>
+                <p class="lesson-desc">You do not have to own the property to run a shared living home. Learn the master lease strategy — how to control and profit from a property without purchasing it.</p>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-num">4.4</span>
+              <div>
+                <p class="lesson-title">Operations, Systems, and Self-Management</p>
+                <p class="lesson-desc">How to manage a shared living home efficiently while working nursing shifts. Tenant onboarding, rent collection, maintenance protocols, and building toward full automation.</p>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-num">4.5</span>
+              <div>
+                <p class="lesson-title">Scaling to a Portfolio of Shared Living Homes</p>
+                <p class="lesson-desc">How to use profits and equity from your first shared living property to fund the second and third. The scaling roadmap that takes you from one room to a full income replacement.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== CALCULATORS ==================== -->
+    <section id="section-calculators" class="section">
+      <div class="section-inner">
+
+        <div class="page-header">
+          <h1 class="page-title">Deal Calculators</h1>
+          <p class="page-sub">Run real numbers before you commit. Make decisions from data, not emotion.</p>
+        </div>
+
+        <!-- Calculator Tabs -->
+        <div class="calc-tabs">
+          <button class="calc-tab active" onclick="switchCalc('rental')">Rental</button>
+          <button class="calc-tab" onclick="switchCalc('shared')">Shared Living</button>
+          <button class="calc-tab" onclick="switchCalc('taxlien')">Tax Lien/Deed</button>
+        </div>
+
+        <!-- RENTAL CASH FLOW CALCULATOR -->
+        <div id="calc-rental" class="calc-panel active">
+          <div class="card">
+            <h2 class="card__title">Rental Cash Flow Calculator</h2>
+            <div class="form-group">
+              <label class="form-label">Purchase Price ($)</label>
+              <input type="number" class="form-input" id="r-purchase" placeholder="e.g. 250000" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Down Payment ($)</label>
+              <input type="number" class="form-input" id="r-downpayment" placeholder="e.g. 12500" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Monthly Mortgage Payment ($)</label>
+              <input type="number" class="form-input" id="r-mortgage" placeholder="e.g. 1400" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Monthly Rental Income ($)</label>
+              <input type="number" class="form-input" id="r-rent" placeholder="e.g. 2200" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Monthly Expenses (taxes, insurance, mgmt, repairs) ($)</label>
+              <input type="number" class="form-input" id="r-expenses" placeholder="e.g. 400" />
+            </div>
+            <button class="btn btn--green btn--full" onclick="calculateRental()">Calculate Cash Flow</button>
+          </div>
+
+          <div id="rental-results" class="hidden">
+            <div class="card card--results">
+              <h2 class="card__title">Results</h2>
+              <div class="result-row">
+                <span class="result-label">Monthly Cash Flow</span>
+                <span class="result-value" id="r-cashflow">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Annual Cash Flow</span>
+                <span class="result-value" id="r-annual">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Cash-on-Cash Return</span>
+                <span class="result-value result-value--gold" id="r-coc">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Deal Verdict</span>
+                <span class="result-value" id="r-verdict">--</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SHARED LIVING CALCULATOR -->
+        <div id="calc-shared" class="calc-panel hidden">
+          <div class="card">
+            <h2 class="card__title">Shared Living Revenue Calculator</h2>
+            <div class="form-group">
+              <label class="form-label">Number of Rooms / Beds</label>
+              <input type="number" class="form-input" id="sl-rooms" placeholder="e.g. 5" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Monthly Revenue Per Bed ($)</label>
+              <input type="number" class="form-input" id="sl-per-bed" placeholder="e.g. 900" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Mortgage or Lease Payment ($)</label>
+              <input type="number" class="form-input" id="sl-mortgage" placeholder="e.g. 1800" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Staff / Support Costs ($)</label>
+              <input type="number" class="form-input" id="sl-staff" placeholder="e.g. 0" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Utilities, Supplies, and Other Costs ($)</label>
+              <input type="number" class="form-input" id="sl-utilities" placeholder="e.g. 600" />
+            </div>
+            <button class="btn btn--green btn--full" onclick="calculateSharedLiving()">Calculate Revenue</button>
+          </div>
+
+          <div id="shared-results" class="hidden">
+            <div class="card card--results">
+              <h2 class="card__title">Results</h2>
+              <div class="result-row">
+                <span class="result-label">Gross Monthly Revenue</span>
+                <span class="result-value" id="sl-gross">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Total Monthly Expenses</span>
+                <span class="result-value" id="sl-totalexp">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Net Monthly Cash Flow</span>
+                <span class="result-value result-value--gold" id="sl-net">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Annual Net Revenue</span>
+                <span class="result-value" id="sl-annual">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Deal Verdict</span>
+                <span class="result-value" id="sl-verdict">--</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAX LIEN / DEED ANALYZER -->
+        <div id="calc-taxlien" class="calc-panel hidden">
+          <div class="card">
+            <h2 class="card__title">Tax Lien / Tax Deed Analyzer</h2>
+            <div class="form-group">
+              <label class="form-label">Estimated Property Value ($)</label>
+              <input type="number" class="form-input" id="tl-value" placeholder="e.g. 180000" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Taxes Owed / Lien Amount ($)</label>
+              <input type="number" class="form-input" id="tl-lien" placeholder="e.g. 4500" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Estimated Repair Costs ($)</label>
+              <input type="number" class="form-input" id="tl-repairs" placeholder="e.g. 20000" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Target Acquisition Discount (%)</label>
+              <input type="number" class="form-input" id="tl-discount" placeholder="e.g. 40" />
+            </div>
+            <button class="btn btn--green btn--full" onclick="calculateTaxLien()">Analyze Deal</button>
+          </div>
+
+          <div id="taxlien-results" class="hidden">
+            <div class="card card--results">
+              <h2 class="card__title">Results</h2>
+              <div class="result-row">
+                <span class="result-label">Property Value</span>
+                <span class="result-value" id="tl-propval">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Maximum Bid / Offer</span>
+                <span class="result-value result-value--gold" id="tl-maxbid">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">All-In Cost (Bid + Repairs)</span>
+                <span class="result-value" id="tl-allin">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Estimated Profit / Equity</span>
+                <span class="result-value" id="tl-equity">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Return on Investment</span>
+                <span class="result-value result-value--gold" id="tl-roi">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Deal Assessment</span>
+                <span class="result-value" id="tl-verdict">--</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== DEAL TRACKER ==================== -->
+    <section id="section-deals" class="section">
+      <div class="section-inner">
+
+        <div class="page-header">
+          <h1 class="page-title">Investment Tracker</h1>
+          <p class="page-sub">Log and monitor every deal you are researching, pursuing, or closing.</p>
+        </div>
+
+        <!-- Add Deal Form -->
+        <div class="card">
+          <h2 class="card__title">Add a Deal</h2>
+          <div class="form-group">
+            <label class="form-label">Deal Name</label>
+            <input type="text" class="form-input" id="deal-name" placeholder="e.g. 1234 Oak St Duplex" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Strategy</label>
+            <select class="form-input form-select" id="deal-strategy">
+              <option value="">Select strategy</option>
+              <option>House Hacking</option>
+              <option>Shared Living</option>
+              <option>Tax Lien</option>
+              <option>Tax Deed</option>
+              <option>Buy and Hold</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Purchase / Bid Amount ($)</label>
+            <input type="number" class="form-input" id="deal-amount" placeholder="e.g. 185000" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Status</label>
+            <select class="form-input form-select" id="deal-status">
+              <option value="Researching">Researching</option>
+              <option value="Bidding">Bidding</option>
+              <option value="Under Contract">Under Contract</option>
+              <option value="Owned">Owned</option>
+              <option value="Cash Flowing">Cash Flowing</option>
+            </select>
+          </div>
+          <button class="btn btn--green btn--full" onclick="addDeal()">Save Deal</button>
+        </div>
+
+        <!-- Deal List -->
+        <div id="deals-list">
+          <div class="empty-state" id="deals-empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <p>No deals tracked yet. Add your first deal above.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== RESOURCES ==================== -->
+    <section id="section-resources" class="section">
+      <div class="section-inner">
+
+        <div class="page-header">
+          <h1 class="page-title">Resource Vault</h1>
+          <p class="page-sub">Guides, frameworks, and tools built specifically for nurses building ownership.</p>
+        </div>
+
+        <div class="resource-card">
+          <div class="resource-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <div class="resource-card__content">
+            <h3 class="resource-card__title">Nurse Entrepreneur Starter Kit</h3>
+            <p class="resource-card__desc">Your foundational guide to thinking like a business owner while still in scrubs. Includes the first five financial moves every nurse investor should make before their first purchase.</p>
+            <span class="resource-card__badge">Guide</span>
+          </div>
+        </div>
+
+        <div class="resource-card">
+          <div class="resource-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          </div>
+          <div class="resource-card__content">
+            <h3 class="resource-card__title">Burned-Out Nurse Real Estate Guide</h3>
+            <p class="resource-card__desc">A straight-talk guide for nurses who are ready to leave bedside but do not know where to start financially. Covers mindset, capital, credit, and your first acquisition framework.</p>
+            <span class="resource-card__badge">Guide</span>
+          </div>
+        </div>
+
+        <div class="resource-card">
+          <div class="resource-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          </div>
+          <div class="resource-card__content">
+            <h3 class="resource-card__title">Tax Deeds & Tax Liens Quick Guide</h3>
+            <p class="resource-card__desc">A concise reference document covering the lifecycle of a tax lien certificate, how tax deed auctions work in different states, and a due diligence checklist for first-time buyers.</p>
+            <span class="resource-card__badge">Reference</span>
+          </div>
+        </div>
+
+        <div class="resource-card">
+          <div class="resource-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/></svg>
+          </div>
+          <div class="resource-card__content">
+            <h3 class="resource-card__title">Shared Living & Group Home Blueprint</h3>
+            <p class="resource-card__desc">Step-by-step guidance for setting up a profitable shared living home. Covers property selection, room pricing, tenant agreements, operations, and how to scale to multiple locations.</p>
+            <span class="resource-card__badge">Blueprint</span>
+          </div>
+        </div>
+
+        <!-- Community Section -->
+        <div class="card card--dark" style="margin-top: 2rem;">
+          <h2 class="card__title card__title--light">How the Community Works With This App</h2>
+          <div class="community-flow">
+            <div class="community-step">
+              <span class="community-step__num">01</span>
+              <div>
+                <p class="community-step__title">Learn in the App</p>
+                <p class="community-step__desc">Complete your learning modules and understand your chosen strategy at a foundational level.</p>
+              </div>
+            </div>
+            <div class="community-step">
+              <span class="community-step__num">02</span>
+              <div>
+                <p class="community-step__title">Analyze Your Deals</p>
+                <p class="community-step__desc">Run properties through the calculators. Save deals in your tracker. Build your criteria.</p>
+              </div>
+            </div>
+            <div class="community-step">
+              <span class="community-step__num">03</span>
+              <div>
+                <p class="community-step__title">Track Your Progress</p>
+                <p class="community-step__desc">Update your Shift Replacement Tracker as passive income grows. Measure what matters.</p>
+              </div>
+            </div>
+            <div class="community-step">
+              <span class="community-step__num">04</span>
+              <div>
+                <p class="community-step__title">Discuss in Telegram</p>
+                <p class="community-step__desc">Share wins, ask questions, and stay accountable with your fellow nurse owners in real time.</p>
+              </div>
+            </div>
+          </div>
+          <a href="https://t.me/+Ft5Z-nhjkNBjNWEx" target="_blank" rel="noopener" class="btn btn--gold btn--full" style="margin-top: 1.5rem;">Open Community in Telegram</a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       PROFILE SETUP MODAL
+  ============================================================ -->
+  <div id="profile-modal" class="modal hidden">
+    <div class="modal__overlay" onclick="closeProfileModal()"></div>
+    <div class="modal__content">
+      <div class="modal__header">
+        <h2 class="modal__title">Welcome to Nurse Ownership Circle</h2>
+        <p class="modal__sub">This is your private wealth-building platform. Let's get you set up.</p>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Your First Name</label>
+        <input type="text" class="form-input" id="setup-name" placeholder="Enter your first name" />
+      </div>
+      <button class="btn btn--green btn--full" onclick="saveProfile()">Enter the Circle</button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SCRIPTS
+  ============================================================ -->
+  <script src="app.js"></script>
+</body>
+</html>

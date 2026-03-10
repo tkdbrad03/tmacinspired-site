@@ -1,0 +1,30 @@
+{
+  "name": "Nurse Ownership Circle",
+  "short_name": "Nurse Ownership",
+  "description": "A private wealth-building platform for nurses ready to replace shifts with passive income. tmacinspired.com",
+  "start_url": "./nurse-ownership-circle.html",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#1f4236",
+  "lang": "en-US",
+  "categories": ["finance", "education", "business"],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "scope": "./"
+}
