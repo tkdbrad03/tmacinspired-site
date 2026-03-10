@@ -407,8 +407,8 @@ function switchCalc(calcId) {
 
   // Activate tab
   const tabs = document.querySelectorAll('.calc-tab');
-  const map  = { rental: 0, shared: 1, taxlien: 2 };
-  if (tabs[map[calcId]]) tabs[map[calcId]].classList.add('active');
+  const map  = { rental: 0, shared: 1, taxlien: 2, privatemoney: 3, mtr: 4 };
+  if (tabs[map[calcId]] !== undefined) tabs[map[calcId]].classList.add('active');
 }
 
 /* ----------------------------------------------------------
@@ -617,4 +617,70 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', init);
 } else {
   init();
+}
+
+/* ----------------------------------------------------------
+   PRIVATE MONEY LENDING CALCULATOR
+   ---------------------------------------------------------- */
+function calculatePrivateMoney() {
+  const amount = parseFloat(document.getElementById('pm-amount')?.value) || 0;
+  const rate   = parseFloat(document.getElementById('pm-rate')?.value) || 0;
+  const term   = parseFloat(document.getElementById('pm-term')?.value) || 0;
+  const arv    = parseFloat(document.getElementById('pm-arv')?.value) || 0;
+
+  if (!amount || !rate || !term) return;
+
+  const monthlyInterest = (amount * (rate / 100)) / 12;
+  const totalInterest   = monthlyInterest * term;
+  const annualReturn    = rate;
+  const ltv             = arv > 0 ? ((amount / arv) * 100).toFixed(1) : 'N/A';
+  const ltvNum          = arv > 0 ? (amount / arv) * 100 : 0;
+
+  let safety = '';
+  if (ltvNum <= 65)      safety = '✅ Strong — LTV under 65%. Excellent collateral protection.';
+  else if (ltvNum <= 75) safety = '⚠️ Acceptable — LTV under 75%. Standard private lending range.';
+  else if (ltvNum <= 85) safety = '⚠️ Elevated Risk — LTV over 75%. Require strong borrower track record.';
+  else if (ltvNum > 85)  safety = '🚫 High Risk — LTV over 85%. Not recommended without additional collateral.';
+  else                   safety = 'Enter property value to assess safety.';
+
+  document.getElementById('pm-monthly').textContent      = `$${monthlyInterest.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
+  document.getElementById('pm-total-interest').textContent = `$${totalInterest.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
+  document.getElementById('pm-annual-return').textContent  = `${annualReturn}% per year`;
+  document.getElementById('pm-ltv').textContent            = ltvNum > 0 ? `${ltv}%` : 'N/A';
+  document.getElementById('pm-safety').textContent         = safety;
+
+  document.getElementById('pm-results')?.classList.remove('hidden');
+}
+
+/* ----------------------------------------------------------
+   MTR CALCULATOR
+   ---------------------------------------------------------- */
+function calculateMTR() {
+  const rate       = parseFloat(document.getElementById('mtr-rate')?.value) || 0;
+  const mortgage   = parseFloat(document.getElementById('mtr-mortgage')?.value) || 0;
+  const supplies   = parseFloat(document.getElementById('mtr-supplies')?.value) || 0;
+  const expenses   = parseFloat(document.getElementById('mtr-expenses')?.value) || 0;
+  const occupancy  = parseFloat(document.getElementById('mtr-occupancy')?.value) || 85;
+
+  if (!rate) return;
+
+  const effectiveRevenue = rate * (occupancy / 100);
+  const totalExpenses    = mortgage + supplies + expenses;
+  const netCashFlow      = effectiveRevenue - totalExpenses;
+  const annualNet        = netCashFlow * 12;
+
+  let verdict = '';
+  if (netCashFlow >= 1000)     verdict = '🏆 Excellent MTR — strong cash flow above $1K/month.';
+  else if (netCashFlow >= 500) verdict = '✅ Solid MTR — positive cash flow above $500/month.';
+  else if (netCashFlow > 0)    verdict = '⚠️ Marginal — slightly positive. Review expenses or pricing.';
+  else                         verdict = '🚫 Negative cash flow. Renegotiate rent, reduce costs, or increase rate.';
+
+  const fmt = n => `$${n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
+  document.getElementById('mtr-effective').textContent  = fmt(effectiveRevenue);
+  document.getElementById('mtr-total-exp').textContent  = fmt(totalExpenses);
+  document.getElementById('mtr-net').textContent        = fmt(netCashFlow);
+  document.getElementById('mtr-annual').textContent     = fmt(annualNet);
+  document.getElementById('mtr-verdict').textContent    = verdict;
+
+  document.getElementById('mtr-results')?.classList.remove('hidden');
 }
