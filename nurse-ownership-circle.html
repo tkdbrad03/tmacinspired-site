@@ -103,7 +103,8 @@ navigator.serviceWorker.register('./noc-sw.js')<!DOCTYPE html>
         <div class="welcome-block">
           <p class="welcome-label">Welcome back</p>
           <h1 class="welcome-name" id="dashboard-name">Nurse Owner</h1>
-          <p class="welcome-sub">Your private wealth-building platform. Built for nurses. Designed for ownership.</p>
+          <p class="welcome-sub">You take care of everyone else. This is the platform where you take care of you.</p>
+          <p class="welcome-quote">&ldquo;Real estate isn&rsquo;t just an investment &mdash; it&rsquo;s your exit strategy.&rdquo; &mdash; Dr. TMac</p>
         </div>
 
         <!-- Path Selection -->
@@ -373,6 +374,50 @@ navigator.serviceWorker.register('./noc-sw.js')<!DOCTYPE html>
           <button class="btn btn--outline btn--full" onclick="selectPath('Tax Liens & Tax Deeds')">Select This Path</button>
         </div>
 
+        <div class="path-card" data-path="private-money">
+          <div class="path-card__header">
+            <div class="path-card__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            </div>
+            <div>
+              <h2 class="path-card__title">Private Money Lending</h2>
+              <span class="path-card__tag">Passive Income</span>
+            </div>
+          </div>
+          <p class="path-card__summary">Become the bank. Lend your capital to real estate investors and collect interest — secured by the property itself. Private money lending turns your savings into a passive income engine without the responsibilities of property management.</p>
+          <div class="path-card__section">
+            <span class="path-card__section-label">Why It Fits Nurses</span>
+            <p class="path-card__section-body">You already manage risk every single shift. As a private lender, your job is evaluating borrowers and deals — not managing tenants or contractors. This is one of the most passive plays in real estate, ideal for nurses who want income without added workload.</p>
+          </div>
+          <div class="path-card__section">
+            <span class="path-card__section-label">Potential Results</span>
+            <p class="path-card__section-body">Private money loans typically earn 8–15% annual interest. A $50,000 loan at 12% generates $500/month in interest-only payments — secured by a real property. No tenants, no toilets, no turnovers.</p>
+          </div>
+          <button class="btn btn--outline btn--full" onclick="selectPath('Private Money Lending')">Select This Path</button>
+        </div>
+
+        <div class="path-card" data-path="mtr">
+          <div class="path-card__header">
+            <div class="path-card__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>
+            </div>
+            <div>
+              <h2 class="path-card__title">Mid-Term Rentals (MTR)</h2>
+              <span class="path-card__tag">The Goldilocks Method</span>
+            </div>
+          </div>
+          <p class="path-card__summary">The sweet spot between short-term chaos and long-term low returns. Rent furnished properties for 30–90 day stays to travel nurses, healthcare professionals, and corporate tenants. Premium income, stable occupancy, minimal management.</p>
+          <div class="path-card__section">
+            <span class="path-card__section-label">Why It Fits Nurses</span>
+            <p class="path-card__section-body">You know exactly what a travel nurse needs — blackout curtains, quiet, safety, proximity to the hospital. That insider knowledge lets you charge a 20–40% premium above standard market rent for a "home away from home" your peers can't replicate.</p>
+          </div>
+          <div class="path-card__section">
+            <span class="path-card__section-label">Potential Results</span>
+            <p class="path-card__section-body">MTR properties regularly outperform long-term rentals by 20–40% while requiring far less daily management than Airbnb. One well-positioned MTR near a medical center can generate $2,500–$4,500/month.</p>
+          </div>
+          <button class="btn btn--outline btn--full" onclick="selectPath('Mid-Term Rentals')">Select This Path</button>
+        </div>
+
       </div>
     </section>
 
@@ -596,6 +641,101 @@ navigator.serviceWorker.register('./noc-sw.js')<!DOCTYPE html>
           </div>
         </div>
 
+        <!-- Module 5 -->
+        <div class="module-card">
+          <div class="module-card__header" onclick="toggleModule('module-5')">
+            <div class="module-card__meta">
+              <span class="module-card__number">05</span>
+              <div>
+                <h2 class="module-card__title">Private Money Lending: Become the Bank</h2>
+                <span class="module-card__count">5 Lessons</span>
+              </div>
+            </div>
+            <svg class="module-card__chevron" id="chevron-module-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="module-card__lessons hidden" id="module-5">
+            <div class="lesson-item">
+              <span class="lesson-num">5.1</span>
+              <div>
+                <p class="lesson-title">What Private Money Lending Is (and Why Nurses Are Perfect for It)</p>
+                <p class="lesson-desc">Private money lending means using your own capital — savings, retirement funds, or equity — to fund other investors' real estate deals in exchange for a secured, interest-bearing return. No bank required, no license required.</p>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-num">5.2</span>
+              <div>
+                <p class="lesson-title">How to Structure a Private Money Loan</p>
+                <p class="lesson-desc">Interest-only payments, exit fees, points, and joint ventures — the four ways private lenders get paid. Learn which structure works best for different deal types and how to negotiate terms that protect your capital.</p>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-num">5.3</span>
+              <div>
+                <p class="lesson-title">Evaluating Borrowers and Deals</p>
+                <p class="lesson-desc">How to assess a real estate investor's track record, evaluate the property securing your loan, and calculate your loan-to-value ratio. The four borrower types: rehab/sell, rehab/rent, builders, and commercial bridge borrowers.</p>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-num">5.4</span>
+              <div>
+                <p class="lesson-title">The Legal Documents You Need</p>
+                <p class="lesson-desc">Promissory notes, mortgage agreements, and deeds of trust — the three core documents that protect you as a private lender. What each one covers and why you need a real estate attorney in your corner before closing your first loan.</p>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-num">5.5</span>
+              <div>
+                <p class="lesson-title">Finding Borrowers and Building Your Lending Business</p>
+                <p class="lesson-desc">How to connect with quality borrowers through your local REIA, network referrals, and online platforms. The six tips for starting small, staying local, and building a track record as a trusted private lender.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Module 6 -->
+        <div class="module-card">
+          <div class="module-card__header" onclick="toggleModule('module-6')">
+            <div class="module-card__meta">
+              <span class="module-card__number">06</span>
+              <div>
+                <h2 class="module-card__title">The MTR Goldilocks Method</h2>
+                <span class="module-card__count">4 Lessons</span>
+              </div>
+            </div>
+            <svg class="module-card__chevron" id="chevron-module-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="module-card__lessons hidden" id="module-6">
+            <div class="lesson-item">
+              <span class="lesson-num">6.1</span>
+              <div>
+                <p class="lesson-title">Why Mid-Term Rentals Are the Goldilocks Strategy</p>
+                <p class="lesson-desc">Long-term rentals generate low returns. Short-term Airbnbs are a second full-time job. Mid-term rentals — 30 to 90-day furnished stays — hit the sweet spot: premium income, stable occupancy, and manageable operations.</p>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-num">6.2</span>
+              <div>
+                <p class="lesson-title">Setting Up Your MTR Property for Travel Nurses</p>
+                <p class="lesson-desc">You know exactly what your fellow nurses need. Blackout curtains. Quiet. Safety. Proximity to the hospital. Quality linens. A kitchen that actually works. Learn how to furnish and position your property to command top-dollar rates from healthcare travelers.</p>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-num">6.3</span>
+              <div>
+                <p class="lesson-title">Pricing, Platforms, and Finding Tenants</p>
+                <p class="lesson-desc">Where travel nurses look for housing and how to get found by them. Furnished Finder, corporate housing platforms, and direct hospital outreach. How to set a rental rate that reflects the premium experience you're providing.</p>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <span class="lesson-num">6.4</span>
+              <div>
+                <p class="lesson-title">Managing MTRs Without It Becoming a Second Job</p>
+                <p class="lesson-desc">Systems and automations that keep your MTR running between guests while you're working shifts. Keyless entry, digital communication, cleaning coordination, and how to handle the occasional issue without disrupting your schedule.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -613,6 +753,8 @@ navigator.serviceWorker.register('./noc-sw.js')<!DOCTYPE html>
           <button class="calc-tab active" onclick="switchCalc('rental')">Rental</button>
           <button class="calc-tab" onclick="switchCalc('shared')">Shared Living</button>
           <button class="calc-tab" onclick="switchCalc('taxlien')">Tax Lien/Deed</button>
+          <button class="calc-tab" onclick="switchCalc('privatemoney')">Private Lending</button>
+          <button class="calc-tab" onclick="switchCalc('mtr')">MTR</button>
         </div>
 
         <!-- RENTAL CASH FLOW CALCULATOR -->
@@ -768,6 +910,108 @@ navigator.serviceWorker.register('./noc-sw.js')<!DOCTYPE html>
               <div class="result-row">
                 <span class="result-label">Deal Assessment</span>
                 <span class="result-value" id="tl-verdict">--</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRIVATE MONEY LENDING CALCULATOR -->
+        <div id="calc-privatemoney" class="calc-panel hidden">
+          <div class="card">
+            <h2 class="card__title">Private Money Lending Calculator</h2>
+            <div class="form-group">
+              <label class="form-label">Loan Amount ($)</label>
+              <input type="number" class="form-input" id="pm-amount" placeholder="e.g. 50000" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Annual Interest Rate (%)</label>
+              <input type="number" class="form-input" id="pm-rate" placeholder="e.g. 12" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Loan Term (months)</label>
+              <input type="number" class="form-input" id="pm-term" placeholder="e.g. 6" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Property Value / ARV ($)</label>
+              <input type="number" class="form-input" id="pm-arv" placeholder="e.g. 200000" />
+            </div>
+            <button class="btn btn--green btn--full" onclick="calculatePrivateMoney()">Analyze This Loan</button>
+          </div>
+          <div id="pm-results" class="hidden">
+            <div class="card card--results">
+              <h2 class="card__title">Results</h2>
+              <div class="result-row">
+                <span class="result-label">Monthly Interest Income</span>
+                <span class="result-value result-value--gold" id="pm-monthly">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Total Interest Earned</span>
+                <span class="result-value" id="pm-total-interest">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Annualized Return</span>
+                <span class="result-value result-value--gold" id="pm-annual-return">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Loan-to-Value (LTV) Ratio</span>
+                <span class="result-value" id="pm-ltv">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Lender Safety Assessment</span>
+                <span class="result-value" id="pm-safety">--</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MTR CALCULATOR -->
+        <div id="calc-mtr" class="calc-panel hidden">
+          <div class="card">
+            <h2 class="card__title">Mid-Term Rental Revenue Calculator</h2>
+            <div class="form-group">
+              <label class="form-label">Monthly Rental Rate ($)</label>
+              <input type="number" class="form-input" id="mtr-rate" placeholder="e.g. 3200" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Mortgage or Lease Payment ($)</label>
+              <input type="number" class="form-input" id="mtr-mortgage" placeholder="e.g. 1600" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Monthly Furnishing/Supplies Cost ($)</label>
+              <input type="number" class="form-input" id="mtr-supplies" placeholder="e.g. 200" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Utilities & Other Expenses ($)</label>
+              <input type="number" class="form-input" id="mtr-expenses" placeholder="e.g. 300" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Avg Occupancy Rate (%)</label>
+              <input type="number" class="form-input" id="mtr-occupancy" placeholder="e.g. 85" />
+            </div>
+            <button class="btn btn--green btn--full" onclick="calculateMTR()">Calculate MTR Income</button>
+          </div>
+          <div id="mtr-results" class="hidden">
+            <div class="card card--results">
+              <h2 class="card__title">Results</h2>
+              <div class="result-row">
+                <span class="result-label">Effective Monthly Revenue</span>
+                <span class="result-value" id="mtr-effective">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Total Monthly Expenses</span>
+                <span class="result-value" id="mtr-total-exp">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Net Monthly Cash Flow</span>
+                <span class="result-value result-value--gold" id="mtr-net">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Annual Net Income</span>
+                <span class="result-value" id="mtr-annual">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Deal Verdict</span>
+                <span class="result-value" id="mtr-verdict">--</span>
               </div>
             </div>
           </div>
