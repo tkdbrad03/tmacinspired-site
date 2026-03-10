@@ -374,6 +374,18 @@ input, select, textarea {
   max-width: 340px;
 }
 
+.welcome-quote {
+  margin-top: 1rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--gold);
+  line-height: 1.6;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(201, 168, 76, 0.25);
+  max-width: 340px;
+}
+
 /* ----------------------------------------------------------
    CARDS
    ---------------------------------------------------------- */
