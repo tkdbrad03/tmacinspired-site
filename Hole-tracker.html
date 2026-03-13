@@ -99,8 +99,9 @@ button.secondary:hover { border-color: #c9a86c; color: #c9a86c; }
 <div class="setup-bar">
   <label>Holes</label>
   <select id="numHoles" onchange="changeSetup()">
-    <option value="9">9 Holes</option>
-    <option value="18" selected>18 Holes</option>
+    <option value="front">Front 9</option>
+    <option value="back">Back 9</option>
+    <option value="18" selected>All 18</option>
   </select>
   <label>Players</label>
   <select id="numPlayers" onchange="changeSetup()">
@@ -130,6 +131,8 @@ button.secondary:hover { border-color: #c9a86c; color: #c9a86c; }
 
 <script>
 let HOLES = 18;
+let holeMode = '18'; // 'front', 'back', '18'
+let holeNumbers = Array.from({length: 18}, (_,i) => i+1); // actual hole numbers to display
 let numPlayers = 3;
 let betAmount = 1;
 let scores = Array.from({length: 18}, () => Array(4).fill(''));
@@ -145,7 +148,7 @@ if (!room) {
 document.getElementById('roomLabel').textContent = room;
 
 function saveToURL() {
-  const state = { n: names.slice(0, numPlayers), s: scores.map(r => r.slice(0, numPlayers)), p: numPlayers, b: betAmount, h: HOLES };
+  const state = { n: names.slice(0, numPlayers), s: scores.map(r => r.slice(0, numPlayers)), p: numPlayers, b: betAmount, h: holeMode };
   params.set('data', btoa(JSON.stringify(state)));
   history.replaceState({}, '', '?' + params.toString());
 }
@@ -155,7 +158,13 @@ function loadFromURL() {
   if (!data) return;
   try {
     const state = JSON.parse(atob(data));
-    if (state.h) { HOLES = state.h; document.getElementById('numHoles').value = state.h; }
+    if (state.h) {
+      holeMode = state.h;
+      document.getElementById('numHoles').value = state.h;
+      const { count, start } = getHoleSettings(holeMode);
+      HOLES = count;
+      holeNumbers = Array.from({length: count}, (_,i) => i + start);
+    }
     if (state.p) { numPlayers = state.p; document.getElementById('numPlayers').value = state.p; }
     if (state.b) { betAmount = state.b; document.getElementById('betAmount').value = state.b; }
     if (state.n) state.n.forEach((n,i) => names[i] = n);
@@ -166,12 +175,21 @@ function loadFromURL() {
   } catch(e) { console.log(e); }
 }
 
+function getHoleSettings(mode) {
+  if (mode === 'front') return { count: 9, start: 1 };
+  if (mode === 'back')  return { count: 9, start: 10 };
+  return { count: 18, start: 1 };
+}
+
 function changeSetup() {
-  const newHoles = parseInt(document.getElementById('numHoles').value);
+  const newMode = document.getElementById('numHoles').value;
   const newPlayers = parseInt(document.getElementById('numPlayers').value);
   const newBet = parseFloat(document.getElementById('betAmount').value) || 1;
-  if (newHoles !== HOLES) {
-    HOLES = newHoles;
+  if (newMode !== holeMode) {
+    holeMode = newMode;
+    const { count, start } = getHoleSettings(holeMode);
+    HOLES = count;
+    holeNumbers = Array.from({length: count}, (_,i) => i + start);
     scores = Array.from({length: HOLES}, () => Array(4).fill(''));
   }
   numPlayers = newPlayers;
@@ -220,7 +238,7 @@ function buildTable() {
   tbody.innerHTML = '';
   for (let h = 0; h < HOLES; h++) {
     const tr = document.createElement('tr');
-    let cells = `<td>Hole ${h+1}</td>`;
+    let cells = `<td>Hole ${holeNumbers[h]}</td>`;
     for (let p = 0; p < numPlayers; p++) {
       cells += `<td><input class="score-input" type="number" min="1" max="15" placeholder="—"
         value="${scores[h] ? scores[h][p] : ''}"
