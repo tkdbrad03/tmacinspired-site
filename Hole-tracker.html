@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -15,29 +14,11 @@
     min-height: 100vh;
     padding: 16px 12px 40px;
   }
-  h1 {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 700;
-    font-size: 2rem;
-    color: #c9a86c;
-    letter-spacing: 2px;
-    text-align: center;
-    margin-bottom: 4px;
-  }
-  .subtitle {
-    text-align: center;
-    font-size: 0.75rem;
-    color: #5a7a5a;
-    margin-bottom: 6px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
+  h1 { font-weight: 700; font-size: 2rem; color: #c9a86c; letter-spacing: 2px; text-align: center; margin-bottom: 4px; }
+  .subtitle { text-align: center; font-size: 0.75rem; color: #5a7a5a; margin-bottom: 6px; letter-spacing: 1px; text-transform: uppercase; }
   .room-bar { text-align: center; font-size: 0.75rem; color: #5a7a5a; margin-bottom: 4px; }
   .room-bar span { color: #c9a86c; font-weight: 600; }
-  .status-dot {
-    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
-    background: #5a7a5a; margin-right: 5px; vertical-align: middle; transition: background 0.3s;
-  }
+  .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #5a7a5a; margin-right: 5px; vertical-align: middle; transition: background 0.3s; }
   .status-dot.connected { background: #4caf50; }
   .status-line { text-align: center; font-size: 0.7rem; color: #5a7a5a; margin-bottom: 12px; }
 
@@ -59,61 +40,49 @@ color: #1a2f1c; font-family: ‘DM Sans’, sans-serif; font-size: 0.9rem; paddi
 .players.p3 { grid-template-columns: repeat(3, 1fr); }
 .players.p4 { grid-template-columns: repeat(4, 1fr); }
 
-.player-card {
-background: #f4f7f4; border: 1px solid #c8dac8;
-border-radius: 10px; padding: 10px 8px; text-align: center;
-}
-.player-card label {
-display: block; font-size: 0.6rem; color: #5a7a5a;
-text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px;
-}
+.player-card { background: #f4f7f4; border: 1px solid #c8dac8; border-radius: 10px; padding: 10px 8px; text-align: center; }
+.player-card label { display: block; font-size: 0.6rem; color: #5a7a5a; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
 .player-card input[type=“text”] {
-width: 100%; background: transparent; border: none;
-border-bottom: 1px solid #c9a86c; color: #1a2f1c;
-font-family: ‘DM Sans’, sans-serif; font-weight: 700;
+width: 100%; background: transparent; border: none; border-bottom: 1px solid #c9a86c;
+color: #1a2f1c; font-family: ‘DM Sans’, sans-serif; font-weight: 700;
 font-size: 1rem; text-align: center; outline: none; padding: 2px 0;
 }
 .winnings { font-size: 1.2rem; font-weight: 700; margin-top: 5px; }
 .skins-count { font-size: 0.65rem; color: #5a7a5a; margin-top: 2px; }
-.pos { color: #4caf50; }
-.neg { color: #e57373; }
+.pos { color: #2e7d32; }
+.neg { color: #c62828; }
 .zero { color: #5a7a5a; }
 
 .table-wrap { overflow-x: auto; margin-bottom: 16px; }
-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 320px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 280px; }
 thead th {
 background: #f4f7f4; padding: 8px 4px; text-align: center;
-font-weight: 700; font-size: 0.85rem; letter-spacing: 0.5px;
-color: #c9a86c; border-bottom: 2px solid #c8dac8;
+font-weight: 700; font-size: 0.85rem; color: #c9a86c; border-bottom: 2px solid #c8dac8;
 }
 thead th:first-child { text-align: left; padding-left: 8px; min-width: 60px; }
 tbody tr { border-bottom: 1px solid #e8f0e8; }
 tbody tr:hover { background: #f0f5f0; }
 td { padding: 5px 3px; text-align: center; vertical-align: middle; }
-td:first-child {
-font-weight: 700; font-size: 0.85rem; color: #c9a86c;
-padding-left: 8px; text-align: left; white-space: nowrap;
-}
+td:first-child { font-weight: 700; font-size: 0.85rem; color: #c9a86c; padding-left: 8px; text-align: left; white-space: nowrap; }
 .score-input {
-width: 38px; background: #ffffff; border: 1px solid #c8dac8;
-border-radius: 6px; color: #1a2f1c; font-size: 0.95rem;
-text-align: center; padding: 4px 2px; font-family: ‘DM Sans’, sans-serif;
-outline: none; transition: border-color 0.2s;
+width: 38px; background: #ffffff; border: 1px solid #c8dac8; border-radius: 6px;
+color: #1a2f1c; font-size: 0.95rem; text-align: center; padding: 4px 2px;
+font-family: ‘DM Sans’, sans-serif; outline: none; transition: border-color 0.2s;
 }
 .score-input:focus { border-color: #c9a86c; }
-.result-cell { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; min-width: 52px; }
-.win-cell { color: #4caf50; }
+.result-cell { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; min-width: 52px; }
+.win-cell { color: #2e7d32; }
 .push-cell { color: #5a7a5a; }
 .totals-row td { background: #f4f7f4; font-weight: 700; padding: 8px 3px; font-size: 1rem; }
 .totals-row td:first-child { color: #c9a86c; padding-left: 8px; }
 
 .btn-row { display: flex; gap: 10px; justify-content: center; }
 button {
-background: #c9a86c; color: #0d1f0f; border: none; border-radius: 8px;
+background: #c9a86c; color: #ffffff; border: none; border-radius: 8px;
 padding: 10px 22px; font-family: ‘DM Sans’, sans-serif; font-weight: 700;
-font-size: 1rem; letter-spacing: 1px; cursor: pointer; transition: background 0.2s;
+font-size: 1rem; cursor: pointer; transition: background 0.2s;
 }
-button:hover { background: #e0c080; }
+button:hover { background: #b8964f; }
 button.secondary { background: transparent; border: 1px solid #c8dac8; color: #5a7a5a; }
 button.secondary:hover { border-color: #c9a86c; color: #c9a86c; }
 .note { text-align: center; font-size: 0.7rem; color: #5a7a5a; margin-top: 14px; font-style: italic; }
@@ -163,7 +132,7 @@ button.secondary:hover { border-color: #c9a86c; color: #c9a86c; }
 let HOLES = 18;
 let numPlayers = 3;
 let betAmount = 1;
-let scores = Array.from({length: HOLES}, () => Array(4).fill(''));
+let scores = Array.from({length: 18}, () => Array(4).fill(''));
 let names = ['Me', 'Player 2', 'Player 3', 'Player 4'];
 
 const params = new URLSearchParams(location.search);
@@ -186,22 +155,27 @@ function loadFromURL() {
   if (!data) return;
   try {
     const state = JSON.parse(atob(data));
+    if (state.h) { HOLES = state.h; document.getElementById('numHoles').value = state.h; }
     if (state.p) { numPlayers = state.p; document.getElementById('numPlayers').value = state.p; }
     if (state.b) { betAmount = state.b; document.getElementById('betAmount').value = state.b; }
-    if (state.h) { HOLES = state.h; document.getElementById('numHoles').value = state.h; }
     if (state.n) state.n.forEach((n,i) => names[i] = n);
-    if (state.s) state.s.forEach((row,h) => row.forEach((v,p) => scores[h][p] = v));
-  } catch {}
+    if (state.s) {
+      scores = Array.from({length: HOLES}, () => Array(4).fill(''));
+      state.s.forEach((row,h) => row.forEach((v,p) => { if (scores[h]) scores[h][p] = v; }));
+    }
+  } catch(e) { console.log(e); }
 }
 
 function changeSetup() {
-  numPlayers = parseInt(document.getElementById('numPlayers').value);
-  betAmount = parseFloat(document.getElementById('betAmount').value) || 1;
   const newHoles = parseInt(document.getElementById('numHoles').value);
+  const newPlayers = parseInt(document.getElementById('numPlayers').value);
+  const newBet = parseFloat(document.getElementById('betAmount').value) || 1;
   if (newHoles !== HOLES) {
     HOLES = newHoles;
     scores = Array.from({length: HOLES}, () => Array(4).fill(''));
   }
+  numPlayers = newPlayers;
+  betAmount = newBet;
   buildAll();
   broadcastState();
 }
@@ -215,16 +189,17 @@ function buildAll() {
 
 function buildPlayerCards() {
   const container = document.getElementById('playerCards');
-  container.className = 'players ' + (numPlayers === 4 ? 'p4' : numPlayers === 2 ? 'p2' : 'p3');
+  container.className = 'players p' + numPlayers;
   container.innerHTML = '';
   for (let i = 0; i < numPlayers; i++) {
-    container.innerHTML += `
-      <div class="player-card">
-        <label>Player ${i+1}</label>
-        <input type="text" id="name${i}" value="${names[i]}" oninput="names[${i}]=this.value; broadcastState()">
-        <div class="winnings zero" id="win${i}">$0</div>
-        <div class="skins-count" id="skins${i}">0 skins</div>
-      </div>`;
+    const div = document.createElement('div');
+    div.className = 'player-card';
+    div.innerHTML = `
+      <label>Player ${i+1}</label>
+      <input type="text" id="name${i}" value="${names[i]}" oninput="names[${i}]=this.value; broadcastState()">
+      <div class="winnings zero" id="win${i}">$0</div>
+      <div class="skins-count" id="skins${i}">0 skins</div>`;
+    container.appendChild(div);
   }
 }
 
@@ -248,7 +223,7 @@ function buildTable() {
     let cells = `<td>Hole ${h+1}</td>`;
     for (let p = 0; p < numPlayers; p++) {
       cells += `<td><input class="score-input" type="number" min="1" max="15" placeholder="—"
-        value="${scores[h][p]}"
+        value="${scores[h] ? scores[h][p] : ''}"
         oninput="scores[${h}][${p}]=this.value; broadcastState();"></td>`;
     }
     cells += `<td class="result-cell" id="res${h}"></td>`;
@@ -283,17 +258,13 @@ function calculate() {
   }
 
   const totalSkins = skinCounts.reduce((a,b) => a+b, 0);
-
   for (let i = 0; i < numPlayers; i++) {
-    const skinsWon = skinCounts[i];
-    const skinsLost = totalSkins - skinsWon;
-    const net = (skinsWon * (numPlayers - 1) * betAmount) - (skinsLost * betAmount);
-
+    const net = (skinCounts[i] * (numPlayers - 1) * betAmount) - ((totalSkins - skinCounts[i]) * betAmount);
     const el = document.getElementById('win'+i);
     if (!el) continue;
     el.textContent = (net >= 0 ? '+' : '-') + '$' + Math.abs(net).toFixed(net % 1 === 0 ? 0 : 2);
     el.className = 'winnings ' + (net > 0 ? 'pos' : net < 0 ? 'neg' : 'zero');
-    document.getElementById('skins'+i).textContent = skinsWon + ' skin' + (skinsWon !== 1 ? 's' : '');
+    document.getElementById('skins'+i).textContent = skinCounts[i] + ' skin' + (skinCounts[i] !== 1 ? 's' : '');
     document.getElementById('tot'+i).textContent = strokeTotals[i] || '—';
     const hdr = document.getElementById('h'+i);
     if (hdr) hdr.textContent = names[i] || 'P'+(i+1);
@@ -345,16 +316,16 @@ function applyState(msg) {
     scores = Array.from({length: HOLES}, () => Array(4).fill(''));
     rebuild = true;
   }
+  if (msg.numPlayers && msg.numPlayers !== numPlayers) {
     numPlayers = msg.numPlayers;
     document.getElementById('numPlayers').value = numPlayers;
     rebuild = true;
   }
   if (msg.betAmount) { betAmount = msg.betAmount; document.getElementById('betAmount').value = betAmount; }
   if (msg.names) msg.names.forEach((n,i) => { names[i] = n; });
-  if (msg.scores) msg.scores.forEach((row,h) => row.forEach((v,p) => scores[h][p] = v));
+  if (msg.scores) msg.scores.forEach((row,h) => row.forEach((v,p) => { if (scores[h]) scores[h][p] = v; }));
   if (rebuild) buildAll();
   else {
-    // update inputs without rebuilding
     for (let i = 0; i < numPlayers; i++) { const el = document.getElementById('name'+i); if (el) el.value = names[i]; }
     for (let h = 0; h < HOLES; h++) {
       for (let p = 0; p < numPlayers; p++) {
