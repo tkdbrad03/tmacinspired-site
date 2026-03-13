@@ -128,6 +128,11 @@ button.secondary:hover { border-color: #c9a86c; color: #c9a86c; }
 <div class="status-line"><span class="status-dot" id="dot"></span><span id="statusText">Connecting…</span></div>
 
 <div class="setup-bar">
+  <label>Holes</label>
+  <select id="numHoles" onchange="changeSetup()">
+    <option value="9">9 Holes</option>
+    <option value="18" selected>18 Holes</option>
+  </select>
   <label>Players</label>
   <select id="numPlayers" onchange="changeSetup()">
     <option value="2">2 Players</option>
@@ -155,7 +160,7 @@ button.secondary:hover { border-color: #c9a86c; color: #c9a86c; }
 <p class="note">Ties are a push — no skin awarded.</p>
 
 <script>
-const HOLES = 18;
+let HOLES = 18;
 let numPlayers = 3;
 let betAmount = 1;
 let scores = Array.from({length: HOLES}, () => Array(4).fill(''));
@@ -171,7 +176,7 @@ if (!room) {
 document.getElementById('roomLabel').textContent = room;
 
 function saveToURL() {
-  const state = { n: names.slice(0, numPlayers), s: scores.map(r => r.slice(0, numPlayers)), p: numPlayers, b: betAmount };
+  const state = { n: names.slice(0, numPlayers), s: scores.map(r => r.slice(0, numPlayers)), p: numPlayers, b: betAmount, h: HOLES };
   params.set('data', btoa(JSON.stringify(state)));
   history.replaceState({}, '', '?' + params.toString());
 }
@@ -183,6 +188,7 @@ function loadFromURL() {
     const state = JSON.parse(atob(data));
     if (state.p) { numPlayers = state.p; document.getElementById('numPlayers').value = state.p; }
     if (state.b) { betAmount = state.b; document.getElementById('betAmount').value = state.b; }
+    if (state.h) { HOLES = state.h; document.getElementById('numHoles').value = state.h; }
     if (state.n) state.n.forEach((n,i) => names[i] = n);
     if (state.s) state.s.forEach((row,h) => row.forEach((v,p) => scores[h][p] = v));
   } catch {}
@@ -191,6 +197,11 @@ function loadFromURL() {
 function changeSetup() {
   numPlayers = parseInt(document.getElementById('numPlayers').value);
   betAmount = parseFloat(document.getElementById('betAmount').value) || 1;
+  const newHoles = parseInt(document.getElementById('numHoles').value);
+  if (newHoles !== HOLES) {
+    HOLES = newHoles;
+    scores = Array.from({length: HOLES}, () => Array(4).fill(''));
+  }
   buildAll();
   broadcastState();
 }
@@ -323,12 +334,17 @@ function send(data) {
 function broadcastState() {
   saveToURL();
   calculate();
-  send({ type: 'state', room, scores, names: names.slice(0, numPlayers), numPlayers, betAmount });
+  send({ type: 'state', room, scores, names: names.slice(0, numPlayers), numPlayers, betAmount, holes: HOLES });
 }
 
 function applyState(msg) {
   let rebuild = false;
-  if (msg.numPlayers && msg.numPlayers !== numPlayers) {
+  if (msg.holes && msg.holes !== HOLES) {
+    HOLES = msg.holes;
+    document.getElementById('numHoles').value = HOLES;
+    scores = Array.from({length: HOLES}, () => Array(4).fill(''));
+    rebuild = true;
+  }
     numPlayers = msg.numPlayers;
     document.getElementById('numPlayers').value = numPlayers;
     rebuild = true;
