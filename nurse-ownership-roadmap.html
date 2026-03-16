@@ -43,10 +43,17 @@
             padding: 1.5rem 0 0;
             animation: fadeDown 0.6s ease both;
         }
-        .brand-mark { display: flex; align-items: center; justify-content: center; }
-        .brand-logo { height: 64px; width: auto; display: block; }
 
-            color: var(--pine);
+        .brand-mark {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-logo {
+            height: 64px;
+            width: auto;
+            display: block;
         }
 
         .hero {
@@ -69,7 +76,9 @@
             justify-content: center;
             gap: 0.75rem;
         }
-        .eyebrow::before, .eyebrow::after {
+
+        .eyebrow::before,
+        .eyebrow::after {
             content: '';
             display: inline-block;
             width: 32px;
@@ -86,7 +95,11 @@
             color: var(--pine);
             margin-bottom: 1.25rem;
         }
-        .hero h1 em { font-style: italic; color: var(--gold); }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--gold);
+        }
 
         .hero-sub {
             font-size: 1rem;
@@ -116,6 +129,7 @@
             overflow: hidden;
             box-shadow: 0 0 0 1px rgba(197,160,89,0.25), 0 24px 60px rgba(31,66,54,0.12);
         }
+
         .video-wrapper::before {
             content: '';
             position: absolute;
@@ -132,10 +146,13 @@
             height: 0;
             background: #000;
         }
+
         .video-container iframe {
             position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             border: 0;
         }
 
@@ -146,6 +163,7 @@
             padding: 2rem 1rem 0;
             animation: fadeUp 0.7s 0.4s ease both;
         }
+
         .cta-label {
             font-size: 0.72rem;
             letter-spacing: 0.2em;
@@ -153,6 +171,7 @@
             color: var(--text-light);
             margin-bottom: 1.5rem;
         }
+
         .cta-button {
             display: inline-block;
             padding: 1.1rem 3rem;
@@ -168,11 +187,19 @@
             transition: all 0.3s ease;
             box-shadow: 0 8px 32px rgba(31,66,54,0.2);
         }
+
         .cta-button:hover {
             background: var(--gold);
             color: var(--pine);
             transform: translateY(-2px) scale(1.02);
             box-shadow: 0 16px 40px rgba(197,160,89,0.35);
+        }
+
+        .cta-note {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-style: italic;
         }
 
         .quote-section {
@@ -186,6 +213,7 @@
             border: 1px solid var(--gold-pale);
             animation: fadeUp 0.7s 0.5s ease both;
         }
+
         .quote-mark {
             font-family: 'Cormorant Garamond', serif;
             font-size: 4rem;
@@ -195,6 +223,7 @@
             margin-bottom: 1rem;
             display: block;
         }
+
         .quote-text {
             font-family: 'Cormorant Garamond', serif;
             font-size: clamp(1.25rem, 3vw, 1.55rem);
@@ -204,6 +233,7 @@
             line-height: 1.55;
             margin-bottom: 1rem;
         }
+
         .quote-attr {
             font-size: 0.75rem;
             letter-spacing: 0.2em;
@@ -217,6 +247,7 @@
             text-align: center;
             animation: fadeUp 0.7s 0.6s ease both;
         }
+
         .footer-divider {
             display: flex;
             align-items: center;
@@ -224,9 +255,23 @@
             justify-content: center;
             margin-bottom: 1rem;
         }
-        .footer-line { height: 1px; width: 50px; background: linear-gradient(90deg, transparent, rgba(197,160,89,0.5)); }
-        .footer-line.r { background: linear-gradient(90deg, rgba(197,160,89,0.5), transparent); }
-        .footer-star-sm { color: var(--gold); font-size: 0.55rem; opacity: 0.7; }
+
+        .footer-line {
+            height: 1px;
+            width: 50px;
+            background: linear-gradient(90deg, transparent, rgba(197,160,89,0.5));
+        }
+
+        .footer-line.r {
+            background: linear-gradient(90deg, rgba(197,160,89,0.5), transparent);
+        }
+
+        .footer-star-sm {
+            color: var(--gold);
+            font-size: 0.55rem;
+            opacity: 0.7;
+        }
+
         .footer-text {
             font-family: 'Cormorant Garamond', serif;
             font-size: 0.8rem;
@@ -240,16 +285,17 @@
             from { opacity: 0; transform: translateY(24px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
         @keyframes fadeDown {
             from { opacity: 0; transform: translateY(-12px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Mobile-first base styles already set; enhance for larger screens */
         @media (min-width: 480px) {
             .hero { padding: 4rem 1.5rem 3rem; }
             .brand-logo { height: 90px; }
         }
+
         @media (min-width: 768px) {
             .hero { padding: 5rem 2rem 3rem; }
             .brand-logo { height: 100px; }
@@ -269,7 +315,7 @@
     <div class="hero">
         <div class="eyebrow">From Nurse to Owner</div>
         <h1>Your Roadmap to <em>Ownership</em></h1>
-        <p class="hero-sub">I'm not just a nurse with a laptop. I'm doing real estate deals and building exit strategies that work.</p>
+        <p class="hero-sub">I'm not just a nurse with a laptop. I'm building real estate and ownership income so nurses don't have to rely on shifts forever.</p>
         <div class="divider"></div>
     </div>
 
@@ -286,10 +332,9 @@
     </div>
 
     <div class="cta-section">
-        <p class="cta-label">Ready to take the first step?</p>
-        <a href="https://calendar.app.google/dzKzciyJusRosk1H9" class="cta-button">
-            Book My Strategy Session
-        </a>
+        <p class="cta-label">Ready to move from nursing income to ownership income?</p>
+        <a href="https://www.tmacinspired.com/noc" class="cta-button">Join the Nurse Ownership Circle</a>
+        <p class="cta-note">Early Enrollment: $89/month legacy rate</p>
     </div>
 
     <div class="quote-section">
