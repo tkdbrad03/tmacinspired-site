@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>The Mint</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #0d1f16;
+    --green-mid: #1f4236;
+    --green-light: #2d5c47;
+    --gold: #c9a961;
+    --gold-light: #e8d090;
+    --gold-dim: #7a6435;
+    --cream: #f5edd8;
+    --white: #fff;
+    --radius: 16px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: var(--green-deep);
+    color: var(--cream);
+    font-family: 'Outfit', sans-serif;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(201,169,97,0.015) 3px, rgba(201,169,97,0.015) 4px),
+                      repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(201,169,97,0.015) 3px, rgba(201,169,97,0.015) 4px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── SCREENS ── */
+  .screen {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 20px;
+    padding-top: max(24px, env(safe-area-inset-top));
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+    z-index: 10;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .screen.hidden { opacity: 0; pointer-events: none; transform: translateY(20px); }
+
+  /* ── PIN SCREEN ── */
+  #pin-screen { background: var(--green-deep); }
+
+  .pin-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .pin-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 500;
+    color: var(--gold-light);
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+  .pin-subtitle {
+    font-size: 12px;
+    color: var(--gold-dim);
+    letter-spacing: 2px;
+    margin-bottom: 48px;
+  }
+
+  .pin-dots {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .pin-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1.5px solid var(--gold-dim);
+    transition: all 0.2s;
+  }
+  .pin-dot.filled {
+    background: var(--gold);
+    border-color: var(--gold);
+    box-shadow: 0 0 8px rgba(201,169,97,0.4);
+  }
+  .pin-dot.shake { animation: shake 0.3s ease; }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
+
+  .pin-pad {
+    display: grid;
+    grid-template-columns: repeat(3, 72px);
+    gap: 12px;
+  }
+  .pin-key {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,169,97,0.25);
+    background: rgba(201,169,97,0.05);
+    color: var(--gold-light);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    -webkit-user-select: none;
+  }
+  .pin-key:active, .pin-key.pressed {
+    background: rgba(201,169,97,0.15);
+    border-color: var(--gold);
+    transform: scale(0.94);
+  }
+  .pin-key.empty { border: none; background: none; pointer-events: none; }
+  .pin-key.del { font-size: 18px; }
+
+  .pin-hint { font-size: 11px; color: var(--gold-dim); margin-top: 24px; letter-spacing: 1px; }
+
+  /* ── MINT OPENER ── */
+  #mint-screen { background: var(--green-deep); }
+
+  .mint-bloom {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,169,97,0.3) 0%, rgba(201,169,97,0.05) 60%, transparent 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    animation: bloom 2s ease-in-out infinite alternate;
+  }
+  @keyframes bloom {
+    0% { transform: scale(0.95); box-shadow: 0 0 20px rgba(201,169,97,0.1); }
+    100% { transform: scale(1.05); box-shadow: 0 0 50px rgba(201,169,97,0.25); }
+  }
+  .mint-star { font-size: 40px; color: var(--gold); }
+  .mint-greeting {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .mint-date {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    color: var(--gold-light);
+    margin-bottom: 32px;
+    font-weight: 400;
+  }
+  .mint-motto {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: var(--cream);
+    text-align: center;
+    line-height: 1.6;
+    max-width: 280px;
+    margin-bottom: 40px;
+    opacity: 0.85;
+  }
+  .mint-cta {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    padding: 14px 32px;
+    border-radius: 40px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+  .mint-cta:active { background: rgba(201,169,97,0.1); transform: scale(0.97); }
+
+  /* ── WALLET / HOME ── */
+  #wallet-screen { background: var(--green-deep); justify-content: flex-start; padding-top: max(60px, env(safe-area-inset-top) + 20px); }
+
+  .wallet-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    padding: 0 4px;
+  }
+  .wallet-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: var(--gold-light);
+    font-weight: 500;
+  }
+  .wallet-nav {
+    display: flex;
+    gap: 16px;
+  }
+  .nav-btn {
+    background: none;
+    border: none;
+    color: var(--gold-dim);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px;
+    transition: color 0.2s;
+  }
+  .nav-btn:active { color: var(--gold); }
+
+  /* Bill stack */
+  .bill-stack {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    margin-bottom: 28px;
+    cursor: pointer;
+  }
+  .stack-bill {
+    position: absolute;
+    width: 100%;
+    height: 180px;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  .stack-bill img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .stack-bill:nth-child(1) { z-index: 7; top: 0; transform: rotate(0deg); }
+  .stack-bill:nth-child(2) { z-index: 6; top: 6px; transform: rotate(-1.5deg); }
+  .stack-bill:nth-child(3) { z-index: 5; top: 12px; transform: rotate(1deg); }
+  .stack-bill:nth-child(4) { z-index: 4; top: 16px; transform: rotate(-0.5deg); }
+  .stack-bill:nth-child(5) { z-index: 3; top: 20px; transform: rotate(2deg); }
+  .stack-bill:nth-child(6) { z-index: 2; top: 24px; transform: rotate(-1deg); }
+  .stack-bill:nth-child(7) { z-index: 1; top: 28px; transform: rotate(0.5deg); }
+
+  .bill-stack.fanned .stack-bill:nth-child(1) { transform: rotate(-9deg) translateX(-70px) translateY(10px); }
+  .bill-stack.fanned .stack-bill:nth-child(2) { transform: rotate(-5deg) translateX(-45px) translateY(5px); }
+  .bill-stack.fanned .stack-bill:nth-child(3) { transform: rotate(-2deg) translateX(-20px); }
+  .bill-stack.fanned .stack-bill:nth-child(4) { transform: rotate(0deg); }
+  .bill-stack.fanned .stack-bill:nth-child(5) { transform: rotate(2deg) translateX(20px); }
+  .bill-stack.fanned .stack-bill:nth-child(6) { transform: rotate(5deg) translateX(45px) translateY(5px); }
+  .bill-stack.fanned .stack-bill:nth-child(7) { transform: rotate(9deg) translateX(70px) translateY(10px); }
+
+  .stack-hint {
+    text-align: center;
+    font-size: 11px;
+    color: var(--gold-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+
+  /* Abundance counter */
+  .abundance-card {
+    width: 100%;
+    background: rgba(201,169,97,0.06);
+    border: 1px solid rgba(201,169,97,0.2);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .abundance-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .abundance-amount {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    color: var(--gold-light);
+    font-weight: 500;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .abundance-goal {
+    font-size: 11px;
+    color: var(--gold-dim);
+    margin-bottom: 14px;
+  }
+  .progress-bar {
+    width: 100%;
+    height: 3px;
+    background: rgba(201,169,97,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold-dim), var(--gold), var(--gold-light));
+    border-radius: 2px;
+    transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* Bottom actions */
+  .bottom-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+  .action-btn {
+    background: rgba(201,169,97,0.06);
+    border: 1px solid rgba(201,169,97,0.2);
+    border-radius: 12px;
+    padding: 14px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .action-btn:active { background: rgba(201,169,97,0.12); transform: scale(0.97); }
+  .action-icon { font-size: 20px; }
+  .action-label {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  /* ── BILL VIEWER ── */
+  #bill-screen {
+    background: rgba(13,31,22,0.97);
+    justify-content: flex-start;
+    padding: 0;
+    overflow-y: auto;
+  }
+  .bill-viewer-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 20px 0;
+    padding-top: max(20px, env(safe-area-inset-top) + 10px);
+    flex-shrink: 0;
+  }
+  .back-btn {
+    background: none;
+    border: none;
+    color: var(--gold);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 4px;
+  }
+  .bill-counter {
+    font-size: 11px;
+    color: var(--gold-dim);
+    letter-spacing: 2px;
+  }
+
+  .bill-viewer-container {
+    width: 100%;
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .bill-full-img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+    margin-bottom: 24px;
+    animation: unfold 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes unfold {
+    0% { transform: scaleY(0.1) scaleX(0.8); opacity: 0; }
+    100% { transform: scaleY(1) scaleX(1); opacity: 1; }
+  }
+
+  /* Bill navigation dots */
+  .bill-dots {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .bill-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold-dim);
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .bill-dot.active { background: var(--gold); width: 18px; border-radius: 3px; }
+
+  /* Affirmation area */
+  .affirmation-box {
+    width: 100%;
+    background: rgba(201,169,97,0.05);
+    border: 1px solid rgba(201,169,97,0.15);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .affirmation-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-style: italic;
+    color: var(--cream);
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .affirmation-sub {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+  }
+
+  .bill-swipe-hint {
+    font-size: 10px;
+    color: var(--gold-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  /* ── LOG WIN ── */
+  #log-screen { background: var(--green-deep); justify-content: flex-start; padding-top: max(60px, env(safe-area-inset-top) + 20px); overflow-y: auto; }
+
+  .screen-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .screen-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    color: var(--gold-light);
+    font-weight: 500;
+  }
+
+  .win-form { width: 100%; }
+  .form-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: block;
+  }
+  .form-input {
+    width: 100%;
+    background: rgba(201,169,97,0.06);
+    border: 1px solid rgba(201,169,97,0.2);
+    border-radius: 12px;
+    padding: 16px;
+    color: var(--cream);
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    margin-bottom: 20px;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+  .form-input:focus { border-color: var(--gold); }
+  .form-input::placeholder { color: var(--gold-dim); }
+  textarea.form-input { min-height: 80px; resize: none; }
+
+  .magic-type-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .magic-type-btn {
+    background: rgba(201,169,97,0.06);
+    border: 1px solid rgba(201,169,97,0.15);
+    border-radius: 10px;
+    padding: 14px 12px;
+    color: var(--gold-dim);
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+  }
+  .magic-type-btn.selected {
+    border-color: var(--gold);
+    background: rgba(201,169,97,0.12);
+    color: var(--gold-light);
+  }
+  .magic-type-emoji { font-size: 18px; display: block; margin-bottom: 4px; }
+
+  .submit-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+    border: none;
+    border-radius: 40px;
+    padding: 18px;
+    color: var(--green-deep);
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+  }
+  .submit-btn:active { transform: scale(0.98); opacity: 0.9; }
+
+  /* ── LEDGER ── */
+  #ledger-screen { background: var(--green-deep); justify-content: flex-start; padding-top: max(60px, env(safe-area-inset-top) + 20px); overflow-y: auto; }
+
+  .ledger-total {
+    width: 100%;
+    text-align: center;
+    padding: 24px 0;
+    margin-bottom: 24px;
+    border-bottom: 1px solid rgba(201,169,97,0.1);
+  }
+  .ledger-total-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .ledger-total-amount {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    color: var(--gold-light);
+    font-weight: 500;
+  }
+  .ledger-goal-pct {
+    font-size: 12px;
+    color: var(--gold-dim);
+    margin-top: 4px;
+  }
+
+  .win-entry {
+    width: 100%;
+    background: rgba(201,169,97,0.05);
+    border: 1px solid rgba(201,169,97,0.12);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    animation: slideIn 0.3s ease;
+  }
+  @keyframes slideIn {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .win-emoji { font-size: 24px; flex-shrink: 0; }
+  .win-content { flex: 1; }
+  .win-title-text { font-size: 14px; color: var(--cream); margin-bottom: 4px; font-weight: 400; }
+  .win-meta { font-size: 11px; color: var(--gold-dim); }
+  .win-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--gold);
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  /* ── NIGHT PROMPT ── */
+  #night-screen { background: var(--green-deep); }
+
+  .night-star {
+    font-size: 32px;
+    margin-bottom: 16px;
+    animation: twinkle 3s ease-in-out infinite alternate;
+  }
+  @keyframes twinkle {
+    0% { opacity: 0.5; transform: scale(0.9); }
+    100% { opacity: 1; transform: scale(1.1); }
+  }
+  .night-prompt {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--cream);
+    text-align: center;
+    line-height: 1.5;
+    max-width: 280px;
+    margin-bottom: 32px;
+  }
+  .night-input {
+    width: 100%;
+    background: rgba(201,169,97,0.06);
+    border: 1px solid rgba(201,169,97,0.2);
+    border-radius: 16px;
+    padding: 20px;
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: italic;
+    min-height: 120px;
+    resize: none;
+    outline: none;
+    margin-bottom: 20px;
+    -webkit-appearance: none;
+  }
+  .night-input:focus { border-color: rgba(201,169,97,0.4); }
+  .night-input::placeholder { color: var(--gold-dim); }
+
+  /* ── CELEBRATION ── */
+  #celebrate-screen { background: var(--green-deep); }
+  .confetti-container {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+  }
+  .confetti-piece {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    opacity: 0;
+  }
+  .celebrate-amount {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 64px;
+    color: var(--gold-light);
+    font-weight: 500;
+    text-align: center;
+    animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    margin-bottom: 8px;
+  }
+  .celebrate-label {
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .celebrate-msg {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-style: italic;
+    color: var(--cream);
+    text-align: center;
+    margin-bottom: 40px;
+    max-width: 260px;
+  }
+  @keyframes popIn {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  /* Scrollable screens fix */
+  #log-screen, #ledger-screen, #bill-screen {
+    align-items: flex-start;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  #log-screen > *, #ledger-screen > *, #bill-screen > * { flex-shrink: 0; }
+
+  .empty-ledger {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--gold-dim);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: italic;
+    width: 100%;
+  }
+
+  /* Receipt animation */
+  .receipt-flash {
+    position: fixed;
+    inset: 0;
+    background: rgba(201,169,97,0.08);
+    z-index: 200;
+    pointer-events: none;
+    animation: flash 0.4s ease forwards;
+  }
+  @keyframes flash {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  .cha-ching {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    color: var(--gold);
+    z-index: 201;
+    pointer-events: none;
+    animation: chaChing 0.8s ease forwards;
+  }
+  @keyframes chaChing {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+    40% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+    100% { opacity: 0; transform: translate(-50%, -60%) scale(1); }
+  }
+</style>
+</head>
+<body>
+
+<!-- PIN SCREEN -->
+<div class="screen" id="pin-screen">
+  <div class="pin-logo">Federal Reserve of Magic</div>
+  <div class="pin-title">The Mint</div>
+  <div class="pin-subtitle">private · sacred · yours</div>
+  <div class="pin-dots">
+    <div class="pin-dot" id="d0"></div>
+    <div class="pin-dot" id="d1"></div>
+    <div class="pin-dot" id="d2"></div>
+    <div class="pin-dot" id="d3"></div>
+  </div>
+  <div class="pin-pad">
+    <button class="pin-key" onclick="pinPress('1')">1</button>
+    <button class="pin-key" onclick="pinPress('2')">2</button>
+    <button class="pin-key" onclick="pinPress('3')">3</button>
+    <button class="pin-key" onclick="pinPress('4')">4</button>
+    <button class="pin-key" onclick="pinPress('5')">5</button>
+    <button class="pin-key" onclick="pinPress('6')">6</button>
+    <button class="pin-key" onclick="pinPress('7')">7</button>
+    <button class="pin-key" onclick="pinPress('8')">8</button>
+    <button class="pin-key" onclick="pinPress('9')">9</button>
+    <button class="pin-key empty"></button>
+    <button class="pin-key" onclick="pinPress('0')">0</button>
+    <button class="pin-key del" onclick="pinDel()">⌫</button>
+  </div>
+  <div class="pin-hint" id="pin-hint">enter your 4-digit code · default: 2026</div>
+</div>
+
+<!-- MINT OPENER -->
+<div class="screen hidden" id="mint-screen">
+  <div class="mint-bloom"><div class="mint-star">✦</div></div>
+  <div class="mint-greeting" id="mint-greeting">good morning</div>
+  <div class="mint-date" id="mint-date"></div>
+  <div class="mint-motto">"Money is a thank-you note for the magic I put into the world"</div>
+  <button class="mint-cta" onclick="showScreen('wallet-screen')">open the wallet</button>
+</div>
+
+<!-- WALLET / HOME -->
+<div class="screen hidden" id="wallet-screen">
+  <div class="wallet-header">
+    <div class="wallet-title">The Wallet</div>
+    <div class="wallet-nav">
+      <button class="nav-btn" onclick="showScreen('ledger-screen')" title="Ledger">📜</button>
+      <button class="nav-btn" onclick="showScreen('night-screen')" title="Night prompt">🌙</button>
+    </div>
+  </div>
+
+  <div class="bill-stack" id="billStack" onclick="toggleFan()">
+    <!-- Bills injected by JS -->
+  </div>
+  <div class="stack-hint" id="stackHint">tap to fan · tap a bill to open</div>
+
+  <div class="abundance-card">
+    <div class="abundance-label">magic received · 2026</div>
+    <div class="abundance-amount" id="wallet-total">$0</div>
+    <div class="abundance-goal" id="wallet-goal">$0 of $1,000,000 · 0%</div>
+    <div class="progress-bar"><div class="progress-fill" id="wallet-progress" style="width:0%"></div></div>
+  </div>
+
+  <div class="bottom-actions">
+    <button class="action-btn" onclick="showScreen('log-screen')">
+      <span class="action-icon">✨</span>
+      <span class="action-label">Log Magic</span>
+    </button>
+    <button class="action-btn" onclick="showScreen('ledger-screen')">
+      <span class="action-icon">📜</span>
+      <span class="action-label">Ledger</span>
+    </button>
+    <button class="action-btn" onclick="showScreen('night-screen')">
+      <span class="action-icon">🌙</span>
+      <span class="action-label">Tonight</span>
+    </button>
+  </div>
+</div>
+
+<!-- BILL VIEWER -->
+<div class="screen hidden" id="bill-screen">
+  <div class="bill-viewer-header">
+    <button class="back-btn" onclick="showScreen('wallet-screen')">←</button>
+    <div class="bill-counter" id="bill-counter">1 of 7</div>
+    <div style="width:32px"></div>
+  </div>
+  <div class="bill-viewer-container">
+    <img class="bill-full-img" id="bill-full-img" src="" alt="Abundance Note">
+    <div class="bill-dots" id="bill-dots"></div>
+    <div class="bill-swipe-hint">swipe to flip through your bills</div>
+    <div class="affirmation-box">
+      <div class="affirmation-text" id="bill-affirmation">"It is done. ✦ received ✦"</div>
+      <div class="affirmation-sub">sit with this for 10 seconds</div>
+    </div>
+  </div>
+</div>
+
+<!-- LOG WIN -->
+<div class="screen hidden" id="log-screen">
+  <div class="screen-header">
+    <button class="back-btn" onclick="showScreen('wallet-screen')">←</button>
+    <div class="screen-title">Log Your Magic</div>
+  </div>
+  <div class="win-form">
+    <label class="form-label">what did you create or receive?</label>
+    <textarea class="form-input" id="win-desc" placeholder="A client paid in full. Closed a new deal. Had a breakthrough conversation..."></textarea>
+
+    <label class="form-label">type of magic</label>
+    <div class="magic-type-grid">
+      <button class="magic-type-btn" onclick="selectType(this,'💰')">
+        <span class="magic-type-emoji">💰</span>Income / Payment
+      </button>
+      <button class="magic-type-btn" onclick="selectType(this,'🌟')">
+        <span class="magic-type-emoji">🌟</span>Transformation
+      </button>
+      <button class="magic-type-btn" onclick="selectType(this,'⛳')">
+        <span class="magic-type-emoji">⛳</span>Golf Magic
+      </button>
+      <button class="magic-type-btn" onclick="selectType(this,'🤝')">
+        <span class="magic-type-emoji">🤝</span>Connection
+      </button>
+    </div>
+
+    <label class="form-label">magic value ($)</label>
+    <input class="form-input" type="number" id="win-value" placeholder="0" inputmode="numeric">
+
+    <button class="submit-btn" onclick="submitWin()">✦ seal it into the ledger ✦</button>
+  </div>
+</div>
+
+<!-- LEDGER -->
+<div class="screen hidden" id="ledger-screen">
+  <div class="screen-header">
+    <button class="back-btn" onclick="showScreen('wallet-screen')">←</button>
+    <div class="screen-title">Magic Ledger</div>
+  </div>
+  <div class="ledger-total">
+    <div class="ledger-total-label">total magic received · 2026</div>
+    <div class="ledger-total-amount" id="ledger-amount">$0</div>
+    <div class="ledger-goal-pct" id="ledger-pct">0% of your million</div>
+  </div>
+  <div id="ledger-entries" style="width:100%">
+    <div class="empty-ledger">"The magic is already flowing.<br>Log your first win."</div>
+  </div>
+</div>
+
+<!-- NIGHT PROMPT -->
+<div class="screen hidden" id="night-screen">
+  <button class="back-btn" onclick="showScreen('wallet-screen')" style="align-self:flex-start;margin-bottom:24px">←</button>
+  <div class="night-star">🌙</div>
+  <div class="night-prompt">"What magic did I put into the world today?"</div>
+  <textarea class="night-input" id="night-text" placeholder="Today I..."></textarea>
+  <button class="submit-btn" onclick="saveNight()">✦ seal the day ✦</button>
+</div>
+
+<!-- CELEBRATE -->
+<div class="screen hidden" id="celebrate-screen">
+  <div class="confetti-container" id="confetti"></div>
+  <div class="celebrate-amount" id="cel-amount">$0</div>
+  <div class="celebrate-label">magic received</div>
+  <div class="celebrate-msg" id="cel-msg">"It is done. ✦ received ✦"</div>
+  <button class="submit-btn" onclick="showScreen('wallet-screen')" style="width:200px">back to the wallet</button>
+</div>
+
+<script>
+// ── STATE ──
+const CORRECT_PIN = '2026';
+const GOAL = 1000000;
+const BILL_IMAGES = [
+  'Abundance Note.png',
+  '2.png','3.png','4.png','5.png','6.png','7.png'
+];
+const BILL_AFFIRMATIONS = [
+  '"Money is a thank-you note for the magic I put into the world."',
+  '"On the fairway and in full flow — this is my natural state."',
+  '"Abundance is not something I pursue. It is something I embody."',
+  '"It is done. The version of me that has it all — she already exists."',
+  '"Free. Paid. Unstoppable. This is who I am."',
+  '"Every swing, every sale, every yes — all the same energy."',
+  '"Rich friends. Rich life. Rich self. We should all be this."'
+];
+
+// Storage helpers
+const get = k => { try { return JSON.parse(localStorage.getItem(k)) } catch(e) { return null } };
+const set = (k,v) => localStorage.setItem(k, JSON.stringify(v));
+
+let wins = get('mint_wins') || [];
+let currentBill = 0;
+let fanOpen = false;
+let pinBuffer = '';
+let touchStartX = 0;
+
+// ── PIN ──
+function pinPress(n) {
+  if (pinBuffer.length >= 4) return;
+  pinBuffer += n;
+  updateDots();
+  if (pinBuffer.length === 4) {
+    setTimeout(() => {
+      if (pinBuffer === CORRECT_PIN) {
+        enterMint();
+      } else {
+        shakeDots();
+        pinBuffer = '';
+        setTimeout(updateDots, 600);
+      }
+    }, 150);
+  }
+}
+function pinDel() {
+  pinBuffer = pinBuffer.slice(0, -1);
+  updateDots();
+}
+function updateDots() {
+  for (let i = 0; i < 4; i++) {
+    document.getElementById('d' + i).classList.toggle('filled', i < pinBuffer.length);
+  }
+}
+function shakeDots() {
+  document.querySelectorAll('.pin-dot').forEach(d => {
+    d.classList.add('shake');
+    setTimeout(() => d.classList.remove('shake'), 400);
+  });
+}
+
+// ── ENTER ──
+function enterMint() {
+  const now = new Date();
+  const h = now.getHours();
+  const greet = h < 12 ? 'good morning' : h < 17 ? 'good afternoon' : 'good evening';
+  document.getElementById('mint-greeting').textContent = greet;
+  document.getElementById('mint-date').textContent = now.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' });
+  showScreen('mint-screen');
+}
+
+// ── SCREENS ──
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+  const target = document.getElementById(id);
+  target.classList.remove('hidden');
+  if (id === 'wallet-screen') { buildStack(); updateWalletTotal(); }
+  if (id === 'ledger-screen') renderLedger();
+  if (id === 'bill-screen') renderBillViewer();
+}
+
+// ── WALLET / STACK ──
+function buildStack() {
+  const stack = document.getElementById('billStack');
+  stack.innerHTML = '';
+  // Render in reverse so bill 1 is on top
+  for (let i = BILL_IMAGES.length - 1; i >= 0; i--) {
+    const div = document.createElement('div');
+    div.className = 'stack-bill';
+    div.innerHTML = `<img src="${BILL_IMAGES[i]}" alt="Bill ${i+1}" loading="lazy">`;
+    div.dataset.index = i;
+    div.addEventListener('click', e => {
+      if (fanOpen) { e.stopPropagation(); openBill(parseInt(div.dataset.index)); }
+    });
+    stack.appendChild(div);
+  }
+}
+
+function toggleFan() {
+  fanOpen = !fanOpen;
+  document.getElementById('billStack').classList.toggle('fanned', fanOpen);
+  document.getElementById('stackHint').textContent = fanOpen ? 'tap a bill to open' : 'tap to fan · tap a bill to open';
+}
+
+function openBill(index) {
+  currentBill = index;
+  fanOpen = false;
+  document.getElementById('billStack').classList.remove('fanned');
+  showScreen('bill-screen');
+}
+
+// ── BILL VIEWER ──
+function renderBillViewer() {
+  document.getElementById('bill-full-img').src = BILL_IMAGES[currentBill];
+  document.getElementById('bill-counter').textContent = `${currentBill + 1} of ${BILL_IMAGES.length}`;
+  document.getElementById('bill-affirmation').textContent = BILL_AFFIRMATIONS[currentBill];
+
+  // Dots
+  const dots = document.getElementById('bill-dots');
+  dots.innerHTML = '';
+  BILL_IMAGES.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'bill-dot' + (i === currentBill ? ' active' : '');
+    d.onclick = () => { currentBill = i; renderBillViewer(); };
+    dots.appendChild(d);
+  });
+}
+
+// Swipe support on bill screen
+document.getElementById('bill-screen').addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+}, { passive: true });
+document.getElementById('bill-screen').addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 50) {
+    if (dx < 0) currentBill = Math.min(currentBill + 1, BILL_IMAGES.length - 1);
+    else currentBill = Math.max(currentBill - 1, 0);
+    renderBillViewer();
+  }
+}, { passive: true });
+
+// ── WIN LOGGING ──
+let selectedType = '💰';
+function selectType(btn, emoji) {
+  document.querySelectorAll('.magic-type-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedType = emoji;
+}
+
+function submitWin() {
+  const desc = document.getElementById('win-desc').value.trim();
+  const val = parseFloat(document.getElementById('win-value').value) || 0;
+  if (!desc) { document.getElementById('win-desc').focus(); return; }
+
+  const win = {
+    id: Date.now(),
+    desc,
+    type: selectedType,
+    value: val,
+    date: new Date().toLocaleDateString('en-US', { month:'short', day:'numeric' })
+  };
+  wins.unshift(win);
+  set('mint_wins', wins);
+
+  // Reset form
+  document.getElementById('win-desc').value = '';
+  document.getElementById('win-value').value = '';
+
+  // Celebrate
+  celebrate(val, desc);
+}
+
+function celebrate(val, desc) {
+  // Flash
+  const flash = document.createElement('div');
+  flash.className = 'receipt-flash';
+  document.body.appendChild(flash);
+  setTimeout(() => flash.remove(), 500);
+
+  // Cha-ching
+  const cc = document.createElement('div');
+  cc.className = 'cha-ching';
+  cc.textContent = val > 0 ? `+$${val.toLocaleString()}` : '✦';
+  document.body.appendChild(cc);
+  setTimeout(() => cc.remove(), 900);
+
+  setTimeout(() => {
+    const total = wins.reduce((s,w) => s + (w.value || 0), 0);
+    document.getElementById('cel-amount').textContent = '$' + total.toLocaleString();
+    document.getElementById('cel-msg').textContent = val > 0
+      ? `"${desc.slice(0,60)}${desc.length>60?'…':''}" — sealed ✦`
+      : '"It is done. ✦ received ✦"';
+    showScreen('celebrate-screen');
+    launchConfetti();
+  }, 700);
+}
+
+function launchConfetti() {
+  const container = document.getElementById('confetti');
+  container.innerHTML = '';
+  const colors = ['#c9a961','#e8d090','#1f4236','#f5edd8','#7a6435'];
+  for (let i = 0; i < 60; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const isRect = Math.random() > 0.5;
+    p.style.cssText = `
+      left:${Math.random()*100}%;
+      top:-10px;
+      background:${color};
+      border-radius:${isRect?'2px':'50%'};
+      width:${6+Math.random()*6}px;
+      height:${6+Math.random()*10}px;
+      animation: fall ${1.5+Math.random()*2}s ease-in ${Math.random()*0.8}s forwards;
+      transform: rotate(${Math.random()*360}deg);
+    `;
+    container.appendChild(p);
+  }
+  const style = document.createElement('style');
+  style.textContent = `@keyframes fall {
+    0%{opacity:1;transform:translateY(0) rotate(0deg);}
+    100%{opacity:0;transform:translateY(100vh) rotate(720deg);}
+  }`;
+  document.head.appendChild(style);
+  setTimeout(() => { container.innerHTML = ''; style.remove(); }, 4000);
+}
+
+// ── LEDGER ──
+function updateWalletTotal() {
+  const total = wins.reduce((s,w) => s + (w.value||0), 0);
+  const pct = Math.min((total/GOAL)*100, 100);
+  document.getElementById('wallet-total').textContent = '$' + total.toLocaleString();
+  document.getElementById('wallet-goal').textContent = `$${total.toLocaleString()} of $1,000,000 · ${pct.toFixed(1)}%`;
+  document.getElementById('wallet-progress').style.width = pct + '%';
+}
+
+function renderLedger() {
+  const total = wins.reduce((s,w) => s + (w.value||0), 0);
+  const pct = Math.min((total/GOAL)*100, 100);
+  document.getElementById('ledger-amount').textContent = '$' + total.toLocaleString();
+  document.getElementById('ledger-pct').textContent = pct.toFixed(2) + '% of your million';
+
+  const container = document.getElementById('ledger-entries');
+  if (wins.length === 0) {
+    container.innerHTML = '<div class="empty-ledger">"The magic is already flowing.<br>Log your first win."</div>';
+    return;
+  }
+  container.innerHTML = '';
+  wins.forEach(w => {
+    const el = document.createElement('div');
+    el.className = 'win-entry';
+    el.innerHTML = `
+      <div class="win-emoji">${w.type}</div>
+      <div class="win-content">
+        <div class="win-title-text">${w.desc}</div>
+        <div class="win-meta">${w.date}</div>
+      </div>
+      ${w.value ? `<div class="win-value">$${w.value.toLocaleString()}</div>` : ''}
+    `;
+    container.appendChild(el);
+  });
+}
+
+// ── NIGHT ──
+function saveNight() {
+  const text = document.getElementById('night-text').value.trim();
+  if (!text) return;
+  const nights = get('mint_nights') || [];
+  nights.unshift({ text, date: new Date().toLocaleDateString() });
+  set('mint_nights', nights);
+  document.getElementById('night-text').value = '';
+
+  const flash = document.createElement('div');
+  flash.className = 'receipt-flash';
+  document.body.appendChild(flash);
+  setTimeout(() => flash.remove(), 500);
+  setTimeout(() => showScreen('wallet-screen'), 600);
+}
+
+// ── INIT ──
+window.addEventListener('load', () => {
+  buildStack();
+  // Pre-select income type
+  document.querySelector('.magic-type-btn').classList.add('selected');
+});
+</script>
+</body>
+</html>
