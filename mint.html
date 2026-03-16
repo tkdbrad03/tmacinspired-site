@@ -900,6 +900,8 @@
 // Auth check
 if (!document.cookie.includes('mint_auth=granted')) {
   window.location.href = '/mint-login';
+} else {
+  window.addEventListener('DOMContentLoaded', enterMint);
 }
 // ── STATE ──
 const CORRECT_PIN = '2026';
