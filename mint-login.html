@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Mint</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Outfit:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: #0d1f16;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Outfit', sans-serif;
+    padding: 24px;
+  }
+  .logo { font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:4px; color:#7a6435; text-transform:uppercase; margin-bottom:8px; }
+  .title { font-family:'Cormorant Garamond',serif; font-size:48px; color:#e8d090; margin-bottom:4px; }
+  .sub { font-size:11px; letter-spacing:2px; color:#7a6435; margin-bottom:48px; }
+  input {
+    background: rgba(201,169,97,0.06);
+    border: 1px solid rgba(201,169,97,0.2);
+    border-radius: 40px;
+    padding: 16px 24px;
+    color: #e8d090;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    text-align: center;
+    letter-spacing: 8px;
+    width: 100%;
+    max-width: 280px;
+    outline: none;
+    margin-bottom: 16px;
+    -webkit-appearance: none;
+  }
+  input:focus { border-color: rgba(201,169,97,0.5); }
+  button {
+    background: transparent;
+    border: 1px solid #c9a961;
+    color: #c9a961;
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    padding: 14px 32px;
+    border-radius: 40px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    width: 100%;
+    max-width: 280px;
+  }
+  button:active { background: rgba(201,169,97,0.1); }
+  .err { font-size:12px; color:#7a6435; margin-top:16px; opacity:0; transition:opacity 0.3s; letter-spacing:1px; }
+</style>
+</head>
+<body>
+  <div class="logo">Federal Reserve of Magic</div>
+  <div class="title">The Mint</div>
+  <div class="sub">private · sacred · yours</div>
+  <input type="password" id="p" inputmode="numeric" maxlength="10" placeholder="····" onkeydown="if(event.key==='Enter')unlock()">
+  <button onclick="unlock()">✦ enter ✦</button>
+  <div class="err" id="err">not today · try again</div>
+  <script>
+    async function unlock() {
+      const val = document.getElementById('p').value;
+      const res = await fetch('/api/mint-auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: val })
+      });
+      if (res.ok) {
+        window.location.href = '/mint';
+      } else {
+        document.getElementById('err').style.opacity = 1;
+        document.getElementById('p').value = '';
+      }
+    }
+  </script>
+</body>
+</html>
