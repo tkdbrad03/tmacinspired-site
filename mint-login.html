@@ -89,10 +89,11 @@
       return;
     }
     fetch('/api/mint-auth', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password: val })
-    })
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  credentials: 'same-origin',
+  body: JSON.stringify({ password: val })
+})
     .then(function(res) { return res.json(); })
     .then(function(data) {
       if (data.ok) {
