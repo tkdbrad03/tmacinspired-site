@@ -882,6 +882,7 @@
 <div class="screen hidden" id="night-screen">
   <button class="back-btn" onclick="showScreen('wallet-screen')" style="align-self:flex-start;margin-bottom:24px">←</button>
   <div class="night-star">🌙</div>
+<div id="last-night" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:#7a6435;text-align:center;max-width:280px;margin-bottom:8px;min-height:20px;"></div>
   <div class="night-prompt">"What magic did I put into the world today?"</div>
   <textarea class="night-input" id="night-text" placeholder="Today I..."></textarea>
   <button class="submit-btn" onclick="saveNight()">✦ seal the day ✦</button>
@@ -981,6 +982,7 @@ function showScreen(id) {
   if (id === 'wallet-screen') { buildStack(); updateWalletTotal(); }
   if (id === 'ledger-screen') renderLedger();
   if (id === 'bill-screen') renderBillViewer();
+  if (id === 'night-screen') loadLastNight();
 }
 
 // ── WALLET / STACK ──
@@ -1166,6 +1168,13 @@ function renderLedger() {
 }
 
 // ── NIGHT ──
+function loadLastNight() {
+  const nights = get('mint_nights') || [];
+  const el = document.getElementById('last-night');
+  if (nights.length > 0) {
+    el.textContent = '✦ yesterday: "' + nights[0].text.slice(0, 80) + (nights[0].text.length > 80 ? '…' : '') + '"';
+  }
+}
 function saveNight() {
   const text = document.getElementById('night-text').value.trim();
   if (!text) return;
