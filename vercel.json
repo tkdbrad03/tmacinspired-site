@@ -2,6 +2,7 @@
   "cleanUrls": true,
   "rewrites": [
     { "source": "/api/session", "destination": "/api/session.cjs" },
-    { "source": "/api/fasts",   "destination": "/api/fasts.cjs"   }
+    { "source": "/api/fasts",   "destination": "/api/fasts.cjs"   },
+    { "source": "/api/mint-auth", "destination": "/api/mint-auth.js" }
   ]
 }
