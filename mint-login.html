@@ -76,7 +76,6 @@
 
   input.focus();
 
-  btn.addEventListener('click', unlock);
   input.addEventListener('keyup', function(e) {
     debug.textContent = 'typed: ' + input.value.length + ' chars';
     if (e.key === 'Enter') unlock();
