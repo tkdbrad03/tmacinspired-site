@@ -59,25 +59,36 @@
 <body>
   <div class="logo">Federal Reserve of Magic</div>
   <div class="title">The Mint</div>
-  <div class="sub">private · sacred · yours</div>
-  <input type="password" id="p" inputmode="numeric" maxlength="10" placeholder="····" onkeydown="if(event.key==='Enter')unlock()">
+  <div class="sub">private · sacred · yours</div><input type="password" id="p" inputmode="numeric" maxlength="10" placeholder="····">
   <button onclick="unlock()">✦ enter ✦</button>
   <div class="err" id="err">not today · try again</div>
   <script>
-    async function unlock() {
-      const val = document.getElementById('p').value;
-      const res = await fetch('/api/mint-auth', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: val })
-      });
-      if (res.ok) {
+  document.getElementById('p').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') unlock();
+  });
+
+  function unlock() {
+    const input = document.getElementById('p');
+    const val = input.value;
+    console.log('attempting with:', val);
+    if (!val) return;
+    
+    fetch('/api/mint-auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: val })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.ok) {
         window.location.href = '/mint';
       } else {
         document.getElementById('err').style.opacity = 1;
-        document.getElementById('p').value = '';
+        input.value = '';
+        input.focus();
       }
-    }
-  </script>
+    });
+  }
+</script>
 </body>
 </html>
