@@ -19,6 +19,11 @@ self.addEventListener('activate', function(e) {
 self.addEventListener('fetch', function(e) {
   var url = e.request.url;
 
+  // Never intercept POST requests or mint auth
+  if (e.request.method === 'POST' || url.indexOf('/api/mint-auth') > -1) {
+    return;
+  }
+
   // Always network-first for Google Sheets API
   if (url.indexOf('script.google.com') > -1) {
     e.respondWith(
