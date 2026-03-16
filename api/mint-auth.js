@@ -1,7 +1,12 @@
-export default function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
-  
-  const { password } = req.body;
+
+  let body = req.body;
+  if (typeof body === 'string') {
+    try { body = JSON.parse(body); } catch(e) { body = {}; }
+  }
+
+  const password = body?.password;
   const correct = process.env.MINT_PASSWORD || '1904';
 
   if (password === correct) {
