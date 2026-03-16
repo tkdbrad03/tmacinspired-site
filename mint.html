@@ -897,6 +897,10 @@
 </div>
 
 <script>
+// Auth check
+if (!document.cookie.includes('mint_auth=granted')) {
+  window.location.href = '/mint-login';
+}
 // ── STATE ──
 const CORRECT_PIN = '2026';
 const GOAL = 1000000;
