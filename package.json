@@ -5,11 +5,8 @@
   "engines": {
     "node": "22.x"
   },
-  "scripts": {
-    "postinstall": "prisma generate"
-  },
+  "scripts": {},
   "dependencies": {
-    "@prisma/client": "^5.22.0",
-    "prisma": "^5.22.0"
+    "cookie": "^0.6.0"
   }
 }
