@@ -982,8 +982,8 @@ updateJourney(elapsed / 3600000, sess.active.hours);
     document.getElementById('timeBig').classList.add('celeb');
   }
   var phases=sess.active.hours===16
-    ?[{t:0,l:'Glycogen Burning'},{t:0.5,l:'Fat Burning'},{t:0.875,l:'Deep Autophagy'}]
-    :[{t:0,l:'Glycogen Burning'},{t:0.33,l:'Fat Burning'},{t:0.67,l:'Deep Autophagy'}];
+    ?[{t:0,l:'Glycogen Burning'},{t:0.375,l:'Fat Burning'},{t:0.625,l:'Ketosis'},{t:0.875,l:'Deep Autophagy'}]
+    :[{t:0,l:'Glycogen Burning'},{t:0.375,l:'Fat Burning'},{t:0.625,l:'Ketosis'},{t:0.875,l:'Deep Autophagy'}];
   var phase=phases[0].l;
   for(var i=phases.length-1;i>=0;i--){if(pct>=phases[i].t){phase=phases[i].l;break;}}
   document.getElementById('phaseSpan').textContent=phase;
