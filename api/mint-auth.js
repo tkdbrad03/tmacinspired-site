@@ -10,10 +10,7 @@ export default async function handler(req, res) {
   }
 
   if (password === '1904') {
-    res.setHeader(
-      'Set-Cookie',
-      'mint_auth=granted; Path=/; Max-Age=2592000; SameSite=Strict'
-    );
+    res.setHeader('Set-Cookie', 'mint_auth=granted; Path=/; Max-Age=2592000; SameSite=Strict; Secure');
     return res.status(200).json({ ok: true });
   }
 
