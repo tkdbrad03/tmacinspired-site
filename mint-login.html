@@ -59,8 +59,9 @@
 <body>
   <div class="logo">Federal Reserve of Magic</div>
   <div class="title">The Mint</div>
-  <div class="sub">private · sacred · yours</div><input type="password" id="p" inputmode="numeric" maxlength="10" placeholder="····">
-  <button onclick="unlock()">✦ enter ✦</button>
+  <div class="sub">private · sacred · yours</div>
+<input type="tel" id="p" maxlength="10" placeholder="····" style="color: transparent; text-shadow: 0 0 0 #e8d090;">  
+ <button onclick="unlock()">✦ enter ✦</button>
   <div class="err" id="err">not today · try again</div>
   <script>
   document.getElementById('p').addEventListener('keydown', function(e) {
