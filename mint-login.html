@@ -76,11 +76,6 @@
 
   input.focus();
 
-  input.addEventListener('keyup', function(e) {
-    debug.textContent = 'typed: ' + input.value.length + ' chars';
-    if (e.key === 'Enter') unlock();
-  });
-
   function unlock() {
     var val = input.value;
     debug.textContent = 'sending: [' + val + ']';
