@@ -202,7 +202,7 @@
         var sub = url.searchParams.get('sub')
             || (function(){ try { return localStorage.getItem('pp_subscription_id'); } catch(e) { return ''; } })()
             || '';
-        document.getElementById('subId').textContent = sub || 'Not available — please check your PayPal email.';
+        document.getElementById('subId').textContent = sub || 'Subscription ID will appear here after completed checkout.';
     </script>
 
 </body>
