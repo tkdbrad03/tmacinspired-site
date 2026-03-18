@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thank You — The Fairway to Wealth</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --pine: #1f4236;
+  --gold: #c9a961;
+  --gold-light: #e2c98a;
+  --cream: #f7f2e8;
+  --dark: #0b1a13;
+}
+
+body {
+  background: var(--dark);
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  color: var(--cream);
+  min-height: 100vh;
+}
+
+/* HERO CONFIRMATION */
+.hero {
+  background: var(--pine);
+  text-align: center;
+  padding: 60px 24px 48px;
+  border-bottom: 1px solid rgba(201,169,97,0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(201,169,97,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.check-circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  font-size: 28px;
+  color: var(--gold);
+  animation: pop 0.5s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(0); opacity: 0; }
+  70% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.hero-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: rgba(201,169,97,0.6);
+  margin-bottom: 16px;
+}
+
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.hero-title em { color: var(--gold); font-style: italic; }
+
+.hero-sub {
+  font-size: 15px;
+  color: rgba(247,242,232,0.6);
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* MAIN CONTENT */
+.main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 24px;
+}
+
+/* ACCESS BOX */
+.access-box {
+  background: rgba(31,66,54,0.3);
+  border: 1px solid rgba(201,169,97,0.25);
+  padding: 40px 36px;
+  margin-bottom: 48px;
+  text-align: center;
+}
+
+.access-label {
+  font-size: 10px;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+
+.access-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--cream);
+  margin-bottom: 24px;
+}
+
+.read-btn {
+  display: inline-block;
+  background: var(--gold);
+  color: var(--dark);
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  padding: 18px 48px;
+  text-decoration: none;
+  transition: all 0.3s;
+  margin-bottom: 16px;
+}
+
+.read-btn:hover {
+  background: var(--gold-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(201,169,97,0.25);
+}
+
+.access-note {
+  font-size: 12px;
+  color: rgba(247,242,232,0.35);
+  margin-top: 12px;
+  line-height: 1.6;
+}
+
+/* FLIPBOOK EMBED */
+.flipbook-section {
+  margin-bottom: 60px;
+}
+
+.section-label {
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(201,169,97,0.15);
+}
+
+.flipbook-wrap {
+  border: 1px solid rgba(201,169,97,0.15);
+  overflow: hidden;
+  background: #000;
+}
+
+.flipbook-wrap iframe {
+  display: block;
+  width: 100%;
+  height: 610px;
+  border: none;
+}
+
+/* NEXT STEPS */
+.next-steps {
+  margin-bottom: 60px;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2px;
+  background: rgba(201,169,97,0.08);
+  margin-top: 24px;
+}
+
+.step-card {
+  background: rgba(13,31,22,0.9);
+  padding: 28px 24px;
+}
+
+.step-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 300;
+  color: rgba(201,169,97,0.25);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.step-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--cream);
+  margin-bottom: 8px;
+}
+
+.step-desc {
+  font-size: 13px;
+  color: rgba(247,242,232,0.5);
+  line-height: 1.7;
+}
+
+/* QUOTE */
+.quote-section {
+  text-align: center;
+  padding: 60px 40px;
+  border-top: 1px solid rgba(201,169,97,0.1);
+  border-bottom: 1px solid rgba(201,169,97,0.1);
+  margin-bottom: 60px;
+}
+
+.quote-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--cream);
+  line-height: 1.5;
+  max-width: 680px;
+  margin: 0 auto 20px;
+}
+
+.quote-text em { color: var(--gold); }
+
+.quote-attr {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(201,169,97,0.4);
+}
+
+/* SHARE SECTION */
+.share-section {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.share-section h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--cream);
+  margin-bottom: 8px;
+}
+
+.share-section p {
+  font-size: 14px;
+  color: rgba(247,242,232,0.5);
+  margin-bottom: 28px;
+  line-height: 1.7;
+}
+
+.share-btns {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(201,169,97,0.25);
+  color: rgba(201,169,97,0.7);
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 12px 24px;
+  text-decoration: none;
+  transition: all 0.3s;
+  cursor: pointer;
+  background: none;
+}
+
+.share-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(201,169,97,0.05);
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid rgba(201,169,97,0.1);
+  padding: 40px 24px;
+  text-align: center;
+}
+
+footer p {
+  font-size: 11px;
+  color: rgba(247,242,232,0.2);
+  line-height: 1.8;
+  margin-bottom: 4px;
+}
+
+footer a {
+  color: rgba(201,169,97,0.35);
+  text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  .access-box { padding: 28px 20px; }
+  .main { padding: 40px 16px; }
+  .quote-section { padding: 40px 20px; }
+  .flipbook-wrap iframe { height: 480px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="check-circle">&#10003;</div>
+  <div class="hero-eyebrow">Purchase Confirmed</div>
+  <h1 class="hero-title">Welcome to<br>The Fairway <em>to Wealth</em></h1>
+  <p class="hero-sub">You are now part of the Wealth Caddie Movement. Your book is ready and waiting below. Start reading right now.</p>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- ACCESS BOX -->
+  <div class="access-box">
+    <div class="access-label">Your Book Is Ready</div>
+    <div class="access-title">The Fairway to Wealth — Digital Edition</div>
+    <a href="https://designrr.page/?id=491922&token=4251921537&type=FP&h=2279" target="_blank" class="read-btn">
+      Open My Book Now
+    </a>
+    <p class="access-note">
+      Bookmark this page for easy access to your book.<br>
+      A confirmation email has been sent to you with this link.
+    </p>
+  </div>
+
+  <!-- FLIPBOOK EMBED -->
+  <div class="flipbook-section">
+    <div class="section-label">Read Now</div>
+    <div class="flipbook-wrap">
+      <iframe allowfullscreen="true" src="https://designrr.page/?id=491922&token=4251921537&type=FP&h=2279" height="610" width="100%" frameborder="0"></iframe>
+    </div>
+  </div>
+
+  <!-- NEXT STEPS -->
+  <div class="next-steps">
+    <div class="section-label">What Happens Next</div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div class="step-title">Read the Book</div>
+        <p class="step-desc">Start with the Introduction and Chapter One. Your first Wealth Caddie Reflection is waiting for you at the end of every chapter.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div class="step-title">Book Your Round</div>
+        <p class="step-desc">Within 48 hours of finishing Chapter Four, schedule a round with someone in your network. Put the framework into practice immediately.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div class="step-title">Join the Movement</div>
+        <p class="step-desc">Follow Dr. Tasha McCray at tmacinspired.com and on social media. Tag your first Wealth Caddie round and join the conversation.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">04</div>
+        <div class="step-title">Bring Someone In</div>
+        <p class="step-desc">When you get comfortable in a room, go back and get someone else. That is the whole teaching. That is the legacy shot.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUOTE -->
+  <div class="quote-section">
+    <p class="quote-text">"The fairway has always been yours. Not someday. Not after you prove yourself. <em>Right now. As you are.</em>"</p>
+    <div class="quote-attr">Dr. Tasha McCray &nbsp;|&nbsp; The Fairway to Wealth</div>
+  </div>
+
+  <!-- SHARE -->
+  <div class="share-section">
+    <h3>Spread the Movement</h3>
+    <p>Know a woman who belongs in this room? Share the book with her.<br>The movement grows one invitation at a time.</p>
+    <div class="share-btns">
+      <a class="share-btn" href="https://twitter.com/intent/tweet?text=Just+started+reading+The+Fairway+to+Wealth+by+%40DrTashaMcCray+%E2%9B%B3+A+manifesto+for+women+who+play+to+win.+Get+your+copy+at+tmacinspired.com%2Fbook" target="_blank">
+        &#88; &nbsp; Share on X
+      </a>
+      <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https://tmacinspired.com/book" target="_blank">
+        f &nbsp; Share on Facebook
+      </a>
+      <button class="share-btn" onclick="copyLink()">
+        &#128279; &nbsp; Copy Link
+      </button>
+    </div>
+    <div id="copiedMsg" style="display:none; margin-top:16px; font-size:12px; color:rgba(201,169,97,0.6); letter-spacing:0.2em;">
+      LINK COPIED
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>The Fairway to Wealth &nbsp;|&nbsp; Dr. Tasha McCray, PhD</p>
+  <p><a href="https://tmacinspired.com">tmacinspired.com</a></p>
+  <p style="margin-top:12px;">Questions? Contact us at <a href="mailto:info@tmacinspired.com">info@tmacinspired.com</a></p>
+  <p style="margin-top:8px;">Copyright &copy; 2026 Dr. Tasha McCray. All rights reserved.</p>
+</footer>
+
+<script>
+function copyLink() {
+  navigator.clipboard.writeText('https://tmacinspired.com/book').then(() => {
+    document.getElementById('copiedMsg').style.display = 'block';
+    setTimeout(() => {
+      document.getElementById('copiedMsg').style.display = 'none';
+    }, 3000);
+  });
+}
+</script>
+
+</body>
+</html>
