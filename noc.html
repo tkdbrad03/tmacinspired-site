@@ -516,7 +516,7 @@
     </footer>
 
     <!-- PayPal SDK -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://www.paypal.com/sdk/js?client-id=AXYovXwzGW-keQCgpgZWt67_9RP8maCKEfUWF-CZbKGVFLeQ-A6FxP7DY42mQQV3KdjgScu_KokghD0p&vault=true&intent=subscription"
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://www.sandbox.paypal.com/sdk/js?client-id=AR3gXehDuL3e8eT8SpvVfKCuES2d5naCp-8lyz0MT_kjS9vXfPNyQAqmSmhgEX12epJ5Vz8zxbB4mofV=subscription"
             data-sdk-integration-source="button-factory"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -524,7 +524,7 @@
         paypal.Buttons({
             createSubscription: function(data, actions) {
                 return actions.subscription.create({
-                    plan_id: 'P-7T482108PT489863CNGVAGKA'
+                    plan_id: 'P-07779559TR1922422NG5QFZA'
                 });
             },
             onApprove: function(data) {
