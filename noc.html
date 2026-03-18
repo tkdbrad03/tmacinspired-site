@@ -516,56 +516,46 @@
     </footer>
 
     <!-- PayPal SDK -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://www.sandbox.paypal.com/sdk/js?client-id=AR3gXehDuL3e8eT8SpvVfKCuES2d5naCp-8lyz0MT_kjS9vXfPNyQAqmSmhgEX12epJ5Vz8zxbB4mofV=subscription"
-            data-sdk-integration-source="button-factory"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Render one real PayPal subscription button in one dedicated container
-        paypal.Buttons({
-            createSubscription: function(data, actions) {
-                return actions.subscription.create({
-                    plan_id: 'P-07779559TR1922422NG5QFZA'
-                });
-            },
-            onApprove: function(data) {
-                try {
-                    localStorage.setItem('pp_subscription_id', data.subscriptionID);
-                } catch (e) {}
-                window.location.href = '/noc-success.html?sub=' + encodeURIComponent(data.subscriptionID);
-            },
-            onError: function(err) {
-                console.error('PayPal error:', err);
-                alert('Payment could not be completed. Please try again.');
-            }
-        }).render('#paypal-button-container');
+    <script src="https://www.sandbox.paypal.com/sdk/js?client-id=AR3gXehDuL3e8eT8SpvVfKCuES2d5naCp-8lyz0MT_kjS9vXfPNyQAqmSmhgEX12epJ5Vz8zxbB4mofV&vault=true&intent=subscription"></script>
 
-        // Smooth scroll both CTA buttons down to the checkout section
-        ['btn-hero', 'btn-offer'].forEach(function(id) {
-            var btn = document.getElementById(id);
-            if (btn) {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    var checkout = document.getElementById('checkout');
-                    if (checkout) {
+<script>
+window.addEventListener('load', function () {
+
+  var paypalContainer = document.getElementById('paypal-button-container');
+  var checkout = document.getElementById('checkout');
+  var btn = document.getElementById('btn-offer');
+
+  // Hide checkout initially
+  checkout.style.display = 'none';
+
+  // Render PayPal button ONCE
+  paypal.Buttons({
+    createSubscription: function(data, actions) {
+      return actions.subscription.create({
+        plan_id: 'P-07779559TR1922422NG5QFZA'
+      });
+    },
+    onApprove: function(data) {
+      try {
+        localStorage.setItem('pp_subscription_id', data.subscriptionID);
+      } catch(e) {}
+
+      window.location.href = '/noc-success.html?sub=' + encodeURIComponent(data.subscriptionID);
+    },
+    onError: function(err) {
+      console.error(err);
+      alert('Payment could not be completed.');
+    }
+  }).render('#paypal-button-container');
+
+  // Button click = reveal checkout
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
     checkout.style.display = 'block';
     checkout.scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
-                });
-            }
-        });
+  });
 
-        // Accordion
-        document.querySelectorAll('.accordion-header').forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                var item = btn.parentElement;
-                document.querySelectorAll('.accordion-item').forEach(function (i) {
-                    if (i !== item) i.classList.remove('active');
-                });
-                item.classList.toggle('active');
-            });
-        });
-    });
+});
 </script>
-
 </body>
 </html>
