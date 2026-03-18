@@ -449,8 +449,10 @@
                 <p class="price-per">per month</p>
                 <p class="price-founding">Weekly insight. Real answers. A community that is building.</p>
                 <a href="#checkout" class="btn-cta" id="btn-offer">Join the Circle</a>
+                <div id="checkout" class="pp-wrap" style="margin-top:20px; display:none;">
+    <div id="paypal-button-container"></div>
+</div>
             </div>
-        </div>
     </section>
 
     <!-- FAQ -->
@@ -545,8 +547,9 @@
                     e.preventDefault();
                     var checkout = document.getElementById('checkout');
                     if (checkout) {
-                        checkout.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }
+    checkout.style.display = 'block';
+    checkout.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
                 });
             }
         });
