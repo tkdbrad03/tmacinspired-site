@@ -519,42 +519,50 @@
     <script src="https://www.paypal.com/sdk/js?client-id=AXYovXwzGW-keQCgpgZWt67_9RP8maCKEfUWF-CZbKGVFLeQ-A6FxP7DY42mQQV3KdjgScu_KokghD0p&vault=true&intent=subscription"></script>
 
 <script>
-window.addEventListener('load', function () {
+document.addEventListener('DOMContentLoaded', function () {
+    var checkout = document.getElementById('checkout');
 
-  var paypalContainer = document.getElementById('paypal-button-container');
-  var checkout = document.getElementById('checkout');
-  var btn = document.getElementById('btn-offer');
+    paypal.Buttons({
+        createSubscription: function(data, actions) {
+            return actions.subscription.create({
+                plan_id: 'P-7T482108PT489863CNGVAGKA'
+            });
+        },
+        onApprove: function(data) {
+            try {
+                localStorage.setItem('pp_subscription_id', data.subscriptionID);
+            } catch (e) {}
 
-  // Hide checkout initially
-  checkout.style.display = 'none';
+            window.location.href = '/noc-success.html?sub=' + encodeURIComponent(data.subscriptionID);
+        },
+        onError: function(err) {
+            console.error('PayPal error:', err);
+            alert('Payment could not be completed. Please try again.');
+        }
+    }).render('#paypal-button-container');
 
-  // Render PayPal button ONCE
-  paypal.Buttons({
-    createSubscription: function(data, actions) {
-      return actions.subscription.create({
-        plan_id: 'P-7T482108PT489863CNGVAGKA'
-      });
-    },
-    onApprove: function(data) {
-      try {
-        localStorage.setItem('pp_subscription_id', data.subscriptionID);
-      } catch(e) {}
+    ['btn-hero', 'btn-offer'].forEach(function(id) {
+        var btn = document.getElementById(id);
+        if (btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (checkout) {
+                    checkout.style.display = 'block';
+                    checkout.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+        }
+    });
 
-      window.location.href = '/noc-success.html?sub=' + encodeURIComponent(data.subscriptionID);
-    },
-    onError: function(err) {
-      console.error(err);
-      alert('Payment could not be completed.');
-    }
-  }).render('#paypal-button-container');
-
-  // Button click = reveal checkout
-  btn.addEventListener('click', function(e) {
-    e.preventDefault();
-    checkout.style.display = 'block';
-    checkout.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  });
-
+    document.querySelectorAll('.accordion-header').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var item = btn.parentElement;
+            document.querySelectorAll('.accordion-item').forEach(function (i) {
+                if (i !== item) i.classList.remove('active');
+            });
+            item.classList.toggle('active');
+        });
+    });
 });
 </script>
 </body>
