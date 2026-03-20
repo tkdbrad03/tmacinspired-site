@@ -329,7 +329,7 @@
   .bottom-actions {
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr; 
     gap: 10px;
   }
   .action-btn {
@@ -736,6 +736,16 @@
 </head>
 <body>
 
+<div class="screen hidden" id="gratitude-screen">
+  <button class="back-btn" onclick="showScreen('wallet-screen')" style="align-self:flex-start;margin-bottom:24px">←</button>
+  <div class="night-star">🌸</div>
+  <div id="last-gratitude" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:#7a6435;text-align:center;max-width:280px;margin-bottom:8px;min-height:20px;"></div>
+  <div class="night-prompt">"Today I am grateful for..."</div>
+  <textarea class="night-input" id="gratitude-text" placeholder="I am grateful for..."></textarea>
+  <button class="submit-btn" onclick="saveGratitude()">✦ seal my gratitude ✦</button>
+</div>
+
+
 <!-- PIN SCREEN -->
 <div class="screen" id="pin-screen">
   <div class="pin-logo">Federal Reserve of Magic</div>
@@ -805,9 +815,14 @@
       <span class="action-label">Ledger</span>
     </button>
     <button class="action-btn" onclick="showScreen('night-screen')">
-      <span class="action-icon">🌙</span>
-      <span class="action-label">Tonight</span>
-    </button>
+  <span class="action-icon">🌙</span>
+  <span class="action-label">Tonight</span>
+</button>
+<button class="action-btn" onclick="showScreen('gratitude-screen')">
+  <span class="action-icon">🌸</span>
+  <span class="action-label">Grateful</span>
+</button>
+
   </div>
 </div>
 
@@ -983,6 +998,8 @@ function showScreen(id) {
   if (id === 'ledger-screen') renderLedger();
   if (id === 'bill-screen') renderBillViewer();
   if (id === 'night-screen') loadLastNight();
+  if (id === 'gratitude-screen') loadLastGratitude();
+
 }
 
 // ── WALLET / STACK ──
@@ -1175,6 +1192,14 @@ function loadLastNight() {
     el.textContent = '✦ yesterday: "' + nights[0].text.slice(0, 80) + (nights[0].text.length > 80 ? '…' : '') + '"';
   }
 }
+function loadLastGratitude() {
+  const entries = get('mint_gratitude') || [];
+  const el = document.getElementById('last-gratitude');
+  if (entries.length > 0) {
+    el.textContent = '✦ yesterday: "' + entries[0].text.slice(0, 80) + (entries[0].text.length > 80 ? '…' : '') + '"';
+  }
+}
+
 function saveNight() {
   const text = document.getElementById('night-text').value.trim();
   if (!text) return;
@@ -1183,6 +1208,20 @@ function saveNight() {
   set('mint_nights', nights);
   document.getElementById('night-text').value = '';
 
+  const flash = document.createElement('div');
+  flash.className = 'receipt-flash';
+  document.body.appendChild(flash);
+  setTimeout(() => flash.remove(), 500);
+  setTimeout(() => showScreen('wallet-screen'), 600);
+}
+
+function saveGratitude() {
+  const text = document.getElementById('gratitude-text').value.trim();
+  if (!text) return;
+  const entries = get('mint_gratitude') || [];
+  entries.unshift({ text, date: new Date().toLocaleDateString() });
+  set('mint_gratitude', entries);
+  document.getElementById('gratitude-text').value = '';
   const flash = document.createElement('div');
   flash.className = 'receipt-flash';
   document.body.appendChild(flash);
