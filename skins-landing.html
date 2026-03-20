@@ -363,8 +363,8 @@
       <div class="step">
         <div class="step-num">1</div>
         <div class="step-text">
-          <strong>Pay once per round</strong>
-          <span>One flat $10 fee unlocks the full app for your entire group — no subscriptions.</span>
+          <strong>Subscribe once, play all month</strong>
+          <span>One flat $4.99/month unlocks unlimited rounds for you and your crew — cancel anytime.</span>
         </div>
       </div>
       <div class="step">
@@ -385,23 +385,20 @@
   </div>
 
   <div class="price-card">
-    <div class="price-label">One Round · All Players</div>
-    <div class="price-amount"><sup>$</sup>10</div>
-    <div class="price-desc">one-time · unlimited players</div>
+    <div class="price-label">Unlimited Rounds · All Players</div>
+    <div class="price-amount"><sup>$</sup>4<span style="font-size:1.8rem">.99</span></div>
+    <div class="price-desc">per month · cancel anytime</div>
 
     <div class="perks">
+      <div class="perk"><div class="perk-check">✓</div> Unlimited rounds every month</div>
       <div class="perk"><div class="perk-check">✓</div> 2, 3, or 4 players</div>
       <div class="perk"><div class="perk-check">✓</div> Front 9, Back 9, or All 18</div>
       <div class="perk"><div class="perk-check">✓</div> Live leaderboard for spectators</div>
-      <div class="perk"><div class="perk-check">✓</div> Custom buy-in pot calculator</div>
       <div class="perk"><div class="perk-check">✓</div> Real-time sync across all phones</div>
     </div>
 
-    <button class="cta-btn" id="startBtn" onclick="showPayPal()">
-      Start a Round — $10
-    </button>
-    <div id="paypal-button-container" style="margin-top:14px; display:none;"></div>
-    <div class="paypal-note">🔒 Secured by PayPal · Instant access</div>
+    <div id="paypal-button-container-P-5U859076AB0153944NG6ZG4I" style="margin-bottom:10px;"></div>
+    <div class="paypal-note">🔒 Secured by PayPal · Less than a sleeve of balls a month</div>
   </div>
 
   <div class="code-section">
@@ -418,50 +415,32 @@
 
 </div>
 
-<script src="https://www.paypal.com/sdk/js?client-id=AXYovXwzGW-keQCgpgZWt67_9RP8maCKEfUWF-CZbKGVFLeQ-A6FxP7DY42mQQV3KdjgScu_KokghD0p&currency=USD"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=AXYovXwzGW-keQCgpgZWt67_9RP8maCKEfUWF-CZbKGVFLeQ-A6FxP7DY42mQQV3KdjgScu_KokghD0p&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
 <script>
 function generateRoomCode() {
   return 'golf-' + Math.random().toString(36).slice(2, 7);
 }
 
-function showPayPal() {
-  const btn = document.getElementById('startBtn');
-  const container = document.getElementById('paypal-button-container');
-  btn.style.display = 'none';
-  container.style.display = 'block';
-
-  paypal.Buttons({
-    style: {
-      layout: 'vertical',
-      color: 'gold',
-      shape: 'rect',
-      label: 'pay'
-    },
-    createOrder: function(data, actions) {
-      return actions.order.create({
-        purchase_units: [{
-          description: 'Golf Skins — One Round',
-          amount: { value: '10.00' }
-        }]
-      });
-    },
-    onApprove: function(data, actions) {
-      return actions.order.capture().then(function(details) {
-        const roomCode = generateRoomCode();
-        window.location.href = 'golf-tracker.html?room=' + roomCode;
-      });
-    },
-    onCancel: function() {
-      document.getElementById('startBtn').style.display = 'block';
-      container.style.display = 'none';
-    },
-    onError: function(err) {
-      document.getElementById('startBtn').style.display = 'block';
-      container.style.display = 'none';
-      alert('Payment failed. Please try again.');
-    }
-  }).render('#paypal-button-container');
-}
+paypal.Buttons({
+  style: {
+    shape: 'rect',
+    color: 'gold',
+    layout: 'vertical',
+    label: 'subscribe'
+  },
+  createSubscription: function(data, actions) {
+    return actions.subscription.create({
+      plan_id: 'P-5U859076AB0153944NG6ZG4I'
+    });
+  },
+  onApprove: function(data, actions) {
+    const roomCode = generateRoomCode();
+    window.location.href = 'Hole-tracker?room=' + roomCode;
+  },
+  onError: function(err) {
+    alert('Something went wrong. Please try again.');
+  }
+}).render('#paypal-button-container-P-5U859076AB0153944NG6ZG4I');
 
 function toggleCode() {
   const wrap = document.getElementById('codeWrap');
@@ -474,7 +453,7 @@ function toggleCode() {
 function enterCode() {
   const code = document.getElementById('codeInput').value.trim();
   if (!code) return;
-  window.location.href = 'golf-tracker.html?room=' + encodeURIComponent(code);
+  window.location.href = 'Hole-tracker?room=' + encodeURIComponent(code);
 }
 </script>
 </body>
