@@ -732,6 +732,24 @@
     40% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
     100% { opacity: 0; transform: translate(-50%, -60%) scale(1); }
   }
+  .tab-btn {
+  flex:1;
+  background:none;
+  border:none;
+  color:var(--gold-dim);
+  font-family:'Outfit',sans-serif;
+  font-size:11px;
+  letter-spacing:1px;
+  padding:10px 4px;
+  cursor:pointer;
+  border-bottom:2px solid transparent;
+  transition:all 0.2s;
+}
+.tab-btn.active {
+  color:var(--gold);
+  border-bottom:2px solid var(--gold);
+}
+
 </style>
 </head>
 <body>
@@ -888,7 +906,13 @@
     <div class="ledger-total-amount" id="ledger-amount">$0</div>
     <div class="ledger-goal-pct" id="ledger-pct">0% of your million</div>
   </div>
-  <div id="ledger-entries" style="width:100%">
+  <div style="display:flex;gap:0;width:100%;margin-bottom:20px;border-bottom:1px solid rgba(201,169,97,0.15);">
+  <button class="tab-btn active" id="tab-receipts" onclick="switchTab('receipts')">🧾 Receipts</button>
+  <button class="tab-btn" id="tab-nights" onclick="switchTab('nights')">🌙 Nights</button>
+  <button class="tab-btn" id="tab-grateful" onclick="switchTab('grateful')">🌸 Grateful</button>
+</div>
+<div id="ledger-entries" style="width:100%">
+
     <div class="empty-ledger">"The magic is already flowing.<br>Log your first win."</div>
   </div>
 </div>
@@ -1157,32 +1181,84 @@ function updateWalletTotal() {
   document.getElementById('wallet-progress').style.width = pct + '%';
 }
 
+let activeTab = 'receipts';
+
 function renderLedger() {
   const total = wins.reduce((s,w) => s + (w.value||0), 0);
   const pct = Math.min((total/GOAL)*100, 100);
   document.getElementById('ledger-amount').textContent = '$' + total.toLocaleString();
   document.getElementById('ledger-pct').textContent = pct.toFixed(2) + '% of your million';
-
-  const container = document.getElementById('ledger-entries');
-  if (wins.length === 0) {
-    container.innerHTML = '<div class="empty-ledger">"The magic is already flowing.<br>Log your first win."</div>';
-    return;
-  }
-  container.innerHTML = '';
-  wins.forEach(w => {
-    const el = document.createElement('div');
-    el.className = 'win-entry';
-    el.innerHTML = `
-      <div class="win-emoji">${w.type}</div>
-      <div class="win-content">
-        <div class="win-title-text">${w.desc}</div>
-        <div class="win-meta">${w.date}</div>
-      </div>
-      ${w.value ? `<div class="win-value">$${w.value.toLocaleString()}</div>` : ''}
-    `;
-    container.appendChild(el);
-  });
+  switchTab(activeTab);
 }
+
+function switchTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  const container = document.getElementById('ledger-entries');
+  container.innerHTML = '';
+
+  if (tab === 'receipts') {
+    if (wins.length === 0) {
+      container.innerHTML = '<div class="empty-ledger">"The magic is already flowing.<br>Log your first win."</div>';
+      return;
+    }
+    wins.forEach(w => {
+      const el = document.createElement('div');
+      el.className = 'win-entry';
+      el.innerHTML = `
+        <div class="win-emoji">${w.type}</div>
+        <div class="win-content">
+          <div class="win-title-text">${w.desc}</div>
+          <div class="win-meta">${w.date}</div>
+        </div>
+        ${w.value ? `<div class="win-value">$${w.value.toLocaleString()}</div>` : ''}
+      `;
+      container.appendChild(el);
+    });
+  }
+
+  if (tab === 'nights') {
+    const nights = get('mint_nights') || [];
+    if (nights.length === 0) {
+      container.innerHTML = '<div class="empty-ledger">"Your nightly reflections will appear here."</div>';
+      return;
+    }
+    nights.forEach(n => {
+      const el = document.createElement('div');
+      el.className = 'win-entry';
+      el.innerHTML = `
+        <div class="win-emoji">🌙</div>
+        <div class="win-content">
+          <div class="win-title-text">${n.text}</div>
+          <div class="win-meta">${n.date}</div>
+        </div>
+      `;
+      container.appendChild(el);
+    });
+  }
+
+  if (tab === 'grateful') {
+    const entries = get('mint_gratitude') || [];
+    if (entries.length === 0) {
+      container.innerHTML = '<div class="empty-ledger">"Your gratitude entries will appear here."</div>';
+      return;
+    }
+    entries.forEach(g => {
+      const el = document.createElement('div');
+      el.className = 'win-entry';
+      el.innerHTML = `
+        <div class="win-emoji">🌸</div>
+        <div class="win-content">
+          <div class="win-title-text">${g.text}</div>
+          <div class="win-meta">${g.date}</div>
+        </div>
+      `;
+      container.appendChild(el);
+    });
+  }
+}
+
 
 // ── NIGHT ──
 function loadLastNight() {
