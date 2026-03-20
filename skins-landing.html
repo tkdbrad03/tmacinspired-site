@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golf Skins — The Game Within the Game</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pine: #1a2f1c;
+    --gold: #c9a86c;
+    --gold-light: #e8d5a8;
+    --cream: #faf8f3;
+    --white: #ffffff;
+    --muted: #7a8f7c;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--pine);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Subtle grass texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      radial-gradient(ellipse at 20% 50%, rgba(201,168,108,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(255,255,255,0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+  }
+
+  /* Header */
+  .header {
+    padding: 48px 0 0;
+    text-align: center;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .flag-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 12px;
+    animation: flagWave 2s ease-in-out infinite;
+    transform-origin: bottom center;
+  }
+
+  @keyframes flagWave {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+  }
+
+  .brand-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.2rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 3px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--muted);
+    letter-spacing: 1px;
+    margin-bottom: 0;
+  }
+
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 32px 0;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(201,168,108,0.4));
+  }
+  .divider::after { background: linear-gradient(to left, transparent, rgba(201,168,108,0.4)); }
+  .divider span { color: var(--gold); font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; white-space: nowrap; }
+
+  /* How it works */
+  .how-it-works {
+    animation: fadeUp 0.6s 0.2s ease both;
+    margin-bottom: 32px;
+  }
+
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,108,0.15);
+    border-radius: 12px;
+    padding: 14px 16px;
+    transition: border-color 0.2s;
+  }
+  .step:hover { border-color: rgba(201,168,108,0.4); }
+
+  .step-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--pine);
+    font-weight: 700;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .step-text strong {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 2px;
+  }
+  .step-text span {
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* Price card */
+  .price-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 32px 24px;
+    text-align: center;
+    margin-bottom: 16px;
+    animation: fadeUp 0.6s 0.3s ease both;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .price-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--pine), var(--gold), var(--pine));
+  }
+
+  .price-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-bottom: 8px;
+    color: #7a8f7c;
+  }
+
+  .price-amount {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--pine);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .price-amount sup {
+    font-size: 1.8rem;
+    vertical-align: super;
+    font-weight: 600;
+  }
+
+  .price-desc {
+    font-size: 0.8rem;
+    color: #7a8f7c;
+    margin-bottom: 24px;
+  }
+
+  .perks {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+    text-align: left;
+  }
+
+  .perk {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: var(--pine);
+  }
+
+  .perk-check {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #e8f5e9;
+    color: #2e7d32;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    flex-shrink: 0;
+  }
+
+  .cta-btn {
+    width: 100%;
+    background: var(--pine);
+    color: var(--gold);
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 40%, rgba(201,168,108,0.15));
+  }
+
+  .cta-btn:hover {
+    background: #2e4d30;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(26,47,28,0.3);
+  }
+
+  .cta-btn:active { transform: translateY(0); }
+
+  .paypal-note {
+    font-size: 0.7rem;
+    color: #aaa;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  /* Already have a code */
+  .code-section {
+    animation: fadeUp 0.6s 0.4s ease both;
+    text-align: center;
+  }
+
+  .code-toggle {
+    font-size: 0.8rem;
+    color: var(--muted);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    background: none;
+    border: none;
+    color: var(--gold-light);
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .code-input-wrap {
+    display: none;
+    margin-top: 14px;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .code-input-wrap.open { display: flex; }
+
+  .code-input {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(201,168,108,0.3);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    text-align: center;
+    letter-spacing: 3px;
+    outline: none;
+    width: 100%;
+  }
+  .code-input::placeholder { letter-spacing: 1px; color: rgba(255,255,255,0.3); font-size: 0.85rem; }
+  .code-input:focus { border-color: var(--gold); }
+
+  .code-submit {
+    background: var(--gold);
+    color: var(--pine);
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .code-submit:hover { background: #e0c080; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.2);
+    animation: fadeUp 0.6s 0.5s ease both;
+  }
+  .footer a { color: var(--gold); text-decoration: none; opacity: 0.7; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <span class="flag-icon"></span>
+    <div class="brand-name">Golf Skins</div>
+    <div class="tagline">The Game Within the Game</div>
+  </div>
+
+  <div class="divider"><span>How It Works</span></div>
+
+  <div class="how-it-works">
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">
+          <strong>Pay once per round</strong>
+          <span>One flat $10 fee unlocks the full app for your entire group — no subscriptions.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">
+          <strong>Set up your game</strong>
+          <span>Choose your players, holes, and buy-in amount. Enter names and you're ready.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">
+          <strong>Share the leaderboard</strong>
+          <span>Tap "Share Leaderboard" — your whole crew watches live as skins are won.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="price-card">
+    <div class="price-label">One Round · All Players</div>
+    <div class="price-amount"><sup>$</sup>10</div>
+    <div class="price-desc">one-time · unlimited players</div>
+
+    <div class="perks">
+      <div class="perk"><div class="perk-check">✓</div> 2, 3, or 4 players</div>
+      <div class="perk"><div class="perk-check">✓</div> Front 9, Back 9, or All 18</div>
+      <div class="perk"><div class="perk-check">✓</div> Live leaderboard for spectators</div>
+      <div class="perk"><div class="perk-check">✓</div> Custom buy-in pot calculator</div>
+      <div class="perk"><div class="perk-check">✓</div> Real-time sync across all phones</div>
+    </div>
+
+    <button class="cta-btn" id="startBtn" onclick="showPayPal()">
+      Start a Round — $10
+    </button>
+    <div id="paypal-button-container" style="margin-top:14px; display:none;"></div>
+    <div class="paypal-note">🔒 Secured by PayPal · Instant access</div>
+  </div>
+
+  <div class="code-section">
+    <button class="code-toggle" onclick="toggleCode()">Already have a round code?</button>
+    <div class="code-input-wrap" id="codeWrap">
+      <input class="code-input" id="codeInput" type="text" placeholder="Enter your room code" maxlength="20">
+      <button class="code-submit" onclick="enterCode()">Enter Game →</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>A <a href="https://tmacinspired.com">TMac Inspired</a> product &nbsp;·&nbsp; 18 Holes No Pressure</p>
+  </div>
+
+</div>
+
+<script src="https://www.paypal.com/sdk/js?client-id=AXYovXwzGW-keQCgpgZWt67_9RP8maCKEfUWF-CZbKGVFLeQ-A6FxP7DY42mQQV3KdjgScu_KokghD0p&currency=USD"></script>
+<script>
+function generateRoomCode() {
+  return 'golf-' + Math.random().toString(36).slice(2, 7);
+}
+
+function showPayPal() {
+  const btn = document.getElementById('startBtn');
+  const container = document.getElementById('paypal-button-container');
+  btn.style.display = 'none';
+  container.style.display = 'block';
+
+  paypal.Buttons({
+    style: {
+      layout: 'vertical',
+      color: 'gold',
+      shape: 'rect',
+      label: 'pay'
+    },
+    createOrder: function(data, actions) {
+      return actions.order.create({
+        purchase_units: [{
+          description: 'Golf Skins — One Round',
+          amount: { value: '10.00' }
+        }]
+      });
+    },
+    onApprove: function(data, actions) {
+      return actions.order.capture().then(function(details) {
+        const roomCode = generateRoomCode();
+        window.location.href = 'golf-tracker.html?room=' + roomCode;
+      });
+    },
+    onCancel: function() {
+      document.getElementById('startBtn').style.display = 'block';
+      container.style.display = 'none';
+    },
+    onError: function(err) {
+      document.getElementById('startBtn').style.display = 'block';
+      container.style.display = 'none';
+      alert('Payment failed. Please try again.');
+    }
+  }).render('#paypal-button-container');
+}
+
+function toggleCode() {
+  const wrap = document.getElementById('codeWrap');
+  wrap.classList.toggle('open');
+  if (wrap.classList.contains('open')) {
+    document.getElementById('codeInput').focus();
+  }
+}
+
+function enterCode() {
+  const code = document.getElementById('codeInput').value.trim();
+  if (!code) return;
+  window.location.href = 'golf-tracker.html?room=' + encodeURIComponent(code);
+}
+</script>
+</body>
+</html>
