@@ -157,11 +157,22 @@ let scores = Array.from({length: 18}, () => Array(4).fill(''));
 let names = ['Me', 'Player 2', 'Player 3', 'Player 4'];
 
 const params = new URLSearchParams(location.search);
+
+// Handle return from PayPal payment
+if (params.get('paid') === '1') {
+  const newRoom = 'golf-' + Math.random().toString(36).slice(2, 7);
+  params.set('room', newRoom);
+  params.delete('paid');
+  history.replaceState({}, '', '?' + params.toString());
+}
+
 let room = params.get('room');
 if (!room) {
-  room = 'golf-' + Math.random().toString(36).slice(2,7);
+  room = 'golf-' + Math.random().toString(36).slice(2, 7);
   params.set('room', room);
   history.replaceState({}, '', '?' + params.toString());
+} else {
+  room = params.get('room');
 }
 document.getElementById('roomLabel').textContent = room;
 
