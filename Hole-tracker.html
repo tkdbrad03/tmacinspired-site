@@ -109,8 +109,8 @@ button.secondary:hover { border-color: #c9a86c; color: #c9a86c; }
     <option value="3" selected>3 Players</option>
     <option value="4">4 Players</option>
   </select>
-  <label>$ / Skin</label>
-  <input type="number" id="betAmount" value="1" min="1" max="100" step="1" oninput="changeSetup()">
+  <label>Buy-In $</label>
+<input type="number" id="betAmount" value="20" min="1" max="500" step="1" oninput="changeSetup()">
 </div>
 
 <div class="players p3" id="playerCards"></div>
@@ -275,9 +275,12 @@ function calculate() {
     }
   }
 
-  const totalSkins = skinCounts.reduce((a,b) => a+b, 0);
+    const totalSkins = skinCounts.reduce((a,b) => a+b, 0);
+  const totalPot = betAmount * numPlayers;
   for (let i = 0; i < numPlayers; i++) {
-    const net = (skinCounts[i] * (numPlayers - 1) * betAmount) - ((totalSkins - skinCounts[i]) * betAmount);
+    const share = totalSkins > 0 ? (skinCounts[i] / totalSkins) * totalPot : 0;
+    const net = share - betAmount;
+
     const el = document.getElementById('win'+i);
     if (!el) continue;
     el.textContent = (net >= 0 ? '+' : '-') + '$' + Math.abs(net).toFixed(net % 1 === 0 ? 0 : 2);
