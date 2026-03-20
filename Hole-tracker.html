@@ -6,6 +6,10 @@
 <title>Golf Skins Tracker</title>
 <link rel="icon" type="image/png" href="golf-skins.png">
 <link rel="apple-touch-icon" href="golf-skins.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Golf Skins">
+<meta name="theme-color" content="#ffffff">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -88,6 +92,10 @@ button:hover { background: #b8964f; }
 button.secondary { background: transparent; border: 1px solid #c8dac8; color: #5a7a5a; }
 button.secondary:hover { border-color: #c9a86c; color: #c9a86c; }
 .note { text-align: center; font-size: 0.7rem; color: #5a7a5a; margin-top: 14px; font-style: italic; }
+.viewer-badge { text-align: center; background: #f4f7f4; border: 1px solid #c8dac8; border-radius: 20px; padding: 6px 16px; font-size: 0.75rem; color: #5a7a5a; display: inline-block; }
+.viewer-wrap { text-align: center; margin-bottom: 12px; }
+.share-btn { background: #1a2f1c; color: #c9a86c; font-size: 0.85rem; padding: 8px 18px; border-radius: 8px; border: none; font-family: 'DM Sans', sans-serif; font-weight: 700; cursor: pointer; margin-top: 10px; }
+.copied-msg { font-size: 0.7rem; color: #2e7d32; text-align: center; margin-top: 6px; display: none; }
 </style>
 
 </head>
@@ -125,11 +133,19 @@ button.secondary:hover { border-color: #c9a86c; color: #c9a86c; }
   </table>
 </div>
 
-<div class="btn-row">
+<div class="btn-row" id="adminControls">
   <button onclick="calculate()">Calculate</button>
   <button class="secondary" onclick="resetAll()">Reset</button>
 </div>
-<p class="note">Ties are a push — no skin awarded.</p>
+<div style="text-align:center">
+  <button class="share-btn" onclick="shareLeaderboard()">📤 Share Leaderboard</button>
+  <div class="copied-msg" id="copiedMsg">Link copied to clipboard!</div>
+</div>
+<div class="viewer-wrap" id="viewerBadge" style="display:none">
+  <span class="viewer-badge">Leaderboard View — Live Updates</span>
+</div>
+<p class="note" id="adminNote">Ties are a push — no skin awarded.</p>
+
 
 <script>
 let HOLES = 18;
@@ -367,10 +383,38 @@ function resetAll() {
   buildAll();
   broadcastState();
 }
+const isViewer = params.get('view') === '1';
+
+function applyViewerMode() {
+  if (!isViewer) return;
+  document.getElementById('adminControls').style.display = 'none';
+  document.getElementById('adminNote').style.display = 'none';
+  document.querySelector('.setup-bar').style.display = 'none';
+  document.getElementById('viewerBadge').style.display = 'block';
+  document.querySelectorAll('input').forEach(inp => inp.setAttribute('readonly', true));
+  document.querySelectorAll('.player-card input[type="text"]').forEach(inp => {
+    inp.style.borderBottom = 'none';
+    inp.style.pointerEvents = 'none';
+  });
+}
+
+function shareLeaderboard() {
+  const shareParams = new URLSearchParams(params.toString());
+  shareParams.set('view', '1');
+  shareParams.delete('data');
+  const url = location.origin + location.pathname + '?' + shareParams.toString();
+  navigator.clipboard.writeText(url).then(() => {
+    const msg = document.getElementById('copiedMsg');
+    msg.style.display = 'block';
+    setTimeout(() => msg.style.display = 'none', 3000);
+  });
+}
 
 loadFromURL();
 buildAll();
+applyViewerMode();
 connect();
+
 </script>
 
 </body>
