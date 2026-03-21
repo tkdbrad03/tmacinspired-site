@@ -467,7 +467,6 @@ function applyViewerMode() {
 function shareLeaderboard() {
   const shareParams = new URLSearchParams(params.toString());
   shareParams.set('view', '1');
-  shareParams.delete('data');
   const url = location.origin + location.pathname + '?' + shareParams.toString();
   navigator.clipboard.writeText(url).then(() => {
     const msg = document.getElementById('copiedMsg');
