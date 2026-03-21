@@ -40,6 +40,13 @@ color: #1a2f1c; font-family: ‘DM Sans’, sans-serif; font-size: 0.9rem; paddi
 }
 .setup-bar input[type=“number”] { width: 60px; }
 .setup-bar select:focus, .setup-bar input:focus { border-color: #c9a86c; }
+.par3-setup { background: #f4f7f4; border: 1px solid #c8dac8; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; }
+.par3-setup label { font-size: 0.7rem; color: #5a7a5a; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px; }
+.par3-holes { display: flex; flex-wrap: wrap; gap: 6px; }
+.par3-btn { background: #ffffff; border: 1px solid #c8dac8; border-radius: 6px; padding: 4px 8px; font-size: 0.8rem; font-family: 'DM Sans', sans-serif; cursor: pointer; color: #1a2f1c; transition: all 0.2s; }
+.par3-btn.selected { background: #1a2f1c; color: #c9a86c; border-color: #1a2f1c; }
+.ctp-cell { font-size: 0.65rem; color: #c9a86c; font-weight: 600; cursor: pointer; }
+.ctp-winner { color: #2e7d32; font-weight: 700; }
 
 .players { display: grid; gap: 8px; margin-bottom: 14px; }
 .players.p2 { grid-template-columns: repeat(2, 1fr); }
@@ -122,6 +129,11 @@ button.secondary:hover { border-color: #c9a86c; color: #c9a86c; }
   <label>Buy-In $</label>
 <input type="number" id="betAmount" value="20" min="1" max="500" step="1" oninput="changeSetup()">
 </div>
+<div class="par3-setup" id="par3Setup">
+  <label>📍 Select Par 3 Holes (CTP)</label>
+  <div class="par3-holes" id="par3Holes"></div>
+</div>
+
 
 <div class="players p3" id="playerCards"></div>
 
@@ -155,6 +167,8 @@ let numPlayers = 3;
 let betAmount = 1;
 let scores = Array.from({length: 18}, () => Array(4).fill(''));
 let names = ['Me', 'Player 2', 'Player 3', 'Player 4'];
+let par3Holes = []; // holes marked as par 3 (0-indexed)
+let ctpWinners = Array(18).fill(null); // index = hole, value = player index
 
 const params = new URLSearchParams(location.search);
 
@@ -230,9 +244,11 @@ function changeSetup() {
 function buildAll() {
   buildPlayerCards();
   buildTable();
+  buildPar3Selector();
   renderHeaders();
   calculate();
 }
+
 
 function buildPlayerCards() {
   const container = document.getElementById('playerCards');
@@ -273,10 +289,45 @@ function buildTable() {
         value="${scores[h] ? scores[h][p] : ''}"
         oninput="scores[${h}][${p}]=this.value; broadcastState();"></td>`;
     }
-    cells += `<td class="result-cell" id="res${h}"></td>`;
+    const ctpLabel = par3Holes.includes(h) ? `<div class="ctp-cell" onclick="ctpTap(${h})" id="ctp${h}">📍 Tap CTP</div>` : '';
+    cells += `<td class="result-cell" id="res${h}">${ctpLabel}</td>`;
     tr.innerHTML = cells;
     tbody.appendChild(tr);
   }
+}
+
+function buildPar3Selector() {
+  const container = document.getElementById('par3Holes');
+  container.innerHTML = '';
+  for (let h = 0; h < HOLES; h++) {
+    const btn = document.createElement('button');
+    btn.className = 'par3-btn' + (par3Holes.includes(h) ? ' selected' : '');
+    btn.textContent = holeNumbers[h];
+    btn.onclick = () => {
+      if (par3Holes.includes(h)) {
+        par3Holes = par3Holes.filter(x => x !== h);
+        ctpWinners[h] = null;
+      } else {
+        par3Holes.push(h);
+      }
+      buildPar3Selector();
+      buildTable();
+      calculate();
+      broadcastState();
+    };
+    container.appendChild(btn);
+  }
+}
+
+function ctpTap(h) {
+  if (!par3Holes.includes(h)) return;
+  const current = ctpWinners[h];
+  // cycle through players then back to null
+  if (current === null) ctpWinners[h] = 0;
+  else if (current < numPlayers - 1) ctpWinners[h] = current + 1;
+  else ctpWinners[h] = null;
+  calculate();
+  broadcastState();
 }
 
 function calculate() {
@@ -295,14 +346,29 @@ function calculate() {
     const winners = vals.map((v,i) => v === min ? i : -1).filter(i => i >= 0);
 
     if (winners.length === 1) {
-      skinCounts[winners[0]]++;
-      cell.textContent = '🏆 ' + (names[winners[0]] || 'P'+(winners[0]+1));
-      cell.className = 'result-cell win-cell';
-    } else {
-      cell.textContent = 'Tie';
-      cell.className = 'result-cell push-cell';
-    }
+  skinCounts[winners[0]]++;
+  cell.textContent = '🏆 ' + (names[winners[0]] || 'P'+(winners[0]+1));
+  cell.className = 'result-cell win-cell';
+} else {
+  cell.textContent = 'Tie';
+  cell.className = 'result-cell push-cell';
+}
+// CTP bonus skin
+if (par3Holes.includes(h) && ctpWinners[h] !== null) {
+  skinCounts[ctpWinners[h]]++;
+  const ctpEl = document.getElementById('ctp'+h);
+  if (ctpEl) {
+    ctpEl.textContent = '📍 ' + (names[ctpWinners[h]] || 'P'+(ctpWinners[h]+1));
+    ctpEl.className = 'ctp-cell ctp-winner';
   }
+} else if (par3Holes.includes(h)) {
+  const ctpEl = document.getElementById('ctp'+h);
+  if (ctpEl) {
+    ctpEl.textContent = '📍 Tap CTP';
+    ctpEl.className = 'ctp-cell';
+  }
+}
+
 
     const totalSkins = skinCounts.reduce((a,b) => a+b, 0);
   const totalPot = betAmount * numPlayers;
