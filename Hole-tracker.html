@@ -308,12 +308,12 @@ function calculate() {
   const totalPot = betAmount * numPlayers;
   for (let i = 0; i < numPlayers; i++) {
     const share = totalSkins > 0 ? (skinCounts[i] / totalSkins) * totalPot : 0;
-    const net = share - betAmount;
+    const net = share; 
 
     const el = document.getElementById('win'+i);
     if (!el) continue;
-    el.textContent = (net >= 0 ? '+' : '-') + '$' + Math.abs(net).toFixed(net % 1 === 0 ? 0 : 2);
-    el.className = 'winnings ' + (net > 0 ? 'pos' : net < 0 ? 'neg' : 'zero');
+    el.textContent = '$' + net.toFixed(net % 1 === 0 ? 0 : 2);
+    el.className = 'winnings ' + (net > 0 ? 'pos' : 'zero');
     document.getElementById('skins'+i).textContent = skinCounts[i] + ' skin' + (skinCounts[i] !== 1 ? 's' : '');
     document.getElementById('tot'+i).textContent = strokeTotals[i] || '—';
     const hdr = document.getElementById('h'+i);
