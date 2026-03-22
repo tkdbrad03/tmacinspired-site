@@ -156,7 +156,7 @@ body { font-family: 'DM Sans', sans-serif; background: #fafaf8; color: #1a1a18; 
 .resource-link .r-name { font-size: 13.5px; font-weight: 600; color: #1f4236; }
 .resource-link .r-sub { font-size: 11.5px; color: #6b7169; margin-top: 1px; }
 
-.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #e4e8e5; display: flex; padding-bottom: env(safe-area-inset-bottom, 0); z-index: 10000; box-shadow: 0 -2px 12px rgba(31,66,54,0.07); }
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #e4e8e5; display: none; padding-bottom: calc(8px + env(safe-area-inset-bottom)); z-index: 1000; box-shadow: 0 -2px 12px rgba(31,66,54,0.07); }
 .bnav-btn { flex: 1; padding: 9px 4px 7px; display: flex; flex-direction: column; align-items: center; gap: 2px; border: none; background: none; cursor: pointer; font-family: 'DM Sans', sans-serif; }
 .bnav-btn .ico { font-size: 18px; opacity: 0.35; }
 .bnav-btn .lbl { font-size: 9.5px; font-weight: 500; color: #6b7169; }
@@ -229,9 +229,9 @@ body { font-family: 'DM Sans', sans-serif; background: #fafaf8; color: #1a1a18; 
 .noc-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; color: #fff; margin-bottom: 8px; line-height: 1.25; }
 .noc-card p { font-size: 13.5px; color: rgba(255,255,255,0.78); line-height: 1.65; margin-bottom: 16px; }
 .noc-btn { display: inline-block; background: #c9a961; color: #1f4236; border: none; border-radius: 8px; padding: 11px 22px; font-size: 13.5px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; text-decoration: none; }
-@media (min-width: 600px) { .bottom-nav { display: none; } .page { padding-bottom: 48px; } }
-@media (max-width: 599px) { .tabs { display: none; } }
-@media (max-width: 599px) { .bottom-nav { display: flex !important; visibility: visible !important; opacity: 1 !important; } }
+@media (min-width: 769px) { .page { padding-bottom: 48px; } }
+@media (max-width: 768px) { .tabs { display: none; } .bottom-nav { display: block; } .page { padding-bottom: 100px !important; } }
+@media (max-width: 599px) { .bottom-nav { display: flex !important; } }
 </style>
 </head>
 <body>
@@ -868,7 +868,7 @@ function checkAccess() {
     .then(function(data) {
       if (data.approved) {
         localStorage.setItem('tsa-approved-email', email);
-        hideGate();
+        document.getElementById('access-gate').style.display = 'none';
       } else {
         showGateMsg('gate-login-msg', '⛔ This email is not approved yet. Request access or contact Dr. TMac.', '#b91c1c');
       }
@@ -883,16 +883,6 @@ function showGateMsg(id, text, color) {
   el.style.display = 'block';
 }
 
-function hideGate() {
-  var gate = document.getElementById('access-gate');
-  if (gate) {
-    gate.style.display = 'none';
-    gate.style.visibility = 'hidden';
-    gate.style.pointerEvents = 'none';
-    gate.style.zIndex = '-1';
-  }
-}
-
 function initGate() {
   // Check for magic link parameter first
   var urlParams = new URLSearchParams(window.location.search);
@@ -902,13 +892,14 @@ function initGate() {
       .then(function(r){ return r.json(); })
       .then(function(data) {
         if (data.approved) {
-          try { localStorage.setItem('tsa-approved-email', magicEmail); } catch(e) {}
-          hideGate();
-          try { window.history.replaceState({}, document.title, window.location.pathname); } catch(e) {}
+          localStorage.setItem('tsa-approved-email', magicEmail);
+          document.getElementById('access-gate').style.display = 'none';
+          // Clean the URL without reloading
+          window.history.replaceState({}, document.title, window.location.pathname);
         }
       })
       .catch(function(){
-        hideGate();
+        document.getElementById('access-gate').style.display = 'none';
       });
     return;
   }
@@ -920,13 +911,13 @@ function initGate() {
       .then(function(r){ return r.json(); })
       .then(function(data) {
         if (data.approved) {
-          hideGate();
+          document.getElementById('access-gate').style.display = 'none';
         } else {
           localStorage.removeItem('tsa-approved-email');
         }
       })
       .catch(function(){
-        hideGate();
+        document.getElementById('access-gate').style.display = 'none';
       });
   }
 }
