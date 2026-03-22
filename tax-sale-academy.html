@@ -2,10 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#1f4236">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tax Sales">
+<meta name="mobile-web-app-capable" content="yes">
 <title>Tax Sale Academy | TMac Inspired</title>
-<link rel="icon" type="image/png" href="tmac-logo.png">
+<link rel="manifest" href="/tax-sale-academy-manifest.json">
+<link rel="apple-touch-icon" href="/tax-sale-academy-icon-192.png">
+<link rel="icon" type="image/png" href="/tax-sale-academy-icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -156,7 +162,7 @@ body { font-family: 'DM Sans', sans-serif; background: #fafaf8; color: #1a1a18; 
 .resource-link .r-name { font-size: 13.5px; font-weight: 600; color: #1f4236; }
 .resource-link .r-sub { font-size: 11.5px; color: #6b7169; margin-top: 1px; }
 
-.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #e4e8e5; display: none; padding-bottom: calc(8px + env(safe-area-inset-bottom)); z-index: 99999; box-shadow: 0 -2px 12px rgba(31,66,54,0.07); }
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #e4e8e5; display: none; padding-bottom: calc(8px + env(safe-area-inset-bottom)); z-index: 1000; box-shadow: 0 -2px 12px rgba(31,66,54,0.07); }
 .bnav-btn { flex: 1; padding: 9px 4px 7px; display: flex; flex-direction: column; align-items: center; gap: 2px; border: none; background: none; cursor: pointer; font-family: 'DM Sans', sans-serif; }
 .bnav-btn .ico { font-size: 18px; opacity: 0.35; }
 .bnav-btn .lbl { font-size: 9.5px; font-weight: 500; color: #6b7169; }
@@ -229,9 +235,9 @@ body { font-family: 'DM Sans', sans-serif; background: #fafaf8; color: #1a1a18; 
 .noc-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; color: #fff; margin-bottom: 8px; line-height: 1.25; }
 .noc-card p { font-size: 13.5px; color: rgba(255,255,255,0.78); line-height: 1.65; margin-bottom: 16px; }
 .noc-btn { display: inline-block; background: #c9a961; color: #1f4236; border: none; border-radius: 8px; padding: 11px 22px; font-size: 13.5px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; text-decoration: none; }
-@media (min-width: 769px) { .page { padding-bottom: 48px; } }
-@media (max-width: 768px) { .tabs { display: none; } .bottom-nav { display: block; } .page { padding-bottom: 100px !important; } }
-
+@media (min-width: 769px) { .tabs { display: flex; } .bottom-nav { display: none !important; } .page { padding-bottom: 48px; } }
+@media (max-width: 768px) { .tabs { display: none !important; } .bottom-nav { display: flex !important; } .page { padding-bottom: 100px !important; } }
+@media (max-width: 599px) { .bottom-nav { display: flex !important; } }
 </style>
 </head>
 <body>
@@ -1702,6 +1708,15 @@ function closeModal() {
 document.getElementById('land-modal').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
 });
+
+// Register Service Worker for PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/tax-sale-academy-sw.js')
+      .then(function(reg) { console.log('SW registered'); })
+      .catch(function(err) { console.log('SW failed', err); });
+  });
+}
 </script>
 
 <!-- LAND USE MODAL -->
