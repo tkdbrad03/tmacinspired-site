@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1f4236">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>States | Tax Sale Academy</title>
+<link rel="manifest" href="/tax-sale-academy-manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tsa-shared.css">
+</head>
+<body>
+<nav class="pwa-bottom-nav">
+  <div class="pwa-bottom-nav-inner">
+    <a href="/tax-sale-academy" class="pwa-nav-item"><span class="nav-ico">📖</span>Start</a>
+    <a href="/tsa-process" class="pwa-nav-item"><span class="nav-ico">🪜</span>Process</a>
+    <a href="/tsa-checklists" class="pwa-nav-item"><span class="nav-ico">✅</span>Checklists</a>
+    <a href="/tsa-tracker" class="pwa-nav-item"><span class="nav-ico">🗂️</span>Tracker</a>
+    <a href="/tsa-landuse" class="pwa-nav-item"><span class="nav-ico">🌱</span>Land Use</a>
+    <a href="/tsa-tools" class="pwa-nav-item"><span class="nav-ico">🔗</span>Tools</a>
+  </div>
+</nav>
+<div class="tsa-header">
+  <div class="brand-tag">TMac Inspired</div>
+  <h1>Tax Sale <em>Academy</em></h1>
+  <div class="gold-line"></div>
+</div>
+<div class="tsa-page">
+  <div class="sec-head">
+    <h2>State-by-State Guide</h2>
+    <p>Know your state's rules before you invest.</p>
+  </div>
+
+  <div class="home-state-card">
+    <div class="hs-top">
+      <div>
+        <div class="hs-label">YOUR HOME STATE</div>
+        <div class="hs-name" id="hs-display">Not set yet</div>
+      </div>
+      <button class="hs-edit-btn" onclick="toggleSelector()">Change</button>
+    </div>
+    <div id="hs-badge-wrap"></div>
+    <div id="hs-selector" style="display:none;margin-top:12px;">
+      <select id="hs-select" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid #e4e8e5;font-family:'DM Sans',sans-serif;font-size:14px;color:#1a1a18;background:#fff;outline:none;">
+        <option value="">Select your state...</option>
+      </select>
+      <button class="save-btn" style="margin-top:8px;width:100%;" onclick="saveHomeState()">Save My State</button>
+    </div>
+    <p class="hs-tip" id="hs-tip">Select your state to see your investment strategy at a glance.</p>
+  </div>
+
+  <div class="state-filters">
+    <button class="filter-btn deed" onclick="filterStates('deed')">Tax Deed</button>
+    <button class="filter-btn lien" onclick="filterStates('lien')">Tax Lien</button>
+    <button class="filter-btn both" onclick="filterStates('both')">Both</button>
+    <button class="filter-btn all" onclick="filterStates('all')">All States</button>
+  </div>
+  <div class="state-grid" id="state-grid"></div>
+</div>
+
+<script>
+var deedStates = ["Alaska","Arkansas","California","Connecticut","Delaware","Georgia","Hawaii","Idaho","Kansas","Maine","Michigan","Missouri","Nevada","New Hampshire","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Dakota","Tennessee","Texas","Utah","Virginia","Washington","Wisconsin"];
+var lienStates = ["Alabama","Arizona","Colorado","Illinois","Indiana","Iowa","Kentucky","Louisiana","Maryland","Mississippi","Montana","Nebraska","New Jersey","North Dakota","Ohio","Oklahoma","South Carolina","South Dakota","Vermont","West Virginia","Wyoming","District of Columbia"];
+var bothStates = ["Florida","Illinois","Indiana","Ohio"];
+var allStates = ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","District of Columbia","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Michigan","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"];
+var deedSet = {"Alaska":1,"Arkansas":1,"California":1,"Connecticut":1,"Delaware":1,"Florida":1,"Georgia":1,"Hawaii":1,"Idaho":1,"Illinois":1,"Indiana":1,"Kansas":1,"Maine":1,"Michigan":1,"Missouri":1,"Nevada":1,"New Hampshire":1,"New Mexico":1,"New York":1,"North Carolina":1,"North Dakota":1,"Ohio":1,"Oklahoma":1,"Oregon":1,"Pennsylvania":1,"Rhode Island":1,"South Dakota":1,"Tennessee":1,"Texas":1,"Utah":1,"Virginia":1,"Washington":1,"Wisconsin":1};
+var lienSet = {"Alabama":1,"Arizona":1,"Colorado":1,"Florida":1,"Illinois":1,"Indiana":1,"Iowa":1,"Kentucky":1,"Louisiana":1,"Maryland":1,"Mississippi":1,"Missouri":1,"Montana":1,"Nebraska":1,"New Jersey":1,"North Dakota":1,"Ohio":1,"Oklahoma":1,"South Carolina":1,"South Dakota":1,"Vermont":1,"West Virginia":1,"Wyoming":1,"District of Columbia":1};
+var bothSet = {"Florida":1,"Illinois":1,"Indiana":1,"Ohio":1};
+var stateTips = {
+  deed: "Your state is a Tax Deed state. When you win at auction, you get the deed directly.",
+  lien: "Your state is a Tax Lien state. You purchase the certificate and earn interest. If the owner does not redeem, you can foreclose.",
+  both: "Your state offers BOTH Tax Lien and Tax Deed strategies. Maximum flexibility."
+};
+
+function filterStates(filter) {
+  var grid = document.getElementById('state-grid');
+  grid.innerHTML = '';
+  var seen = {};
+  var combined = deedStates.concat(lienStates).concat(bothStates);
+  var all = [];
+  for (var i=0;i<combined.length;i++) { if (!seen[combined[i]]) { seen[combined[i]]=true; all.push(combined[i]); } }
+  all.sort();
+  for (var j=0;j<all.length;j++) {
+    var s=all[j], isD=deedStates.indexOf(s)>-1, isL=lienStates.indexOf(s)>-1, isB=bothStates.indexOf(s)>-1;
+    var show=filter==='all'||(filter==='deed'&&(isD||isB))||(filter==='lien'&&(isL||isB))||(filter==='both'&&isB);
+    if (!show) continue;
+    var dc=isB?'dot-both':isD?'dot-deed':'dot-lien';
+    var pill=document.createElement('div');
+    pill.className='state-pill'+(s==='Florida'?' hi':'');
+    pill.innerHTML='<span class="dot '+dc+'"></span>'+s;
+    grid.appendChild(pill);
+  }
+}
+
+function populateSelector() {
+  var sel=document.getElementById('hs-select');
+  for (var i=0;i<allStates.length;i++) {
+    var opt=document.createElement('option');
+    opt.value=allStates[i]; opt.textContent=allStates[i]; sel.appendChild(opt);
+  }
+  var saved=localStorage.getItem('tsa-home-state');
+  if (saved) sel.value=saved;
+}
+
+function toggleSelector() {
+  var s=document.getElementById('hs-selector');
+  s.style.display=s.style.display==='none'?'block':'none';
+}
+
+function saveHomeState() {
+  var val=document.getElementById('hs-select').value;
+  if (!val) return;
+  localStorage.setItem('tsa-home-state',val);
+  renderHomeState(val);
+  document.getElementById('hs-selector').style.display='none';
+}
+
+function renderHomeState(state) {
+  if (!state) return;
+  document.getElementById('hs-display').textContent=state;
+  var wrap=document.getElementById('hs-badge-wrap');
+  wrap.innerHTML='';
+  var type=bothSet[state]?'both':deedSet[state]?'deed':lienSet[state]?'lien':null;
+  if (type) {
+    var badge=document.createElement('span');
+    badge.className='hs-badge '+type;
+    var labels={deed:'● Tax Deed State',lien:'● Tax Lien State',both:'● Tax Lien & Deed State'};
+    badge.textContent=labels[type];
+    wrap.appendChild(badge);
+    document.getElementById('hs-tip').textContent=stateTips[type];
+  }
+}
+
+filterStates('all');
+populateSelector();
+var saved=localStorage.getItem('tsa-home-state');
+if (saved) renderHomeState(saved);
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('/tax-sale-academy-sw.js');
+</script>
+
+</body>
+</html>
