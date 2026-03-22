@@ -894,12 +894,16 @@ function initGate() {
         if (data.approved) {
           localStorage.setItem('tsa-approved-email', magicEmail);
           document.getElementById('access-gate').style.display = 'none';
-          // Clean the URL without reloading
-          window.history.replaceState({}, document.title, window.location.pathname);
+          document.getElementById('access-gate').style.zIndex = '-1';
+          document.getElementById('access-gate').style.pointerEvents = 'none';
+          try { localStorage.setItem('tsa-approved-email', magicEmail); } catch(e) {}
+          try { window.history.replaceState({}, document.title, window.location.pathname); } catch(e) {}
         }
       })
       .catch(function(){
         document.getElementById('access-gate').style.display = 'none';
+          document.getElementById('access-gate').style.zIndex = '-1';
+          document.getElementById('access-gate').style.pointerEvents = 'none';
       });
     return;
   }
@@ -912,12 +916,16 @@ function initGate() {
       .then(function(data) {
         if (data.approved) {
           document.getElementById('access-gate').style.display = 'none';
+          document.getElementById('access-gate').style.zIndex = '-1';
+          document.getElementById('access-gate').style.pointerEvents = 'none';
         } else {
           localStorage.removeItem('tsa-approved-email');
         }
       })
       .catch(function(){
         document.getElementById('access-gate').style.display = 'none';
+          document.getElementById('access-gate').style.zIndex = '-1';
+          document.getElementById('access-gate').style.pointerEvents = 'none';
       });
   }
 }
