@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1f4236">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Checklists | Tax Sale Academy</title>
+<link rel="manifest" href="/tax-sale-academy-manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tsa-shared.css">
+</head>
+<body>
+<nav class="pwa-bottom-nav">
+  <div class="pwa-bottom-nav-inner">
+    <a href="/tax-sale-academy" class="pwa-nav-item"><span class="nav-ico">📖</span>Start</a>
+    <a href="/tsa-process" class="pwa-nav-item"><span class="nav-ico">🪜</span>Process</a>
+    <a href="/tsa-checklists" class="pwa-nav-item active"><span class="nav-ico">✅</span>Checklists</a>
+    <a href="/tsa-tracker" class="pwa-nav-item"><span class="nav-ico">🗂️</span>Tracker</a>
+    <a href="/tsa-landuse" class="pwa-nav-item"><span class="nav-ico">🌱</span>Land Use</a>
+    <a href="/tsa-tools" class="pwa-nav-item"><span class="nav-ico">🔗</span>Tools</a>
+  </div>
+</nav>
+<div class="tsa-header">
+  <div class="brand-tag">TMac Inspired</div>
+  <h1>Tax Sale <em>Academy</em></h1>
+  <div class="gold-line"></div>
+</div>
+<div class="tsa-page">
+  <div class="sec-head">
+    <h2>Checklists</h2>
+    <p>Two tools for two different phases of your investment journey.</p>
+  </div>
+
+  <div class="cl-toggle">
+    <button class="cl-toggle-btn active" id="btn-auction" onclick="switchTab('auction')">✅ Auction Day</button>
+    <button class="cl-toggle-btn" id="btn-dd" onclick="switchTab('dd')">🔍 Due Diligence</button>
+  </div>
+
+  <div id="panel-auction">
+    <div class="progress-card">
+      <div class="progress-top"><span>Auction Day Progress</span><span class="pct" id="a-pct">0%</span></div>
+      <div class="bar-bg"><div class="bar-fill" id="a-bar" style="width:0%"></div></div>
+      <div class="progress-sub"><span id="a-sub">0 of 21 completed</span><button class="reset-btn" onclick="resetAuction()">Reset</button></div>
+    </div>
+    <div id="a-wrap"></div>
+  </div>
+
+  <div id="panel-dd" style="display:none;">
+    <div class="progress-card">
+      <div class="progress-top"><span>Due Diligence Progress</span><span class="pct" id="d-pct">0%</span></div>
+      <div class="bar-bg"><div class="bar-fill" id="d-bar" style="width:0%;background:linear-gradient(90deg,#c9a961,#e2c98a);"></div></div>
+      <div class="progress-sub"><span id="d-sub">0 of 28 completed</span><button class="reset-btn" onclick="resetDD()">Reset</button></div>
+    </div>
+    <div id="d-wrap"></div>
+  </div>
+</div>
+
+<script>
+function switchTab(tab) {
+  if (tab==='auction') {
+    document.getElementById('panel-auction').style.display='block';
+    document.getElementById('panel-dd').style.display='none';
+    document.getElementById('btn-auction').classList.add('active');
+    document.getElementById('btn-dd').classList.remove('active');
+  } else {
+    document.getElementById('panel-auction').style.display='none';
+    document.getElementById('panel-dd').style.display='block';
+    document.getElementById('btn-auction').classList.remove('active');
+    document.getElementById('btn-dd').classList.add('active');
+  }
+}
+
+var aData = [
+  {step:1,title:'Research Tax Sale Process',items:['Understand local tax sale rules and procedures','Check if the sale is for tax liens or tax deeds','Confirm the auction date, time, and location']},
+  {step:2,title:'Register for the Auction',items:['Pre-register (online or in person) if required','Verify registration deadlines and any associated fees']},
+  {step:3,title:'Understand Auction Rules',items:['Review bidding rules, payment terms, and accepted payment forms','Know the bidding increments and how to make a winning bid']},
+  {step:4,title:'Research the Properties',items:['Get a list of properties available at the auction','Perform due diligence on each property (location, zoning, potential issues)','Check property value, neighborhood trends, and market conditions','Confirm total tax liability and any other liens or encumbrances']},
+  {step:5,title:'Visit the Properties',items:['Drive by or inspect properties in person if possible','Evaluate condition, knowing you may not be able to enter']},
+  {step:6,title:'Set a Budget',items:['Determine the maximum bid you are willing to make on each property','Factor in additional costs: repairs, title clearing, legal fees']},
+  {step:7,title:'Secure Financing',items:['Ensure funds are available to pay for winning bids (often within 24-48 hours)','Confirm if the county requires cashier\'s checks or wire transfers']},
+  {step:8,title:'Attend the Auction',items:['Arrive early whether attending in person or online','Stick to your pre-determined bidding limit','Keep track of every property you bid on']},
+  {step:9,title:'Post-Auction Process',items:['Confirm payment details and complete the transaction within the required timeframe','Obtain a receipt or proof of purchase']},
+  {step:10,title:'Clear Title if Necessary',items:['Work on clearing any additional liens or securing title insurance','Hire a title company or attorney if needed']},
+  {step:11,title:'Plan for the Property',items:['Decide whether you will flip, rent, or hold the property','Develop a strategy for managing or selling']}
+];
+
+var dData = [
+  {step:1,title:'Property Identification',items:['Confirm parcel number or APN from county records','Verify legal description matches auction list','Check property address and confirm it exists on Google Maps','Identify property type: vacant land, residential, commercial']},
+  {step:2,title:'Title & Lien Research',items:['Search for existing liens beyond the tax lien (IRS, HOA, mechanics)','Check for prior bankruptcy filings on the property','Verify chain of title through county recorder or assessor','Confirm no federal liens that survive the tax sale']},
+  {step:3,title:'Property Condition',items:['Drive by or view property via Google Street View / Earth','Note condition of structures if any are present','Check for signs of environmental issues or dumping','Identify access: is there a road or easement to the property?']},
+  {step:4,title:'Zoning & Land Use',items:['Look up current zoning classification on county GIS portal','Confirm zoning aligns with your intended use','Check for deed restrictions or covenants','Verify flood zone status via FEMA flood map or GIS']},
+  {step:5,title:'Market Value & Comparables',items:['Pull 3 to 5 comparable sales within 1 mile in the last 12 months','Estimate ARV (after repair or development value)','Calculate maximum allowable offer based on your strategy','Check listing history on Zillow, Redfin, or Realtor.com']},
+  {step:6,title:'Financial Due Diligence',items:['Confirm total tax amount owed including penalties and interest','Research any utility liens or special assessments','Estimate repair or development costs if applicable','Confirm your bid makes sense after all costs are factored in']},
+  {step:7,title:'Post-Purchase Planning',items:['Identify title company or attorney to clear title after purchase','Determine if title insurance is obtainable for this property','Draft your exit strategy: hold, develop, sell, or rent']}
+];
+
+function buildList(data, wrapId, prefix, updateFn) {
+  var wrap=document.getElementById(wrapId);
+  wrap.innerHTML='';
+  for (var i=0;i<data.length;i++) {
+    var sec=data[i];
+    var div=document.createElement('div');
+    div.className='cl-section';
+    var h=document.createElement('h3');
+    var sn=document.createElement('span');
+    sn.className=prefix==='a'?'cl-snum':'dd-snum';
+    sn.textContent=sec.step;
+    h.appendChild(sn);
+    h.appendChild(document.createTextNode(' '+sec.title));
+    div.appendChild(h);
+    for (var j=0;j<sec.items.length;j++) {
+      var id=prefix+sec.step+'_'+j;
+      var row=document.createElement('div');
+      row.className='cl-item';
+      var cb=document.createElement('input');
+      cb.type='checkbox'; cb.id=id;
+      if (localStorage.getItem(id)==='1') cb.checked=true;
+      cb.addEventListener('change', updateFn);
+      var lbl=document.createElement('label');
+      lbl.htmlFor=id; lbl.textContent=sec.items[j];
+      row.appendChild(cb); row.appendChild(lbl);
+      div.appendChild(row);
+    }
+    wrap.appendChild(div);
+  }
+  updateFn();
+}
+
+function updateAuction() {
+  var cbs=document.querySelectorAll('#a-wrap input');
+  var done=0, total=cbs.length;
+  for (var i=0;i<cbs.length;i++) { localStorage.setItem(cbs[i].id,cbs[i].checked?'1':'0'); if(cbs[i].checked) done++; }
+  var pct=total>0?Math.round(done/total*100):0;
+  document.getElementById('a-bar').style.width=pct+'%';
+  document.getElementById('a-pct').textContent=pct+'%';
+  document.getElementById('a-sub').textContent=done+' of '+total+' completed';
+}
+
+function updateDD() {
+  var cbs=document.querySelectorAll('#d-wrap input');
+  var done=0, total=cbs.length;
+  for (var i=0;i<cbs.length;i++) { localStorage.setItem(cbs[i].id,cbs[i].checked?'1':'0'); if(cbs[i].checked) done++; }
+  var pct=total>0?Math.round(done/total*100):0;
+  document.getElementById('d-bar').style.width=pct+'%';
+  document.getElementById('d-pct').textContent=pct+'%';
+  document.getElementById('d-sub').textContent=done+' of '+total+' completed';
+}
+
+function resetAuction() {
+  document.querySelectorAll('#a-wrap input').forEach(function(cb){ cb.checked=false; localStorage.removeItem(cb.id); });
+  updateAuction();
+}
+function resetDD() {
+  document.querySelectorAll('#d-wrap input').forEach(function(cb){ cb.checked=false; localStorage.removeItem(cb.id); });
+  updateDD();
+}
+
+buildList(aData,'a-wrap','a',updateAuction);
+buildList(dData,'d-wrap','d',updateDD);
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('/tax-sale-academy-sw.js');
+</script>
+
+</body>
+</html>
