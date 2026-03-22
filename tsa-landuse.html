@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1f4236">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Land Use | Tax Sale Academy</title>
+<link rel="manifest" href="/tax-sale-academy-manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tsa-shared.css">
+</head>
+<body>
+<nav class="pwa-bottom-nav">
+  <div class="pwa-bottom-nav-inner">
+    <a href="/tax-sale-academy" class="pwa-nav-item"><span class="nav-ico">📖</span>Start</a>
+    <a href="/tsa-process" class="pwa-nav-item"><span class="nav-ico">🪜</span>Process</a>
+    <a href="/tsa-checklists" class="pwa-nav-item"><span class="nav-ico">✅</span>Checklists</a>
+    <a href="/tsa-tracker" class="pwa-nav-item"><span class="nav-ico">🗂️</span>Tracker</a>
+    <a href="/tsa-landuse" class="pwa-nav-item active"><span class="nav-ico">🌱</span>Land Use</a>
+    <a href="/tsa-tools" class="pwa-nav-item"><span class="nav-ico">🔗</span>Tools</a>
+  </div>
+</nav>
+<div class="tsa-header">
+  <div class="brand-tag">TMac Inspired</div>
+  <h1>Tax Sale <em>Academy</em></h1>
+  <div class="gold-line"></div>
+</div>
+<div class="tsa-page">
+  <div class="sec-head">
+    <h2>What to Do With Your Land</h2>
+    <p>Once you own it, the possibilities are wide open.</p>
+  </div>
+  <div class="card">
+    <h3>Your Land Use Options</h3>
+    <p style="margin-bottom:12px;">Land is one of the most flexible assets you can hold. Tap any option to learn more.</p>
+    <div class="use-grid">
+      <div class="use-item" onclick="openModal(0)">🏗️<br>Real Estate Development</div>
+      <div class="use-item" onclick="openModal(1)">🏠<br>Tiny Home Community</div>
+      <div class="use-item" onclick="openModal(2)">🚐<br>RV Park or Campground</div>
+      <div class="use-item" onclick="openModal(3)">📦<br>Storage Units</div>
+      <div class="use-item" onclick="openModal(4)">🌾<br>Agriculture</div>
+      <div class="use-item" onclick="openModal(5)">🌲<br>Recreational Use</div>
+      <div class="use-item" onclick="openModal(6)">⚡<br>Renewable Energy</div>
+      <div class="use-item" onclick="openModal(7)">🌳<br>Timber</div>
+      <div class="use-item" onclick="openModal(8)">🎪<br>Event Leasing</div>
+      <div class="use-item" onclick="openModal(9)">🏕️<br>Retreat Center</div>
+      <div class="use-item" onclick="openModal(10)">🏦<br>Land Banking</div>
+      <div class="use-item" onclick="openModal(11)">🏡<br>Off-Grid Community</div>
+    </div>
+  </div>
+  <div class="journal-box">
+    <h4>WHAT WILL YOU DO WITH YOUR LAND?</h4>
+    <textarea id="use-text" placeholder="Write your land use vision here..."></textarea>
+    <button class="save-btn" onclick="saveUse()">Save My Vision</button>
+    <button class="email-btn" onclick="emailEntries()">&#9993; Email Myself My Entries</button>
+  </div>
+  <div class="motive-card">
+    <h3>You Got This</h3>
+    <p>Stay true to your why. Do not let anyone kill your dream of land ownership. Follow the steps, do not get weary, and keep going. Promise yourself that you will be a land owner and a successful real estate investor. Write it down. Make it real.</p>
+    <div class="sig">Dr. TMac</div>
+  </div>
+  <div class="noc-card">
+    <div class="noc-eyebrow">Ready to Level Up?</div>
+    <h3>Nurse Ownership Circle</h3>
+    <p>This is where the real strategy, training, and support happens. If you are ready to move beyond learning and start building, NOC is your next step.</p>
+    <a class="noc-btn" href="https://www.tmacinspired.com/noc" target="_blank" rel="noopener">Join the Community</a>
+  </div>
+</div>
+
+<div class="modal-overlay" id="land-modal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-header"><span class="modal-icon" id="m-icon"></span><span class="modal-title" id="m-title"></span></div>
+    <div class="modal-body"><p id="m-desc"></p><h4>Real Examples</h4><ul class="modal-examples" id="m-examples"></ul></div>
+    <button class="modal-close" onclick="closeModal()">Got It</button>
+  </div>
+</div>
+
+<script>
+var landUseData=[
+  {icon:'🏗️',title:'Real Estate Development',desc:'One of the highest-value plays for raw land. Purchase undervalued tax-sale land, then subdivide, rezone, or develop it into residential or commercial properties.',examples:['Buy a vacant lot in a growing suburb, rezone residential, and sell to a homebuilder','Purchase multiple adjacent parcels and combine into a larger development tract','Acquire land near expanding city limits and hold until a developer approaches you','Partner with a local contractor to build duplexes or townhomes for rental income']},
+  {icon:'🏠',title:'Tiny Home Community',desc:'Tiny home communities are a booming market as more people seek affordable, minimalist living. Develop a small parcel into a community of permanent or semi-permanent tiny homes.',examples:['Set up 10 to 20 tiny home lots with shared utilities and rent each lot for $400-$800/month','Develop an age-55+ tiny home community targeting retirees on a fixed income','Partner with a tiny home manufacturer to offer turnkey move-in units','Create an eco-friendly tiny home village marketed to remote workers and digital nomads']},
+  {icon:'🚐',title:'RV Park or Campground',desc:'RV parks and campgrounds generate consistent cash flow with relatively low build-out costs. A well-located parcel near nature, a highway, or a tourist area can become a profitable hospitality business.',examples:['Develop a 20-site RV park near a state park or lake and charge $35-$60 per night per site','Add glamping tents or cabins alongside RV hookups to increase revenue per acre','Create a seasonal campground with fire pits, a bathhouse, and a small camp store','List your sites on Hipcamp or Harvest Hosts to attract premium travelers']},
+  {icon:'📦',title:'Storage Units',desc:'Self-storage is one of the most recession-resistant real estate businesses. People always need a place to store belongings during moves, downsizing, or life transitions.',examples:['Build a row of 20-30 small climate-controlled units on a half-acre lot','Offer outdoor RV and boat storage on a fenced, gravel lot with minimal infrastructure cost','Develop a multi-phase storage facility, starting small and expanding as units fill up','Partner with a storage management company to run operations hands-free']},
+  {icon:'🌾',title:'Agriculture',desc:'Agricultural land can generate income through leasing to farmers, growing specialty crops, or operating a small farm yourself. It also qualifies for agricultural tax exemptions in many states.',examples:['Lease your land to a local farmer for row crops like corn, soybeans, or cotton','Grow specialty crops such as lavender, hemp, or microgreens for higher margins','Set up a Community Supported Agriculture (CSA) subscription farm serving local families','Apply for an agricultural exemption to significantly lower your annual property taxes']},
+  {icon:'🌲',title:'Recreational Use',desc:'Recreational land is in high demand for hunting, fishing, hiking, ATVs, and nature activities. You can lease seasonal hunting rights, charge day-use fees, or list the land on recreation rental platforms.',examples:['Lease seasonal deer or turkey hunting rights to hunters for $500-$2,000 per season','Charge ATV and off-road enthusiasts a daily access fee to use your land','Create a private fishing pond or creek access and charge memberships','List your land on platforms like LandPass or HuntStand to connect with paying users']},
+  {icon:'⚡',title:'Renewable Energy',desc:'Solar and wind energy companies are actively seeking land to lease for large-scale energy projects. These are long-term leases that can pay thousands of dollars per acre annually.',examples:['Lease your land to a solar energy company for a ground-mounted solar farm at $500-$2,000 per acre per year','Allow a wind energy developer to install turbines on open, rural land with strong wind resources','Install your own small solar array to generate electricity and sell it back to the grid','Partner with a community solar program to provide clean energy to local subscribers']},
+  {icon:'🌳',title:'Timber',desc:'Timberland is a long-term wealth-building play. Trees appreciate in value over time, and you can harvest selectively for income without liquidating the entire asset.',examples:['Plant fast-growing pine or poplar trees and sell to a paper or lumber mill in 10-15 years','Selectively harvest mature trees while replanting for a sustainable, ongoing income stream','Lease timber rights to a logging company while retaining ownership of the land','Sell carbon credits through a timber carbon offset program for annual passive income']},
+  {icon:'🎪',title:'Event Leasing',desc:'Open land can be rented out for weddings, festivals, concerts, farmers markets, and corporate retreats. One of the fastest ways to generate high-revenue income from raw land.',examples:['Rent your land for outdoor weddings and events at $1,500-$5,000 per weekend','Host a seasonal pumpkin patch, Christmas tree farm, or fall festival','Partner with a food truck festival organizer to host monthly markets','List your land on Peerspace or EventUp to attract event planners and organizers']},
+  {icon:'🏕️',title:'Retreat Center',desc:'Wellness retreats, corporate off-sites, church retreats, and yoga getaways are a multi-billion dollar industry. Raw land in a peaceful, natural setting can command premium pricing.',examples:['Build a simple lodge or cabin setup for corporate team-building retreats','Develop a wellness and yoga retreat space with outdoor meditation areas and a fire pit','Host nurse entrepreneur retreats and mastermind weekends on your own land','Partner with retreat facilitators who book your venue while you collect the rental fee']},
+  {icon:'🏦',title:'Land Banking',desc:'Land banking is the simplest strategy: buy land in the path of growth and hold it. As cities expand and demand increases, the land appreciates significantly.',examples:['Buy vacant lots in areas where new highways, schools, or commercial centers are planned','Purchase land in the outer suburbs of growing metros and hold for 5-10 years','Acquire multiple inexpensive parcels in up-and-coming rural counties','Pass the land down to your children as part of a generational wealth strategy']},
+  {icon:'🏡',title:'Off-Grid Community',desc:'Off-grid living is one of the fastest-growing lifestyle trends. Develop land into a community of self-sufficient households using solar power, rainwater collection, and sustainable building.',examples:['Subdivide a larger parcel into off-grid homestead lots with shared common areas','Develop a co-housing community with shared solar infrastructure and garden space','Create a faith-based or wellness-focused intentional living community','Market to preppers, homesteaders, and remote workers seeking land independence']}
+];
+
+function openModal(idx) {
+  var d=landUseData[idx];
+  document.getElementById('m-icon').textContent=d.icon;
+  document.getElementById('m-title').textContent=d.title;
+  document.getElementById('m-desc').textContent=d.desc;
+  var ul=document.getElementById('m-examples'); ul.innerHTML='';
+  for (var i=0;i<d.examples.length;i++) { var li=document.createElement('li'); li.textContent=d.examples[i]; ul.appendChild(li); }
+  document.getElementById('land-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal() { document.getElementById('land-modal').classList.remove('open'); document.body.style.overflow=''; }
+document.getElementById('land-modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+function saveUse() {
+  localStorage.setItem('tsa-use', document.getElementById('use-text').value);
+  document.getElementById('use-text').style.borderColor='#1f4236';
+  setTimeout(function(){ document.getElementById('use-text').style.borderColor=''; },1500);
+}
+function emailEntries() {
+  var state=localStorage.getItem('tsa-home-state')||'Not set';
+  var goal=localStorage.getItem('tsa-goal')||'Not set';
+  var use=localStorage.getItem('tsa-use')||'Not set';
+  var subject=encodeURIComponent('My Tax Sale Academy Entries');
+  var body=encodeURIComponent('TAX SALE ACADEMY - MY SAVED ENTRIES\n=====================================\n\nHOME STATE: '+state+'\n\nMY INVESTMENT GOAL & WHY:\n'+goal+'\n\nWHAT I WILL DO WITH MY LAND:\n'+use+'\n\n-------------------------------------\nSaved from Tax Sale Academy by TMac Inspired');
+  window.location.href='mailto:?subject='+subject+'&body='+body;
+}
+var u=localStorage.getItem('tsa-use'); if(u) document.getElementById('use-text').value=u;
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('/tax-sale-academy-sw.js');
+</script>
+
+</body>
+</html>
