@@ -244,7 +244,7 @@ function buildPlayerCards() {
     div.className = 'player-card';
     div.innerHTML = `
       <label>Player ${i+1}</label>
-      <input type="text" id="name${i}" value="${names[i]}" oninput="names[${i}]=this.value; broadcastState()">
+      <input type="text" id="name${i}" value="${names[i]}" oninput="names[${i}]=this.value;" onblur="broadcastState()">
       <div class="winnings zero" id="win${i}">$0</div>
       <div class="skins-count" id="skins${i}">0 skins</div>`;
     container.appendChild(div);
