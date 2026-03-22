@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -23,63 +22,62 @@
   .status-dot.connected { background: #4caf50; }
   .status-line { text-align: center; font-size: 0.7rem; color: #5a7a5a; margin-bottom: 12px; }
 
-.setup-bar { display: flex; align-items: center; justify-content: center; gap: 12px; background: #f4f7f4; border: 1px solid #c8dac8; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; flex-wrap: wrap; }
-.setup-bar label { font-size: 0.7rem; color: #5a7a5a; text-transform: uppercase; letter-spacing: 1px; }
-.setup-bar select, .setup-bar input[type=“number”] { background: #ffffff; border: 1px solid #c8dac8; border-radius: 6px; color: #1a2f1c; font-family: ‘DM Sans’, sans-serif; font-size: 0.9rem; padding: 4px 8px; outline: none; }
-.setup-bar input[type=“number”] { width: 60px; }
-.setup-bar select:focus, .setup-bar input:focus { border-color: #c9a86c; }
+  .setup-bar { display: flex; align-items: center; justify-content: center; gap: 12px; background: #f4f7f4; border: 1px solid #c8dac8; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; flex-wrap: wrap; }
+  .setup-bar label { font-size: 0.7rem; color: #5a7a5a; text-transform: uppercase; letter-spacing: 1px; }
+  .setup-bar select, .setup-bar input[type="number"] { background: #ffffff; border: 1px solid #c8dac8; border-radius: 6px; color: #1a2f1c; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; padding: 4px 8px; outline: none; }
+  .setup-bar input[type="number"] { width: 60px; }
+  .setup-bar select:focus, .setup-bar input:focus { border-color: #c9a86c; }
 
-.par3-setup { background: #f4f7f4; border: 1px solid #c8dac8; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; }
-.par3-setup label { font-size: 0.7rem; color: #5a7a5a; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px; }
-.par3-holes { display: flex; flex-wrap: wrap; gap: 6px; }
-.par3-btn { background: #ffffff; border: 1px solid #c8dac8; border-radius: 6px; padding: 4px 8px; font-size: 0.8rem; font-family: ‘DM Sans’, sans-serif; cursor: pointer; color: #1a2f1c; transition: all 0.2s; }
-.par3-btn.selected { background: #1a2f1c; color: #c9a86c; border-color: #1a2f1c; }
-.ctp-cell { font-size: 0.65rem; color: #c9a86c; font-weight: 600; cursor: pointer; }
-.ctp-winner { color: #2e7d32; font-weight: 700; }
+  .par3-setup { background: #f4f7f4; border: 1px solid #c8dac8; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; }
+  .par3-setup label { font-size: 0.7rem; color: #5a7a5a; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px; }
+  .par3-holes { display: flex; flex-wrap: wrap; gap: 6px; }
+  .par3-btn { background: #ffffff; border: 1px solid #c8dac8; border-radius: 6px; padding: 4px 8px; font-size: 0.8rem; font-family: 'DM Sans', sans-serif; cursor: pointer; color: #1a2f1c; transition: all 0.2s; }
+  .par3-btn.selected { background: #1a2f1c; color: #c9a86c; border-color: #1a2f1c; }
+  .ctp-cell { font-size: 0.65rem; color: #c9a86c; font-weight: 600; cursor: pointer; }
+  .ctp-winner { color: #2e7d32; font-weight: 700; }
 
-.players { display: grid; gap: 8px; margin-bottom: 14px; }
-.players.p2 { grid-template-columns: repeat(2, 1fr); }
-.players.p3 { grid-template-columns: repeat(3, 1fr); }
-.players.p4 { grid-template-columns: repeat(2, 1fr); }
+  .players { display: grid; gap: 8px; margin-bottom: 14px; }
+  .players.p2 { grid-template-columns: repeat(2, 1fr); }
+  .players.p3 { grid-template-columns: repeat(3, 1fr); }
+  .players.p4 { grid-template-columns: repeat(2, 1fr); }
 
-.player-card { background: #f4f7f4; border: 1px solid #c8dac8; border-radius: 10px; padding: 10px 8px; text-align: center; }
-.player-card label { display: block; font-size: 0.6rem; color: #5a7a5a; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
-.player-card input[type=“text”] { width: 100%; background: transparent; border: none; border-bottom: 1px solid #c9a86c; color: #1a2f1c; font-family: ‘DM Sans’, sans-serif; font-weight: 700; font-size: 1rem; text-align: center; outline: none; padding: 2px 0; }
-.winnings { font-size: 1.2rem; font-weight: 700; margin-top: 5px; }
-.skins-count { font-size: 0.65rem; color: #5a7a5a; margin-top: 2px; }
-.pos { color: #2e7d32; }
-.neg { color: #c62828; }
-.zero { color: #5a7a5a; }
+  .player-card { background: #f4f7f4; border: 1px solid #c8dac8; border-radius: 10px; padding: 10px 8px; text-align: center; }
+  .player-card label { display: block; font-size: 0.6rem; color: #5a7a5a; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
+  .player-card input[type="text"] { width: 100%; background: transparent; border: none; border-bottom: 1px solid #c9a86c; color: #1a2f1c; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1rem; text-align: center; outline: none; padding: 2px 0; }
+  .winnings { font-size: 1.2rem; font-weight: 700; margin-top: 5px; }
+  .skins-count { font-size: 0.65rem; color: #5a7a5a; margin-top: 2px; }
+  .pos { color: #2e7d32; }
+  .neg { color: #c62828; }
+  .zero { color: #5a7a5a; }
 
-.table-wrap { overflow-x: auto; margin-bottom: 16px; }
-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 280px; }
-thead th { background: #f4f7f4; padding: 8px 4px; text-align: center; font-weight: 700; font-size: 0.85rem; color: #c9a86c; border-bottom: 2px solid #c8dac8; }
-thead th:first-child { text-align: left; padding-left: 8px; min-width: 60px; }
-tbody tr { border-bottom: 1px solid #e8f0e8; }
-tbody tr:hover { background: #f0f5f0; }
-td { padding: 5px 3px; text-align: center; vertical-align: middle; }
-td:first-child { font-weight: 700; font-size: 0.85rem; color: #c9a86c; padding-left: 8px; text-align: left; white-space: nowrap; }
-.score-input { width: 38px; background: #ffffff; border: 1px solid #c8dac8; border-radius: 6px; color: #1a2f1c; font-size: 0.95rem; text-align: center; padding: 4px 2px; font-family: ‘DM Sans’, sans-serif; outline: none; transition: border-color 0.2s; }
-.score-input:focus { border-color: #c9a86c; }
-.result-cell { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; min-width: 52px; }
-.win-cell { color: #2e7d32; }
-.push-cell { color: #5a7a5a; }
-.totals-row td { background: #f4f7f4; font-weight: 700; padding: 8px 3px; font-size: 1rem; }
-.totals-row td:first-child { color: #c9a86c; padding-left: 8px; }
+  .table-wrap { overflow-x: auto; margin-bottom: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 280px; }
+  thead th { background: #f4f7f4; padding: 8px 4px; text-align: center; font-weight: 700; font-size: 0.85rem; color: #c9a86c; border-bottom: 2px solid #c8dac8; }
+  thead th:first-child { text-align: left; padding-left: 8px; min-width: 60px; }
+  tbody tr { border-bottom: 1px solid #e8f0e8; }
+  tbody tr:hover { background: #f0f5f0; }
+  td { padding: 5px 3px; text-align: center; vertical-align: middle; }
+  td:first-child { font-weight: 700; font-size: 0.85rem; color: #c9a86c; padding-left: 8px; text-align: left; white-space: nowrap; }
+  .score-input { width: 38px; background: #ffffff; border: 1px solid #c8dac8; border-radius: 6px; color: #1a2f1c; font-size: 0.95rem; text-align: center; padding: 4px 2px; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; }
+  .score-input:focus { border-color: #c9a86c; }
+  .result-cell { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; min-width: 52px; }
+  .win-cell { color: #2e7d32; }
+  .push-cell { color: #5a7a5a; }
+  .totals-row td { background: #f4f7f4; font-weight: 700; padding: 8px 3px; font-size: 1rem; }
+  .totals-row td:first-child { color: #c9a86c; padding-left: 8px; }
 
-.btn-row { display: flex; gap: 10px; justify-content: center; }
-button { background: #c9a86c; color: #ffffff; border: none; border-radius: 8px; padding: 10px 22px; font-family: ‘DM Sans’, sans-serif; font-weight: 700; font-size: 1rem; cursor: pointer; transition: background 0.2s; }
-button:hover { background: #b8964f; }
-button.secondary { background: transparent; border: 1px solid #c8dac8; color: #5a7a5a; }
-button.secondary:hover { border-color: #c9a86c; color: #c9a86c; }
-.note { text-align: center; font-size: 0.7rem; color: #5a7a5a; margin-top: 14px; font-style: italic; }
-.viewer-badge { text-align: center; background: #f4f7f4; border: 1px solid #c8dac8; border-radius: 20px; padding: 6px 16px; font-size: 0.75rem; color: #5a7a5a; display: inline-block; }
-.viewer-wrap { text-align: center; margin-bottom: 12px; }
-.share-btn { background: #1a2f1c; color: #c9a86c; font-size: 0.85rem; padding: 8px 18px; border-radius: 8px; border: none; font-family: ‘DM Sans’, sans-serif; font-weight: 700; cursor: pointer; margin-top: 10px; }
-.share-btn:hover { background: #2e4d30; }
-.copied-msg { font-size: 0.7rem; color: #2e7d32; text-align: center; margin-top: 6px; display: none; }
+  .btn-row { display: flex; gap: 10px; justify-content: center; }
+  button { background: #c9a86c; color: #ffffff; border: none; border-radius: 8px; padding: 10px 22px; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1rem; cursor: pointer; transition: background 0.2s; }
+  button:hover { background: #b8964f; }
+  button.secondary { background: transparent; border: 1px solid #c8dac8; color: #5a7a5a; }
+  button.secondary:hover { border-color: #c9a86c; color: #c9a86c; }
+  .note { text-align: center; font-size: 0.7rem; color: #5a7a5a; margin-top: 14px; font-style: italic; }
+  .viewer-badge { text-align: center; background: #f4f7f4; border: 1px solid #c8dac8; border-radius: 20px; padding: 6px 16px; font-size: 0.75rem; color: #5a7a5a; display: inline-block; }
+  .viewer-wrap { text-align: center; margin-bottom: 12px; }
+  .share-btn { background: #1a2f1c; color: #c9a86c; font-size: 0.85rem; padding: 8px 18px; border-radius: 8px; border: none; font-family: 'DM Sans', sans-serif; font-weight: 700; cursor: pointer; margin-top: 10px; }
+  .share-btn:hover { background: #2e4d30; }
+  .copied-msg { font-size: 0.7rem; color: #2e7d32; text-align: center; margin-top: 6px; display: none; }
 </style>
-
 </head>
 <body>
 
@@ -133,7 +131,12 @@ button.secondary:hover { border-color: #c9a86c; color: #c9a86c; }
 </div>
 <p class="note" id="adminNote">Ties are a push — no skin awarded.</p>
 
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script>
+// --- Pusher setup ---
+const PUSHER_KEY = '544cddc6237986c7d311';
+const PUSHER_CLUSTER = 'us2';
+
 let HOLES = 18;
 let holeMode = '18';
 let holeNumbers = Array.from({length: 18}, (_,i) => i+1);
@@ -143,10 +146,12 @@ let scores = Array.from({length: 18}, () => Array(4).fill(''));
 let names = ['Me', 'Player 2', 'Player 3', 'Player 4'];
 let par3Holes = [];
 let ctpWinners = Array(18).fill(null);
+let pusher, channel;
+let isApplyingState = false;
 
 const params = new URLSearchParams(location.search);
 
-// Handle return from PayPal payment
+// Handle return from PayPal
 if (params.get('paid') === '1') {
   const newRoom = 'golf-' + Math.random().toString(36).slice(2, 7);
   params.set('room', newRoom);
@@ -166,6 +171,7 @@ document.getElementById('roomLabel').textContent = room;
 
 const isViewer = params.get('view') === '1';
 
+// --- URL persistence ---
 function saveToURL() {
   const state = { n: names.slice(0, numPlayers), s: scores.map(r => r.slice(0, numPlayers)), p: numPlayers, b: betAmount, h: holeMode, par3: par3Holes, ctp: ctpWinners };
   params.set('data', btoa(JSON.stringify(state)));
@@ -283,7 +289,6 @@ function renderHeaders() {
   hdr.innerHTML = '<th>Hole</th>';
   for (let i = 0; i < numPlayers; i++) hdr.innerHTML += `<th id="h${i}">${names[i] || 'P'+(i+1)}</th>`;
   hdr.innerHTML += '<th>Result</th>';
-
   const tot = document.getElementById('totalsRow');
   tot.innerHTML = '<td>Total</td>';
   for (let i = 0; i < numPlayers; i++) tot.innerHTML += `<td id="tot${i}">—</td>`;
@@ -317,8 +322,8 @@ function calculate() {
     if (!cell) continue;
     const vals = [];
     for (let p = 0; p < numPlayers; p++) vals.push(scores[h][p] === '' ? null : parseInt(scores[h][p]));
+
     if (vals.filter(v => v !== null).length < numPlayers) {
-      // still update CTP display even if scores not full
       if (par3Holes.includes(h) && ctpWinners[h] !== null) {
         const ctpEl = document.getElementById('ctp'+h);
         if (ctpEl) { ctpEl.textContent = '📍 ' + (names[ctpWinners[h]] || 'P'+(ctpWinners[h]+1)); ctpEl.className = 'ctp-cell ctp-winner'; }
@@ -339,14 +344,10 @@ function calculate() {
       cell.className = 'result-cell push-cell';
     }
 
-    // CTP bonus skin
     if (par3Holes.includes(h) && ctpWinners[h] !== null) {
       skinCounts[ctpWinners[h]]++;
       const ctpEl = document.getElementById('ctp'+h);
-      if (ctpEl) {
-        ctpEl.textContent = '📍 ' + (names[ctpWinners[h]] || 'P'+(ctpWinners[h]+1));
-        ctpEl.className = 'ctp-cell ctp-winner';
-      }
+      if (ctpEl) { ctpEl.textContent = '📍 ' + (names[ctpWinners[h]] || 'P'+(ctpWinners[h]+1)); ctpEl.className = 'ctp-cell ctp-winner'; }
     } else if (par3Holes.includes(h)) {
       const ctpEl = document.getElementById('ctp'+h);
       if (ctpEl) { ctpEl.textContent = '📍 Tap CTP'; ctpEl.className = 'ctp-cell'; }
@@ -369,45 +370,54 @@ function calculate() {
   }
 }
 
-// WebSocket
-const WS_URL = 'wss://socketsbay.com/wss/v2/1/demo/';
-let ws;
+// --- Pusher real-time ---
+function connectPusher() {
+  pusher = new Pusher(PUSHER_KEY, { cluster: PUSHER_CLUSTER });
+  channel = pusher.subscribe('golf-' + room);
 
-function connect() {
-  ws = new WebSocket(WS_URL);
-  ws.onopen = () => {
+  pusher.connection.bind('connected', () => {
     document.getElementById('dot').className = 'status-dot connected';
     document.getElementById('statusText').textContent = 'Live — all phones synced';
-    send({ type: 'request', room });
-  };
-  ws.onmessage = (e) => {
-    try {
-      const msg = JSON.parse(e.data);
-      if (msg.room !== room) return;
-      if (msg.type === 'state') applyState(msg);
-      else if (msg.type === 'request') broadcastState();
-    } catch {}
-  };
-  ws.onclose = () => {
+    // Request current state from others
+    triggerEvent('request-state', { from: 'new-joiner' });
+  });
+
+  pusher.connection.bind('disconnected', () => {
     document.getElementById('dot').className = 'status-dot';
     document.getElementById('statusText').textContent = 'Reconnecting…';
-    setTimeout(connect, 3000);
-  };
-  ws.onerror = () => ws.close();
+  });
+
+  channel.bind('game-state', function(data) {
+    if (isApplyingState) return;
+    applyState(data);
+  });
+
+  channel.bind('state-request', function() {
+    broadcastState();
+  });
 }
 
-function send(data) {
-  if (ws && ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify(data));
+async function triggerEvent(eventName, data) {
+  try {
+    await fetch('/api/pusher-trigger', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ channel: 'golf-' + room, event: eventName, data })
+    });
+  } catch(e) {}
 }
 
 function broadcastState() {
   saveToURL();
   calculate();
-  send({ type: 'state', room, scores, names: names.slice(0, numPlayers), numPlayers, betAmount, holes: HOLES, holeMode, par3Holes, ctpWinners });
+  const state = { scores, names: names.slice(0, numPlayers), numPlayers, betAmount, holeMode, par3Holes, ctpWinners };
+  triggerEvent('game-state', state);
 }
 
 function applyState(msg) {
+  isApplyingState = true;
   let rebuild = false;
+
   if (msg.holeMode && msg.holeMode !== holeMode) {
     holeMode = msg.holeMode;
     document.getElementById('numHoles').value = holeMode;
@@ -427,6 +437,7 @@ function applyState(msg) {
   if (msg.scores) msg.scores.forEach((row,h) => row.forEach((v,p) => { if (scores[h]) scores[h][p] = v; }));
   if (msg.par3Holes) { par3Holes = msg.par3Holes; rebuild = true; }
   if (msg.ctpWinners) ctpWinners = msg.ctpWinners;
+
   if (rebuild) buildAll();
   else {
     for (let i = 0; i < numPlayers; i++) { const el = document.getElementById('name'+i); if (el) el.value = names[i]; }
@@ -438,6 +449,7 @@ function applyState(msg) {
     }
     calculate();
   }
+  isApplyingState = false;
 }
 
 function resetAll() {
@@ -478,8 +490,7 @@ function shareLeaderboard() {
 loadFromURL();
 buildAll();
 applyViewerMode();
-connect();
+connectPusher();
 </script>
-
 </body>
 </html>
