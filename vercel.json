@@ -3,6 +3,12 @@
   "rewrites": [
     { "source": "/api/session", "destination": "/api/session.cjs" },
     { "source": "/api/fasts",   "destination": "/api/fasts.cjs"   },
-    { "source": "/api/mint-auth", "destination": "/api/mint-auth.js" }
+    { "source": "/api/mint-auth", "destination": "/api/mint-auth.js" },
+    { "source": "/tsa-process", "destination": "/tsa-process.html" },
+    { "source": "/tsa-states", "destination": "/tsa-states.html" },
+    { "source": "/tsa-checklists", "destination": "/tsa-checklists.html" },
+    { "source": "/tsa-tracker", "destination": "/tsa-tracker.html" },
+    { "source": "/tsa-landuse", "destination": "/tsa-landuse.html" },
+    { "source": "/tsa-tools", "destination": "/tsa-tools.html" }
   ]
 }
