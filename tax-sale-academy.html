@@ -247,8 +247,8 @@ body { font-family: 'DM Sans', sans-serif; background: #fafaf8; color: #1a1a18; 
 
     <!-- OPT-IN PANEL -->
     <div id="gate-optin-panel">
-      <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:#1f4236;font-weight:600;margin-bottom:6px;">Request Access</div>
-      <p style="font-size:13px;color:#6b7169;margin-bottom:16px;line-height:1.6;">Enter your name and email to join the waitlist. Once approved you will receive access.</p>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:#1f4236;font-weight:600;margin-bottom:6px;">Get Instant Access</div>
+      <p style="font-size:13px;color:#6b7169;margin-bottom:16px;line-height:1.6;">Enter your name and email below. Your magic link will be sent to your inbox instantly.</p>
       <div style="margin-bottom:10px;">
         <div style="font-size:11px;font-weight:700;color:#1f4236;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:5px;">Full Name</div>
         <input id="gate-name" type="text" placeholder="Your full name" style="width:100%;padding:11px 14px;border:1px solid #e4e8e5;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;background:#fff;">
@@ -257,9 +257,9 @@ body { font-family: 'DM Sans', sans-serif; background: #fafaf8; color: #1a1a18; 
         <div style="font-size:11px;font-weight:700;color:#1f4236;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:5px;">Email Address</div>
         <input id="gate-optin-email" type="email" placeholder="your@email.com" style="width:100%;padding:11px 14px;border:1px solid #e4e8e5;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;background:#fff;">
       </div>
-      <button onclick="submitOptin()" style="width:100%;background:#1f4236;color:#fff;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Request Access</button>
+      <button onclick="submitOptin()" style="width:100%;background:#1f4236;color:#fff;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Send My Magic Link</button>
       <div style="text-align:center;margin-top:14px;">
-        <span style="font-size:13px;color:#6b7169;">Already approved? </span>
+        <span style="font-size:13px;color:#6b7169;">Already have access? </span>
         <button onclick="showLoginPanel()" style="background:none;border:none;color:#c9a961;font-weight:700;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;">Sign In</button>
       </div>
       <div id="gate-optin-msg" style="margin-top:12px;font-size:13px;text-align:center;display:none;"></div>
@@ -275,7 +275,7 @@ body { font-family: 'DM Sans', sans-serif; background: #fafaf8; color: #1a1a18; 
       </div>
       <button onclick="checkAccess()" style="width:100%;background:#1f4236;color:#fff;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Access App</button>
       <div style="text-align:center;margin-top:14px;">
-        <button onclick="showOptinPanel()" style="background:none;border:none;color:#c9a961;font-weight:700;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;">← Request Access</button>
+        <button onclick="showOptinPanel()" style="background:none;border:none;color:#c9a961;font-weight:700;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;">← Instant Access</button>
       </div>
       <div id="gate-login-msg" style="margin-top:12px;font-size:13px;text-align:center;display:none;padding:10px;border-radius:8px;"></div>
     </div>
