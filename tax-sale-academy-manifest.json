@@ -8,7 +8,7 @@
   "background_color": "#fafaf8",
   "theme_color": "#1f4236",
   "icons": [
-    { "src": "/tsa-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "/tsa-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
-  ]
+  { "src": "/tax-sale-academy-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+  { "src": "/tax-sale-academy-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+]
 }
