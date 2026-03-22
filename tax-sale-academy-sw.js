@@ -1,40 +1,11 @@
-var CACHE_NAME = 'tax-sale-academy-v1';
-var urlsToCache = [
-  '/tax-sale-academy',
-  'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap'
-];
-
-self.addEventListener('install', function(event) {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(function(cache) {
-      return cache.addAll(urlsToCache);
-    })
-  );
-  self.skipWaiting();
-});
-
-self.addEventListener('activate', function(event) {
-  event.waitUntil(
-    caches.keys().then(function(cacheNames) {
-      return Promise.all(
-        cacheNames.filter(function(name) {
-          return name !== CACHE_NAME;
-        }).map(function(name) {
-          return caches.delete(name);
-        })
-      );
-    })
-  );
+var CACHE = 'tsa-v2';
+self.addEventListener('install', function(e) { self.skipWaiting(); });
+self.addEventListener('activate', function(e) {
+  e.waitUntil(caches.keys().then(function(keys){
+    return Promise.all(keys.filter(function(k){return k!==CACHE;}).map(function(k){return caches.delete(k);}));
+  }));
   self.clients.claim();
 });
-
-self.addEventListener('fetch', function(event) {
-  event.respondWith(
-    caches.match(event.request).then(function(response) {
-      if (response) return response;
-      return fetch(event.request).catch(function() {
-        return caches.match('/tax-sale-academy');
-      });
-    })
-  );
+self.addEventListener('fetch', function(e) {
+  e.respondWith(fetch(e.request).catch(function(){ return caches.match('/tax-sale-academy'); }));
 });
