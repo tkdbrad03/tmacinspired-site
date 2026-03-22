@@ -156,7 +156,7 @@ body { font-family: 'DM Sans', sans-serif; background: #fafaf8; color: #1a1a18; 
 .resource-link .r-name { font-size: 13.5px; font-weight: 600; color: #1f4236; }
 .resource-link .r-sub { font-size: 11.5px; color: #6b7169; margin-top: 1px; }
 
-.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #e4e8e5; display: flex; padding-bottom: env(safe-area-inset-bottom, 0); z-index: 100; box-shadow: 0 -2px 12px rgba(31,66,54,0.07); }
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #e4e8e5; display: flex; padding-bottom: env(safe-area-inset-bottom, 0); z-index: 10000; box-shadow: 0 -2px 12px rgba(31,66,54,0.07); }
 .bnav-btn { flex: 1; padding: 9px 4px 7px; display: flex; flex-direction: column; align-items: center; gap: 2px; border: none; background: none; cursor: pointer; font-family: 'DM Sans', sans-serif; }
 .bnav-btn .ico { font-size: 18px; opacity: 0.35; }
 .bnav-btn .lbl { font-size: 9.5px; font-weight: 500; color: #6b7169; }
@@ -231,7 +231,7 @@ body { font-family: 'DM Sans', sans-serif; background: #fafaf8; color: #1a1a18; 
 .noc-btn { display: inline-block; background: #c9a961; color: #1f4236; border: none; border-radius: 8px; padding: 11px 22px; font-size: 13.5px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; text-decoration: none; }
 @media (min-width: 600px) { .bottom-nav { display: none; } .page { padding-bottom: 48px; } }
 @media (max-width: 599px) { .tabs { display: none; } }
-@media (max-width: 599px) { .bottom-nav { display: flex !important; } }
+@media (max-width: 599px) { .bottom-nav { display: flex !important; visibility: visible !important; opacity: 1 !important; } }
 </style>
 </head>
 <body>
@@ -820,12 +820,6 @@ body { font-family: 'DM Sans', sans-serif; background: #fafaf8; color: #1a1a18; 
     <span class="ico">🗂️</span><span class="lbl">Tracker</span>
   </button>
   <button class="bnav-btn" id="bn-landuse" onclick="showMobile('pg-landuse','bn-landuse')">
-  <span class="ico">🌱</span><span class="lbl">Land Use</span>
-</button>
-<button class="bnav-btn" id="bn-resources" onclick="showMobile('pg-resources','bn-resources')">
-  <span class="ico">🔗</span><span class="lbl">Tools</span>
-</button>
-</div>
     <span class="ico">🌱</span><span class="lbl">Land Use</span>
   </button>
   <button class="bnav-btn" id="bn-resources" onclick="showMobile('pg-resources','bn-resources')">
@@ -874,7 +868,7 @@ function checkAccess() {
     .then(function(data) {
       if (data.approved) {
         localStorage.setItem('tsa-approved-email', email);
-        document.getElementById('access-gate').style.display = 'none';
+        hideGate();
       } else {
         showGateMsg('gate-login-msg', '⛔ This email is not approved yet. Request access or contact Dr. TMac.', '#b91c1c');
       }
@@ -889,6 +883,16 @@ function showGateMsg(id, text, color) {
   el.style.display = 'block';
 }
 
+function hideGate() {
+  var gate = document.getElementById('access-gate');
+  if (gate) {
+    gate.style.display = 'none';
+    gate.style.visibility = 'hidden';
+    gate.style.pointerEvents = 'none';
+    gate.style.zIndex = '-1';
+  }
+}
+
 function initGate() {
   // Check for magic link parameter first
   var urlParams = new URLSearchParams(window.location.search);
@@ -898,18 +902,13 @@ function initGate() {
       .then(function(r){ return r.json(); })
       .then(function(data) {
         if (data.approved) {
-          localStorage.setItem('tsa-approved-email', magicEmail);
-          document.getElementById('access-gate').style.display = 'none';
-          document.getElementById('access-gate').style.zIndex = '-1';
-          document.getElementById('access-gate').style.pointerEvents = 'none';
           try { localStorage.setItem('tsa-approved-email', magicEmail); } catch(e) {}
+          hideGate();
           try { window.history.replaceState({}, document.title, window.location.pathname); } catch(e) {}
         }
       })
       .catch(function(){
-        document.getElementById('access-gate').style.display = 'none';
-          document.getElementById('access-gate').style.zIndex = '-1';
-          document.getElementById('access-gate').style.pointerEvents = 'none';
+        hideGate();
       });
     return;
   }
@@ -921,17 +920,13 @@ function initGate() {
       .then(function(r){ return r.json(); })
       .then(function(data) {
         if (data.approved) {
-          document.getElementById('access-gate').style.display = 'none';
-          document.getElementById('access-gate').style.zIndex = '-1';
-          document.getElementById('access-gate').style.pointerEvents = 'none';
+          hideGate();
         } else {
           localStorage.removeItem('tsa-approved-email');
         }
       })
       .catch(function(){
-        document.getElementById('access-gate').style.display = 'none';
-          document.getElementById('access-gate').style.zIndex = '-1';
-          document.getElementById('access-gate').style.pointerEvents = 'none';
+        hideGate();
       });
   }
 }
