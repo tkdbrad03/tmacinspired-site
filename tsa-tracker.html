@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1f4236">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Tracker | Tax Sale Academy</title>
+<link rel="manifest" href="/tax-sale-academy-manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tsa-shared.css">
+</head>
+<body>
+<nav class="pwa-bottom-nav">
+  <div class="pwa-bottom-nav-inner">
+    <a href="/tax-sale-academy" class="pwa-nav-item"><span class="nav-ico">📖</span>Start</a>
+    <a href="/tsa-process" class="pwa-nav-item"><span class="nav-ico">🪜</span>Process</a>
+    <a href="/tsa-checklists" class="pwa-nav-item"><span class="nav-ico">✅</span>Checklists</a>
+    <a href="/tsa-tracker" class="pwa-nav-item active"><span class="nav-ico">🗂️</span>Tracker</a>
+    <a href="/tsa-landuse" class="pwa-nav-item"><span class="nav-ico">🌱</span>Land Use</a>
+    <a href="/tsa-tools" class="pwa-nav-item"><span class="nav-ico">🔗</span>Tools</a>
+  </div>
+</nav>
+<div class="tsa-header">
+  <div class="brand-tag">TMac Inspired</div>
+  <h1>Tax Sale <em>Academy</em></h1>
+  <div class="gold-line"></div>
+</div>
+<div class="tsa-page">
+  <div class="sec-head">
+    <h2>County Tracker</h2>
+    <p>Log counties, properties, bids, and notes. Stay organized and strategic.</p>
+  </div>
+  <div class="tracker-header-row">
+    <div style="font-size:13px;color:#6b7169;" id="tracker-count">0 counties tracked</div>
+    <div style="display:flex;gap:8px;">
+      <button class="add-county-btn" onclick="openForm()">+ Add County</button>
+      <button class="add-county-btn" style="background:#c9a961;color:#1f4236;" onclick="exportCSV()">&#8615; Export</button>
+    </div>
+  </div>
+  <div id="tracker-list"><div class="empty-tracker"><div class="e-icon">🗂️</div><p>No counties tracked yet.<br>Tap <strong>Add County</strong> to log your first one.</p></div></div>
+  <div class="noc-card" style="margin-top:12px;">
+    <div class="noc-eyebrow">Ready to Level Up?</div>
+    <h3>Nurse Ownership Circle</h3>
+    <p>You have the knowledge and now the system. The NOC is where nurses who are actively investing come together for strategy, accountability, and support.</p>
+    <a class="noc-btn" href="https://www.tmacinspired.com/noc" target="_blank" rel="noopener">Join the Community</a>
+  </div>
+</div>
+
+<!-- FORM MODAL -->
+
+<div class="form-modal-overlay" id="form-modal">
+  <div class="form-sheet">
+    <div class="form-handle"></div>
+    <div class="form-title" id="form-title">Add County</div>
+    <div class="form-body">
+      <div class="form-2col">
+        <div class="form-row"><div class="form-label">County Name</div><input class="form-input" id="f-county" placeholder="e.g. Hillsborough"></div>
+        <div class="form-row"><div class="form-label">State</div><select class="form-select" id="f-state"><option value="">Select...</option></select></div>
+      </div>
+      <div class="form-2col">
+        <div class="form-row"><div class="form-label">Sale Type</div><select class="form-select" id="f-type"><option value="">Select...</option><option value="deed">Tax Deed</option><option value="lien">Tax Lien</option><option value="both">Both</option></select></div>
+        <div class="form-row"><div class="form-label">Next Sale Date</div><input class="form-input" id="f-date" type="date"></div>
+      </div>
+      <div class="form-2col">
+        <div class="form-row"><div class="form-label">Max Budget ($)</div><input class="form-input" id="f-budget" type="number" placeholder="e.g. 5000"></div>
+        <div class="form-row"><div class="form-label">Status</div><select class="form-select" id="f-status"><option value="researching">Researching</option><option value="registered">Registered</option><option value="bid">Bid Placed</option><option value="won">Won Property</option><option value="monitoring">Monitoring</option></select></div>
+      </div>
+      <div class="form-2col">
+        <div class="form-row"><div class="form-label">Parcel / APN</div><input class="form-input" id="f-apn" placeholder="e.g. 12-345-678"></div>
+        <div class="form-row"><div class="form-label">Property Type</div><select class="form-select" id="f-proptype"><option value="">Select...</option><option value="Vacant Land">Vacant Land</option><option value="Residential">Residential</option><option value="Commercial">Commercial</option><option value="Agricultural">Agricultural</option><option value="Mixed Use">Mixed Use</option></select></div>
+      </div>
+      <div class="form-2col">
+        <div class="form-row"><div class="form-label">Opening Bid ($)</div><input class="form-input" id="f-openbid" type="number" placeholder="e.g. 500"></div>
+        <div class="form-row"><div class="form-label">Est. Market Value ($)</div><input class="form-input" id="f-marketval" type="number" placeholder="e.g. 45000"></div>
+      </div>
+      <div class="form-2col">
+        <div class="form-row"><div class="form-label">Zoning</div><input class="form-input" id="f-zoning" placeholder="e.g. R-1, AG, C-2"></div>
+        <div class="form-row"><div class="form-label">Flood Zone</div><select class="form-select" id="f-flood"><option value="">Unknown</option><option value="No">No</option><option value="Yes">Yes</option><option value="Partial">Partial</option></select></div>
+      </div>
+      <div class="form-2col">
+        <div class="form-row"><div class="form-label">Road Access</div><select class="form-select" id="f-access"><option value="">Unknown</option><option value="Yes - Paved">Yes - Paved</option><option value="Yes - Dirt">Yes - Dirt</option><option value="Easement Only">Easement Only</option><option value="No Access">No Access</option></select></div>
+        <div class="form-row"><div class="form-label">Decision</div><select class="form-select" id="f-decision"><option value="">Undecided</option><option value="Bid">Bid</option><option value="Pass">Pass</option><option value="Watch">Watch</option></select></div>
+      </div>
+      <div class="form-row"><div class="form-label">Next Action</div><input class="form-input" id="f-nextaction" placeholder="e.g. Drive by this weekend"></div>
+      <div class="form-row"><div class="form-label">Notes</div><textarea class="form-textarea" id="f-notes" placeholder="Redemption period, contact info, red flags..."></textarea></div>
+      <button class="form-save-btn" onclick="saveCounty()">Save County</button>
+      <button class="form-cancel-btn" onclick="closeForm()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var trackerData=[], editingId=null;
+var states=["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","District of Columbia","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Michigan","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"];
+var statusLabels={researching:'Researching',registered:'Registered',bid:'Bid Placed',won:'Won Property',monitoring:'Monitoring'};
+var statusColors={researching:'background:#e8f0ec;color:#1f4236;',registered:'background:#fdf8ee;color:#8a6b1e;',bid:'background:#f0e8f8;color:#6b3fa0;',won:'background:#d1fae5;color:#065f46;',monitoring:'background:#fee2e2;color:#991b1b;'};
+var typeLabels={deed:'Tax Deed',lien:'Tax Lien',both:'Both'};
+
+function init() {
+  var sel=document.getElementById('f-state');
+  for (var i=0;i<states.length;i++) { var o=document.createElement('option'); o.value=states[i]; o.textContent=states[i]; sel.appendChild(o); }
+  var saved=localStorage.getItem('tsa-tracker');
+  trackerData=saved?JSON.parse(saved):[];
+  renderTracker();
+}
+
+function renderTracker() {
+  var list=document.getElementById('tracker-list');
+  document.getElementById('tracker-count').textContent=trackerData.length+' countr'+(trackerData.length===1?'y':'ies')+' tracked';
+  if (trackerData.length===0) { list.innerHTML='<div class="empty-tracker"><div class="e-icon">🗂️</div><p>No counties tracked yet.<br>Tap <strong>Add County</strong> to log your first one.</p></div>'; return; }
+  list.innerHTML='';
+  for (var i=0;i<trackerData.length;i++) {
+    var c=trackerData[i];
+    var tc=c.type==='deed'?'background:#e8f0ec;color:#1f4236;':c.type==='lien'?'background:#fdf8ee;color:#8a6b1e;':'background:#f0e8f8;color:#6b3fa0;';
+    var card=document.createElement('div');
+    card.className='county-card';
+    var meta1=(c.date?'<div class="county-meta-item"><div class="m-label">Sale Date</div><div class="m-val">'+c.date+'</div></div>':'')+(c.budget?'<div class="county-meta-item"><div class="m-label">Max Budget</div><div class="m-val">$'+Number(c.budget).toLocaleString()+'</div></div>':'')+(c.apn?'<div class="county-meta-item"><div class="m-label">Parcel/APN</div><div class="m-val">'+c.apn+'</div></div>':'')+(c.proptype?'<div class="county-meta-item"><div class="m-label">Property Type</div><div class="m-val">'+c.proptype+'</div></div>':'');
+    var meta2=(c.openbid?'<div class="county-meta-item"><div class="m-label">Opening Bid</div><div class="m-val">$'+Number(c.openbid).toLocaleString()+'</div></div>':'')+(c.marketval?'<div class="county-meta-item"><div class="m-label">Est. Market Value</div><div class="m-val">$'+Number(c.marketval).toLocaleString()+'</div></div>':'')+(c.zoning?'<div class="county-meta-item"><div class="m-label">Zoning</div><div class="m-val">'+c.zoning+'</div></div>':'')+(c.flood?'<div class="county-meta-item"><div class="m-label">Flood Zone</div><div class="m-val">'+c.flood+'</div></div>':'');
+    var meta3=(c.access?'<div class="county-meta-item"><div class="m-label">Road Access</div><div class="m-val">'+c.access+'</div></div>':'')+(c.decision?'<div class="county-meta-item"><div class="m-label">Decision</div><div class="m-val" style="font-weight:700;color:'+(c.decision==='Bid'?'#065f46':c.decision==='Pass'?'#b91c1c':'#8a6b1e')+'">'+c.decision+'</div></div>':'');
+    card.innerHTML=
+      '<div class="county-card-top"><div><div class="county-name">'+c.county+' County</div><div class="county-state">'+c.state+'</div></div>'+(c.type?'<span class="county-type-badge" style="'+tc+'">'+(typeLabels[c.type]||c.type)+'</span>':'')+'</div>'+
+      '<div style="margin-bottom:10px;"><span style="padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;'+(statusColors[c.status]||'background:#f3f4f6;color:#4b5563;')+'">'+(statusLabels[c.status]||c.status)+'</span></div>'+
+      (meta1?'<div class="county-meta">'+meta1+'</div>':'')+
+      (meta2?'<div class="county-meta">'+meta2+'</div>':'')+
+      (meta3?'<div class="county-meta">'+meta3+'</div>':'')+
+      (c.nextaction?'<div class="county-notes-label" style="margin-top:8px;">NEXT ACTION</div><div class="county-notes">'+c.nextaction+'</div>':'')+
+      (c.notes?'<div class="county-notes-label">NOTES</div><div class="county-notes">'+c.notes+'</div>':'')+
+      '<div class="county-actions"><button class="county-edit-btn" onclick="editCounty(\''+c.id+'\')">Edit</button><button class="county-del-btn" onclick="deleteCounty(\''+c.id+'\')">Delete</button></div>';
+    list.appendChild(card);
+  }
+}
+
+function openForm(id) {
+  editingId=id||null;
+  var fields=['county','state','type','date','budget','status','apn','proptype','openbid','marketval','zoning','flood','access','decision','nextaction','notes'];
+  if (id) {
+    var c=trackerData.filter(function(x){return x.id===id;})[0];
+    document.getElementById('form-title').textContent='Edit County';
+    fields.forEach(function(f){ var el=document.getElementById('f-'+f); if(el) el.value=c[f]||''; });
+  } else {
+    document.getElementById('form-title').textContent='Add County';
+    fields.forEach(function(f){ var el=document.getElementById('f-'+f); if(el) el.value=''; });
+    document.getElementById('f-status').value='researching';
+  }
+  document.getElementById('form-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeForm() { document.getElementById('form-modal').classList.remove('open'); document.body.style.overflow=''; }
+function editCounty(id) { openForm(id); }
+function deleteCounty(id) {
+  if (!confirm('Delete this county?')) return;
+  trackerData=trackerData.filter(function(x){return x.id!==id;});
+  localStorage.setItem('tsa-tracker',JSON.stringify(trackerData));
+  renderTracker();
+}
+
+function saveCounty() {
+  var county=document.getElementById('f-county').value.trim();
+  if (!county) { alert('Please enter a county name.'); return; }
+  var obj={id:editingId||('c'+Date.now()),county:county,state:document.getElementById('f-state').value,type:document.getElementById('f-type').value,date:document.getElementById('f-date').value,budget:document.getElementById('f-budget').value,status:document.getElementById('f-status').value,apn:document.getElementById('f-apn').value.trim(),proptype:document.getElementById('f-proptype').value,openbid:document.getElementById('f-openbid').value,marketval:document.getElementById('f-marketval').value,zoning:document.getElementById('f-zoning').value.trim(),flood:document.getElementById('f-flood').value,access:document.getElementById('f-access').value,decision:document.getElementById('f-decision').value,nextaction:document.getElementById('f-nextaction').value.trim(),notes:document.getElementById('f-notes').value.trim()};
+  if (editingId) { for(var i=0;i<trackerData.length;i++){if(trackerData[i].id===editingId){trackerData[i]=obj;break;}} } else { trackerData.push(obj); }
+  localStorage.setItem('tsa-tracker',JSON.stringify(trackerData));
+  renderTracker();
+  closeForm();
+}
+
+function exportCSV() {
+  if (trackerData.length===0) { alert('No counties tracked yet.'); return; }
+  var headers=['County','State','Sale Type','Sale Date','Max Budget','Status','Parcel/APN','Property Type','Opening Bid','Est. Market Value','Zoning','Flood Zone','Road Access','Decision','Next Action','Notes'];
+  var rows=[headers];
+  var typeMap={deed:'Tax Deed',lien:'Tax Lien',both:'Both'};
+  for (var i=0;i<trackerData.length;i++) {
+    var c=trackerData[i];
+    rows.push([c.county?c.county+' County':'',c.state||'',typeMap[c.type]||c.type||'',c.date||'',c.budget?'$'+c.budget:'',c.status||'',c.apn||'',c.proptype||'',c.openbid?'$'+c.openbid:'',c.marketval?'$'+c.marketval:'',c.zoning||'',c.flood||'',c.access||'',c.decision||'',c.nextaction||'',c.notes||'']);
+  }
+  var csv=rows.map(function(r){return r.map(function(cell){return '"'+(cell||'').toString().replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var blob=new Blob([csv],{type:'text/csv'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a'); a.href=url; a.download='tax-sale-county-tracker.csv'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+document.getElementById('form-modal').addEventListener('click',function(e){if(e.target===this)closeForm();});
+init();
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('/tax-sale-academy-sw.js');
+</script>
+
+</body>
+</html>
