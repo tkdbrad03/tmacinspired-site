@@ -469,11 +469,11 @@ function applyViewerMode() {
   document.querySelector('.setup-bar').style.display = 'none';
   document.getElementById('par3Setup').style.display = 'none';
   document.getElementById('viewerBadge').style.display = 'block';
-  document.querySelectorAll('input').forEach(inp => inp.setAttribute('readonly', true));
-  document.querySelectorAll('.player-card input[type="text"]').forEach(inp => {
-    inp.style.borderBottom = 'none';
+  document.querySelectorAll('input').forEach(inp => {
+    inp.setAttribute('readonly', true);
     inp.style.pointerEvents = 'none';
   });
+  document.querySelectorAll('.ctp-cell').forEach(el => el.style.pointerEvents = 'none');
 }
 
 function shareLeaderboard() {
