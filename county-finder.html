@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1f4236">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>County Finder | Tax Sale Academy</title>
+<link rel="manifest" href="/tax-sale-academy-manifest.json">
+<link rel="icon" type="image/png" href="/tax-sale-academy-icon-192.png">
+<link rel="apple-touch-icon" href="/tax-sale-academy-icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/tsa-shared.css">
+<style>
+.search-wrap { position: relative; margin-bottom: 20px; }
+.search-input {
+  width: 100%; padding: 14px 16px 14px 44px;
+  border: 1.5px solid var(--border); border-radius: 12px;
+  font-family: 'DM Sans', sans-serif; font-size: 15px;
+  color: var(--text); background: #fff; outline: none;
+}
+.search-input:focus { border-color: var(--pine); }
+.search-icon {
+  position: absolute; left: 14px; top: 50%;
+  transform: translateY(-50%); font-size: 18px; pointer-events: none;
+}
+.state-card {
+  background: #fff; border-radius: 14px; margin-bottom: 12px;
+  border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(31,66,54,0.06);
+  overflow: hidden;
+}
+.state-card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 18px; cursor: pointer;
+  transition: background 0.15s;
+}
+.state-card-header:hover { background: var(--off); }
+.state-card-header.open { background: var(--pine-pale); }
+.state-name-wrap { display: flex; align-items: center; gap: 12px; }
+.state-name { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: var(--pine); }
+.state-type-badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+.chevron { font-size: 12px; color: var(--muted); transition: transform 0.25s; }
+.chevron.open { transform: rotate(180deg); }
+.state-body { display: none; padding: 0 18px 18px; border-top: 1px solid var(--border); }
+.state-body.open { display: block; }
+.state-summary {
+  font-size: 13.5px; color: #4a4a48; line-height: 1.7;
+  padding: 14px 0 12px;
+}
+.resource-section-title {
+  font-size: 11px; font-weight: 700; color: var(--pine);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 8px; margin-top: 4px;
+}
+.county-link {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; background: var(--off);
+  border-radius: 8px; margin-bottom: 6px;
+  text-decoration: none; color: var(--text);
+  border: 1px solid var(--border); font-size: 13.5px;
+  font-weight: 500; transition: border-color 0.2s;
+}
+.county-link:hover { border-color: var(--gold); }
+.county-link .arrow { color: var(--gold); font-size: 14px; }
+.state-link {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; background: var(--pine);
+  border-radius: 10px; margin-top: 10px;
+  text-decoration: none; color: #fff; font-size: 13.5px; font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+}
+.state-link .link-icon { font-size: 16px; }
+.tip-note {
+  background: var(--gold-pale); border: 1px solid var(--gold2);
+  border-radius: 8px; padding: 10px 14px;
+  font-size: 12.5px; color: #7a5a10; line-height: 1.6;
+  margin-top: 10px;
+}
+.no-results {
+  text-align: center; padding: 40px 20px; color: var(--muted);
+  font-size: 14px; line-height: 1.6;
+}
+</style>
+</head>
+<body>
+
+<nav class="pwa-bottom-nav">
+  <div class="pwa-bottom-nav-inner">
+    <a href="/tax-sale-academy" class="pwa-nav-item"><span class="nav-ico">📖</span>Start</a>
+    <a href="/tsa-process" class="pwa-nav-item"><span class="nav-ico">🪜</span>Process</a>
+    <a href="/tsa-finder" class="pwa-nav-item active"><span class="nav-ico">🔎</span>Finder</a>
+    <a href="/tsa-calculator" class="pwa-nav-item"><span class="nav-ico">🧮</span>Calculator</a>
+    <a href="/tsa-checklists" class="pwa-nav-item"><span class="nav-ico">✅</span>Checklists</a>
+    <a href="/tsa-tracker" class="pwa-nav-item"><span class="nav-ico">🗂️</span>Tracker</a>
+  </div>
+</nav>
+
+<div class="tsa-header">
+  <div class="brand-tag">TMac Inspired</div>
+  <h1>County <em>Finder</em></h1>
+  <div class="gold-line"></div>
+  <p>Find tax sales in your state. Direct links to official county resources.</p>
+</div>
+
+<div class="tsa-page">
+  <div class="search-wrap">
+    <span class="search-icon">🔎</span>
+    <input class="search-input" id="search" type="text" placeholder="Search by state name..." oninput="filterStates()">
+  </div>
+
+  <div id="states-list"></div>
+</div>
+
+<script>
+var stateData = [
+  {
+    name: "Alabama", type: "lien",
+    summary: "Alabama is a tax lien state. Counties hold annual tax lien auctions, typically in April and May. The redemption period is 3 years. Interest rate is 12% per year.",
+    stateUrl: "https://www.revenue.alabama.gov/property-tax/",
+    stateLabel: "Alabama Department of Revenue - Property Tax",
+    counties: [
+      { name: "Jefferson County", url: "https://www.jccal.org/Default.asp?Page=1277" },
+      { name: "Madison County", url: "https://www.madisoncountyal.gov/departments/revenue" },
+      { name: "Mobile County", url: "https://www.mobilecountyal.gov/government/dept_revenue.html" },
+      { name: "Shelby County", url: "https://www.shelbycounty-al.org/index.aspx?page=152" }
+    ],
+    tip: "Search '[County Name] Alabama tax lien sale' to find your specific county's auction date and registration requirements."
+  },
+  {
+    name: "Alaska", type: "deed",
+    summary: "Alaska is a tax deed state. Boroughs (equivalent to counties) hold tax foreclosure sales. Alaska has only 19 organized boroughs — unorganized areas are managed by the state.",
+    stateUrl: "https://www.tax.alaska.gov/programs/property/index.aspx",
+    stateLabel: "Alaska Department of Revenue - Property Tax",
+    counties: [
+      { name: "Anchorage Municipality", url: "https://www.muni.org/Departments/finance/Assessor/Pages/default.aspx" },
+      { name: "Fairbanks North Star Borough", url: "https://www.fnsb.gov/762/Property-Tax" },
+      { name: "Matanuska-Susitna Borough", url: "https://matsugov.us/departments/assessor" }
+    ],
+    tip: "Alaska uses boroughs instead of counties. Search '[Borough Name] Alaska tax foreclosure sale' for local auction information."
+  },
+  {
+    name: "Arizona", type: "lien",
+    summary: "Arizona is a tax lien state with one of the highest interest rates in the country — up to 16% per year. Counties hold annual auctions, most in February. Redemption period is 3 years.",
+    stateUrl: "https://azdor.gov/property-tax",
+    stateLabel: "Arizona Department of Revenue - Property Tax",
+    counties: [
+      { name: "Maricopa County", url: "https://mcassessor.maricopa.gov/taxsale.php" },
+      { name: "Pima County", url: "https://www.assessor.pima.gov/tax-lien-sale" },
+      { name: "Pinal County", url: "https://www.pinalcountyaz.gov/Treasurer/Pages/TaxLienSale.aspx" },
+      { name: "Yavapai County", url: "https://www.yavapaiaz.gov/treasurer" },
+      { name: "Mohave County", url: "https://www.mohavecounty.us/ContentPage.aspx?id=182&pageid=183" }
+    ],
+    tip: "Arizona auctions are often held online. Maricopa and Pima counties use online platforms — register early as spots fill up."
+  },
+  {
+    name: "Arkansas", type: "deed",
+    summary: "Arkansas is a tax deed state. The Commissioner of State Lands handles tax-delinquent properties. There is a 2-year redemption period after the property is certified to the state.",
+    stateUrl: "https://www.cosl.org/",
+    stateLabel: "Arkansas Commissioner of State Lands",
+    counties: [
+      { name: "Pulaski County", url: "https://www.pulaskicountyar.gov/Offices/Assessor/" },
+      { name: "Benton County", url: "https://www.bentoncountyar.gov/collector/" },
+      { name: "Washington County", url: "https://www.washingtoncountyar.gov/government/departments-n-z/treasurer-collector" }
+    ],
+    tip: "Arkansas is unique — most tax sales go through the state Commissioner of State Lands office, not individual counties. Start at cosl.org."
+  },
+  {
+    name: "California", type: "deed",
+    summary: "California is a tax deed state. Each county holds its own tax defaulted property auctions. Properties must be 5 years delinquent before the county can sell. No right of redemption after sale.",
+    stateUrl: "https://www.boe.ca.gov/proptaxes/taxsale.htm",
+    stateLabel: "California Board of Equalization - Tax Sales",
+    counties: [
+      { name: "Los Angeles County", url: "https://ttc.lacounty.gov/auction/" },
+      { name: "San Bernardino County", url: "https://www.sbcounty.gov/atc/taxsale.asp" },
+      { name: "Riverside County", url: "https://www.countyofriverside.us/Government/Departments-Agencies-I-Z/Treasurer-Tax-Collector/Tax-Sale" },
+      { name: "Sacramento County", url: "https://www.treasurer.saccounty.net/TaxDefaultedProperty/Pages/default.aspx" },
+      { name: "Fresno County", url: "https://www.co.fresno.ca.us/departments/treasurer-tax-collector/tax-sale" }
+    ],
+    tip: "California counties often use online auction platforms like Bid4Assets. Search '[County] California tax defaulted property auction' to find upcoming sales."
+  },
+  {
+    name: "Colorado", type: "lien",
+    summary: "Colorado is a tax lien state. Counties hold annual tax lien certificate sales, typically in October through December. The interest rate is 9% plus Federal Discount Rate. Redemption period is 3 years.",
+    stateUrl: "https://www.colorado.gov/pacific/dola/property-taxation",
+    stateLabel: "Colorado Division of Local Affairs - Property Tax",
+    counties: [
+      { name: "Denver County", url: "https://www.denvergov.org/Government/Agencies-Departments-Offices/Agencies-Departments-Offices-Directory/Treasury/Tax-Lien-Sale" },
+      { name: "El Paso County", url: "https://www.elpasoco.com/treasurer/" },
+      { name: "Arapahoe County", url: "https://www.arapahoegov.com/1699/Tax-Lien-Sale" },
+      { name: "Jefferson County", url: "https://www.jeffco.us/2305/Treasurer" },
+      { name: "Adams County", url: "https://www.adcogov.org/treasurer" }
+    ],
+    tip: "Colorado tax lien sales are held in person and online depending on the county. Contact your county treasurer in September to register."
+  },
+  {
+    name: "Connecticut", type: "deed",
+    summary: "Connecticut is a tax deed state. Municipalities (towns) hold tax sales rather than counties. Properties must be at least 3 years delinquent. There is no right of redemption after the sale.",
+    stateUrl: "https://portal.ct.gov/OPM/IGPP-MAIN/Property-Taxes/Property-Tax-Information",
+    stateLabel: "Connecticut Office of Policy & Management - Property Tax",
+    counties: [
+      { name: "Hartford (City)", url: "https://www.hartford.gov/government/departments/finance/tax-collector" },
+      { name: "Bridgeport (City)", url: "https://www.bridgeportct.gov/government/departments/tax-assessors-office" },
+      { name: "New Haven (City)", url: "https://www.newhavenct.gov/government/departments-and-agencies/tax-collector" }
+    ],
+    tip: "Connecticut uses municipalities (towns/cities) not counties for tax sales. Search '[Town Name] Connecticut tax sale' for local auction information."
+  },
+  {
+    name: "Delaware", type: "deed",
+    summary: "Delaware is a tax deed state. Each county holds its own tax sale. Properties must be delinquent for 2 years before being eligible for sale.",
+    stateUrl: "https://revenue.delaware.gov/",
+    stateLabel: "Delaware Division of Revenue",
+    counties: [
+      { name: "New Castle County", url: "https://www.newcastlede.gov/1185/Tax-Sale" },
+      { name: "Kent County", url: "https://www.kentcountyde.gov/government/row-offices/finance" },
+      { name: "Sussex County", url: "https://www.sussexcountyde.gov/tax-sale-information" }
+    ],
+    tip: "Delaware only has 3 counties making it one of the simplest states to navigate for tax sales."
+  },
+  {
+    name: "Florida", type: "both",
+    summary: "Florida operates as both a tax lien AND tax deed state — giving investors two strategies. Tax certificate sales are held online in May/June. Tax deed sales are held when certificate holders apply after the 2-year redemption period.",
+    stateUrl: "https://floridarevenue.com/property/Pages/Taxpayers_TaxCertificates.aspx",
+    stateLabel: "Florida Department of Revenue - Tax Certificates",
+    counties: [
+      { name: "Miami-Dade County", url: "https://www.miamidade.gov/finance/tax-certificate-sale.asp" },
+      { name: "Broward County", url: "https://www.broward.org/RecordsTaxesTreasury/TaxCertificates/Pages/default.aspx" },
+      { name: "Palm Beach County", url: "https://www.pbctax.com/tax-certificates/" },
+      { name: "Hillsborough County", url: "https://www.hillstax.org/property-taxes/tax-certificate-sales/" },
+      { name: "Orange County", url: "https://www.octaxcol.com/tax-certificates/" },
+      { name: "Pinellas County", url: "https://www.pcpao.gov/taxsale.html" },
+      { name: "Polk County", url: "https://www.polktaxes.com/property-taxes/tax-certificates/" },
+      { name: "Duval County", url: "https://www.coj.net/departments/tax-collector/property-taxes/tax-certificate-sales" },
+      { name: "Lee County", url: "https://www.leetc.com/property-taxes/tax-certificates/" },
+      { name: "Volusia County", url: "https://www.volusiaproperty.com/tax-certificates" }
+    ],
+    tip: "Florida tax certificate sales are held online through LienHub or Realauction. Register at least 2 weeks before the sale date."
+  },
+  {
+    name: "Georgia", type: "deed",
+    summary: "Georgia is a tax deed state. Tax sales are held on the first Tuesday of the month on the courthouse steps. There is a 1-year right of redemption after the sale with a 20% premium.",
+    stateUrl: "https://dor.georgia.gov/property-tax-overview",
+    stateLabel: "Georgia Department of Revenue - Property Tax",
+    counties: [
+      { name: "Fulton County", url: "https://www.fultoncountyga.gov/inside-fulton-county/fulton-county-departments/treasury-fiscal-management/tax-sale" },
+      { name: "Gwinnett County", url: "https://www.gwinnettcounty.com/web/gwinnett/departments/financialservices/taxcommissioner/taxsales" },
+      { name: "DeKalb County", url: "https://www.dekalbcountyga.gov/tax-commissioner/tax-sales" },
+      { name: "Cobb County", url: "https://www.cobbcounty.org/tax/tax-commissioner/tax-sale" },
+      { name: "Chatham County", url: "https://www.chathamcounty.org/Departments/Tax-Commissioner/Tax-Sales" }
+    ],
+    tip: "Georgia tax sales happen on courthouse steps on the first Tuesday of each month. Show up early and bring cashier's checks."
+  },
+  {
+    name: "Hawaii", type: "deed",
+    summary: "Hawaii is a tax deed state. It has only 4 counties (Honolulu, Maui, Hawaii, Kauai). Tax sales are relatively rare and infrequent compared to mainland states.",
+    stateUrl: "https://tax.hawaii.gov/",
+    stateLabel: "Hawaii Department of Taxation",
+    counties: [
+      { name: "Honolulu County", url: "https://www.honolulu.gov/budget/real-property-tax-sale.html" },
+      { name: "Maui County", url: "https://www.mauicounty.gov/131/Real-Property-Assessment" },
+      { name: "Hawaii County (Big Island)", url: "https://www.hawaiipropertytax.com/node/5" },
+      { name: "Kauai County", url: "https://www.kauai.gov/Government/Departments-Agencies/Finance/Real-Property-Assessment" }
+    ],
+    tip: "Hawaii has only 4 counties. Tax sales are infrequent — monitor each county's website regularly or sign up for notifications."
+  },
+  {
+    name: "Idaho", type: "deed",
+    summary: "Idaho is a tax deed state. Properties must be delinquent for 3 years before the county can take action. Counties hold tax deed sales after the redemption period expires.",
+    stateUrl: "https://tax.idaho.gov/taxes/property/",
+    stateLabel: "Idaho State Tax Commission - Property Tax",
+    counties: [
+      { name: "Ada County", url: "https://adacounty.id.gov/assessor/" },
+      { name: "Canyon County", url: "https://www.canyonco.org/elected-officials/assessor/" },
+      { name: "Kootenai County", url: "https://www.kcgov.us/assessor" }
+    ],
+    tip: "Search '[County Name] Idaho tax deed sale' to find your specific county's process and upcoming auction dates."
+  },
+  {
+    name: "Illinois", type: "both",
+    summary: "Illinois operates as both a tax lien AND tax deed state. Annual tax sales are held in counties after taxes are 2 years delinquent. Buyers receive a tax lien certificate with a 2-3 year redemption period. After that, a tax deed can be obtained.",
+    stateUrl: "https://www2.illinois.gov/rev/research/taxinformation/realproperty/pages/ptax-1004.aspx",
+    stateLabel: "Illinois Department of Revenue - Property Tax",
+    counties: [
+      { name: "Cook County", url: "https://www.cookcountytreasurer.com/taxsaleinfo.aspx" },
+      { name: "DuPage County", url: "https://www.dupageco.org/Treasurer/Tax_Sale/" },
+      { name: "Lake County", url: "https://www.lakecountyil.gov/treasurer" },
+      { name: "Will County", url: "https://www.willcountysoa.com/treasury-delinquent.aspx" },
+      { name: "Kane County", url: "https://www.kanecountytreasurer.com/taxsale.html" }
+    ],
+    tip: "Illinois tax sales are intensely competitive especially in Cook County. Scrupulous due diligence on title and existing liens is essential."
+  },
+  {
+    name: "Indiana", type: "both",
+    summary: "Indiana operates as both a tax lien AND tax deed state. Tax sales are held in the fall (September-November). There is a 1-year redemption period. After redemption expires, you can petition for a tax deed.",
+    stateUrl: "https://www.in.gov/dlgf/property-tax/",
+    stateLabel: "Indiana Department of Local Government Finance",
+    counties: [
+      { name: "Marion County", url: "https://www.indy.gov/activity/tax-sale-information" },
+      { name: "Lake County", url: "https://www.lakecountyindiana.com/treasurer/tax-sale/" },
+      { name: "Allen County", url: "https://www.allencounty.us/egov/apps/document/center.egov?view=item&id=11" },
+      { name: "Hamilton County", url: "https://www.hamiltoncounty.in.gov/1027/Tax-Sale" },
+      { name: "St. Joseph County", url: "https://www.stjosephcountyindiana.com/treasurer" }
+    ],
+    tip: "Indiana tax sales are well-organized with public lists posted 3-4 weeks before the sale. Register early — many counties require pre-registration."
+  },
+  {
+    name: "Iowa", type: "lien",
+    summary: "Iowa is a tax lien state. Annual tax sales are held on the third Monday in June. The interest rate is 2% per month (24% per year) making Iowa very attractive for lien investors. Redemption period is 90 days to 1 year.",
+    stateUrl: "https://tax.iowa.gov/property-tax",
+    stateLabel: "Iowa Department of Revenue - Property Tax",
+    counties: [
+      { name: "Polk County", url: "https://www.polkcountyiowa.gov/treasurer/tax-sale/" },
+      { name: "Linn County", url: "https://www.linncounty.org/treasurer" },
+      { name: "Scott County", url: "https://www.scottcountyiowa.gov/treasurer" },
+      { name: "Johnson County", url: "https://www.johnsoncountyiowa.gov/treasurer" }
+    ],
+    tip: "Iowa's 2% monthly interest rate is one of the highest in the country. The June tax sale date is consistent statewide."
+  },
+  {
+    name: "Kansas", type: "deed",
+    summary: "Kansas is a tax deed state. The county holds a tax foreclosure sale after a 3-year delinquency period. Sales are conducted through the court system.",
+    stateUrl: "https://www.ksrevenue.gov/perstaxtypeprop.html",
+    stateLabel: "Kansas Department of Revenue - Property Tax",
+    counties: [
+      { name: "Johnson County", url: "https://www.jocogov.org/dept/treasury-financial-management/tax-sale" },
+      { name: "Sedgwick County", url: "https://www.sedgwickcounty.org/treasurer/tax-foreclosure-sales/" },
+      { name: "Douglas County", url: "https://www.douglas-county.com/departments/treasury/tax_sale.aspx" },
+      { name: "Wyandotte County", url: "https://www.wycokck.org/Departments/Treasurer/Tax-Sale" }
+    ],
+    tip: "Kansas tax sales are judicial foreclosures — they go through the court system. Allow more lead time compared to auction-style states."
+  },
+  {
+    name: "Kentucky", type: "lien",
+    summary: "Kentucky is a tax lien state. The Commonwealth holds a master commissioner sale after a 2-year delinquency. Each county has a Master Commissioner who handles the sale process.",
+    stateUrl: "https://revenue.ky.gov/Property/Pages/default.aspx",
+    stateLabel: "Kentucky Department of Revenue - Property Tax",
+    counties: [
+      { name: "Jefferson County", url: "https://www.loujeff.com/departments/county-clerk/delinquent-taxes" },
+      { name: "Fayette County", url: "https://www.lexingtonky.gov/revenue-and-taxes/property-taxes" },
+      { name: "Kenton County", url: "https://www.kentoncounty.org/county-clerk" },
+      { name: "Boone County", url: "https://www.boonecountyky.org/county_clerk" }
+    ],
+    tip: "Search '[County Name] Kentucky Master Commissioner sale' to find upcoming tax sales in your county."
+  },
+  {
+    name: "Louisiana", type: "lien",
+    summary: "Louisiana is a tax lien state. Annual tax sales are held in May. The interest rate is 5% per year plus a 5% penalty. The redemption period is 3 years.",
+    stateUrl: "https://revenue.louisiana.gov/propertyTax",
+    stateLabel: "Louisiana Department of Revenue - Property Tax",
+    counties: [
+      { name: "Orleans Parish", url: "https://www.stpso.com/departments/real-estate/sheriff-sale" },
+      { name: "Jefferson Parish", url: "https://www.jeffparish.net/departments/finance/sheriff-s-tax-sale" },
+      { name: "East Baton Rouge Parish", url: "https://www.ebrso.org/index.php/tax-sales" },
+      { name: "St. Tammany Parish", url: "https://www.stpso.com/departments/real-estate/sheriff-sale" }
+    ],
+    tip: "Louisiana uses parishes instead of counties. Tax sales are conducted by the Sheriff's office in each parish."
+  },
+  {
+    name: "Maine", type: "deed",
+    summary: "Maine is a tax deed state. Municipalities (towns) hold tax sales rather than counties. Properties must be delinquent for 18 months before the municipality can take possession.",
+    stateUrl: "https://www.maine.gov/revenue/taxes/property-tax",
+    stateLabel: "Maine Revenue Services - Property Tax",
+    counties: [
+      { name: "Portland (City)", url: "https://www.portlandmaine.gov/204/Taxes" },
+      { name: "Bangor (City)", url: "https://www.bangormaine.gov/content/311/318/347.aspx" },
+      { name: "Lewiston (City)", url: "https://www.lewistonmaine.gov/149/Tax-Collector" }
+    ],
+    tip: "Maine uses town/city governments for tax sales, not counties. Search '[Town Name] Maine tax acquired property' for local listings."
+  },
+  {
+    name: "Maryland", type: "lien",
+    summary: "Maryland is a tax lien state. Annual tax lien sales are held in May and June. The interest rate varies by county (typically 6-24%). Redemption period is 6 months to 2 years depending on the county.",
+    stateUrl: "https://dat.maryland.gov/realproperty/Pages/default.aspx",
+    stateLabel: "Maryland Department of Assessments and Taxation",
+    counties: [
+      { name: "Baltimore City", url: "https://sdat.dat.maryland.gov/RealProperty/Pages/default.aspx" },
+      { name: "Montgomery County", url: "https://www.montgomerycountymd.gov/finance/taxes/taxsale.html" },
+      { name: "Prince George's County", url: "https://www.princegeorgescountymd.gov/1113/Tax-Sale" },
+      { name: "Baltimore County", url: "https://www.baltimorecountymd.gov/departments/budfin/taxsale.html" },
+      { name: "Anne Arundel County", url: "https://www.aacounty.org/departments/finance/treasury/tax-sale/" }
+    ],
+    tip: "Maryland tax lien sales are very competitive, especially in Baltimore City. Many counties hold sales online — register at least 30 days early."
+  },
+  {
+    name: "Massachusetts", type: "deed",
+    summary: "Massachusetts is a tax deed state. Municipalities (cities and towns) hold tax title auctions. Properties must be delinquent for at least 2 years. The Commonwealth Land Court oversees the process.",
+    stateUrl: "https://www.mass.gov/info-details/property-tax",
+    stateLabel: "Massachusetts Department of Revenue - Property Tax",
+    counties: [
+      { name: "Boston (City)", url: "https://www.boston.gov/departments/assessing/how-read-your-tax-bill" },
+      { name: "Worcester (City)", url: "https://www.worcesterma.gov/finance/collector-treasurer" },
+      { name: "Springfield (City)", url: "https://www.springfieldcityhall.com/city-collector/" }
+    ],
+    tip: "Massachusetts tax sales are handled by individual cities and towns. Search '[City/Town Name] Massachusetts tax title auction' for local information."
+  },
+  {
+    name: "Michigan", type: "deed",
+    summary: "Michigan is a tax deed state with an excellent process for investors. Properties delinquent for 3 years are forfeited to the county. Annual auctions are held by each county — often with very low starting bids.",
+    stateUrl: "https://www.michigan.gov/taxes/property/foreclosure",
+    stateLabel: "Michigan Department of Treasury - Tax Foreclosure",
+    counties: [
+      { name: "Wayne County", url: "https://www.waynecounty.com/elected/treasurer/tax-auction.aspx" },
+      { name: "Oakland County", url: "https://www.oakgov.com/treasurer/Pages/forfeiture-foreclosure.aspx" },
+      { name: "Macomb County", url: "https://www.macombcountymi.gov/treasurer/foreclosure-auctions" },
+      { name: "Kent County", url: "https://www.accesskent.com/Departments/Treasurer/taxForeclosure.htm" },
+      { name: "Genesee County", url: "https://www.geneseecountymi.gov/departments/treasurer/land_bank/" }
+    ],
+    tip: "Michigan is one of the best states for tax deed investing. Wayne County (Detroit area) has auctions with properties starting as low as $500."
+  },
+  {
+    name: "Minnesota", type: "deed",
+    summary: "Minnesota is a tax deed state. The process is called tax-forfeited land sales. Properties that have been forfeited to the state for at least 3 years can be sold by counties.",
+    stateUrl: "https://www.revenue.state.mn.us/property-tax",
+    stateLabel: "Minnesota Department of Revenue - Property Tax",
+    counties: [
+      { name: "Hennepin County", url: "https://www.hennepin.us/residents/property/tax-forfeited-land" },
+      { name: "Ramsey County", url: "https://www.ramseycounty.us/residents/property/tax-forfeited-lands" },
+      { name: "Dakota County", url: "https://www.dakotacounty.us/1716/Tax-Forfeited-Land" },
+      { name: "Anoka County", url: "https://www.anokacounty.us/688/Tax-Forfeited-Land" }
+    ],
+    tip: "Minnesota calls these 'tax-forfeited land sales.' Contact your county auditor's office for upcoming sale dates and property lists."
+  },
+  {
+    name: "Mississippi", type: "lien",
+    summary: "Mississippi is a tax lien state. Annual tax sales are held on the last Monday of August. The interest rate is 18% per year. The redemption period is 2 years.",
+    stateUrl: "https://www.dor.ms.gov/taxes/property-tax",
+    stateLabel: "Mississippi Department of Revenue - Property Tax",
+    counties: [
+      { name: "Hinds County", url: "https://www.co.hinds.ms.us/pgs/taxcollector.asp" },
+      { name: "Harrison County", url: "https://www.co.harrison.ms.us/departments/tax_collector/" },
+      { name: "DeSoto County", url: "https://www.desotocountyms.gov/139/Tax-Collector" },
+      { name: "Rankin County", url: "https://www.rankincounty.org/departments/tax_collector/" }
+    ],
+    tip: "Mississippi tax sales are held on a consistent statewide schedule on the last Monday of August each year."
+  },
+  {
+    name: "Missouri", type: "both",
+    summary: "Missouri operates as both a tax lien AND tax deed state depending on the county. Annual tax sales are held in August. There is a 1-year redemption period on most properties.",
+    stateUrl: "https://dor.mo.gov/personal/property/",
+    stateLabel: "Missouri Department of Revenue - Property Tax",
+    counties: [
+      { name: "Jackson County", url: "https://www.jacksongov.org/579/Tax-Sale" },
+      { name: "St. Louis County", url: "https://stlouiscountymo.gov/st-louis-county-departments/revenue/delinquent-tax-sale/" },
+      { name: "St. Louis City", url: "https://www.stlouis-mo.gov/government/departments/collector/tax-sales.cfm" },
+      { name: "Greene County", url: "https://www.greenecountymo.gov/collector/tax_sale.php" },
+      { name: "Clay County", url: "https://www.claycountymo.gov/Departments/Collector/Tax-Sale" }
+    ],
+    tip: "Missouri tax sales are held in August. St. Louis City and County hold separate sales — research both if investing in the St. Louis area."
+  },
+  {
+    name: "Montana", type: "lien",
+    summary: "Montana is a tax lien state. Annual tax lien certificate sales are held in July. The interest rate is 10% per year. The redemption period is 3 years.",
+    stateUrl: "https://mtrevenue.gov/taxes/property-tax/",
+    stateLabel: "Montana Department of Revenue - Property Tax",
+    counties: [
+      { name: "Yellowstone County", url: "https://www.yellowstonecountymt.gov/treasurer" },
+      { name: "Cascade County", url: "https://www.cascadecountymt.gov/treasurer" },
+      { name: "Missoula County", url: "https://www.missoulacounty.us/government/finance/treasurer" }
+    ],
+    tip: "Montana is a lower-competition state for tax lien investing. Search '[County Name] Montana tax lien sale' for local auction details."
+  },
+  {
+    name: "Nebraska", type: "lien",
+    summary: "Nebraska is a tax lien state. Annual tax sales are held in March. The interest rate is 14% per year. The redemption period is 3 years.",
+    stateUrl: "https://revenue.nebraska.gov/PAD",
+    stateLabel: "Nebraska Department of Revenue - Property Assessment",
+    counties: [
+      { name: "Douglas County", url: "https://www.douglascounty-ne.gov/treasurer/taxsale" },
+      { name: "Lancaster County", url: "https://treasurer.lincoln.ne.gov/tax-sale" },
+      { name: "Sarpy County", url: "https://www.sarpy.com/offices/treasurer/tax-sale-information" },
+      { name: "Hall County", url: "https://www.hallcounty.org/245/Treasurer" }
+    ],
+    tip: "Nebraska holds tax sales in March each year. Douglas County (Omaha) and Lancaster County (Lincoln) have the most active markets."
+  },
+  {
+    name: "Nevada", type: "deed",
+    summary: "Nevada is a tax deed state. Counties hold annual tax deed sales. Properties must be delinquent for 2 years. There is no right of redemption after the sale.",
+    stateUrl: "https://tax.nv.gov/Publications/Property_Tax_Brochures/",
+    stateLabel: "Nevada Department of Taxation - Property Tax",
+    counties: [
+      { name: "Clark County", url: "https://www.clarkcountynv.gov/government/assessor/pages/default.aspx" },
+      { name: "Washoe County", url: "https://www.washoecounty.gov/assessor/tax_sale.php" },
+      { name: "Carson City", url: "https://www.carson.org/government/departments-g-z/treasurer/property-tax" }
+    ],
+    tip: "Clark County (Las Vegas) holds the most active tax deed sales in Nevada. Check their website in the fall for upcoming auction announcements."
+  },
+  {
+    name: "New Hampshire", type: "deed",
+    summary: "New Hampshire is a tax deed state. Municipalities hold tax lien sales and then tax deed sales after a 2-year redemption period. The process is handled at the town level.",
+    stateUrl: "https://www.revenue.nh.gov/property-appraisal/",
+    stateLabel: "New Hampshire Department of Revenue - Property Appraisal",
+    counties: [
+      { name: "Manchester (City)", url: "https://www.manchesternh.gov/Departments/Finance/Tax-Collector" },
+      { name: "Nashua (City)", url: "https://www.nashuanh.gov/238/Tax-Collector" },
+      { name: "Concord (City)", url: "https://www.concordnh.gov/226/City-Clerk-Tax-Collector" }
+    ],
+    tip: "New Hampshire tax sales happen at the town level. Contact individual town tax collectors for sale dates and property lists."
+  },
+  {
+    name: "New Jersey", type: "lien",
+    summary: "New Jersey is a tax lien state with one of the most active markets in the country. Annual tax lien auctions are held in each municipality. Interest rates up to 18%. Redemption period is 2 years.",
+    stateUrl: "https://www.nj.gov/treasury/taxation/lpt/lpt-taxsale.shtml",
+    stateLabel: "New Jersey Division of Taxation - Tax Sale",
+    counties: [
+      { name: "Essex County", url: "https://www.essexcountynj.org/finance/" },
+      { name: "Bergen County", url: "https://www.co.bergen.nj.us/index.aspx?NID=183" },
+      { name: "Hudson County", url: "https://www.hudsoncountynj.org/finance" },
+      { name: "Middlesex County", url: "https://www.middlesexcountynj.gov/government/departments/treasury/tax-collector" },
+      { name: "Union County", url: "https://www.ucnj.org/finance/tax-administration/" }
+    ],
+    tip: "New Jersey municipalities — not counties — hold individual tax lien sales. Search '[City/Town Name] NJ tax lien sale' for local auctions."
+  },
+  {
+    name: "New Mexico", type: "deed",
+    summary: "New Mexico is a tax deed state. The state holds a single annual tax sale through the Property Tax Division. Individual counties do not hold their own sales.",
+    stateUrl: "https://www.tax.newmexico.gov/property-tax/",
+    stateLabel: "New Mexico Taxation & Revenue - Property Tax Division",
+    counties: [
+      { name: "Bernalillo County", url: "https://www.bernalillocounty.gov/548/Treasurer" },
+      { name: "Dona Ana County", url: "https://www.donaanacounty.org/treasurer" },
+      { name: "Santa Fe County", url: "https://www.santafecountynm.gov/treasurer" }
+    ],
+    tip: "New Mexico is unique — most delinquent property sales flow through the state Property Tax Division rather than individual counties."
+  },
+  {
+    name: "New York", type: "deed",
+    summary: "New York is a tax deed state. Each county or municipality handles its own tax sales. In New York City, the process is managed by the NYC Department of Finance. Upstate counties vary significantly.",
+    stateUrl: "https://www.tax.ny.gov/pit/property/learn/",
+    stateLabel: "New York State Department of Taxation - Property Tax",
+    counties: [
+      { name: "New York City", url: "https://www.nyc.gov/site/finance/taxes/property-tax-lien-sale.page" },
+      { name: "Suffolk County", url: "https://www.suffolkcountyny.gov/Departments/County-Comptroller/Tax-Map-Division/Delinquent-Tax-Sales" },
+      { name: "Nassau County", url: "https://www.nassaucountyny.gov/2364/Tax-Lien-Sale" },
+      { name: "Erie County", url: "https://www2.erie.gov/comptroller/index.php?q=in-rem-tax-foreclosure" },
+      { name: "Monroe County", url: "https://www.monroecounty.gov/finance-taxforeclosure.php" }
+    ],
+    tip: "New York City holds one of the largest tax lien sales in the country. Upstate counties vary — contact each county treasurer for local sale information."
+  },
+  {
+    name: "North Carolina", type: "deed",
+    summary: "North Carolina is a tax deed state. Counties hold upset bid sales — after a winning bid is placed, any person can outbid it within 10 days. The process continues until no upset bids are received.",
+    stateUrl: "https://www.ncdor.gov/taxes-forms/property-tax",
+    stateLabel: "North Carolina Department of Revenue - Property Tax",
+    counties: [
+      { name: "Mecklenburg County", url: "https://www.mecknc.gov/CountyManagersOffice/CountyAttorney/pages/realestate.aspx" },
+      { name: "Wake County", url: "https://www.wake.gov/departments-agencies/tax-administration/delinquent-tax-sales" },
+      { name: "Guilford County", url: "https://www.guilfordcountync.gov/our-county/tax/delinquent-tax-sales" },
+      { name: "Forsyth County", url: "https://www.forsyth.cc/TaxAdministration/TaxSale.aspx" },
+      { name: "Durham County", url: "https://www.dconc.gov/government/departments-f-z/tax-administration/tax-foreclosure-sales" }
+    ],
+    tip: "North Carolina's upset bid process means your winning bid can be topped within 10 days. Be prepared to keep bidding or lose the property."
+  },
+  {
+    name: "North Dakota", type: "both",
+    summary: "North Dakota operates as both a tax lien AND tax deed state. Counties hold annual tax sales in November. The redemption period is 3 years for farmland and 1 year for other property.",
+    stateUrl: "https://www.nd.gov/tax/user/businesses/formspublications/property-tax",
+    stateLabel: "North Dakota Office of State Tax Commissioner",
+    counties: [
+      { name: "Cass County", url: "https://www.casscountynd.gov/county/depts/treasurer/Pages/default.aspx" },
+      { name: "Burleigh County", url: "https://www.burleighco.com/departments/treasurer" },
+      { name: "Grand Forks County", url: "https://www.grandforksgov.com/government/city-departments/finance/tax-information" }
+    ],
+    tip: "North Dakota tax sales are less competitive than coastal states — good opportunity for nurses looking for lower entry points."
+  },
+  {
+    name: "Ohio", type: "both",
+    summary: "Ohio operates as both a tax lien AND tax deed state. County treasurers hold annual tax lien sales, and foreclosed properties are sold at sheriff's sales. Both types of sales are widely available.",
+    stateUrl: "https://tax.ohio.gov/wps/portal/gov/tax/business/ohio-business-taxes/sales-and-use/",
+    stateLabel: "Ohio Department of Taxation - Property Tax",
+    counties: [
+      { name: "Franklin County", url: "https://treasurer.franklincountyohio.gov/Delinquent-Taxes/Tax-Certificate-Sales" },
+      { name: "Cuyahoga County", url: "https://treasurer.cuyahogacounty.gov/en-US/tax-lien-certificate-sale.aspx" },
+      { name: "Hamilton County", url: "https://www.hamiltoncountyohio.gov/government/offices/treasurer/delinquent_taxes" },
+      { name: "Summit County", url: "https://www.summitoh.net/index.php/departments/fiscal-office/treasurer/tax-certificates" },
+      { name: "Montgomery County", url: "https://www.mcohio.org/government/elected_officials/treasurer/delinquent_taxes.php" }
+    ],
+    tip: "Ohio offers both lien and deed opportunities. Franklin County (Columbus) and Cuyahoga County (Cleveland) have active markets with frequent sales."
+  },
+  {
+    name: "Oklahoma", type: "both",
+    summary: "Oklahoma operates as both a tax lien AND tax deed state. Annual resale (tax deed) auctions are held in June. Tax lien certificates are also available. The resale process is straightforward with clear title transfer.",
+    stateUrl: "https://oklahoma.gov/otc/property-tax.html",
+    stateLabel: "Oklahoma Tax Commission - Property Tax",
+    counties: [
+      { name: "Oklahoma County", url: "https://www.oklahomacounty.org/909/Resale-Properties" },
+      { name: "Tulsa County", url: "https://www.tulsacounty.org/tulsacounty/treasurer.aspx" },
+      { name: "Cleveland County", url: "https://www.clevelandcountyok.com/treasurer" },
+      { name: "Canadian County", url: "https://www.canadiancountyok.gov/treasurer" }
+    ],
+    tip: "Oklahoma resale auctions in June often feature properties with clear title and low starting bids. Register with your county treasurer well in advance."
+  },
+  {
+    name: "Oregon", type: "deed",
+    summary: "Oregon is a tax deed state. Counties hold annual tax foreclosure auctions, typically in the fall. Properties must be delinquent for 3 years. No right of redemption after the sale.",
+    stateUrl: "https://www.oregon.gov/dor/programs/property/Pages/default.aspx",
+    stateLabel: "Oregon Department of Revenue - Property Tax",
+    counties: [
+      { name: "Multnomah County", url: "https://multco.us/assessment-taxation/foreclosure-auction" },
+      { name: "Washington County", url: "https://www.co.washington.or.us/Assessment_Taxation/TaxForeclosureSales/" },
+      { name: "Clackamas County", url: "https://www.clackamas.us/assessment/foreclosure.html" },
+      { name: "Lane County", url: "https://www.lanecounty.org/cms/one.aspx?pageId=5600592" }
+    ],
+    tip: "Oregon foreclosure auctions vary by county. Contact each county's Assessment and Taxation department for upcoming sale dates."
+  },
+  {
+    name: "Pennsylvania", type: "deed",
+    summary: "Pennsylvania is a tax deed state. Each county's Tax Claim Bureau holds annual repository sales, judicial sales, and upset sales. Properties must be delinquent for 2 years before the first sale.",
+    stateUrl: "https://www.revenue.pa.gov/TaxTypes/RealEstateTax/Pages/default.aspx",
+    stateLabel: "Pennsylvania Department of Revenue - Real Estate Tax",
+    counties: [
+      { name: "Philadelphia County", url: "https://www.phila.gov/departments/department-of-revenue/taxes/real-estate-tax/sheriff-sales/" },
+      { name: "Allegheny County", url: "https://www.alleghenycounty.us/real-estate/tax-liens-delinquent.aspx" },
+      { name: "Montgomery County", url: "https://www.montcopa.org/193/Tax-Claim-Bureau" },
+      { name: "Bucks County", url: "https://www.buckscounty.gov/290/Tax-Claim-Bureau" },
+      { name: "Delaware County", url: "https://www.delcopa.gov/taxclaim/index.html" }
+    ],
+    tip: "Pennsylvania has three types of tax sales: Upset Sale (first attempt), Judicial Sale (second attempt), and Repository Sale (unsold properties at fixed prices). Repository sales offer the lowest prices."
+  },
+  {
+    name: "Rhode Island", type: "deed",
+    summary: "Rhode Island is a tax deed state. Municipalities hold tax sales. Properties must be delinquent for at least 3 years. There is a 1-year right of redemption after the sale.",
+    stateUrl: "https://tax.ri.gov/",
+    stateLabel: "Rhode Island Division of Taxation",
+    counties: [
+      { name: "Providence (City)", url: "https://www.providenceri.gov/finance/treasury-division/" },
+      { name: "Cranston (City)", url: "https://www.cranstonri.gov/departments/finance/tax-collector/" },
+      { name: "Warwick (City)", url: "https://www.warwickri.gov/finance-department/tax-collector" }
+    ],
+    tip: "Rhode Island municipalities — not counties — handle tax sales. Contact individual city or town tax collectors for sale schedules."
+  },
+  {
+    name: "South Carolina", type: "lien",
+    summary: "South Carolina is a tax lien state. Annual tax sales are held in November and December. The interest rate is 3-12% depending on when the lien is redeemed. Redemption period is 1 year.",
+    stateUrl: "https://dor.sc.gov/tax/property",
+    stateLabel: "South Carolina Department of Revenue - Property Tax",
+    counties: [
+      { name: "Greenville County", url: "https://www.greenvillecounty.org/appsAS400/TaxSale/" },
+      { name: "Richland County", url: "https://www.richlandonline.com/Government/Departments/Treasurer-Tax-Collector/Tax-Sale.aspx" },
+      { name: "Charleston County", url: "https://www.charlestoncounty.org/departments/treasurer/tax-sale.php" },
+      { name: "Horry County", url: "https://www.horrycounty.org/Departments/Treasurer/TaxSale.aspx" },
+      { name: "Lexington County", url: "https://www.lex-co.sc.gov/departments/DepartmentsN-Z/treasurer/tax-sale" }
+    ],
+    tip: "South Carolina tax sales in November and December are well-organized with property lists available weeks in advance. Excellent state for beginners."
+  },
+  {
+    name: "South Dakota", type: "both",
+    summary: "South Dakota operates as both a tax lien AND tax deed state. Annual tax certificate sales are held in December. The interest rate is 10% per year. Redemption period is 3 years.",
+    stateUrl: "https://dor.sd.gov/businesses/taxes/property-tax/",
+    stateLabel: "South Dakota Department of Revenue - Property Tax",
+    counties: [
+      { name: "Minnehaha County", url: "https://www.minnehahacounty.org/dept/tr/tr.php" },
+      { name: "Pennington County", url: "https://www.penningtoncounty.org/Treasurer" },
+      { name: "Lincoln County", url: "https://www.lincolncountysd.org/treasurer" }
+    ],
+    tip: "South Dakota is a lower-competition market with straightforward processes. Good state for nurses looking for affordable entry points."
+  },
+  {
+    name: "Tennessee", type: "deed",
+    summary: "Tennessee is a tax deed state. Counties hold annual tax sales conducted by the Clerk and Master of the Chancery Court. Properties must be delinquent for 1 year before the sale process begins.",
+    stateUrl: "https://www.tn.gov/revenue/taxes/property-tax.html",
+    stateLabel: "Tennessee Department of Revenue - Property Tax",
+    counties: [
+      { name: "Shelby County", url: "https://www.shelbycountytrustee.com/content/delinquent-tax-sale.html" },
+      { name: "Davidson County", url: "https://www.nashville.gov/departments/finance/trustee/delinquent-property" },
+      { name: "Knox County", url: "https://www.knoxcounty.org/trustee/delinquent.php" },
+      { name: "Hamilton County", url: "https://www.hamiltontn.gov/Trustee/DelinquentTaxes.aspx" },
+      { name: "Rutherford County", url: "https://www.rutherfordcountytn.gov/departments/trustee/delinquent-taxes" }
+    ],
+    tip: "Tennessee tax sales are judicial in nature — they go through the Chancery Court. The Clerk and Master in each county manages the sale process."
+  },
+  {
+    name: "Texas", type: "deed",
+    summary: "Texas is a tax deed state. Tax sales are held on the first Tuesday of each month at the county courthouse. There is a 6-month right of redemption (2 years for homestead and agricultural property).",
+    stateUrl: "https://comptroller.texas.gov/taxes/property-tax/",
+    stateLabel: "Texas Comptroller - Property Tax",
+    counties: [
+      { name: "Harris County", url: "https://www.hcad.org/Resources/Tax-Information/Delinquent-Tax-Sale/" },
+      { name: "Dallas County", url: "https://www.dallascounty.org/departments/dallascounty/taxoffice/delinquent.php" },
+      { name: "Tarrant County", url: "https://taxoffice.tarrantcounty.gov/property-taxes/delinquent-tax-sale/" },
+      { name: "Travis County", url: "https://traviscountytx.gov/tax-office/tax-sales" },
+      { name: "Bexar County", url: "https://www.bexar.org/2187/Tax-Sale-Struck-Off-Properties" },
+      { name: "Collin County", url: "https://www.collincountytx.gov/tax_office/Pages/delinquent_taxsales.aspx" }
+    ],
+    tip: "Texas holds tax sales on the first Tuesday of every month — one of the most frequent schedules in the country. Harris County (Houston) and Dallas County have the largest volumes."
+  },
+  {
+    name: "Utah", type: "deed",
+    summary: "Utah is a tax deed state. Counties hold annual tax sales in May. Properties must be delinquent for 4 years. There is no right of redemption after the sale.",
+    stateUrl: "https://tax.utah.gov/property",
+    stateLabel: "Utah State Tax Commission - Property Tax",
+    counties: [
+      { name: "Salt Lake County", url: "https://slco.org/treasurer/delinquent-properties/" },
+      { name: "Utah County", url: "https://www.utahcounty.gov/Dept/Auditor/TaxSale.asp" },
+      { name: "Davis County", url: "https://www.daviscountyutah.gov/treasurer/delinquent-taxes" },
+      { name: "Weber County", url: "https://www.webercountyutah.gov/treasurer/taxsale.php" }
+    ],
+    tip: "Utah tax sales in May feature properties with no redemption period after purchase — clean title from day one. Register with your county treasurer in March."
+  },
+  {
+    name: "Vermont", type: "lien",
+    summary: "Vermont is a tax lien state. Municipalities handle tax sales rather than counties. The process involves a tax lien with a 1-year redemption period before a deed can be obtained.",
+    stateUrl: "https://tax.vermont.gov/research-and-education/reports/property-valuation",
+    stateLabel: "Vermont Department of Taxes - Property",
+    counties: [
+      { name: "Burlington (City)", url: "https://www.burlingtonvt.gov/Finance/Tax-Collection" },
+      { name: "Montpelier (City)", url: "https://www.montpelier-vt.org/149/Tax-Collector" },
+      { name: "Rutland (City)", url: "https://www.rutlandcity.org/departments/finance" }
+    ],
+    tip: "Vermont uses towns and cities rather than counties for tax sales. Contact individual town tax collectors for local sale information."
+  },
+  {
+    name: "Virginia", type: "deed",
+    summary: "Virginia is a tax deed state. Counties and independent cities hold tax sales through the court system. Properties must be delinquent for 3 years (1 year for vacant/blighted property).",
+    stateUrl: "https://www.tax.virginia.gov/real-estate-tax",
+    stateLabel: "Virginia Department of Taxation - Real Estate Tax",
+    counties: [
+      { name: "Fairfax County", url: "https://www.fairfaxcounty.gov/taxes/real-estate/land-sale" },
+      { name: "Prince William County", url: "https://www.pwcgov.org/government/dept/finance/pages/tax-sale.aspx" },
+      { name: "Virginia Beach (City)", url: "https://www.vbgov.com/government/departments/finance/taxes/pages/real-estate-tax-sale.aspx" },
+      { name: "Chesterfield County", url: "https://www.chesterfield.gov/1074/Delinquent-Tax-Sales" },
+      { name: "Richmond (City)", url: "https://www.rva.gov/finance/tax-sale" }
+    ],
+    tip: "Virginia tax sales are judicial — they go through the court system which adds time but provides clear title. Independent cities (like Richmond) are treated separately from counties."
+  },
+  {
+    name: "Washington", type: "deed",
+    summary: "Washington State is a tax deed state. Counties hold annual tax lien foreclosure auctions, typically in the fall. Properties must be delinquent for 3 years. No right of redemption after sale.",
+    stateUrl: "https://dor.wa.gov/find-taxes-rates/property-tax",
+    stateLabel: "Washington Department of Revenue - Property Tax",
+    counties: [
+      { name: "King County", url: "https://kingcounty.gov/depts/assessor/TaxForeclosures.aspx" },
+      { name: "Pierce County", url: "https://www.piercecountywa.gov/1139/Delinquent-Property-Tax-Foreclosure" },
+      { name: "Snohomish County", url: "https://snohomishcountywa.gov/4700/Tax-Foreclosure" },
+      { name: "Spokane County", url: "https://www.spokanecounty.org/1133/Treasurer" },
+      { name: "Clark County", url: "https://clark.wa.gov/assessor/tax-foreclosure" }
+    ],
+    tip: "Washington State counties auction tax foreclosure properties online. King County (Seattle area) and Pierce County (Tacoma) have the most active markets."
+  },
+  {
+    name: "West Virginia", type: "lien",
+    summary: "West Virginia is a tax lien state. Annual tax lien sales are held in October and November. The interest rate is 12% per year. The redemption period is 18 months.",
+    stateUrl: "https://tax.wv.gov/Business/PropertyTax/Pages/PropertyTax.aspx",
+    stateLabel: "West Virginia State Tax Department - Property Tax",
+    counties: [
+      { name: "Kanawha County", url: "https://www.kanawhacounty.org/offices/sheriff/tax-office" },
+      { name: "Cabell County", url: "https://www.cabellcounty.org/offices/sheriff/" },
+      { name: "Monongalia County", url: "https://www.monongaliacounty.org/departments/sheriff" }
+    ],
+    tip: "West Virginia tax lien sales are conducted by county sheriffs in October and November each year."
+  },
+  {
+    name: "Wisconsin", type: "deed",
+    summary: "Wisconsin is a tax deed state. The process starts with a tax certificate sale after 2 years of delinquency. After 2 more years, the certificate holder can petition for a tax deed. Counties also hold in rem foreclosure sales.",
+    stateUrl: "https://www.revenue.wi.gov/Pages/FAQS/ise-proptax.aspx",
+    stateLabel: "Wisconsin Department of Revenue - Property Tax",
+    counties: [
+      { name: "Milwaukee County", url: "https://county.milwaukee.gov/EN/Register-of-Deeds/Tax-Delinquent-Property" },
+      { name: "Dane County", url: "https://treasurer.countyofdane.com/property-tax/delinquent-taxes" },
+      { name: "Waukesha County", url: "https://www.waukeshacounty.gov/treasurer/taxsale/" },
+      { name: "Brown County", url: "https://www.co.brown.wi.us/departments/page_7acc7fa9c4e5/?department=2f0c5c3ddc6b&subdepartment=d0e1e25cfa37" }
+    ],
+    tip: "Wisconsin's process takes about 4 years from delinquency to deed. The state also allows in rem actions which can be faster — check with each county treasurer."
+  },
+  {
+    name: "Wyoming", type: "lien",
+    summary: "Wyoming is a tax lien state. Annual tax lien certificate sales are held in November. The interest rate is 15% per year. The redemption period is 4 years.",
+    stateUrl: "https://revenue.wyo.gov/divisions/property-tax-division",
+    stateLabel: "Wyoming Department of Revenue - Property Tax",
+    counties: [
+      { name: "Laramie County", url: "https://www.laramiecounty.com/government/elected_officials/treasurer/index.php" },
+      { name: "Natrona County", url: "https://www.natrona.net/216/Treasurer" },
+      { name: "Campbell County", url: "https://www.campbellcountywy.gov/departments/treasurer" }
+    ],
+    tip: "Wyoming's 15% interest rate and 4-year redemption period make it attractive for patient lien investors. Lower competition than most states."
+  },
+  {
+    name: "District of Columbia", type: "lien",
+    summary: "Washington DC is a tax lien jurisdiction. Annual tax lien sales are held in July. The interest rate is 18% per year. The redemption period is 6 months to 1 year.",
+    stateUrl: "https://otr.cfo.dc.gov/page/real-property-tax-sale",
+    stateLabel: "DC Office of Tax and Revenue - Real Property Tax Sale",
+    counties: [
+      { name: "Washington DC", url: "https://otr.cfo.dc.gov/page/real-property-tax-sale" }
+    ],
+    tip: "DC holds one of the most competitive tax lien sales in the country. Properties are in high demand and bidding is intense. Register early through the DC OTR website."
+  }
+];
+
+var typeColors = {
+  deed: 'background:#e8f0ec;color:#1f4236;',
+  lien: 'background:#fdf8ee;color:#8a6b1e;',
+  both: 'background:#f0e8f8;color:#6b3fa0;'
+};
+var typeLabels = { deed: 'Tax Deed', lien: 'Tax Lien', both: 'Lien & Deed' };
+
+function renderStates(filter) {
+  var list = document.getElementById('states-list');
+  list.innerHTML = '';
+  var filtered = stateData.filter(function(s) {
+    return s.name.toLowerCase().indexOf(filter.toLowerCase()) > -1;
+  });
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="no-results">No states match your search.<br>Try a different state name.</div>';
+    return;
+  }
+  filtered.forEach(function(state) {
+    var card = document.createElement('div');
+    card.className = 'state-card';
+    var countiesHtml = state.counties.map(function(c) {
+      return '<a class="county-link" href="' + c.url + '" target="_blank" rel="noopener">' + c.name + ' <span class="arrow">↗</span></a>';
+    }).join('');
+    card.innerHTML =
+      '<div class="state-card-header" onclick="toggleState(this)">' +
+        '<div class="state-name-wrap">' +
+          '<div class="state-name">' + state.name + '</div>' +
+          '<span class="state-type-badge" style="' + typeColors[state.type] + '">' + typeLabels[state.type] + '</span>' +
+        '</div>' +
+        '<span class="chevron">▼</span>' +
+      '</div>' +
+      '<div class="state-body">' +
+        '<p class="state-summary">' + state.summary + '</p>' +
+        '<div class="resource-section-title">Key Counties</div>' +
+        countiesHtml +
+        '<a class="state-link" href="' + state.stateUrl + '" target="_blank" rel="noopener"><span class="link-icon">🏛️</span>' + state.stateLabel + ' ↗</a>' +
+        '<div class="tip-note">💡 ' + state.tip + '</div>' +
+      '</div>';
+    list.appendChild(card);
+  });
+}
+
+function toggleState(header) {
+  var body = header.nextElementSibling;
+  var chevron = header.querySelector('.chevron');
+  var isOpen = body.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.state-body.open').forEach(function(b){ b.classList.remove('open'); });
+  document.querySelectorAll('.state-card-header.open').forEach(function(h){ h.classList.remove('open'); });
+  document.querySelectorAll('.chevron.open').forEach(function(c){ c.classList.remove('open'); });
+  if (!isOpen) {
+    body.classList.add('open');
+    header.classList.add('open');
+    chevron.classList.add('open');
+  }
+}
+
+function filterStates() {
+  renderStates(document.getElementById('search').value);
+}
+
+renderStates('');
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('/tax-sale-academy-sw.js');
+</script>
+</body>
+</html>
