@@ -191,38 +191,6 @@
   .status-recorded { background:rgba(52,199,89,0.12); color:#1a6a2a; }
   .status-live     { background:rgba(31,66,54,0.85); color:var(--gold-light); }
 
-  /* AI CHAT */
-  .chat-wrap {
-    background:white; border:1px solid var(--border); border-radius:20px;
-    overflow:hidden; box-shadow:var(--shadow); display:flex; flex-direction:column; height:530px;
-  }
-  .chat-header { background:var(--pine); padding:15px 20px; display:flex; align-items:center; gap:11px; }
-  .chat-ai-icon { width:36px; height:36px; background:var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.1rem; }
-  .chat-header-text h3 { font-family:'Cormorant Garamond',serif; font-size:1.05rem; color:var(--gold-light); font-weight:400; }
-  .chat-header-text p  { font-size:0.68rem; color:rgba(255,255,255,0.4); }
-  .chat-messages { flex:1; overflow-y:auto; padding:18px; display:flex; flex-direction:column; gap:12px; }
-  .chat-bubble   { max-width:82%; padding:11px 15px; border-radius:16px; font-size:0.865rem; line-height:1.6; animation:fadeUp 0.22s ease; }
-  .bubble-ai   { background:var(--gold-pale); border:1px solid var(--border); align-self:flex-start; border-bottom-left-radius:4px; }
-  .bubble-user { background:var(--pine); color:rgba(255,255,255,0.92); align-self:flex-end; border-bottom-right-radius:4px; }
-  .bubble-label { font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:3px; opacity:0.55; }
-  .chat-input-row { border-top:1px solid var(--border); padding:13px 15px; display:flex; gap:9px; }
-  .chat-input-row input { flex:1; }
-  .chat-send-btn {
-    background:var(--pine); color:var(--gold-light); border:none; border-radius:10px;
-    padding:10px 18px; font-family:'DM Sans',sans-serif; font-size:0.83rem;
-    font-weight:600; cursor:pointer; transition:all 0.2s; white-space:nowrap;
-  }
-  .chat-send-btn:hover { background:var(--pine-mid); }
-  .chat-send-btn:disabled { opacity:0.5; cursor:not-allowed; }
-  .typing-indicator {
-    display:flex; gap:5px; align-items:center; padding:10px 15px;
-    background:var(--gold-pale); border:1px solid var(--border);
-    border-radius:16px; border-bottom-left-radius:4px;
-    align-self:flex-start; width:fit-content;
-  }
-  .dot { width:7px; height:7px; background:var(--muted); border-radius:50%; animation:bounce 1.2s infinite; }
-  .dot:nth-child(2) { animation-delay:0.2s; } .dot:nth-child(3) { animation-delay:0.4s; }
-
   /* EMPTY */
   .empty-state { text-align:center; padding:56px 20px; color:var(--muted); }
   .empty-state .empty-icon { font-size:2.8rem; margin-bottom:14px; display:block; }
@@ -309,7 +277,6 @@
     <button class="tab-btn active" onclick="switchTab('ideas',this)">Ideas</button>
     <button class="tab-btn" onclick="switchTab('screenshots',this)">Screenshots</button>
     <button class="tab-btn" onclick="switchTab('episodes',this)">Episodes</button>
-    <button class="tab-btn" onclick="switchTab('ai',this)">✦ AI Assist</button>
   </div>
 </header>
 
@@ -407,30 +374,6 @@
     </div>
   </div>
 
-  <!-- AI ASSIST -->
-  <div id="panel-ai" class="panel">
-    <div class="section-label">AI Episode Assistant</div>
-    <div class="section-sub">Ask for episode angles, titles, outlines, or help turning a comment into content.</div>
-    <div class="chat-wrap">
-      <div class="chat-header">
-        <div class="chat-ai-icon">✦</div>
-        <div class="chat-header-text">
-          <h3>Brainstorm with AI</h3>
-          <p>Powered by Claude · Knows your board</p>
-        </div>
-      </div>
-      <div class="chat-messages" id="chat-messages">
-        <div class="chat-bubble bubble-ai">
-          <div class="bubble-label">AI Assistant</div>
-          Hey Dr. TMac and Dr. Catrina! I'm here to help you turn ideas into episodes. Ask me to generate titles, outlines, hooks, or to help you answer a question your audience asked. What are we building today?
-        </div>
-      </div>
-      <div class="chat-input-row">
-        <input type="text" id="chat-input" placeholder="e.g. Give me 5 episode ideas about nurses and wealth…" onkeydown="if(event.key==='Enter')sendChat()">
-        <button class="chat-send-btn" id="chat-send-btn" onclick="sendChat()">Send ✦</button>
-      </div>
-    </div>
-  </div>
 
 </main>
 <div id="toast"></div>
@@ -441,7 +384,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCZuDUIyXdc0h7EVu7A
 const PIN_CODE   = '1975';
 
 // ── STATE ─────────────────────────────────────────────────────────────────
-let ideas=[], screenshots=[], episodes=[], chatHistory=[], activeFilter='all';
+let ideas=[], screenshots=[], episodes=[], activeFilter='all';
 
 // ── PIN ───────────────────────────────────────────────────────────────────
 let pinEntry='';
@@ -708,41 +651,6 @@ function renderEpisodes(){
     </div>`).join('');
 }
 
-// ── AI CHAT ───────────────────────────────────────────────────────────────
-async function sendChat(){
-  const input=document.getElementById('chat-input'),btn=document.getElementById('chat-send-btn');
-  const msg=input.value.trim(); if(!msg)return;
-  addBubble('user',msg); chatHistory.push({role:'user',content:msg});
-  input.value=''; btn.disabled=true;
-  const typing=showTyping();
-  const ideaSummary=ideas.slice(0,8).map(i=>`- ${i.title}${i.notes?': '+i.notes:''}`).join('\n')||'No ideas yet.';
-  const epSummary=episodes.slice(0,5).map(e=>`- ${e.title} (${e.status})`).join('\n')||'No episodes yet.';
-  const system=`You are a podcast strategy assistant for Dr. TMac (Dr. Tasha McCray — 31-year nursing veteran, serial entrepreneur, golf influencer, 2x bestselling author, founder of TMac Inspired) and Dr. Catrina Smith (B2BT — Bear to Barely There — caregiver and wellness brand). They are co-hosting a podcast. Help them brainstorm episode ideas, angles, titles, hooks, outlines, and turn audience comments into compelling content. Be concise, warm, and actionable. Their combined expertise: nursing, entrepreneurship, caregiving, wealth-building, golf, manifestation, wellness.\n\nBoard ideas:\n${ideaSummary}\n\nEpisode pipeline:\n${epSummary}`;
-  try{
-    const res=await fetch('/api/chat',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({system,messages:chatHistory})
-    });
-    const data=await res.json();
-    if(data.error){typing.remove();addBubble('ai','Error: '+data.error);btn.disabled=false;return;}
-    const reply=data.text||'Something went wrong — try again.';
-    typing.remove(); addBubble('ai',reply); chatHistory.push({role:'assistant',content:reply});
-  }catch(e){typing.remove();addBubble('ai','Connection issue — make sure ANTHROPIC_API_KEY is set in Vercel and the function is deployed.');}
-  btn.disabled=false;
-}
-function addBubble(type,text){
-  const msgs=document.getElementById('chat-messages'),div=document.createElement('div');
-  div.className=`chat-bubble bubble-${type}`;
-  div.innerHTML=`<div class="bubble-label">${type==='ai'?'AI Assistant':'You'}</div>${esc(text).replace(/\n/g,'<br>')}`;
-  msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight; return div;
-}
-function showTyping(){
-  const msgs=document.getElementById('chat-messages'),div=document.createElement('div');
-  div.className='typing-indicator';
-  div.innerHTML='<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
-  msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight; return div;
-}
 
 // ── UTILS ─────────────────────────────────────────────────────────────────
 function esc(str){return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');}
