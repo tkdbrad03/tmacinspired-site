@@ -652,6 +652,10 @@ textarea.guided-input { min-height: 72px; }
     <div class="guided-prompt">"The hook / angle is…"</div>
     <textarea class="guided-input" id="ep-desc-input" rows="2" placeholder="What makes this episode unmissable?"></textarea>
   </div>
+  <div class="guided-field">
+    <div class="guided-prompt">"Recording notes…"</div>
+    <textarea class="guided-input" id="ep-notes-input" rows="4" placeholder="Talking points, questions to ask, timestamps, links, anything you need when you hit record…"></textarea>
+  </div>
   <button class="drawer-save-btn" id="ep-save-btn" onclick="saveEpisode()">Save Episode</button>
   <div id="ep-advance-section" style="display:none;">
     <div class="drawer-divider"></div>
@@ -1057,12 +1061,14 @@ function openEpDrawer(id){
     document.getElementById('ep-drawer-title').textContent='Edit Episode';
     document.getElementById('ep-title-input').value=ep.title||'';
     document.getElementById('ep-desc-input').value=ep.desc||'';
+    document.getElementById('ep-notes-input').value=ep.notes||'';
     document.getElementById('ep-advance-btn').textContent=EP_NEXT_LABEL[ep.status];
     advSection.style.display='block';
   } else {
     document.getElementById('ep-drawer-title').textContent='New Episode';
     document.getElementById('ep-title-input').value='';
     document.getElementById('ep-desc-input').value='';
+    document.getElementById('ep-notes-input').value='';
     advSection.style.display='none';
   }
   openDrawer('ep-drawer');
@@ -1072,17 +1078,18 @@ async function saveEpisode(){
   const title=document.getElementById('ep-title-input').value.trim();
   if(!title){toast('Give the episode a title!');return;}
   const desc=document.getElementById('ep-desc-input').value.trim();
+  const notes=document.getElementById('ep-notes-input').value.trim();
   const btn=document.getElementById('ep-save-btn'); btn.disabled=true;
   setSyncing();
   if(editingEpId){
     try{
-      await apiPost({action:'update',tab:'episodes',id:editingEpId,row:{title,desc}});
+      await apiPost({action:'update',tab:'episodes',id:editingEpId,row:{title,desc,notes}});
       const ep=episodes.find(e=>e.id==editingEpId);
-      if(ep){ep.title=title;ep.desc=desc;}
+      if(ep){ep.title=title;ep.desc=desc;ep.notes=notes;}
       renderEpisodes(); closeDrawer(); setSynced(); toast('Episode updated ✓');
     }catch(e){setSyncErr();}
   } else {
-    const row={id:Date.now().toString(),title,desc,status:'idea',num:episodes.length+1,
+    const row={id:Date.now().toString(),title,desc,notes,status:'idea',num:episodes.length+1,
       date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})};
     try{
       await apiPost({action:'write',tab:'episodes',row});
