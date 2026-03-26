@@ -122,6 +122,7 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px 16px 100px; }
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 14px;
+  overflow: visible;
 }
 .sticky {
   border-radius: 4px 16px 16px 4px; padding: 16px 14px 14px;
@@ -461,7 +462,7 @@ textarea.guided-input { min-height: 72px; }
       <span style="font-size:1.4rem;">+</span> Drop a new idea
     </button>
     <div class="recent-label" id="recent-label">Recent ideas</div>
-    <div class="notes-grid" id="home-recent"></div>
+    <div class="notes-grid" id="home-recent" style="overflow:visible"></div>
   </div>
 
   <!-- IDEAS -->
@@ -477,7 +478,7 @@ textarea.guided-input { min-height: 72px; }
       <span class="chip" onclick="filterIdeas('collab-note',this)">Collab Notes</span>
       <span class="chip" onclick="filterIdeas('comment-inspo',this)">Comment Inspo</span>
     </div>
-    <div class="notes-grid" id="ideas-grid"></div>
+    <div class="notes-grid" id="ideas-grid" style="overflow:visible"></div>
     <div id="ideas-empty" class="empty" style="display:none;">
       <span class="empty-icon">💡</span>
       <h3>Board is blank</h3>
