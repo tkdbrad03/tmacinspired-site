@@ -153,6 +153,14 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px 16px 100px; }
 .nc-2 { background: var(--note-3); border-left-color: #e91e63; }
 .nc-3 { background: var(--note-4); border-left-color: #1e88e5; }
 .nc-4 { background: var(--note-5); border-left-color: #8e24aa; }
+.sticky-ribbon {
+  position: absolute; top: 10px; right: -4px;
+  background: var(--pine); color: var(--gold-light);
+  font-size: 0.58rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 4px 10px 4px 8px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 6px 50%);
+  z-index: 2; white-space: nowrap;
+}
 
 /* ── FILTER CHIPS ─────────────────────────────────────── */
 .filter-row {
@@ -823,7 +831,9 @@ const NOTE_COLORS=5;
 
 function stickyHTML(idea, i){
   const nc='nc-'+(i%NOTE_COLORS);
+  const inPipeline=idea.inPipeline==='true'||idea.inPipeline===true;
   return `<div class="sticky ${nc}" onclick="openEditDrawer('${idea.id}')">
+    ${inPipeline?'<div class="sticky-ribbon">🎙️ In Pipeline</div>':''}
     <div>
       <h3>${esc(idea.title)}</h3>
       ${idea.takeaway?`<div class="sticky-takeaway">${esc(idea.takeaway)}</div>`:''}
@@ -948,6 +958,8 @@ async function promoteIdea(){
   try{
     await apiPost({action:'write',tab:'episodes',row});
     episodes.unshift(coerceEp(row));
+    idea.inPipeline=true;
+    await apiPost({action:'update',tab:'ideas',id:idea.id,row:{inPipeline:'true'}});
     renderAll(); closeDrawer(); setSynced(); toast('Promoted to Episodes 🎙️');
     goTab('episodes');
   }catch(e){setSyncErr();}
