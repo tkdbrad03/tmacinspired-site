@@ -2,300 +2,389 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Brainstorm Board — TMac × Dr. Catrina</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>The Brainstorm Board</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --pine: #1f4236; --pine-mid: #2a5a49; --gold: #c9a961; --gold-light: #dfc080;
-    --gold-pale: #f5edda; --cream: #faf7f2; --ink: #1a1a1a; --muted: #7a7060;
-    --border: #e8e0d0; --shadow: 0 4px 24px rgba(31,66,54,0.10);
-    --shadow-hover: 0 8px 40px rgba(31,66,54,0.18);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; }
+:root {
+  --pine: #1f4236; --pine-mid: #2a5a49; --pine-light: #3a7a62;
+  --gold: #c9a961; --gold-light: #dfc080; --gold-pale: #f5edda;
+  --cream: #faf7f2; --ink: #1a1a1a; --muted: #7a7060; --border: #e8e0d0;
+  --shadow: 0 4px 24px rgba(31,66,54,0.10); --shadow-lg: 0 12px 48px rgba(31,66,54,0.18);
+  /* sticky note colors */
+  --note-1: #fffde7; --note-2: #e8f5e9; --note-3: #fce4ec; --note-4: #e3f2fd; --note-5: #f3e5f5;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; }
 
-  /* PIN GATE */
-  #pin-gate {
-    position: fixed; inset: 0; background: var(--pine);
-    display: flex; align-items: center; justify-content: center; z-index: 9999;
-  }
-  .pin-box {
-    background: var(--cream); border-radius: 24px; padding: 48px 44px;
-    text-align: center; box-shadow: 0 24px 80px rgba(0,0,0,0.3);
-    max-width: 360px; width: 90%; animation: fadeUp 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
-  }
-  .pin-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; font-weight: 300; color: var(--pine); margin-bottom: 4px; }
-  .pin-sub  { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 32px; }
-  .pin-dots { display: flex; gap: 14px; justify-content: center; margin-bottom: 28px; }
-  .pin-dot  { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--border); background: white; transition: all 0.2s; }
-  .pin-dot.filled { background: var(--pine); border-color: var(--pine); }
-  .pin-keypad { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 16px; }
-  .pin-key {
-    background: white; border: 1px solid var(--border); border-radius: 12px;
-    padding: 16px 10px; font-family: 'DM Sans', sans-serif; font-size: 1.1rem;
-    font-weight: 500; cursor: pointer; transition: all 0.15s; color: var(--ink);
-  }
-  .pin-key:hover  { background: var(--gold-pale); border-color: var(--gold); }
-  .pin-key:active { transform: scale(0.94); }
-  .pin-key.del    { font-size: 0.85rem; color: var(--muted); }
-  .pin-error      { color: #c44; font-size: 0.8rem; min-height: 20px; }
+/* ── PIN GATE ─────────────────────────────────────────── */
+#pin-gate {
+  position: fixed; inset: 0; background: var(--pine);
+  display: flex; align-items: center; justify-content: center; z-index: 9999;
+}
+.pin-box {
+  background: var(--cream); border-radius: 28px; padding: 44px 36px;
+  text-align: center; box-shadow: 0 24px 80px rgba(0,0,0,0.35);
+  max-width: 340px; width: 92%;
+  animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.pin-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; color: var(--pine); margin-bottom: 3px; }
+.pin-sub  { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 30px; }
+.pin-dots { display: flex; gap: 16px; justify-content: center; margin-bottom: 26px; }
+.pin-dot  { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--border); background: white; transition: all 0.2s; }
+.pin-dot.filled { background: var(--pine); border-color: var(--pine); transform: scale(1.15); }
+.pin-keypad { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 14px; }
+.pin-key {
+  background: white; border: 1px solid var(--border); border-radius: 14px;
+  padding: 18px 8px; font-family: 'DM Sans', sans-serif; font-size: 1.2rem;
+  font-weight: 500; cursor: pointer; transition: all 0.15s; color: var(--ink); user-select: none;
+}
+.pin-key:active { transform: scale(0.92); background: var(--gold-pale); }
+.pin-key.del { font-size: 1rem; color: var(--muted); }
+.pin-error { color: #c44; font-size: 0.8rem; min-height: 20px; margin-top: 4px; }
 
-  /* HEADER */
-  header {
-    background: var(--pine); padding: 22px 36px 18px;
-    display: flex; align-items: center; justify-content: space-between; gap: 16px;
-    position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(0,0,0,0.2);
-    flex-wrap: wrap;
-  }
-  .header-left h1 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; color: var(--gold-light); }
-  .header-left p  { font-size: 0.7rem; color: rgba(255,255,255,0.45); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 2px; }
-  .header-right   { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-  .tab-btn {
-    background: transparent; border: 1px solid rgba(201,169,97,0.35); color: rgba(255,255,255,0.7);
-    font-family: 'DM Sans', sans-serif; font-size: 0.74rem; letter-spacing: 0.08em;
-    text-transform: uppercase; padding: 7px 15px; border-radius: 100px; cursor: pointer; transition: all 0.2s;
-  }
-  .tab-btn.active, .tab-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--pine); font-weight: 600; }
-  .sync-indicator { font-size: 0.66rem; color: rgba(255,255,255,0.4); display: flex; align-items: center; gap: 5px; }
-  .sync-dot { width: 7px; height: 7px; border-radius: 50%; background: #4caf50; }
-  .sync-dot.syncing { background: var(--gold); animation: pulse 1s infinite; }
-  .sync-dot.error   { background: #c44; }
+/* ── HEADER ───────────────────────────────────────────── */
+header {
+  background: var(--pine); padding: 16px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+}
+.header-logo h1 {
+  font-family: 'Cormorant Garamond', serif; font-size: 1.4rem;
+  font-weight: 300; color: var(--gold-light); line-height: 1;
+}
+.header-logo p { font-size: 0.62rem; color: rgba(255,255,255,0.4); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 2px; }
+.header-right { display: flex; align-items: center; gap: 10px; }
+.sync-pill {
+  display: flex; align-items: center; gap: 5px;
+  background: rgba(255,255,255,0.08); border-radius: 100px;
+  padding: 5px 10px; font-size: 0.65rem; color: rgba(255,255,255,0.5);
+}
+.sync-dot { width: 6px; height: 6px; border-radius: 50%; background: #4caf50; flex-shrink: 0; }
+.sync-dot.syncing { background: var(--gold); animation: pulse 1s infinite; }
+.sync-dot.error   { background: #e53935; }
+/* desktop tabs */
+.desktop-tabs { display: flex; gap: 6px; }
+.tab-btn {
+  background: transparent; border: 1px solid rgba(201,169,97,0.3);
+  color: rgba(255,255,255,0.6); font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 7px 14px; border-radius: 100px; cursor: pointer; transition: all 0.2s;
+}
+.tab-btn.active, .tab-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--pine); font-weight: 600; }
 
-  /* LAYOUT */
-  main { max-width: 1280px; margin: 0 auto; padding: 32px 22px 80px; }
-  .section-label { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 400; color: var(--pine); margin-bottom: 4px; }
-  .section-sub   { font-size: 0.79rem; color: var(--muted); letter-spacing: 0.05em; margin-bottom: 22px; }
-  .panel { display: none; } .panel.active { display: block; }
+/* ── MAIN ─────────────────────────────────────────────── */
+main { max-width: 1200px; margin: 0 auto; padding: 24px 16px 100px; }
+.panel { display: none; } .panel.active { display: block; }
 
-  /* FORM */
-  .add-row { display: grid; grid-template-columns: 1fr 1fr 175px 155px; gap: 12px; margin-bottom: 20px; align-items: end; }
-  .field-group { display: flex; flex-direction: column; gap: 5px; }
-  label.field-label { font-size: 0.67rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-  input[type="text"], textarea, select {
-    font-family: 'DM Sans', sans-serif; font-size: 0.88rem; color: var(--ink);
-    background: white; border: 1px solid var(--border); border-radius: 10px;
-    padding: 10px 13px; outline: none; transition: border-color 0.2s; width: 100%;
-  }
-  input[type="text"]:focus, textarea:focus, select:focus { border-color: var(--gold); }
-  .btn-primary {
-    background: var(--pine); color: var(--gold-light); border: none; border-radius: 10px;
-    font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 600;
-    letter-spacing: 0.06em; padding: 12px 20px; cursor: pointer; transition: all 0.22s; text-transform: uppercase;
-  }
-  .btn-primary:hover { background: var(--pine-mid); }
-  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-  .btn-gold {
-    background: var(--gold); color: var(--pine); border: none; border-radius: 9px;
-    font-family: 'DM Sans', sans-serif; font-size: 0.76rem; font-weight: 600;
-    letter-spacing: 0.06em; padding: 7px 13px; cursor: pointer; transition: all 0.2s; text-transform: uppercase;
-  }
-  .btn-gold:hover { background: var(--gold-light); }
-  .delete-btn {
-    background: transparent; border: 1px solid #e0d0d0; border-radius: 8px;
-    padding: 5px 10px; font-size: 0.7rem; cursor: pointer; color: #bbb;
-    transition: all 0.2s; font-family: 'DM Sans', sans-serif;
-  }
-  .delete-btn:hover { background: #fff0f0; color: #c44; border-color: #fcc; }
+/* ── HOME PANEL ───────────────────────────────────────── */
+.home-snapshot {
+  background: var(--pine); border-radius: 20px; padding: 24px 22px;
+  margin-bottom: 24px; color: white; position: relative; overflow: hidden;
+}
+.home-snapshot::after {
+  content: '🎙️'; position: absolute; right: 20px; top: 50%;
+  transform: translateY(-50%); font-size: 4rem; opacity: 0.12;
+}
+.home-snapshot h2 {
+  font-family: 'Cormorant Garamond', serif; font-size: 1.5rem;
+  font-weight: 300; color: var(--gold-light); margin-bottom: 4px;
+}
+.home-snapshot p { font-size: 0.82rem; color: rgba(255,255,255,0.55); margin-bottom: 18px; }
+.stats-row { display: flex; gap: 16px; flex-wrap: wrap; }
+.stat-chip {
+  background: rgba(255,255,255,0.1); border-radius: 100px;
+  padding: 6px 14px; font-size: 0.8rem; color: var(--gold-light);
+  font-weight: 500;
+}
+.big-add-btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  background: var(--gold); color: var(--pine); border: none; border-radius: 16px;
+  font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 700;
+  padding: 18px 24px; width: 100%; cursor: pointer; transition: all 0.22s;
+  margin-bottom: 20px; letter-spacing: 0.02em;
+}
+.big-add-btn:active { transform: scale(0.97); }
+.new-badge {
+  background: #e53935; color: white; border-radius: 100px;
+  font-size: 0.65rem; font-weight: 700; padding: 2px 7px;
+  animation: popIn 0.3s ease;
+}
+.recent-label {
+  font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 12px;
+}
 
-  /* FILTER */
-  .filter-row { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 20px; }
-  .filter-chip {
-    font-size: 0.69rem; letter-spacing: 0.08em; text-transform: uppercase;
-    padding: 5px 13px; border-radius: 100px; border: 1px solid var(--border);
-    background: white; cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif; color: var(--muted);
-  }
-  .filter-chip.active, .filter-chip:hover { background: var(--pine); color: var(--gold-light); border-color: var(--pine); }
+/* ── STICKY NOTES ─────────────────────────────────────── */
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 14px;
+}
+.sticky {
+  border-radius: 4px 16px 16px 4px; padding: 16px 14px 14px;
+  box-shadow: 3px 4px 16px rgba(0,0,0,0.10); cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative; min-height: 130px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  animation: popIn 0.3s ease both;
+  border-left: 5px solid transparent;
+}
+.sticky:active { transform: scale(0.97); box-shadow: 1px 2px 8px rgba(0,0,0,0.12); }
+.sticky-tag-bar { height: 3px; border-radius: 100px; margin-bottom: 10px; }
+.sticky h3 { font-size: 0.88rem; font-weight: 600; line-height: 1.35; color: var(--ink); flex: 1; }
+.sticky .sticky-takeaway {
+  font-size: 0.75rem; color: #555; line-height: 1.4; margin-top: 6px;
+  font-style: italic;
+}
+.sticky-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+.sticky-cat { font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.avatar-dot {
+  width: 22px; height: 22px; border-radius: 50%; font-size: 0.65rem;
+  font-weight: 700; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0;
+}
+.av-T { background: var(--pine); } .av-C { background: #7a5c8a; }
 
-  /* IDEAS GRID */
-  .ideas-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(295px,1fr)); gap: 16px; }
-  .idea-card {
-    background: white; border: 1px solid var(--border); border-radius: 16px;
-    padding: 18px 20px; box-shadow: var(--shadow); transition: box-shadow 0.22s, transform 0.22s;
-    animation: fadeUp 0.32s ease both; position: relative; overflow: hidden;
-  }
-  .idea-card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; }
-  .idea-card.tag-episode-idea::before    { background: var(--pine); }
-  .idea-card.tag-audience-question::before { background: var(--gold); }
-  .idea-card.tag-collab-note::before     { background: #7a5c8a; }
-  .idea-card.tag-comment-inspo::before   { background: #c97b3a; }
-  .idea-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
-  .idea-meta { display:flex; justify-content:space-between; align-items:center; margin-bottom:9px; }
-  .idea-tag { font-size:0.62rem; letter-spacing:0.12em; text-transform:uppercase; font-weight:600; padding:3px 10px; border-radius:100px; }
-  .tag-episode-idea .idea-tag    { background:rgba(31,66,54,0.1); color:var(--pine); }
-  .tag-audience-question .idea-tag { background:rgba(201,169,97,0.15); color:#8a6a00; }
-  .tag-collab-note .idea-tag     { background:rgba(122,92,138,0.12); color:#5a3c6a; }
-  .tag-comment-inspo .idea-tag   { background:rgba(201,123,58,0.12); color:#7a3a00; }
-  .idea-author { font-size:0.69rem; color:var(--muted); display:flex; align-items:center; gap:5px; }
-  .avatar-dot  { width:20px; height:20px; border-radius:50%; font-size:0.6rem; font-weight:700; display:flex; align-items:center; justify-content:center; color:white; }
-  .avatar-T { background:var(--pine); } .avatar-C { background:#7a5c8a; }
-  .idea-title { font-family:'Cormorant Garamond',serif; font-size:1.13rem; font-weight:600; color:var(--ink); margin-bottom:5px; line-height:1.3; }
-  .idea-body  { font-size:0.83rem; color:#555; line-height:1.6; margin-bottom:12px; }
-  .idea-actions { display:flex; gap:7px; align-items:center; flex-wrap:wrap; }
-  .vote-btn {
-    background:var(--gold-pale); border:1px solid var(--border); border-radius:8px;
-    padding:5px 11px; font-size:0.76rem; cursor:pointer; transition:all 0.2s;
-    font-family:'DM Sans',sans-serif; color:var(--ink);
-  }
-  .vote-btn:hover, .vote-btn.voted { background:var(--gold); border-color:var(--gold); font-weight:600; }
-  .idea-date { font-size:0.64rem; color:#ccc; margin-top:7px; }
+/* note colors by index */
+.nc-0 { background: var(--note-1); border-left-color: #f9a825; }
+.nc-1 { background: var(--note-2); border-left-color: #43a047; }
+.nc-2 { background: var(--note-3); border-left-color: #e91e63; }
+.nc-3 { background: var(--note-4); border-left-color: #1e88e5; }
+.nc-4 { background: var(--note-5); border-left-color: #8e24aa; }
 
-  /* SCREENSHOTS */
-  .upload-zone {
-    border:2px dashed var(--border); border-radius:16px; padding:38px;
-    text-align:center; cursor:pointer; transition:all 0.22s; background:white; margin-bottom:26px;
-  }
-  .upload-zone:hover, .upload-zone.drag-over { border-color:var(--gold); background:var(--gold-pale); }
-  .upload-zone input[type="file"] { display:none; }
-  .upload-icon { font-size:2.4rem; margin-bottom:10px; display:block; }
-  .upload-zone h3 { font-family:'Cormorant Garamond',serif; font-size:1.25rem; color:var(--pine); margin-bottom:5px; }
-  .upload-zone p  { font-size:0.8rem; color:var(--muted); }
-  .screenshots-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:18px; }
-  .screenshot-card {
-    background:white; border:1px solid var(--border); border-radius:16px;
-    overflow:hidden; box-shadow:var(--shadow); animation:fadeUp 0.32s ease both; transition:box-shadow 0.22s;
-  }
-  .screenshot-card:hover { box-shadow:var(--shadow-hover); }
-  .screenshot-card img { width:100%; max-height:230px; object-fit:cover; display:block; }
-  .screenshot-info { padding:13px 15px; }
-  .s-tag {
-    font-size:0.62rem; padding:3px 9px; border-radius:100px;
-    background:var(--gold-pale); color:#8a6a00; cursor:pointer;
-    border:1px solid transparent; transition:all 0.2s; display:inline-block; margin:2px;
-  }
-  .s-tag.active { background:var(--gold); font-weight:600; border-color:var(--gold-light); }
-  .convert-btn {
-    background:var(--pine); color:var(--gold-light); border:none; border-radius:8px;
-    font-family:'DM Sans',sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.08em;
-    padding:8px 13px; cursor:pointer; transition:all 0.2s; text-transform:uppercase;
-    width:100%; margin-top:8px;
-  }
-  .convert-btn:hover { background:var(--pine-mid); }
+/* ── FILTER CHIPS ─────────────────────────────────────── */
+.filter-row {
+  display: flex; gap: 7px; margin-bottom: 18px;
+  overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch;
+}
+.filter-row::-webkit-scrollbar { display: none; }
+.chip {
+  flex-shrink: 0; font-size: 0.7rem; letter-spacing: 0.07em; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 100px; border: 1px solid var(--border);
+  background: white; cursor: pointer; transition: all 0.18s;
+  font-family: 'DM Sans', sans-serif; color: var(--muted); white-space: nowrap;
+}
+.chip.active, .chip:hover { background: var(--pine); color: var(--gold-light); border-color: var(--pine); }
 
-  /* EPISODES */
-  .episodes-list { display:flex; flex-direction:column; gap:14px; }
-  .episode-card {
-    background:white; border:1px solid var(--border); border-radius:16px;
-    padding:20px 24px; box-shadow:var(--shadow); animation:fadeUp 0.32s ease both;
-    display:grid; grid-template-columns:auto 1fr auto; gap:18px; align-items:start;
-  }
-  .ep-number { font-family:'Cormorant Garamond',serif; font-size:1.9rem; font-weight:300; color:var(--gold); line-height:1; min-width:38px; }
-  .ep-body h3 { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:600; margin-bottom:3px; }
-  .ep-body p  { font-size:0.83rem; color:#666; line-height:1.6; }
-  .ep-status {
-    font-size:0.64rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:600;
-    padding:5px 12px; border-radius:100px; white-space:nowrap; cursor:pointer;
-  }
-  .status-idea     { background:rgba(201,169,97,0.15); color:#8a6a00; }
-  .status-planned  { background:rgba(31,66,54,0.1); color:var(--pine); }
-  .status-recorded { background:rgba(52,199,89,0.12); color:#1a6a2a; }
-  .status-live     { background:rgba(31,66,54,0.85); color:var(--gold-light); }
+/* ── SCREENSHOTS ──────────────────────────────────────── */
+.upload-zone {
+  border: 2px dashed var(--border); border-radius: 18px; padding: 36px 20px;
+  text-align: center; cursor: pointer; transition: all 0.2s; background: white; margin-bottom: 22px;
+}
+.upload-zone:active, .upload-zone.drag-over { border-color: var(--gold); background: var(--gold-pale); }
+.upload-zone input { display: none; }
+.upload-icon { font-size: 2.2rem; display: block; margin-bottom: 8px; }
+.upload-zone h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: var(--pine); margin-bottom: 4px; }
+.upload-zone p { font-size: 0.8rem; color: var(--muted); }
+.shots-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap: 12px; }
+.shot-card {
+  background: white; border: 1px solid var(--border); border-radius: 14px;
+  overflow: hidden; box-shadow: var(--shadow); cursor: pointer;
+  transition: transform 0.2s; animation: popIn 0.3s ease both;
+}
+.shot-card:active { transform: scale(0.97); }
+.shot-card img { width: 100%; height: 130px; object-fit: cover; display: block; }
+.shot-info { padding: 10px 12px; }
+.shot-info p { font-size: 0.78rem; color: var(--ink); line-height: 1.4; }
+.shot-info .shot-empty { color: var(--muted); font-style: italic; }
 
-  /* EMPTY */
-  .empty-state { text-align:center; padding:56px 20px; color:var(--muted); }
-  .empty-state .empty-icon { font-size:2.8rem; margin-bottom:14px; display:block; }
-  .empty-state h3 { font-family:'Cormorant Garamond',serif; font-size:1.35rem; color:var(--pine); margin-bottom:7px; }
-  .empty-state p  { font-size:0.82rem; }
+/* ── KANBAN ───────────────────────────────────────────── */
+.kanban {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; align-items: start;
+}
+.kanban-col { background: white; border-radius: 16px; padding: 14px; border: 1px solid var(--border); }
+.kanban-col-header {
+  font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+  font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 7px;
+}
+.col-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.col-idea .col-dot     { background: var(--gold); }
+.col-recorded .col-dot { background: var(--pine-light); }
+.col-live .col-dot     { background: #43a047; }
+.ep-card {
+  background: var(--cream); border-radius: 12px; padding: 13px 14px;
+  margin-bottom: 10px; cursor: pointer; transition: all 0.2s;
+  border: 1px solid var(--border); animation: popIn 0.3s ease both;
+}
+.ep-card:active { transform: scale(0.97); }
+.ep-card h4 { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 600; margin-bottom: 3px; }
+.ep-card p  { font-size: 0.76rem; color: var(--muted); line-height: 1.4; }
+.ep-advance {
+  display: flex; align-items: center; gap: 5px; margin-top: 9px;
+  font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--pine); font-weight: 600; cursor: pointer;
+}
+.kanban-add {
+  background: transparent; border: 1px dashed var(--border); border-radius: 10px;
+  padding: 10px; width: 100%; font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem; color: var(--muted); cursor: pointer; transition: all 0.2s; text-align: center;
+}
+.kanban-add:hover { border-color: var(--pine); color: var(--pine); background: rgba(31,66,54,0.03); }
 
-  /* LOADING */
-  #loading-overlay {
-    position:fixed; inset:0; background:rgba(31,66,54,0.55);
-    display:flex; align-items:center; justify-content:center;
-    z-index:500; backdrop-filter:blur(3px);
-  }
-  .loading-spinner { width:42px; height:42px; border:3px solid rgba(201,169,97,0.3); border-top-color:var(--gold); border-radius:50%; animation:spin 0.8s linear infinite; }
+/* ── DRAWERS ──────────────────────────────────────────── */
+.drawer-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+  z-index: 500; opacity: 0; transition: opacity 0.25s;
+  backdrop-filter: blur(2px);
+}
+.drawer-overlay.open { opacity: 1; }
+.drawer {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--cream); border-radius: 24px 24px 0 0;
+  padding: 0 20px 40px; z-index: 501;
+  transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.34,1.1,0.64,1);
+  max-height: 92vh; overflow-y: auto;
+  padding-bottom: calc(40px + env(safe-area-inset-bottom));
+}
+.drawer.open { transform: translateY(0); }
+.drawer-handle {
+  width: 40px; height: 4px; background: var(--border); border-radius: 100px;
+  margin: 14px auto 20px;
+}
+.drawer-title {
+  font-family: 'Cormorant Garamond', serif; font-size: 1.4rem;
+  font-weight: 400; color: var(--pine); margin-bottom: 20px;
+}
 
-  /* TOAST */
-  #toast {
-    position:fixed; bottom:26px; right:26px;
-    background:var(--pine); color:var(--gold-light);
-    padding:11px 20px; border-radius:11px; font-size:0.84rem; font-weight:500;
-    box-shadow:0 6px 24px rgba(0,0,0,0.2);
-    transform:translateY(80px); opacity:0;
-    transition:all 0.32s cubic-bezier(0.34,1.56,0.64,1);
-    z-index:9999; pointer-events:none;
-  }
-  #toast.show { transform:translateY(0); opacity:1; }
+/* ── GUIDED FORM ──────────────────────────────────────── */
+.guided-field { margin-bottom: 18px; }
+.guided-label {
+  font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 6px; display: block;
+}
+.guided-prompt {
+  font-family: 'Cormorant Garamond', serif; font-size: 1rem;
+  color: var(--pine); margin-bottom: 8px; font-style: italic;
+}
+textarea.guided-input, input.guided-input {
+  width: 100%; font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
+  color: var(--ink); background: white; border: 1.5px solid var(--border);
+  border-radius: 12px; padding: 12px 14px; outline: none;
+  transition: border-color 0.2s; resize: none;
+}
+textarea.guided-input:focus, input.guided-input:focus { border-color: var(--gold); }
+textarea.guided-input { min-height: 72px; }
 
-  @keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
-  @keyframes bounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-8px)} }
-  @keyframes spin   { to{transform:rotate(360deg)} }
-  @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.who-row { display: flex; gap: 10px; margin-bottom: 20px; }
+.who-btn {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 14px 10px; border-radius: 14px; border: 2px solid var(--border);
+  background: white; cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+}
+.who-btn .who-avatar {
+  width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-size: 0.9rem; font-weight: 700; color: white;
+}
+.who-btn span { font-size: 0.75rem; color: var(--muted); font-weight: 500; }
+.who-btn.selected { border-color: var(--gold); background: var(--gold-pale); }
+.who-btn.selected span { color: var(--pine); font-weight: 600; }
 
-  /* ── BOTTOM NAV (mobile only) ── */
-  #bottom-nav {
-    display: none;
-    position: fixed; bottom: 0; left: 0; right: 0;
-    background: var(--pine); z-index: 200;
-    padding: 0 0 env(safe-area-inset-bottom);
-    border-top: 1px solid rgba(201,169,97,0.2);
-    box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
-  }
-  .bottom-nav-inner { display: grid; grid-template-columns: repeat(3,1fr); }
-  .bnav-btn {
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 4px; padding: 10px 4px 8px;
-    background: transparent; border: none; cursor: pointer;
-    color: rgba(255,255,255,0.5); font-family: 'DM Sans', sans-serif;
-    font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase;
-    transition: color 0.2s;
-  }
-  .bnav-btn .bnav-icon { font-size: 1.3rem; line-height: 1; }
-  .bnav-btn.active { color: var(--gold); }
-  .bnav-btn.active .bnav-icon { transform: scale(1.1); }
+.cat-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.cat-btn {
+  padding: 7px 14px; border-radius: 100px; border: 1.5px solid var(--border);
+  background: white; cursor: pointer; font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem; color: var(--muted); transition: all 0.18s;
+}
+.cat-btn.selected { border-color: var(--pine); background: var(--pine); color: var(--gold-light); font-weight: 600; }
 
-  /* ── MOBILE OVERRIDES ── */
-  @media(max-width:680px){
-    /* Header — hide tab buttons, show only logo + sync */
-    header { padding: 14px 18px; }
-    .header-right .tab-btn { display: none; }
-    #bottom-nav { display: block; }
-    main { padding: 20px 14px 90px; } /* space for bottom nav */
+.drawer-save-btn {
+  width: 100%; background: var(--pine); color: var(--gold-light); border: none;
+  border-radius: 14px; font-family: 'DM Sans', sans-serif; font-size: 1rem;
+  font-weight: 600; padding: 16px; cursor: pointer; transition: all 0.2s; margin-top: 4px;
+}
+.drawer-save-btn:active { transform: scale(0.98); }
+.drawer-save-btn:disabled { opacity: 0.5; }
+.drawer-danger-btn {
+  width: 100%; background: transparent; color: #e53935; border: 1.5px solid #ffcdd2;
+  border-radius: 14px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+  font-weight: 500; padding: 12px; cursor: pointer; transition: all 0.2s; margin-top: 10px;
+}
+.drawer-promote-btn {
+  width: 100%; background: var(--gold); color: var(--pine); border: none;
+  border-radius: 14px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+  font-weight: 600; padding: 13px; cursor: pointer; transition: all 0.2s; margin-top: 10px;
+}
+.drawer-divider { height: 1px; background: var(--border); margin: 16px 0; }
 
-    /* Pin box bigger touch targets */
-    .pin-key { padding: 18px 10px; font-size: 1.2rem; }
-    .pin-box  { padding: 40px 28px; }
+/* ── EMPTY STATE ──────────────────────────────────────── */
+.empty { text-align: center; padding: 48px 20px; color: var(--muted); }
+.empty-icon { font-size: 2.8rem; display: block; margin-bottom: 12px; }
+.empty h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--pine); margin-bottom: 6px; }
+.empty p { font-size: 0.82rem; }
 
-    /* Add row — stack everything */
-    .add-row { grid-template-columns: 1fr; gap: 10px; }
+/* ── BOTTOM NAV ───────────────────────────────────────── */
+#bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--pine); z-index: 200;
+  padding-bottom: env(safe-area-inset-bottom);
+  border-top: 1px solid rgba(201,169,97,0.15);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+}
+.bnav-inner { display: grid; grid-template-columns: repeat(4,1fr); }
+.bnav-btn {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px; padding: 10px 4px 8px; background: transparent; border: none;
+  cursor: pointer; color: rgba(255,255,255,0.4); font-family: 'DM Sans', sans-serif;
+  font-size: 0.58rem; letter-spacing: 0.07em; text-transform: uppercase;
+  transition: color 0.18s; position: relative;
+}
+.bnav-icon { font-size: 1.25rem; line-height: 1; }
+.bnav-btn.active { color: var(--gold); }
+.bnav-new-dot {
+  position: absolute; top: 8px; right: 18px;
+  width: 8px; height: 8px; border-radius: 50%; background: #e53935;
+  border: 2px solid var(--pine);
+}
 
-    /* Inputs — larger tap targets */
-    input[type="text"], textarea, select { padding: 13px 14px; font-size: 1rem; }
-    .btn-primary, .btn-gold { padding: 14px 20px; font-size: 0.85rem; width: 100%; text-align: center; }
+/* ── TOAST ────────────────────────────────────────────── */
+#toast {
+  position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: var(--pine); color: var(--gold-light); padding: 11px 22px;
+  border-radius: 100px; font-size: 0.84rem; font-weight: 500;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.2); opacity: 0;
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  z-index: 9999; pointer-events: none; white-space: nowrap;
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    /* Episode cards — stack status below title */
-    .episode-card { grid-template-columns: auto 1fr; gap: 12px; }
-    .episode-card > div:last-child { grid-column: 2; flex-direction: row; align-items: center; }
+/* ── LOADING ──────────────────────────────────────────── */
+#loading-overlay {
+  position: fixed; inset: 0; background: rgba(31,66,54,0.5);
+  display: flex; align-items: center; justify-content: center; z-index: 600;
+  backdrop-filter: blur(3px);
+}
+.spinner { width: 40px; height: 40px; border: 3px solid rgba(201,169,97,0.3); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
 
-    /* Screenshots — single column */
-    .screenshots-grid { grid-template-columns: 1fr; }
+/* ── SECTION HEADER ───────────────────────────────────── */
+.section-hd { margin-bottom: 18px; }
+.section-hd h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; color: var(--pine); }
+.section-hd p  { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
 
-    /* Ideas grid — single column */
-    .ideas-grid { grid-template-columns: 1fr; }
+/* ── ANIMATIONS ───────────────────────────────────────── */
+@keyframes popIn { from{opacity:0;transform:scale(0.94)} to{opacity:1;transform:scale(1)} }
+@keyframes spin  { to{transform:rotate(360deg)} }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
-    /* Idea actions — bigger tap targets */
-    .vote-btn, .btn-gold, .delete-btn { padding: 9px 14px; font-size: 0.82rem; }
-
-    /* Filter chips — scrollable row */
-    .filter-row { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
-    .filter-row::-webkit-scrollbar { display: none; }
-    .filter-chip { white-space: nowrap; flex-shrink: 0; }
-
-    /* Toast — full width bottom */
-    #toast { left: 16px; right: 16px; bottom: 90px; text-align: center; }
-
-    /* Upload zone — more compact */
-    .upload-zone { padding: 28px 20px; }
-    .upload-icon  { font-size: 2rem; }
-
-    /* Section labels */
-    .section-label { font-size: 1.3rem; }
-  }
-
-  @media(max-width:400px){
-    .pin-key { padding: 15px 6px; }
-    .ep-number { font-size: 1.5rem; }
-  }
+/* ── DESKTOP ──────────────────────────────────────────── */
+@media(min-width:681px){
+  #bottom-nav { display: none; }
+  main { padding: 28px 24px 60px; }
+  .notes-grid { grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); }
+  .shots-grid { grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); }
+  .drawer { max-width: 480px; left: 50%; transform: translateX(-50%) translateY(100%); right: auto; border-radius: 24px; bottom: 40px; }
+  .drawer.open { transform: translateX(-50%) translateY(0); }
+}
+@media(max-width:680px){
+  .desktop-tabs { display: none; }
+  .notes-grid { grid-template-columns: repeat(2,1fr); }
+  .kanban { grid-template-columns: 1fr; gap: 12px; }
+  .home-snapshot h2 { font-size: 1.25rem; }
+}
+@media(max-width:360px){
+  .notes-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
@@ -304,184 +393,301 @@
 <div id="pin-gate">
   <div class="pin-box">
     <div class="pin-logo">The Brainstorm Board</div>
-    <div class="pin-sub">TMac × Dr. Catrina · Private Studio</div>
+    <div class="pin-sub">TMac × Dr. Catrina</div>
     <div class="pin-dots">
       <div class="pin-dot" id="d0"></div><div class="pin-dot" id="d1"></div>
       <div class="pin-dot" id="d2"></div><div class="pin-dot" id="d3"></div>
     </div>
     <div class="pin-keypad">
-      <button class="pin-key" onclick="pinPress('1')">1</button>
-      <button class="pin-key" onclick="pinPress('2')">2</button>
-      <button class="pin-key" onclick="pinPress('3')">3</button>
-      <button class="pin-key" onclick="pinPress('4')">4</button>
-      <button class="pin-key" onclick="pinPress('5')">5</button>
-      <button class="pin-key" onclick="pinPress('6')">6</button>
-      <button class="pin-key" onclick="pinPress('7')">7</button>
-      <button class="pin-key" onclick="pinPress('8')">8</button>
-      <button class="pin-key" onclick="pinPress('9')">9</button>
-      <button class="pin-key del" onclick="pinDel()">⌫</button>
-      <button class="pin-key" onclick="pinPress('0')">0</button>
-      <button class="pin-key del" onclick="pinClear()">✕</button>
+      <button class="pin-key" onclick="pp('1')">1</button>
+      <button class="pin-key" onclick="pp('2')">2</button>
+      <button class="pin-key" onclick="pp('3')">3</button>
+      <button class="pin-key" onclick="pp('4')">4</button>
+      <button class="pin-key" onclick="pp('5')">5</button>
+      <button class="pin-key" onclick="pp('6')">6</button>
+      <button class="pin-key" onclick="pp('7')">7</button>
+      <button class="pin-key" onclick="pp('8')">8</button>
+      <button class="pin-key" onclick="pp('9')">9</button>
+      <button class="pin-key del" onclick="pd()">⌫</button>
+      <button class="pin-key" onclick="pp('0')">0</button>
+      <button class="pin-key del" onclick="pc()">✕</button>
     </div>
     <div class="pin-error" id="pin-error"></div>
   </div>
 </div>
 
 <!-- LOADING -->
-<div id="loading-overlay" style="display:none;"><div class="loading-spinner"></div></div>
+<div id="loading-overlay" style="display:none;"><div class="spinner"></div></div>
 
 <!-- HEADER -->
 <header>
-  <div class="header-left">
+  <div class="header-logo">
     <h1>The Brainstorm Board</h1>
-    <p>TMac × Dr. Catrina &nbsp;·&nbsp; Podcast Creative Studio</p>
+    <p>TMac × Dr. Catrina · Creative Studio</p>
   </div>
   <div class="header-right">
-    <div class="sync-indicator">
+    <div class="sync-pill">
       <span class="sync-dot" id="sync-dot"></span>
       <span id="sync-label">Synced</span>
     </div>
-    <button class="tab-btn active" onclick="switchTab('ideas',this)">Ideas</button>
-    <button class="tab-btn" onclick="switchTab('screenshots',this)">Screenshots</button>
-    <button class="tab-btn" onclick="switchTab('episodes',this)">Episodes</button>
+    <div class="desktop-tabs">
+      <button class="tab-btn active" onclick="goTab('home',this)">Home</button>
+      <button class="tab-btn" onclick="goTab('ideas',this)">Ideas</button>
+      <button class="tab-btn" onclick="goTab('screenshots',this)">Screenshots</button>
+      <button class="tab-btn" onclick="goTab('episodes',this)">Episodes</button>
+    </div>
   </div>
 </header>
 
 <main>
 
-  <!-- IDEAS -->
-  <div id="panel-ideas" class="panel active">
-    <div class="section-label">Idea Board</div>
-    <div class="section-sub">Drop episode concepts, audience questions, collab notes — anything worth building on.</div>
-    <div class="add-row">
-      <div class="field-group">
-        <label class="field-label">Idea Title</label>
-        <input type="text" id="idea-title" placeholder="e.g. Money talks nurses won't have out loud…">
-      </div>
-      <div class="field-group">
-        <label class="field-label">Notes / Details</label>
-        <input type="text" id="idea-notes" placeholder="Context, angle, or why this matters…">
-      </div>
-      <div class="field-group">
-        <label class="field-label">Category</label>
-        <select id="idea-tag">
-          <option value="episode-idea">Episode Idea</option>
-          <option value="audience-question">Audience Question</option>
-          <option value="collab-note">Collab Note</option>
-          <option value="comment-inspo">Comment Inspo</option>
-        </select>
-      </div>
-      <div class="field-group">
-        <label class="field-label">Who's Adding</label>
-        <select id="idea-author">
-          <option value="T">Dr. TMac</option>
-          <option value="C">Dr. Catrina</option>
-        </select>
-      </div>
+  <!-- HOME -->
+  <div id="panel-home" class="panel active">
+    <div class="home-snapshot">
+      <h2>Good to see you ✦</h2>
+      <p id="home-sub">Loading your board…</p>
+      <div class="stats-row" id="stats-row"></div>
     </div>
-    <div style="display:flex;gap:10px;margin-bottom:26px;">
-      <button class="btn-primary" id="add-idea-btn" onclick="addIdea()">+ Add Idea</button>
-      <button class="btn-gold" onclick="loadAll()">↻ Refresh Board</button>
+    <button class="big-add-btn" onclick="openAddDrawer()">
+      <span style="font-size:1.4rem;">+</span> Drop a new idea
+    </button>
+    <div class="recent-label" id="recent-label">Recent ideas</div>
+    <div class="notes-grid" id="home-recent"></div>
+  </div>
+
+  <!-- IDEAS -->
+  <div id="panel-ideas" class="panel">
+    <div class="section-hd">
+      <h2>All Ideas</h2>
+      <p>Tap any card to edit, promote, or delete.</p>
     </div>
     <div class="filter-row">
-      <span class="filter-chip active" onclick="filterIdeas('all',this)">All</span>
-      <span class="filter-chip" onclick="filterIdeas('episode-idea',this)">Episode Ideas</span>
-      <span class="filter-chip" onclick="filterIdeas('audience-question',this)">Questions</span>
-      <span class="filter-chip" onclick="filterIdeas('collab-note',this)">Collab Notes</span>
-      <span class="filter-chip" onclick="filterIdeas('comment-inspo',this)">Comment Inspo</span>
+      <span class="chip active" onclick="filterIdeas('all',this)">All</span>
+      <span class="chip" onclick="filterIdeas('episode-idea',this)">Episode Ideas</span>
+      <span class="chip" onclick="filterIdeas('audience-question',this)">Audience Q</span>
+      <span class="chip" onclick="filterIdeas('collab-note',this)">Collab Notes</span>
+      <span class="chip" onclick="filterIdeas('comment-inspo',this)">Comment Inspo</span>
     </div>
-    <div class="ideas-grid" id="ideas-grid"></div>
-    <div id="ideas-empty" class="empty-state" style="display:none;">
+    <div class="notes-grid" id="ideas-grid"></div>
+    <div id="ideas-empty" class="empty" style="display:none;">
       <span class="empty-icon">💡</span>
-      <h3>Board is blank — let's fill it up</h3>
-      <p>Add your first idea above.</p>
+      <h3>Board is blank</h3>
+      <p>Add your first idea from the Home tab.</p>
     </div>
   </div>
 
   <!-- SCREENSHOTS -->
   <div id="panel-screenshots" class="panel">
-    <div class="section-label">Social Proof & Comment Fuel</div>
-    <div class="section-sub">Upload screenshots of comments, DMs, or posts to spark episode content.</div>
+    <div class="section-hd">
+      <h2>Comment Fuel</h2>
+      <p>Tap any screenshot to add an episode angle.</p>
+    </div>
     <div class="upload-zone" id="upload-zone"
          onclick="document.getElementById('file-input').click()"
          ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
       <input type="file" id="file-input" accept="image/*" multiple onchange="handleFiles(event)">
       <span class="upload-icon">📸</span>
-      <h3>Drop screenshots here</h3>
-      <p>PNG, JPG, HEIC — saved to your shared Google Sheet.</p>
+      <h3>Add a screenshot</h3>
+      <p>Comments, DMs, posts — anything worth an episode</p>
     </div>
-    <div class="screenshots-grid" id="screenshots-grid"></div>
-    <div id="shots-empty" class="empty-state" style="display:none;">
+    <div class="shots-grid" id="shots-grid"></div>
+    <div id="shots-empty" class="empty" style="display:none;">
       <span class="empty-icon">📲</span>
       <h3>No screenshots yet</h3>
-      <p>Upload comments from Instagram, TikTok, Facebook — anything your audience is asking.</p>
+      <p>Upload audience comments to spark episodes.</p>
     </div>
   </div>
 
   <!-- EPISODES -->
   <div id="panel-episodes" class="panel">
-    <div class="section-label">Episode Pipeline</div>
-    <div class="section-sub">Track episodes from concept to live. Click the status badge to advance it.</div>
-    <div style="display:flex;gap:11px;margin-bottom:26px;flex-wrap:wrap;align-items:flex-end;">
-      <div class="field-group" style="flex:2;min-width:190px;">
-        <label class="field-label">Episode Title</label>
-        <input type="text" id="ep-title" placeholder="e.g. The Wealth Conversation We Were Never Taught">
-      </div>
-      <div class="field-group" style="flex:2;min-width:190px;">
-        <label class="field-label">Description / Angle</label>
-        <input type="text" id="ep-desc" placeholder="What's the hook? What will listeners walk away with?">
-      </div>
-      <button class="btn-primary" id="add-ep-btn" onclick="addEpisode()">+ Add Episode</button>
+    <div class="section-hd">
+      <h2>Episode Pipeline</h2>
+      <p>Tap an episode to advance or edit it.</p>
     </div>
-    <div class="episodes-list" id="episodes-list"></div>
-    <div id="ep-empty" class="empty-state" style="display:none;">
-      <span class="empty-icon">🎙️</span>
-      <h3>Pipeline is empty</h3>
-      <p>Promote ideas from the board or add episodes directly here.</p>
+    <div class="kanban">
+      <div class="kanban-col col-idea">
+        <div class="kanban-col-header" style="color:#8a6a00;">
+          <span class="col-dot"></span>Ideas
+          <span id="cnt-idea" style="margin-left:auto;font-size:0.75rem;font-weight:700;"></span>
+        </div>
+        <div id="lane-idea"></div>
+        <button class="kanban-add" onclick="openEpDrawer()">+ Add episode</button>
+      </div>
+      <div class="kanban-col col-recorded">
+        <div class="kanban-col-header" style="color:var(--pine);">
+          <span class="col-dot"></span>Recorded
+          <span id="cnt-recorded" style="margin-left:auto;font-size:0.75rem;font-weight:700;"></span>
+        </div>
+        <div id="lane-recorded"></div>
+      </div>
+      <div class="kanban-col col-live">
+        <div class="kanban-col-header" style="color:#2e7d32;">
+          <span class="col-dot"></span>Live
+          <span id="cnt-live" style="margin-left:auto;font-size:0.75rem;font-weight:700;"></span>
+        </div>
+        <div id="lane-live"></div>
+      </div>
     </div>
   </div>
 
-
 </main>
-<div id="toast"></div>
 
-<!-- MOBILE BOTTOM NAV -->
+<!-- BOTTOM NAV -->
 <nav id="bottom-nav">
-  <div class="bottom-nav-inner">
-    <button class="bnav-btn active" id="bnav-ideas" onclick="switchTab('ideas',null,'bnav-ideas')">
+  <div class="bnav-inner">
+    <button class="bnav-btn active" id="bnav-home" onclick="goTab('home',null,'bnav-home')">
+      <span class="bnav-icon">🏠</span>Home
+    </button>
+    <button class="bnav-btn" id="bnav-ideas" onclick="goTab('ideas',null,'bnav-ideas')">
       <span class="bnav-icon">💡</span>Ideas
     </button>
-    <button class="bnav-btn" id="bnav-screenshots" onclick="switchTab('screenshots',null,'bnav-screenshots')">
+    <button class="bnav-btn" id="bnav-screenshots" onclick="goTab('screenshots',null,'bnav-screenshots')">
       <span class="bnav-icon">📸</span>Screenshots
     </button>
-    <button class="bnav-btn" id="bnav-episodes" onclick="switchTab('episodes',null,'bnav-episodes')">
+    <button class="bnav-btn" id="bnav-episodes" onclick="goTab('episodes',null,'bnav-episodes')">
       <span class="bnav-icon">🎙️</span>Episodes
     </button>
   </div>
 </nav>
 
+<!-- DRAWER OVERLAY -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+
+<!-- ADD IDEA DRAWER -->
+<div class="drawer" id="add-drawer">
+  <div class="drawer-handle"></div>
+  <div class="drawer-title">New Idea ✦</div>
+
+  <div class="guided-field">
+    <div class="guided-prompt">"The episode is about…"</div>
+    <input class="guided-input" id="add-topic" type="text" placeholder="e.g. Money conversations nurses avoid…">
+  </div>
+
+  <div class="guided-field">
+    <div class="guided-prompt">"Listeners will walk away with…"</div>
+    <textarea class="guided-input" id="add-takeaway" placeholder="e.g. A clear script for talking about salary with anyone…" rows="2"></textarea>
+  </div>
+
+  <div class="guided-field">
+    <div class="guided-prompt">"This came from…"</div>
+    <div class="cat-row" id="add-cat-row">
+      <button class="cat-btn selected" data-cat="episode-idea" onclick="selCat(this)">Our idea</button>
+      <button class="cat-btn" data-cat="audience-question" onclick="selCat(this)">Audience Q</button>
+      <button class="cat-btn" data-cat="comment-inspo" onclick="selCat(this)">Comment</button>
+      <button class="cat-btn" data-cat="collab-note" onclick="selCat(this)">Collab note</button>
+    </div>
+  </div>
+
+  <div class="guided-field">
+    <div class="guided-prompt">"Added by…"</div>
+    <div class="who-row">
+      <button class="who-btn selected" id="who-T" onclick="selWho('T')">
+        <span class="who-avatar" style="background:var(--pine);">T</span>
+        <span>Dr. TMac</span>
+      </button>
+      <button class="who-btn" id="who-C" onclick="selWho('C')">
+        <span class="who-avatar" style="background:#7a5c8a;">C</span>
+        <span>Dr. Catrina</span>
+      </button>
+    </div>
+  </div>
+
+  <button class="drawer-save-btn" id="add-save-btn" onclick="saveIdea()">Save to Board</button>
+</div>
+
+<!-- EDIT IDEA DRAWER -->
+<div class="drawer" id="edit-drawer">
+  <div class="drawer-handle"></div>
+  <div class="drawer-title">Edit Idea</div>
+
+  <div class="guided-field">
+    <div class="guided-prompt">"The episode is about…"</div>
+    <input class="guided-input" id="edit-topic" type="text">
+  </div>
+  <div class="guided-field">
+    <div class="guided-prompt">"Listeners will walk away with…"</div>
+    <textarea class="guided-input" id="edit-takeaway" rows="2"></textarea>
+  </div>
+  <div class="guided-field">
+    <div class="guided-prompt">"This came from…"</div>
+    <div class="cat-row" id="edit-cat-row">
+      <button class="cat-btn" data-cat="episode-idea" onclick="selEditCat(this)">Our idea</button>
+      <button class="cat-btn" data-cat="audience-question" onclick="selEditCat(this)">Audience Q</button>
+      <button class="cat-btn" data-cat="comment-inspo" onclick="selEditCat(this)">Comment</button>
+      <button class="cat-btn" data-cat="collab-note" onclick="selEditCat(this)">Collab note</button>
+    </div>
+  </div>
+
+  <button class="drawer-save-btn" id="edit-save-btn" onclick="updateIdea()">Save Changes</button>
+  <button class="drawer-promote-btn" onclick="promoteIdea()">→ Promote to Episode Pipeline</button>
+  <div class="drawer-divider"></div>
+  <button class="drawer-danger-btn" onclick="deleteIdea()">Delete this idea</button>
+</div>
+
+<!-- SCREENSHOT DRAWER -->
+<div class="drawer" id="shot-drawer">
+  <div class="drawer-handle"></div>
+  <div class="drawer-title">Screenshot</div>
+  <img id="shot-preview" src="" style="width:100%;border-radius:12px;margin-bottom:16px;max-height:220px;object-fit:cover;">
+  <div class="guided-field">
+    <div class="guided-prompt">"This could become an episode about…"</div>
+    <textarea class="guided-input" id="shot-caption" rows="2" placeholder="What's the episode angle?"></textarea>
+  </div>
+  <button class="drawer-save-btn" onclick="saveShotCaption()">Save Caption</button>
+  <button class="drawer-promote-btn" onclick="convertShotToIdea()">→ Turn into Idea Card</button>
+  <div class="drawer-divider"></div>
+  <button class="drawer-danger-btn" onclick="deleteShot()">Remove screenshot</button>
+</div>
+
+<!-- EPISODE DRAWER -->
+<div class="drawer" id="ep-drawer">
+  <div class="drawer-handle"></div>
+  <div class="drawer-title" id="ep-drawer-title">Episode</div>
+  <div class="guided-field">
+    <div class="guided-prompt">"The episode title is…"</div>
+    <input class="guided-input" id="ep-title-input" type="text" placeholder="e.g. The Wealth Talk We Were Never Given">
+  </div>
+  <div class="guided-field">
+    <div class="guided-prompt">"The hook / angle is…"</div>
+    <textarea class="guided-input" id="ep-desc-input" rows="2" placeholder="What makes this episode unmissable?"></textarea>
+  </div>
+  <button class="drawer-save-btn" id="ep-save-btn" onclick="saveEpisode()">Save Episode</button>
+  <div id="ep-advance-section" style="display:none;">
+    <div class="drawer-divider"></div>
+    <button class="drawer-promote-btn" id="ep-advance-btn" onclick="advanceEpisode()">→ Move to next stage</button>
+    <button class="drawer-danger-btn" onclick="deleteEpisode()">Remove episode</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
 <script>
-// ── CONFIG ────────────────────────────────────────────────────────────────
+// ── CONFIG ─────────────────────────────────────────────
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCZuDUIyXdc0h7EVu7Acxgn4PDKcZXhRLKOHsnDI9lXb-7QDoDBPs8PBuwWsG0BeXj/exec';
 const PIN_CODE   = '1975';
+const POLL_MS    = 30000; // live sync every 30s
 
-// ── STATE ─────────────────────────────────────────────────────────────────
-let ideas=[], screenshots=[], episodes=[], activeFilter='all';
+// ── STATE ──────────────────────────────────────────────
+let ideas=[], screenshots=[], episodes=[];
+let activeFilter='all', activeDrawer=null;
+let editingIdeaId=null, editingShotId=null, editingEpId=null;
+let lastSeenCount = parseInt(localStorage.getItem('bb_lastSeen')||'0');
+let pollTimer=null;
 
-// ── PIN ───────────────────────────────────────────────────────────────────
+// ── PIN ────────────────────────────────────────────────
 let pinEntry='';
-function pinPress(d){
+function pp(d){
   if(pinEntry.length>=4)return;
   pinEntry+=d;
   document.getElementById('d'+(pinEntry.length-1)).classList.add('filled');
   if(pinEntry.length===4)setTimeout(checkPin,150);
 }
-function pinDel(){
+function pd(){
   if(!pinEntry.length)return;
   document.getElementById('d'+(pinEntry.length-1)).classList.remove('filled');
   pinEntry=pinEntry.slice(0,-1);
 }
-function pinClear(){
+function pc(){
   pinEntry='';
   for(let i=0;i<4;i++)document.getElementById('d'+i).classList.remove('filled');
   document.getElementById('pin-error').textContent='';
@@ -489,38 +695,52 @@ function pinClear(){
 function checkPin(){
   if(pinEntry===PIN_CODE){
     document.getElementById('pin-gate').style.display='none';
-    loadAll();
+    init();
   } else {
-    document.getElementById('pin-error').textContent='Incorrect PIN — try again';
-    setTimeout(pinClear,900);
+    document.getElementById('pin-error').textContent='Incorrect PIN';
+    setTimeout(pc,900);
   }
 }
 
-// ── TABS ──────────────────────────────────────────────────────────────────
-function switchTab(tab, el, bnavId){
+// ── INIT ───────────────────────────────────────────────
+async function init(){
+  showLoading(true);
+  await loadAll();
+  showLoading(false);
+  startPolling();
+}
+
+function startPolling(){
+  if(pollTimer)clearInterval(pollTimer);
+  pollTimer=setInterval(async()=>{
+    await loadAll(true); // silent refresh
+  }, POLL_MS);
+}
+
+// ── TABS ───────────────────────────────────────────────
+function goTab(tab, desktopEl, bnavId){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('panel-'+tab).classList.add('active');
-  if(el) el.classList.add('active');
-  // sync bottom nav
-  const bnavTarget = bnavId || 'bnav-'+tab;
-  const bnavEl = document.getElementById(bnavTarget);
-  if(bnavEl) bnavEl.classList.add('active');
-  // sync desktop tab btn if triggered from bottom nav
-  if(!el){
-    document.querySelectorAll('.tab-btn').forEach(b=>{
-      if(b.getAttribute('onclick') && b.getAttribute('onclick').includes("'"+tab+"'")) b.classList.add('active');
-    });
+  if(desktopEl) desktopEl.classList.add('active');
+  const bn=document.getElementById(bnavId||'bnav-'+tab);
+  if(bn) bn.classList.add('active');
+  // clear new dot when visiting ideas
+  if(tab==='ideas'||tab==='home'){
+    const dot=document.querySelector('#bnav-ideas .bnav-new-dot');
+    if(dot)dot.remove();
+    lastSeenCount=ideas.length;
+    localStorage.setItem('bb_lastSeen',lastSeenCount);
   }
 }
 
-// ── SYNC ──────────────────────────────────────────────────────────────────
-function setSyncing(){document.getElementById('sync-dot').className='sync-dot syncing';document.getElementById('sync-label').textContent='Syncing…';}
+// ── SYNC ───────────────────────────────────────────────
+function setSyncing(){document.getElementById('sync-dot').className='sync-dot syncing';document.getElementById('sync-label').textContent='Syncing';}
 function setSynced() {document.getElementById('sync-dot').className='sync-dot';document.getElementById('sync-label').textContent='Synced';}
-function setSyncErr() {document.getElementById('sync-dot').className='sync-dot error';document.getElementById('sync-label').textContent='Sync error';}
+function setSyncErr(){document.getElementById('sync-dot').className='sync-dot error';document.getElementById('sync-label').textContent='Error';}
 
-// ── API ───────────────────────────────────────────────────────────────────
+// ── API ────────────────────────────────────────────────
 async function apiGet(tab){
   const r=await fetch(`${SCRIPT_URL}?action=read&tab=${tab}&t=${Date.now()}`);
   const d=await r.json(); return d.rows||[];
@@ -530,106 +750,205 @@ async function apiPost(body){
   return await r.json();
 }
 
-// ── LOAD ALL ──────────────────────────────────────────────────────────────
-async function loadAll(){
-  setSyncing(); showLoading(true);
+// ── LOAD ───────────────────────────────────────────────
+async function loadAll(silent=false){
+  if(!silent)setSyncing();
   try{
-    [ideas,screenshots,episodes]=await Promise.all([apiGet('ideas'),apiGet('screenshots'),apiGet('episodes')]);
-    ideas=ideas.map(coerceIdea); screenshots=screenshots.map(coerceShot); episodes=episodes.map(coerceEp);
-    renderIdeas(); renderScreenshots(); renderEpisodes(); setSynced();
-  }catch(e){setSyncErr();toast('Could not reach Google Sheets — check your Script URL');}
-  showLoading(false);
+    const [i,s,e]=await Promise.all([apiGet('ideas'),apiGet('screenshots'),apiGet('episodes')]);
+    const prevCount=ideas.length;
+    ideas=i.map(coerceIdea); screenshots=s.map(coerceShot); episodes=e.map(coerceEp);
+    renderAll();
+    // show new dot if someone else added ideas
+    if(silent && ideas.length > lastSeenCount){
+      showNewDot('bnav-ideas', ideas.length - lastSeenCount);
+    }
+    setSynced();
+  }catch(err){setSyncErr();}
 }
-function coerceIdea(r){return{...r,votes:Number(r.votes)||0,voted:r.voted==='true'||r.voted===true};}
+
+function coerceIdea(r){return{...r};}
 function coerceShot(r){return{...r,tags:r.tags?(typeof r.tags==='string'?r.tags.split('|').filter(Boolean):r.tags):[]};}
-function coerceEp(r){return{...r,num:Number(r.num)||1};}
+function coerceEp(r){return{...r};}
+
+function renderAll(){
+  renderHome(); renderIdeas(); renderScreenshots(); renderEpisodes();
+}
+
 function showLoading(s){document.getElementById('loading-overlay').style.display=s?'flex':'none';}
 
-// ── TOAST ─────────────────────────────────────────────────────────────────
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200);}
-
-// ── IDEAS ─────────────────────────────────────────────────────────────────
-const TAG_LABELS={'episode-idea':'Episode Idea','audience-question':'Audience Question','collab-note':'Collab Note','comment-inspo':'Comment Inspo'};
-
-async function addIdea(titleOv,notesOv,tagOv){
-  const title=titleOv||document.getElementById('idea-title').value.trim();
-  const notes=notesOv||document.getElementById('idea-notes').value.trim();
-  const tag=tagOv||document.getElementById('idea-tag').value;
-  const author=document.getElementById('idea-author').value;
-  if(!title){toast('Give the idea a title first!');return;}
-  const btn=document.getElementById('add-idea-btn'); btn.disabled=true; setSyncing();
-  const row={id:Date.now().toString(),title,notes,tag,author,votes:0,voted:false,
-    date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})};
-  try{
-    await apiPost({action:'write',tab:'ideas',row});
-    ideas.unshift(coerceIdea(row)); renderIdeas();
-    if(!titleOv){document.getElementById('idea-title').value='';document.getElementById('idea-notes').value='';}
-    setSynced(); toast('Idea saved to the board ✓');
-  }catch(e){setSyncErr();toast('Save failed — check connection');}
-  btn.disabled=false;
+function showNewDot(bnavId, count){
+  const btn=document.getElementById(bnavId); if(!btn)return;
+  if(btn.querySelector('.bnav-new-dot'))return;
+  const dot=document.createElement('span');
+  dot.className='bnav-new-dot'; dot.title=`${count} new`;
+  btn.appendChild(dot);
 }
 
-async function voteIdea(id){
-  const idea=ideas.find(i=>i.id==id); if(!idea)return;
-  idea.voted=!idea.voted; idea.votes=idea.voted?Number(idea.votes)+1:Number(idea.votes)-1;
-  renderIdeas(); setSyncing();
-  try{await apiPost({action:'update',tab:'ideas',id,row:{votes:idea.votes,voted:idea.voted}});setSynced();}
-  catch(e){setSyncErr();}
+// ── TOAST ──────────────────────────────────────────────
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
 }
 
-async function deleteIdea(id){
-  ideas=ideas.filter(i=>i.id!=id); renderIdeas(); setSyncing();
-  try{await apiPost({action:'delete',tab:'ideas',id});setSynced();toast('Idea removed');}
-  catch(e){setSyncErr();}
+// ── HOME ───────────────────────────────────────────────
+function renderHome(){
+  const liveCount=episodes.filter(e=>e.status==='live').length;
+  const recCount=episodes.filter(e=>e.status==='recorded').length;
+  document.getElementById('home-sub').textContent=
+    ideas.length===0 ? 'Your board is ready — drop your first idea!' :
+    `${ideas.length} idea${ideas.length!==1?'s':''} on the board`;
+
+  const stats=document.getElementById('stats-row');
+  stats.innerHTML=`
+    <span class="stat-chip">💡 ${ideas.length} ideas</span>
+    ${recCount?`<span class="stat-chip">🎙️ ${recCount} recorded</span>`:''}
+    ${liveCount?`<span class="stat-chip">✅ ${liveCount} live</span>`:''}
+  `;
+
+  const recent=ideas.slice(0,4);
+  const grid=document.getElementById('home-recent');
+  document.getElementById('recent-label').style.display=recent.length?'block':'none';
+  grid.innerHTML=recent.map((idea,i)=>stickyHTML(idea,i)).join('');
 }
 
-async function promoteToEpisode(id){
-  const idea=ideas.find(i=>i.id==id); if(!idea)return;
-  const row={id:Date.now().toString(),title:idea.title,desc:idea.notes||'Promoted from ideas board',
-    status:'idea',num:episodes.length+1,
-    date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})};
-  setSyncing();
-  try{
-    await apiPost({action:'write',tab:'episodes',row});
-    episodes.unshift(coerceEp(row)); renderEpisodes(); setSynced(); toast('Promoted to Episodes 🎙️');
-  }catch(e){setSyncErr();}
+// ── IDEAS ──────────────────────────────────────────────
+const CAT_LABELS={'episode-idea':'Our idea','audience-question':'Audience Q','collab-note':'Collab note','comment-inspo':'Comment'};
+const NOTE_COLORS=5;
+
+function stickyHTML(idea, i){
+  const nc='nc-'+(i%NOTE_COLORS);
+  return `<div class="sticky ${nc}" onclick="openEditDrawer('${idea.id}')">
+    <div>
+      <h3>${esc(idea.title)}</h3>
+      ${idea.takeaway?`<div class="sticky-takeaway">${esc(idea.takeaway)}</div>`:''}
+    </div>
+    <div class="sticky-footer">
+      <span class="sticky-cat">${CAT_LABELS[idea.tag]||idea.tag}</span>
+      <span class="avatar-dot av-${idea.author}">${idea.author}</span>
+    </div>
+  </div>`;
 }
 
 function filterIdeas(tag,el){
   activeFilter=tag;
-  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active'); renderIdeas();
+  document.querySelectorAll('.filter-row .chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  renderIdeas();
 }
 
 function renderIdeas(){
-  const grid=document.getElementById('ideas-grid'),empty=document.getElementById('ideas-empty');
+  const grid=document.getElementById('ideas-grid');
+  const empty=document.getElementById('ideas-empty');
   const filtered=activeFilter==='all'?ideas:ideas.filter(i=>i.tag===activeFilter);
   if(!filtered.length){grid.innerHTML='';empty.style.display='block';return;}
   empty.style.display='none';
-  grid.innerHTML=filtered.map(idea=>`
-    <div class="idea-card tag-${idea.tag}">
-      <div class="idea-meta">
-        <span class="idea-tag">${TAG_LABELS[idea.tag]||idea.tag}</span>
-        <span class="idea-author">
-          <span class="avatar-dot avatar-${idea.author}">${idea.author}</span>
-          Dr. ${idea.author==='T'?'TMac':'Catrina'}
-        </span>
-      </div>
-      <div class="idea-title">${esc(idea.title)}</div>
-      ${idea.notes?`<div class="idea-body">${esc(idea.notes)}</div>`:''}
-      <div class="idea-actions">
-        <button class="vote-btn ${idea.voted?'voted':''}" onclick="voteIdea('${idea.id}')">
-          ${idea.voted?'★':'☆'} ${idea.votes} vote${idea.votes==1?'':'s'}
-        </button>
-        <button class="btn-gold" style="font-size:0.7rem;padding:5px 11px;" onclick="promoteToEpisode('${idea.id}')">→ Episode</button>
-        <button class="delete-btn" onclick="deleteIdea('${idea.id}')">✕</button>
-      </div>
-      <div class="idea-date">${idea.date}</div>
-    </div>`).join('');
+  grid.innerHTML=filtered.map((idea,i)=>stickyHTML(idea,i)).join('');
 }
 
-// ── SCREENSHOTS ───────────────────────────────────────────────────────────
-const SHOT_TAGS=['Episode Fuel','Answered on Air','Hot Take','Trending','Needs Research'];
+// ── ADD IDEA DRAWER ────────────────────────────────────
+function openAddDrawer(){
+  document.getElementById('add-topic').value='';
+  document.getElementById('add-takeaway').value='';
+  document.querySelectorAll('#add-cat-row .cat-btn').forEach((b,i)=>{b.classList.toggle('selected',i===0);});
+  selWho('T');
+  openDrawer('add-drawer');
+  setTimeout(()=>document.getElementById('add-topic').focus(),400);
+}
+
+function selCat(btn){
+  document.querySelectorAll('#add-cat-row .cat-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+function selEditCat(btn){
+  document.querySelectorAll('#edit-cat-row .cat-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+let selectedWho='T';
+function selWho(w){
+  selectedWho=w;
+  document.getElementById('who-T').classList.toggle('selected',w==='T');
+  document.getElementById('who-C').classList.toggle('selected',w==='C');
+}
+
+async function saveIdea(){
+  const title=document.getElementById('add-topic').value.trim();
+  if(!title){toast('Add a topic first!');return;}
+  const takeaway=document.getElementById('add-takeaway').value.trim();
+  const tag=document.querySelector('#add-cat-row .cat-btn.selected')?.dataset.cat||'episode-idea';
+  const btn=document.getElementById('add-save-btn'); btn.disabled=true;
+  setSyncing();
+  const row={
+    id:Date.now().toString(), title, takeaway, tag, author:selectedWho,
+    date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
+  };
+  try{
+    await apiPost({action:'write',tab:'ideas',row});
+    ideas.unshift(coerceIdea(row));
+    lastSeenCount=ideas.length;
+    localStorage.setItem('bb_lastSeen',lastSeenCount);
+    renderAll(); closeDrawer(); setSynced(); toast('Idea saved ✓');
+  }catch(e){setSyncErr();toast('Save failed');}
+  btn.disabled=false;
+}
+
+// ── EDIT IDEA DRAWER ───────────────────────────────────
+function openEditDrawer(id){
+  const idea=ideas.find(i=>i.id==id); if(!idea)return;
+  editingIdeaId=id;
+  document.getElementById('edit-topic').value=idea.title||'';
+  document.getElementById('edit-takeaway').value=idea.takeaway||'';
+  document.querySelectorAll('#edit-cat-row .cat-btn').forEach(b=>{
+    b.classList.toggle('selected',b.dataset.cat===idea.tag);
+  });
+  openDrawer('edit-drawer');
+}
+
+async function updateIdea(){
+  const title=document.getElementById('edit-topic').value.trim();
+  if(!title){toast('Title cannot be empty');return;}
+  const takeaway=document.getElementById('edit-takeaway').value.trim();
+  const tag=document.querySelector('#edit-cat-row .cat-btn.selected')?.dataset.cat||'episode-idea';
+  const btn=document.getElementById('edit-save-btn'); btn.disabled=true;
+  setSyncing();
+  try{
+    await apiPost({action:'update',tab:'ideas',id:editingIdeaId,row:{title,takeaway,tag}});
+    const idea=ideas.find(i=>i.id==editingIdeaId);
+    if(idea){idea.title=title;idea.takeaway=takeaway;idea.tag=tag;}
+    renderAll(); closeDrawer(); setSynced(); toast('Updated ✓');
+  }catch(e){setSyncErr();toast('Update failed');}
+  btn.disabled=false;
+}
+
+async function deleteIdea(){
+  if(!confirm('Delete this idea?'))return;
+  setSyncing();
+  try{
+    await apiPost({action:'delete',tab:'ideas',id:editingIdeaId});
+    ideas=ideas.filter(i=>i.id!=editingIdeaId);
+    renderAll(); closeDrawer(); setSynced(); toast('Idea removed');
+  }catch(e){setSyncErr();}
+}
+
+async function promoteIdea(){
+  const idea=ideas.find(i=>i.id==editingIdeaId); if(!idea)return;
+  setSyncing();
+  const row={
+    id:Date.now().toString(), title:idea.title,
+    desc:idea.takeaway||'Promoted from ideas board',
+    status:'idea',num:episodes.length+1,
+    date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
+  };
+  try{
+    await apiPost({action:'write',tab:'episodes',row});
+    episodes.unshift(coerceEp(row));
+    renderAll(); closeDrawer(); setSynced(); toast('Promoted to Episodes 🎙️');
+    goTab('episodes');
+  }catch(e){setSyncErr();}
+}
+
+// ── SCREENSHOTS ────────────────────────────────────────
 function dragOver(e){e.preventDefault();document.getElementById('upload-zone').classList.add('drag-over');}
 function dragLeave(){document.getElementById('upload-zone').classList.remove('drag-over');}
 function dropFile(e){e.preventDefault();dragLeave();handleFileList(e.dataTransfer.files);}
@@ -638,115 +957,180 @@ function handleFileList(files){
   Array.from(files).forEach(file=>{
     if(!file.type.startsWith('image/'))return;
     const reader=new FileReader();
-    reader.onload=ev=>saveScreenshot(ev.target.result);
+    reader.onload=ev=>saveShot(ev.target.result);
     reader.readAsDataURL(file);
   });
 }
-async function saveScreenshot(src){
+async function saveShot(src){
+  setSyncing();
   const row={id:Date.now().toString(),src,caption:'',tags:'',
     date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})};
-  setSyncing();
   try{
     await apiPost({action:'write',tab:'screenshots',row});
-    screenshots.unshift(coerceShot(row)); renderScreenshots(); setSynced(); toast('Screenshot saved ✓');
-  }catch(e){setSyncErr();toast('Failed — file may be too large (try compressing first)');}
+    screenshots.unshift(coerceShot(row));
+    renderScreenshots(); setSynced(); toast('Screenshot saved ✓');
+  }catch(e){setSyncErr();toast('Failed — try a smaller image');}
 }
-async function updateShotCaption(id,val){
-  const s=screenshots.find(x=>x.id==id); if(s)s.caption=val;
-  try{await apiPost({action:'update',tab:'screenshots',id,row:{caption:val}});setSynced();}catch(e){setSyncErr();}
-}
-async function toggleShotTag(id,tag){
-  const s=screenshots.find(x=>x.id==id); if(!s)return;
-  const idx=s.tags.indexOf(tag);
-  if(idx>=0)s.tags.splice(idx,1);else s.tags.push(tag);
-  renderScreenshots(); setSyncing();
-  try{await apiPost({action:'update',tab:'screenshots',id,row:{tags:s.tags.join('|')}});setSynced();}catch(e){setSyncErr();}
-}
-async function deleteShot(id){
-  screenshots=screenshots.filter(s=>s.id!=id); renderScreenshots(); setSyncing();
-  try{await apiPost({action:'delete',tab:'screenshots',id});setSynced();toast('Screenshot removed');}catch(e){setSyncErr();}
-}
-function convertShotToIdea(id){
-  const s=screenshots.find(x=>x.id==id); if(!s)return;
-  document.getElementById('idea-title').value=s.caption||'Episode from screenshot';
-  document.getElementById('idea-notes').value='Converted from screenshot';
-  document.getElementById('idea-tag').value='comment-inspo';
-  switchTab('ideas'); toast('Pre-filled — review and save to the board');
-}
+
 function renderScreenshots(){
-  const grid=document.getElementById('screenshots-grid'),empty=document.getElementById('shots-empty');
+  const grid=document.getElementById('shots-grid');
+  const empty=document.getElementById('shots-empty');
   if(!screenshots.length){grid.innerHTML='';empty.style.display='block';return;}
   empty.style.display='none';
   grid.innerHTML=screenshots.map(s=>`
-    <div class="screenshot-card">
+    <div class="shot-card" onclick="openShotDrawer('${s.id}')">
       <img src="${s.src}" alt="screenshot" loading="lazy">
-      <div class="screenshot-info">
-        <div style="margin-bottom:8px;">
-          <label class="field-label" style="display:block;margin-bottom:4px;">Caption / Episode Angle</label>
-          <input type="text" value="${esc(s.caption)}" placeholder="What episode does this spark?"
-            style="width:100%;border:none;border-bottom:1px solid var(--border);border-radius:0;padding:5px 2px;font-size:0.83rem;background:transparent;"
-            onchange="updateShotCaption('${s.id}',this.value)">
-        </div>
-        <div style="margin-bottom:7px;">${SHOT_TAGS.map(t=>`<span class="s-tag ${s.tags.includes(t)?'active':''}" onclick="toggleShotTag('${s.id}','${t}')">${t}</span>`).join('')}</div>
-        <div style="display:flex;gap:7px;">
-          <button class="convert-btn" style="flex:1;" onclick="convertShotToIdea('${s.id}')">→ Add to Ideas Board</button>
-          <button class="delete-btn" onclick="deleteShot('${s.id}')" style="padding:8px 11px;">✕</button>
-        </div>
-        <div class="idea-date" style="margin-top:5px;">${s.date}</div>
+      <div class="shot-info">
+        ${s.caption?`<p>${esc(s.caption)}</p>`:'<p class="shot-empty">Tap to add angle</p>'}
       </div>
     </div>`).join('');
 }
 
-// ── EPISODES ──────────────────────────────────────────────────────────────
-const EP_STATUSES=['idea','planned','recorded','live'];
-const EP_LABELS={idea:'Idea',planned:'Planned',recorded:'Recorded',live:'Live'};
-async function addEpisode(){
-  const title=document.getElementById('ep-title').value.trim();
-  const desc=document.getElementById('ep-desc').value.trim();
-  if(!title){toast('Give the episode a title!');return;}
-  const btn=document.getElementById('add-ep-btn'); btn.disabled=true; setSyncing();
-  const row={id:Date.now().toString(),title,desc,status:'idea',num:episodes.length+1,
-    date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})};
+function openShotDrawer(id){
+  const s=screenshots.find(x=>x.id==id); if(!s)return;
+  editingShotId=id;
+  document.getElementById('shot-preview').src=s.src;
+  document.getElementById('shot-caption').value=s.caption||'';
+  openDrawer('shot-drawer');
+}
+
+async function saveShotCaption(){
+  const caption=document.getElementById('shot-caption').value.trim();
+  setSyncing();
   try{
-    await apiPost({action:'write',tab:'episodes',row});
-    episodes.unshift(coerceEp(row)); renderEpisodes(); setSynced(); toast('Episode added to pipeline ✓');
-    document.getElementById('ep-title').value=''; document.getElementById('ep-desc').value='';
-  }catch(e){setSyncErr();toast('Save failed');}
+    await apiPost({action:'update',tab:'screenshots',id:editingShotId,row:{caption}});
+    const s=screenshots.find(x=>x.id==editingShotId);
+    if(s)s.caption=caption;
+    renderScreenshots(); closeDrawer(); setSynced(); toast('Caption saved ✓');
+  }catch(e){setSyncErr();}
+}
+
+function convertShotToIdea(){
+  const s=screenshots.find(x=>x.id==editingShotId); if(!s)return;
+  closeDrawer();
+  setTimeout(()=>{
+    document.getElementById('add-topic').value=s.caption||'';
+    document.getElementById('add-takeaway').value='';
+    document.querySelectorAll('#add-cat-row .cat-btn').forEach(b=>{
+      b.classList.toggle('selected',b.dataset.cat==='comment-inspo');
+    });
+    openDrawer('add-drawer');
+  },300);
+}
+
+async function deleteShot(){
+  if(!confirm('Remove this screenshot?'))return;
+  setSyncing();
+  try{
+    await apiPost({action:'delete',tab:'screenshots',id:editingShotId});
+    screenshots=screenshots.filter(s=>s.id!=editingShotId);
+    renderScreenshots(); closeDrawer(); setSynced(); toast('Screenshot removed');
+  }catch(e){setSyncErr();}
+}
+
+// ── EPISODES ───────────────────────────────────────────
+const EP_ORDER=['idea','recorded','live'];
+const EP_NEXT={'idea':'recorded','recorded':'live','live':'live'};
+const EP_NEXT_LABEL={'idea':'→ Mark as Recorded','recorded':'→ Mark as Live','live':'Already Live!'};
+
+function renderEpisodes(){
+  ['idea','recorded','live'].forEach(status=>{
+    const lane=document.getElementById('lane-'+status);
+    const eps=episodes.filter(e=>e.status===status);
+    document.getElementById('cnt-'+status).textContent=eps.length||'';
+    if(!eps.length){lane.innerHTML='';return;}
+    lane.innerHTML=eps.map(ep=>`
+      <div class="ep-card" onclick="openEpDrawer('${ep.id}')">
+        <h4>${esc(ep.title)}</h4>
+        ${ep.desc?`<p>${esc(ep.desc)}</p>`:''}
+        <div class="ep-advance">${EP_NEXT_LABEL[ep.status]} ›</div>
+      </div>`).join('');
+  });
+}
+
+function openEpDrawer(id){
+  editingEpId=id||null;
+  const advSection=document.getElementById('ep-advance-section');
+  if(id){
+    const ep=episodes.find(e=>e.id==id); if(!ep)return;
+    document.getElementById('ep-drawer-title').textContent='Edit Episode';
+    document.getElementById('ep-title-input').value=ep.title||'';
+    document.getElementById('ep-desc-input').value=ep.desc||'';
+    document.getElementById('ep-advance-btn').textContent=EP_NEXT_LABEL[ep.status];
+    advSection.style.display='block';
+  } else {
+    document.getElementById('ep-drawer-title').textContent='New Episode';
+    document.getElementById('ep-title-input').value='';
+    document.getElementById('ep-desc-input').value='';
+    advSection.style.display='none';
+  }
+  openDrawer('ep-drawer');
+}
+
+async function saveEpisode(){
+  const title=document.getElementById('ep-title-input').value.trim();
+  if(!title){toast('Give the episode a title!');return;}
+  const desc=document.getElementById('ep-desc-input').value.trim();
+  const btn=document.getElementById('ep-save-btn'); btn.disabled=true;
+  setSyncing();
+  if(editingEpId){
+    try{
+      await apiPost({action:'update',tab:'episodes',id:editingEpId,row:{title,desc}});
+      const ep=episodes.find(e=>e.id==editingEpId);
+      if(ep){ep.title=title;ep.desc=desc;}
+      renderEpisodes(); closeDrawer(); setSynced(); toast('Episode updated ✓');
+    }catch(e){setSyncErr();}
+  } else {
+    const row={id:Date.now().toString(),title,desc,status:'idea',num:episodes.length+1,
+      date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})};
+    try{
+      await apiPost({action:'write',tab:'episodes',row});
+      episodes.unshift(coerceEp(row));
+      renderEpisodes(); closeDrawer(); setSynced(); toast('Episode added ✓');
+    }catch(e){setSyncErr();}
+  }
   btn.disabled=false;
 }
-async function cycleStatus(id){
-  const ep=episodes.find(e=>e.id==id); if(!ep)return;
-  ep.status=EP_STATUSES[(EP_STATUSES.indexOf(ep.status)+1)%EP_STATUSES.length];
-  renderEpisodes(); setSyncing();
-  try{await apiPost({action:'update',tab:'episodes',id,row:{status:ep.status}});setSynced();toast('Status → '+EP_LABELS[ep.status]);}
-  catch(e){setSyncErr();}
-}
-async function deleteEpisode(id){
-  episodes=episodes.filter(e=>e.id!=id); renderEpisodes(); setSyncing();
-  try{await apiPost({action:'delete',tab:'episodes',id});setSynced();toast('Episode removed');}catch(e){setSyncErr();}
-}
-function renderEpisodes(){
-  const list=document.getElementById('episodes-list'),empty=document.getElementById('ep-empty');
-  if(!episodes.length){list.innerHTML='';empty.style.display='block';return;}
-  empty.style.display='none';
-  list.innerHTML=episodes.map((ep,i)=>`
-    <div class="episode-card">
-      <div class="ep-number">E${String(episodes.length-i).padStart(2,'0')}</div>
-      <div class="ep-body">
-        <h3>${esc(ep.title)}</h3>
-        ${ep.desc?`<p>${esc(ep.desc)}</p>`:''}
-        <div class="idea-date" style="margin-top:5px;">${ep.date||''}</div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end;">
-        <span class="ep-status status-${ep.status}" onclick="cycleStatus('${ep.id}')" title="Click to advance">${EP_LABELS[ep.status]}</span>
-        <button class="delete-btn" onclick="deleteEpisode('${ep.id}')" style="font-size:0.68rem;padding:4px 9px;">✕ Remove</button>
-      </div>
-    </div>`).join('');
+
+async function advanceEpisode(){
+  const ep=episodes.find(e=>e.id==editingEpId); if(!ep||ep.status==='live')return;
+  const next=EP_NEXT[ep.status];
+  setSyncing();
+  try{
+    await apiPost({action:'update',tab:'episodes',id:editingEpId,row:{status:next}});
+    ep.status=next;
+    renderEpisodes(); closeDrawer(); setSynced();
+    toast(next==='live'?'Episode is LIVE! 🎉':'Marked as Recorded 🎙️');
+  }catch(e){setSyncErr();}
 }
 
+async function deleteEpisode(){
+  if(!confirm('Remove this episode?'))return;
+  setSyncing();
+  try{
+    await apiPost({action:'delete',tab:'episodes',id:editingEpId});
+    episodes=episodes.filter(e=>e.id!=editingEpId);
+    renderEpisodes(); closeDrawer(); setSynced(); toast('Episode removed');
+  }catch(e){setSyncErr();}
+}
 
-// ── UTILS ─────────────────────────────────────────────────────────────────
-function esc(str){return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');}
+// ── DRAWERS ────────────────────────────────────────────
+function openDrawer(id){
+  if(activeDrawer)document.getElementById(activeDrawer).classList.remove('open');
+  activeDrawer=id;
+  document.getElementById('drawer-overlay').classList.add('open');
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeDrawer(){
+  if(activeDrawer)document.getElementById(activeDrawer).classList.remove('open');
+  document.getElementById('drawer-overlay').classList.remove('open');
+  document.body.style.overflow='';
+  activeDrawer=null;
+}
+
+// ── UTILS ──────────────────────────────────────────────
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');}
 </script>
 </body>
 </html>
