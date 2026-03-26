@@ -222,12 +222,79 @@
   @keyframes spin   { to{transform:rotate(360deg)} }
   @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
+  /* ── BOTTOM NAV (mobile only) ── */
+  #bottom-nav {
+    display: none;
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--pine); z-index: 200;
+    padding: 0 0 env(safe-area-inset-bottom);
+    border-top: 1px solid rgba(201,169,97,0.2);
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+  }
+  .bottom-nav-inner { display: grid; grid-template-columns: repeat(3,1fr); }
+  .bnav-btn {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 4px; padding: 10px 4px 8px;
+    background: transparent; border: none; cursor: pointer;
+    color: rgba(255,255,255,0.5); font-family: 'DM Sans', sans-serif;
+    font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .bnav-btn .bnav-icon { font-size: 1.3rem; line-height: 1; }
+  .bnav-btn.active { color: var(--gold); }
+  .bnav-btn.active .bnav-icon { transform: scale(1.1); }
+
+  /* ── MOBILE OVERRIDES ── */
   @media(max-width:680px){
-    header{padding:14px 16px;}
-    main{padding:20px 12px 60px;}
-    .add-row{grid-template-columns:1fr;}
-    .tab-btn{padding:6px 11px;font-size:0.67rem;}
-    .episode-card{grid-template-columns:auto 1fr;}
+    /* Header — hide tab buttons, show only logo + sync */
+    header { padding: 14px 18px; }
+    .header-right .tab-btn { display: none; }
+    #bottom-nav { display: block; }
+    main { padding: 20px 14px 90px; } /* space for bottom nav */
+
+    /* Pin box bigger touch targets */
+    .pin-key { padding: 18px 10px; font-size: 1.2rem; }
+    .pin-box  { padding: 40px 28px; }
+
+    /* Add row — stack everything */
+    .add-row { grid-template-columns: 1fr; gap: 10px; }
+
+    /* Inputs — larger tap targets */
+    input[type="text"], textarea, select { padding: 13px 14px; font-size: 1rem; }
+    .btn-primary, .btn-gold { padding: 14px 20px; font-size: 0.85rem; width: 100%; text-align: center; }
+
+    /* Episode cards — stack status below title */
+    .episode-card { grid-template-columns: auto 1fr; gap: 12px; }
+    .episode-card > div:last-child { grid-column: 2; flex-direction: row; align-items: center; }
+
+    /* Screenshots — single column */
+    .screenshots-grid { grid-template-columns: 1fr; }
+
+    /* Ideas grid — single column */
+    .ideas-grid { grid-template-columns: 1fr; }
+
+    /* Idea actions — bigger tap targets */
+    .vote-btn, .btn-gold, .delete-btn { padding: 9px 14px; font-size: 0.82rem; }
+
+    /* Filter chips — scrollable row */
+    .filter-row { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
+    .filter-row::-webkit-scrollbar { display: none; }
+    .filter-chip { white-space: nowrap; flex-shrink: 0; }
+
+    /* Toast — full width bottom */
+    #toast { left: 16px; right: 16px; bottom: 90px; text-align: center; }
+
+    /* Upload zone — more compact */
+    .upload-zone { padding: 28px 20px; }
+    .upload-icon  { font-size: 2rem; }
+
+    /* Section labels */
+    .section-label { font-size: 1.3rem; }
+  }
+
+  @media(max-width:400px){
+    .pin-key { padding: 15px 6px; }
+    .ep-number { font-size: 1.5rem; }
   }
 </style>
 </head>
@@ -378,6 +445,21 @@
 </main>
 <div id="toast"></div>
 
+<!-- MOBILE BOTTOM NAV -->
+<nav id="bottom-nav">
+  <div class="bottom-nav-inner">
+    <button class="bnav-btn active" id="bnav-ideas" onclick="switchTab('ideas',null,'bnav-ideas')">
+      <span class="bnav-icon">💡</span>Ideas
+    </button>
+    <button class="bnav-btn" id="bnav-screenshots" onclick="switchTab('screenshots',null,'bnav-screenshots')">
+      <span class="bnav-icon">📸</span>Screenshots
+    </button>
+    <button class="bnav-btn" id="bnav-episodes" onclick="switchTab('episodes',null,'bnav-episodes')">
+      <span class="bnav-icon">🎙️</span>Episodes
+    </button>
+  </div>
+</nav>
+
 <script>
 // ── CONFIG ────────────────────────────────────────────────────────────────
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCZuDUIyXdc0h7EVu7Acxgn4PDKcZXhRLKOHsnDI9lXb-7QDoDBPs8PBuwWsG0BeXj/exec';
@@ -415,11 +497,22 @@ function checkPin(){
 }
 
 // ── TABS ──────────────────────────────────────────────────────────────────
-function switchTab(tab,el){
+function switchTab(tab, el, bnavId){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('panel-'+tab).classList.add('active');
-  if(el)el.classList.add('active');
+  if(el) el.classList.add('active');
+  // sync bottom nav
+  const bnavTarget = bnavId || 'bnav-'+tab;
+  const bnavEl = document.getElementById(bnavTarget);
+  if(bnavEl) bnavEl.classList.add('active');
+  // sync desktop tab btn if triggered from bottom nav
+  if(!el){
+    document.querySelectorAll('.tab-btn').forEach(b=>{
+      if(b.getAttribute('onclick') && b.getAttribute('onclick').includes("'"+tab+"'")) b.classList.add('active');
+    });
+  }
 }
 
 // ── SYNC ──────────────────────────────────────────────────────────────────
