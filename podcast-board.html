@@ -228,8 +228,9 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px 16px 100px; }
   position: fixed; inset: 0; background: rgba(0,0,0,0.4);
   z-index: 500; opacity: 0; transition: opacity 0.25s;
   backdrop-filter: blur(2px);
+  pointer-events: none;
 }
-.drawer-overlay.open { opacity: 1; }
+.drawer-overlay.open { opacity: 1; pointer-events: all; }
 .drawer {
   position: fixed; bottom: 0; left: 0; right: 0;
   background: var(--cream); border-radius: 24px 24px 0 0;
