@@ -719,14 +719,16 @@ async function sendChat(){
   const epSummary=episodes.slice(0,5).map(e=>`- ${e.title} (${e.status})`).join('\n')||'No episodes yet.';
   const system=`You are a podcast strategy assistant for Dr. TMac (Dr. Tasha McCray — 31-year nursing veteran, serial entrepreneur, golf influencer, 2x bestselling author, founder of TMac Inspired) and Dr. Catrina Smith (B2BT — Bear to Barely There — caregiver and wellness brand). They are co-hosting a podcast. Help them brainstorm episode ideas, angles, titles, hooks, outlines, and turn audience comments into compelling content. Be concise, warm, and actionable. Their combined expertise: nursing, entrepreneurship, caregiving, wealth-building, golf, manifestation, wellness.\n\nBoard ideas:\n${ideaSummary}\n\nEpisode pipeline:\n${epSummary}`;
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system,messages:chatHistory})
+    const res=await fetch('/api/chat',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({system,messages:chatHistory})
     });
     const data=await res.json();
-    const reply=data.content?.[0]?.text||'Something went wrong — try again.';
+    if(data.error){typing.remove();addBubble('ai','Error: '+data.error);btn.disabled=false;return;}
+    const reply=data.text||'Something went wrong — try again.';
     typing.remove(); addBubble('ai',reply); chatHistory.push({role:'assistant',content:reply});
-  }catch(e){typing.remove();addBubble('ai','Connection issue. Make sure you\'re on the live Vercel URL.');}
+  }catch(e){typing.remove();addBubble('ai','Connection issue — make sure ANTHROPIC_API_KEY is set in Vercel and the function is deployed.');}
   btn.disabled=false;
 }
 function addBubble(type,text){
