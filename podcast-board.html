@@ -55,21 +55,8 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px 16px 100px; }
 .big-add-btn:active { transform: scale(0.97); }
 .recent-label { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
 
-/* STICKY NOTES - no overflow clipping anywhere */
 .notes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
-.sticky {
-  border-radius: 4px 16px 16px 4px;
-  padding: 14px;
-  box-shadow: 3px 4px 16px rgba(0,0,0,0.10);
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  min-height: 130px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  animation: popIn 0.3s ease both;
-  border-left: 5px solid transparent;
-}
+.sticky { border-radius: 4px 16px 16px 4px; padding: 14px; box-shadow: 3px 4px 16px rgba(0,0,0,0.10); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; min-height: 130px; display: flex; flex-direction: column; justify-content: space-between; animation: popIn 0.3s ease both; border-left: 5px solid transparent; }
 .sticky:active { transform: scale(0.97); }
 .sticky h3 { font-size: 0.88rem; font-weight: 600; line-height: 1.35; color: var(--ink); }
 .sticky-takeaway { font-size: 0.75rem; color: #555; line-height: 1.4; margin-top: 6px; font-style: italic; }
@@ -77,27 +64,12 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px 16px 100px; }
 .sticky-cat { font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 .avatar-dot { width: 22px; height: 22px; border-radius: 50%; font-size: 0.65rem; font-weight: 700; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0; }
 .av-T { background: var(--pine); } .av-C { background: #7a5c8a; }
-
 .nc-0 { background: var(--note-1); border-left-color: #f9a825; }
 .nc-1 { background: var(--note-2); border-left-color: #43a047; }
 .nc-2 { background: var(--note-3); border-left-color: #e91e63; }
 .nc-3 { background: var(--note-4); border-left-color: #1e88e5; }
 .nc-4 { background: var(--note-5); border-left-color: #8e24aa; }
-
-/* PIPELINE BADGE - sits inside the card flow, no positioning tricks */
-.pipeline-badge {
-  display: table;
-  background: var(--pine);
-  color: var(--gold-light);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.55rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 3px 8px;
-  border-radius: 5px;
-  margin-bottom: 8px;
-}
+.pipeline-badge { display: table; background: var(--pine); color: var(--gold-light); font-family: 'DM Sans', sans-serif; font-size: 0.55rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border-radius: 5px; margin-bottom: 8px; }
 
 .filter-row { display: flex; gap: 7px; margin-bottom: 18px; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
 .filter-row::-webkit-scrollbar { display: none; }
@@ -133,13 +105,54 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px 16px 100px; }
 .kanban-add { background: transparent; border: 1px dashed var(--border); border-radius: 10px; padding: 10px; width: 100%; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--muted); cursor: pointer; transition: all 0.2s; text-align: center; }
 .kanban-add:hover { border-color: var(--pine); color: var(--pine); }
 
+/* ── CALENDAR STYLES ── */
+.cal-header-bar { background: var(--pine); border-radius: 16px; padding: 20px 22px; margin-bottom: 22px; color: white; }
+.cal-header-bar h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 300; color: var(--gold-light); margin-bottom: 4px; }
+.cal-header-bar p { font-size: 0.78rem; color: rgba(255,255,255,0.5); }
+.cal-legend { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+.leg { display: flex; align-items: center; gap: 6px; font-size: 0.7rem; color: var(--muted); }
+.leg-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.leg-brief { background: #1f4236; }
+.leg-pod { background: #8B4513; }
+.leg-yt { background: #cc0000; }
+.leg-tt-solo { background: #6b21a8; }
+.leg-tt-rfs { background: #e91e63; }
+.leg-yc { background: #43a047; }
+
+.cal-week { background: white; border: 1px solid var(--border); border-radius: 16px; margin-bottom: 16px; overflow: hidden; }
+.cal-week-header { background: var(--pine); padding: 11px 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px; cursor: pointer; }
+.cal-week-num { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); }
+.cal-week-theme { font-size: 0.78rem; color: rgba(255,255,255,0.75); font-family: 'Cormorant Garamond', serif; font-style: italic; }
+.cal-week-toggle { font-size: 0.7rem; color: rgba(255,255,255,0.4); }
+.cal-week-body { display: none; }
+.cal-week-body.open { display: block; }
+.cal-blog-row { padding: 10px 16px; border-bottom: 1px solid var(--border); background: var(--gold-pale); }
+.cal-blog-label { font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+.cal-blog-title { font-size: 0.82rem; color: var(--pine); font-weight: 500; }
+.cal-channels { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); }
+.cal-ch { padding: 12px 10px; border-right: 1px solid var(--border); }
+.cal-ch:last-child { border-right: none; }
+.cal-ch-label { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; padding-bottom: 5px; border-bottom: 1px solid var(--border); }
+.cal-ch-label.brief { color: #1f4236; }
+.cal-ch-label.pod { color: #8B4513; }
+.cal-ch-label.yt { color: #cc0000; }
+.cal-ch-label.tt { color: #6b21a8; }
+.cal-ch-label.yc { color: #43a047; }
+.cal-task { font-size: 0.72rem; color: var(--muted); line-height: 1.5; margin-bottom: 5px; }
+.cal-day-badge { display: inline-block; font-size: 0.58rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: white; padding: 2px 6px; border-radius: 4px; margin-bottom: 3px; }
+.cal-day-badge.tue { background: #6b21a8; }
+.cal-day-badge.thu-solo { background: #6b21a8; }
+.cal-day-badge.thu-rfs { background: #e91e63; }
+.cal-day-badge.mon { background: #1f4236; }
+.cal-day-badge.wed { background: #cc0000; }
+.cal-repurpose { display: inline-block; font-size: 0.58rem; font-weight: 600; background: #fff3e0; color: #e65100; padding: 2px 6px; border-radius: 4px; margin-bottom: 4px; }
+
 .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 500; opacity: 0; transition: opacity 0.25s; backdrop-filter: blur(2px); pointer-events: none; }
 .drawer-overlay.open { opacity: 1; pointer-events: all; }
 .drawer { position: fixed; bottom: 0; left: 0; right: 0; background: var(--cream); border-radius: 24px 24px 0 0; padding: 0 20px calc(40px + env(safe-area-inset-bottom)); z-index: 501; transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.34,1.1,0.64,1); max-height: 92vh; overflow-y: auto; }
 .drawer.open { transform: translateY(0); }
 .drawer-handle { width: 40px; height: 4px; background: var(--border); border-radius: 100px; margin: 14px auto 20px; }
 .drawer-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; color: var(--pine); margin-bottom: 20px; }
-
 .guided-field { margin-bottom: 18px; }
 .guided-prompt { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--pine); margin-bottom: 8px; font-style: italic; }
 textarea.guided-input, input.guided-input { width: 100%; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: var(--ink); background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 12px 14px; outline: none; transition: border-color 0.2s; resize: none; }
@@ -167,7 +180,7 @@ textarea.guided-input { min-height: 72px; }
 .empty p { font-size: 0.82rem; }
 
 #bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--pine); z-index: 200; padding-bottom: env(safe-area-inset-bottom); border-top: 1px solid rgba(201,169,97,0.15); box-shadow: 0 -4px 20px rgba(0,0,0,0.2); }
-.bnav-inner { display: grid; grid-template-columns: repeat(4,1fr); }
+.bnav-inner { display: grid; grid-template-columns: repeat(5,1fr); }
 .bnav-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 10px 4px 8px; background: transparent; border: none; cursor: pointer; color: rgba(255,255,255,0.4); font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.07em; text-transform: uppercase; transition: color 0.18s; position: relative; }
 .bnav-icon { font-size: 1.25rem; line-height: 1; }
 .bnav-btn.active { color: var(--gold); }
@@ -175,10 +188,8 @@ textarea.guided-input { min-height: 72px; }
 
 #toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--pine); color: var(--gold-light); padding: 11px 22px; border-radius: 100px; font-size: 0.84rem; font-weight: 500; box-shadow: 0 6px 24px rgba(0,0,0,0.2); opacity: 0; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); z-index: 9999; pointer-events: none; white-space: nowrap; }
 #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
 #loading-overlay { position: fixed; inset: 0; background: rgba(31,66,54,0.5); display: flex; align-items: center; justify-content: center; z-index: 600; backdrop-filter: blur(3px); }
 .spinner { width: 40px; height: 40px; border: 3px solid rgba(201,169,97,0.3); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
-
 .section-hd { margin-bottom: 18px; }
 .section-hd h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; color: var(--pine); }
 .section-hd p { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
@@ -201,6 +212,9 @@ textarea.guided-input { min-height: 72px; }
   .shots-grid { grid-template-columns: 1fr; }
   .kanban { grid-template-columns: 1fr; gap: 12px; }
   .home-snapshot h2 { font-size: 1.25rem; }
+  .cal-channels { grid-template-columns: 1fr; }
+  .cal-ch { border-right: none; border-bottom: 1px solid var(--border); }
+  .cal-ch:last-child { border-bottom: none; }
 }
 @media(max-width:360px){ .notes-grid { grid-template-columns: 1fr; } }
 </style>
@@ -247,6 +261,7 @@ textarea.guided-input { min-height: 72px; }
       <button class="tab-btn" onclick="goTab('ideas',this)">Ideas</button>
       <button class="tab-btn" onclick="goTab('screenshots',this)">Screenshots</button>
       <button class="tab-btn" onclick="goTab('episodes',this)">Episodes</button>
+      <button class="tab-btn" onclick="goTab('calendar',this)">Calendar</button>
     </div>
   </div>
 </header>
@@ -310,6 +325,23 @@ textarea.guided-input { min-height: 72px; }
       </div>
     </div>
   </div>
+
+  <!-- CALENDAR TAB -->
+  <div id="panel-calendar" class="panel">
+    <div class="cal-header-bar">
+      <h2>Content Calendar — March 31 to June 7, 2026</h2>
+      <p>Tap any week to expand. Monday = batch day. Brief publishes daily automatically.</p>
+    </div>
+    <div class="cal-legend">
+      <div class="leg"><span class="leg-dot leg-brief"></span>Brief (daily)</div>
+      <div class="leg"><span class="leg-dot leg-pod"></span>Podcast</div>
+      <div class="leg"><span class="leg-dot leg-yt"></span>YouTube</div>
+      <div class="leg"><span class="leg-dot leg-tt-solo"></span>TikTok Solo</div>
+      <div class="leg"><span class="leg-dot leg-tt-rfs"></span>TikTok RFS</div>
+      <div class="leg"><span class="leg-dot leg-yc"></span>YT Community</div>
+    </div>
+    <div id="cal-weeks"></div>
+  </div>
 </main>
 
 <nav id="bottom-nav">
@@ -318,6 +350,7 @@ textarea.guided-input { min-height: 72px; }
     <button class="bnav-btn" id="bnav-ideas" onclick="goTab('ideas',null,'bnav-ideas')"><span class="bnav-icon">💡</span>Ideas</button>
     <button class="bnav-btn" id="bnav-screenshots" onclick="goTab('screenshots',null,'bnav-screenshots')"><span class="bnav-icon">📸</span>Screenshots</button>
     <button class="bnav-btn" id="bnav-episodes" onclick="goTab('episodes',null,'bnav-episodes')"><span class="bnav-icon">🎙️</span>Episodes</button>
+    <button class="bnav-btn" id="bnav-calendar" onclick="goTab('calendar',null,'bnav-calendar')"><span class="bnav-icon">📅</span>Calendar</button>
   </div>
 </nav>
 
@@ -388,7 +421,7 @@ textarea.guided-input { min-height: 72px; }
 <div class="drawer" id="shot-drawer">
   <div class="drawer-handle"></div>
   <div class="drawer-title">Screenshot</div>
-  <img id="shot-preview" src="" style="width:100%;border-radius:12px;margin-bottom:16px;object-fit:contain;max-height:60vh;"> 
+  <img id="shot-preview" src="" style="width:100%;border-radius:12px;margin-bottom:16px;object-fit:contain;max-height:60vh;">
   <div class="guided-field">
     <div class="guided-prompt">"This could become an episode about…"</div>
     <textarea class="guided-input" id="shot-caption" rows="2" placeholder="What's the episode angle?"></textarea>
@@ -441,7 +474,7 @@ function pd(){if(!pinEntry.length)return;document.getElementById('d'+(pinEntry.l
 function pc(){pinEntry='';for(let i=0;i<4;i++)document.getElementById('d'+i).classList.remove('filled');document.getElementById('pin-error').textContent='';}
 function checkPin(){if(pinEntry===PIN_CODE){document.getElementById('pin-gate').style.display='none';init();}else{document.getElementById('pin-error').textContent='Incorrect PIN';setTimeout(pc,900);}}
 
-async function init(){showLoading(true);await loadAll();showLoading(false);startPolling();}
+async function init(){showLoading(true);await loadAll();renderCalendar();showLoading(false);startPolling();}
 function startPolling(){if(pollTimer)clearInterval(pollTimer);pollTimer=setInterval(()=>loadAll(true),POLL_MS);}
 
 function goTab(tab,desktopEl,bnavId){
@@ -691,6 +724,173 @@ async function deleteEpisode(){
 function openDrawer(id){if(activeDrawer)document.getElementById(activeDrawer).classList.remove('open');activeDrawer=id;document.getElementById('drawer-overlay').classList.add('open');document.getElementById(id).classList.add('open');document.body.style.overflow='hidden';}
 function closeDrawer(){if(activeDrawer)document.getElementById(activeDrawer).classList.remove('open');document.getElementById('drawer-overlay').classList.remove('open');document.body.style.overflow='';activeDrawer=null;}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');}
+
+// ── CALENDAR DATA ──
+const CAL_WEEKS = [
+  {
+    num:'Week 1', dates:'March 31 – April 5', theme:'From Bedside to Building Wealth',
+    blog:'From Bedside to Building Wealth: Why It\'s Time to Invest in Your Future',
+    brief:'Auto-publishes 6am daily. Themes: abundance, identity, scarcity mindset.',
+    pod:{type:'record',text:'Why nurses are perfectly built for wealth outside of nursing'},
+    yt:{text:'From bedside to building wealth — visual walkthrough + blog link in description'},
+    tue:{type:'solo',text:'"Nobody told me nursing was making me broke in a different way"'},
+    thu:{type:'solo',text:'"31 years of nursing — here is what I wish someone told me about money"'},
+    yc:'Blog graphic + caption. Link to blog and Tax Sale Academy.'
+  },
+  {
+    num:'Week 2', dates:'April 6 – April 12', theme:'Is Your Identity Holding Your Revenue?',
+    blog:'Is Your Identity Holding Your Revenue?',
+    brief:'Themes: self-concept, identity ceiling, scarcity language.',
+    pod:{type:'record',text:'The identity ceiling: why you keep stopping right before the breakthrough'},
+    yt:{text:'"Is your identity holding your revenue?" — share the blog + your personal story'},
+    tue:{type:'solo',text:'"You cannot talk like lack and build like abundance"'},
+    thu:{type:'solo',text:'"Some people with money still think like they are one step from losing it all"'},
+    yc:'Poll: "What identity story is keeping you small?" Link to blog.'
+  },
+  {
+    num:'Week 3', dates:'April 13 – April 19', theme:'The Anatomy of a Pivot',
+    blog:'The Anatomy of a Pivot',
+    brief:'Themes: resilience, bouncing back, one bad moment vs a whole season.',
+    pod:{type:'record',text:'How I pivoted from bedside nursing to serial entrepreneur without burning it down'},
+    yt:{text:'"The anatomy of a pivot" — walk through your actual pivot story on screen'},
+    tue:{type:'solo',text:'"A pivot is not quitting. Here is the difference"'},
+    thu:{type:'rfs',text:'Rich Friends Show clip — The moment that changed everything: Dr. Catrina\'s Big Black Bear story'},
+    yc:'"What pivot are you sitting on right now?" Link to blog + podcast.'
+  },
+  {
+    num:'Week 4', dates:'April 20 – April 26', theme:'Discipline Can\'t Fix Misalignment',
+    blog:'Discipline Can\'t Fix Misalignment (Blog + Podcast Ep. 1 — Jan 14)',
+    brief:'Themes: alignment, working harder vs working right, misalignment signals.',
+    pod:{type:'repurpose',text:'Repost or clip Ep. 1 with new intro. "We revisit this because it keeps coming up."'},
+    yt:{text:'"5 signs you are disciplined but deeply misaligned" — new angle from the podcast'},
+    tue:{type:'solo',text:'"Sometimes what we call processing is really prolonged hesitation"'},
+    thu:{type:'solo',text:'"You want a new life but rehearsing the same old personality every day"'},
+    yc:'G.O.L.F. graphic — Growth pillar spotlight. Link to blog.'
+  },
+  {
+    num:'Week 5', dates:'April 27 – May 3', theme:'The Permission Slip',
+    blog:'The Permission Slip You\'ve Been Waiting For (Blog + Podcast Ep. 2 — Jan 20)',
+    brief:'Themes: timing, trust, active faith, preparing before opportunity arrives.',
+    pod:{type:'repurpose',text:'Clip or repost Ep. 2 with new intro tying it to Tax Sale Academy action step'},
+    yt:{text:'"You do not need more information. You need permission to act." — end with Tax Sale Academy CTA'},
+    tue:{type:'solo',text:'"Timing is not an excuse to sit still and call it faith"'},
+    thu:{type:'rfs',text:'Rich Friends Show clip — Nursing, Business, and the Florida Pivot with Dr. Catrina'},
+    yc:'Tax Sale Academy graphic. "The tool is free. The excuse is not." Link in description.'
+  },
+  {
+    num:'Week 6', dates:'May 4 – May 10', theme:'Why We Say Yes When Our Gut Says No',
+    blog:'Why We Say "YES" When Our Gut Says No',
+    brief:'Themes: showing up in rooms, what the room knows about you, networking with clarity.',
+    pod:{type:'record',text:'How to stop overriding your instincts in business and in rooms'},
+    yt:{text:'"Why smart women say yes when everything inside says no" — personal story format'},
+    tue:{type:'solo',text:'"Before you show up anywhere, decide what you want the room to know about you"'},
+    thu:{type:'rfs',text:'Rich Friends Show clip — Why everything you know about weight loss is wrong after 40'},
+    yc:'Poll: "When did you last say yes when your gut said no?" Link to blog.'
+  },
+  {
+    num:'Week 7', dates:'May 11 – May 17', theme:'Why Smart Women Trade Happy Hours for Tee Times',
+    blog:'Why Smart Women Are Trading Happy Hours for Tee Times',
+    brief:'Themes: real estate on the course, partnerships, being in rooms that matter.',
+    pod:{type:'record',text:'How golf changed my network, my deals, and my life in under two years'},
+    yt:{text:'"Two holes in one. Here is what golf actually taught me about wealth building"'},
+    tue:{type:'solo',text:'"The most valuable real estate conversations do not begin in boardrooms. They begin on the course"'},
+    thu:{type:'rfs',text:'Rich Friends Show clip — The Golf Course Prescription: why two nurses trade stethoscopes for golf clubs'},
+    yc:'G.O.L.F. acronym graphic. Leisure pillar. Link to G.O.L.F. Blueprint.'
+  },
+  {
+    num:'Week 8', dates:'May 18 – May 24', theme:'The Loneliest Season of Success',
+    blog:'The Loneliest Season of Success',
+    brief:'Themes: being in the room, consistency, showing up when nobody is watching.',
+    pod:{type:'record',text:'Nobody talks about the loneliness that comes with leveling up'},
+    yt:{text:'"The loneliest season of success — and the room that changed everything for me"'},
+    tue:{type:'solo',text:'"Somebody else winning is not your loss. But nobody told me growth would feel this quiet"'},
+    thu:{type:'rfs',text:'Rich Friends Show clip — The Health & Wealth Connection: why broke and unhealthy usually show up together'},
+    yc:'"Who is in your corner as you build?" G.O.L.F. Circle soft push. Link to NOC.'
+  },
+  {
+    num:'Week 9', dates:'May 25 – May 31', theme:'The Mentor I Needed Was at the Driving Range',
+    blog:'The Mentor I Needed Was Not in a Mastermind. He Was at the Driving Range.',
+    brief:'Themes: mentorship, access, exposure to bigger thinking, acting on what you learn.',
+    pod:{type:'record',text:'Where real mentorship actually lives and how to find it without paying for a room'},
+    yt:{text:'"The mentor I needed was at the driving range — my full story"'},
+    tue:{type:'solo',text:'"Not all mentorship comes from a program. Not all access comes from a paid room"'},
+    thu:{type:'solo',text:'"Mentorship is not magic if you never act on what you learn"'},
+    yc:'"Who was your unexpected mentor?" Engagement post. Link to blog + podcast.'
+  },
+  {
+    num:'Week 10', dates:'June 1 – June 7', theme:'How to Turn Your Expertise Into a Paid System',
+    blog:'How to Turn Your Expertise Into a Paid System — G.O.L.F. Blueprint close',
+    brief:'Themes: relational assets, reputational capital, entering rooms with confidence.',
+    pod:{type:'record',text:'You are already an expert. Here is how to package what you know into real income'},
+    yt:{text:'"How to turn your expertise into a paid system in 90 days" — end with G.O.L.F. Blueprint CTA'},
+    tue:{type:'solo',text:'"Not all assets are financial at first. Some are relational. Some are reputational"'},
+    thu:{type:'rfs',text:'Rich Friends Show clip — How to Turn Your Expertise Into a Paid System with Dr. Catrina'},
+    yc:'Full G.O.L.F. Blueprint push. "What is next after June 7?" Link to tmacinspired.com/noc'
+  }
+];
+
+function toggleWeek(idx){
+  const body=document.getElementById('cal-body-'+idx);
+  const icon=document.getElementById('cal-icon-'+idx);
+  const open=body.classList.toggle('open');
+  icon.textContent=open?'▲':'▼';
+}
+
+function renderCalendar(){
+  const container=document.getElementById('cal-weeks');
+  container.innerHTML=CAL_WEEKS.map((w,i)=>{
+    const thuBadge=w.thu.type==='rfs'
+      ?'<span class="cal-day-badge thu-rfs">Thu · RFS</span>'
+      :'<span class="cal-day-badge thu-solo">Thu · Solo</span>';
+    const podBadge=w.pod.type==='repurpose'
+      ?'<span class="cal-repurpose">Repurpose Ep</span>'
+      :'<span class="cal-day-badge mon">Mon · Record</span>';
+    return `
+    <div class="cal-week">
+      <div class="cal-week-header" onclick="toggleWeek(${i})">
+        <span class="cal-week-num">${w.num} — ${w.dates}</span>
+        <span class="cal-week-theme">${w.theme}</span>
+        <span class="cal-week-toggle" id="cal-icon-${i}">▼</span>
+      </div>
+      <div class="cal-week-body" id="cal-body-${i}">
+        <div class="cal-blog-row">
+          <div class="cal-blog-label">Blog anchor</div>
+          <div class="cal-blog-title">${w.blog}</div>
+        </div>
+        <div class="cal-channels">
+          <div class="cal-ch">
+            <div class="cal-ch-label brief">Brief</div>
+            <div class="cal-task">${w.brief}</div>
+          </div>
+          <div class="cal-ch">
+            <div class="cal-ch-label pod">Podcast</div>
+            ${podBadge}
+            <div class="cal-task">${w.pod.text}</div>
+          </div>
+          <div class="cal-ch">
+            <div class="cal-ch-label yt">YouTube</div>
+            <span class="cal-day-badge mon">Mon · Record</span>
+            <span class="cal-day-badge wed" style="background:#cc0000; margin-left:2px;">Wed · Post</span>
+            <div class="cal-task">${w.yt.text}</div>
+          </div>
+          <div class="cal-ch">
+            <div class="cal-ch-label tt">TikTok</div>
+            <span class="cal-day-badge tue">Tue · Solo</span>
+            <div class="cal-task">${w.tue.text}</div>
+            <br/>
+            ${thuBadge}
+            <div class="cal-task">${w.thu.text}</div>
+          </div>
+          <div class="cal-ch">
+            <div class="cal-ch-label yc">YT Community</div>
+            <span class="cal-day-badge wed" style="background:#43a047;">Wed · Post</span>
+            <div class="cal-task">${w.yc}</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
 </script>
 </body>
 </html>
