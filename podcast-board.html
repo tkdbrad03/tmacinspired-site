@@ -4,206 +4,241 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>The Brainstorm Board</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --pine: #1f4236; --pine-mid: #2a5a49; --pine-light: #3a7a62;
-  --gold: #c9a961; --gold-light: #dfc080; --gold-pale: #f5edda;
-  --cream: #faf7f2; --ink: #1a1a1a; --muted: #7a7060; --border: #e8e0d0;
-  --shadow: 0 4px 24px rgba(31,66,54,0.10);
-  --note-1: #fffde7; --note-2: #e8f5e9; --note-3: #fce4ec; --note-4: #e3f2fd; --note-5: #f3e5f5;
+  --pine: #1f4236;
+  --pine2: #163028;
+  --gold: #c9a961;
+  --gold-light: #dfc080;
+  --gold-pale: #fdf8ee;
+  --white: #ffffff;
+  --cream: #fdfaf5;
+  --surface: #f9f6f1;
+  --ink: #1a1a1a;
+  --muted: #6b7280;
+  --border: rgba(31,66,54,0.1);
+  --border-mid: rgba(31,66,54,0.15);
+  --note-1: #fffef5; --note-2: #f5fbf7; --note-3: #fef5f8; --note-4: #f5f8fe; --note-5: #faf5fe;
+  --note-border-1: #f0e68c; --note-border-2: #a8d5b5; --note-border-3: #f5b8cc; --note-border-4: #a8c4f5; --note-border-5: #d4a8f5;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; }
-body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; }
+body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--ink); overflow-x: hidden; font-weight: 300; }
 
+/* PIN GATE */
 #pin-gate { position: fixed; inset: 0; background: var(--pine); display: flex; align-items: center; justify-content: center; z-index: 9999; }
-.pin-box { background: var(--cream); border-radius: 28px; padding: 44px 36px; text-align: center; box-shadow: 0 24px 80px rgba(0,0,0,0.35); max-width: 340px; width: 92%; animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both; }
-.pin-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; color: var(--pine); margin-bottom: 3px; }
-.pin-sub { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 30px; }
-.pin-dots { display: flex; gap: 16px; justify-content: center; margin-bottom: 26px; }
-.pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--border); background: white; transition: all 0.2s; }
-.pin-dot.filled { background: var(--pine); border-color: var(--pine); transform: scale(1.15); }
-.pin-keypad { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 14px; }
-.pin-key { background: white; border: 1px solid var(--border); border-radius: 14px; padding: 18px 8px; font-family: 'DM Sans', sans-serif; font-size: 1.2rem; font-weight: 500; cursor: pointer; transition: all 0.15s; color: var(--ink); user-select: none; }
-.pin-key:active { transform: scale(0.92); background: var(--gold-pale); }
-.pin-key.del { font-size: 1rem; color: var(--muted); }
-.pin-error { color: #c44; font-size: 0.8rem; min-height: 20px; margin-top: 4px; }
+.pin-box { background: var(--white); border-radius: 24px; padding: 44px 36px; text-align: center; box-shadow: 0 32px 80px rgba(0,0,0,0.3); max-width: 340px; width: 92%; }
+.pin-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 300; color: var(--pine); margin-bottom: 4px; line-height: 1.2; }
+.pin-sub { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 32px; }
+.pin-dots { display: flex; gap: 14px; justify-content: center; margin-bottom: 28px; }
+.pin-dot { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid var(--border-mid); background: var(--white); transition: all 0.2s; }
+.pin-dot.filled { background: var(--pine); border-color: var(--pine); transform: scale(1.2); }
+.pin-keypad { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 12px; }
+.pin-key { background: var(--cream); border: 1px solid var(--border); border-radius: 12px; padding: 16px 8px; font-family: 'DM Sans', sans-serif; font-size: 1.1rem; font-weight: 400; cursor: pointer; transition: all 0.15s; color: var(--ink); user-select: none; }
+.pin-key:active { transform: scale(0.93); background: var(--gold-pale); }
+.pin-key.del { font-size: 0.9rem; color: var(--muted); }
+.pin-error { color: #c44; font-size: 0.78rem; min-height: 20px; margin-top: 6px; }
 
-header { background: var(--pine); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 16px rgba(0,0,0,0.2); }
-.header-logo h1 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 300; color: var(--gold-light); line-height: 1; }
-.header-logo p { font-size: 0.62rem; color: rgba(255,255,255,0.4); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 2px; }
+/* HEADER */
+header { background: var(--pine); padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.header-logo h1 { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 300; color: var(--gold-light); line-height: 1; letter-spacing: 0.02em; }
+.header-logo p { font-size: 0.58rem; color: rgba(255,255,255,0.35); letter-spacing: 0.14em; text-transform: uppercase; margin-top: 3px; }
 .header-right { display: flex; align-items: center; gap: 10px; }
-.sync-pill { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.08); border-radius: 100px; padding: 5px 10px; font-size: 0.65rem; color: rgba(255,255,255,0.5); }
-.sync-dot { width: 6px; height: 6px; border-radius: 50%; background: #4caf50; flex-shrink: 0; }
+.sync-pill { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.08); border-radius: 100px; padding: 5px 10px; font-size: 0.62rem; color: rgba(255,255,255,0.45); letter-spacing: 0.04em; }
+.sync-dot { width: 5px; height: 5px; border-radius: 50%; background: #4caf50; flex-shrink: 0; }
 .sync-dot.syncing { background: var(--gold); animation: pulse 1s infinite; }
 .sync-dot.error { background: #e53935; }
-.desktop-tabs { display: flex; gap: 6px; }
-.tab-btn { background: transparent; border: 1px solid rgba(201,169,97,0.3); color: rgba(255,255,255,0.6); font-family: 'DM Sans', sans-serif; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 14px; border-radius: 100px; cursor: pointer; transition: all 0.2s; }
+.desktop-tabs { display: flex; gap: 4px; }
+.tab-btn { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.55); font-family: 'DM Sans', sans-serif; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 14px; border-radius: 100px; cursor: pointer; transition: all 0.2s; font-weight: 400; }
 .tab-btn.active, .tab-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--pine); font-weight: 600; }
 
-main { max-width: 1200px; margin: 0 auto; padding: 24px 16px 100px; }
+/* MAIN */
+main { max-width: 1100px; margin: 0 auto; padding: 36px 24px 100px; }
 .panel { display: none; } .panel.active { display: block; }
 
-.home-snapshot { background: var(--pine); border-radius: 20px; padding: 24px 22px; margin-bottom: 24px; color: white; position: relative; overflow: hidden; }
-.home-snapshot::after { content: '🎙️'; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); font-size: 4rem; opacity: 0.12; }
-.home-snapshot h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 300; color: var(--gold-light); margin-bottom: 4px; }
-.home-snapshot p { font-size: 0.82rem; color: rgba(255,255,255,0.55); margin-bottom: 18px; }
-.stats-row { display: flex; gap: 16px; flex-wrap: wrap; }
-.stat-chip { background: rgba(255,255,255,0.1); border-radius: 100px; padding: 6px 14px; font-size: 0.8rem; color: var(--gold-light); font-weight: 500; }
-.big-add-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--gold); color: var(--pine); border: none; border-radius: 16px; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 700; padding: 18px 24px; width: 100%; cursor: pointer; transition: all 0.22s; margin-bottom: 20px; }
-.big-add-btn:active { transform: scale(0.97); }
-.recent-label { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+/* HOME SNAPSHOT */
+.home-snapshot { border: 1px solid var(--border); border-radius: 16px; padding: 28px 28px; margin-bottom: 28px; background: var(--cream); position: relative; overflow: hidden; }
+.home-snapshot::after { content: '🎙'; position: absolute; right: 24px; top: 50%; transform: translateY(-50%); font-size: 3.5rem; opacity: 0.06; pointer-events: none; }
+.home-eyebrow { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; font-weight: 500; }
+.home-snapshot h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; font-weight: 400; color: var(--pine); margin-bottom: 6px; line-height: 1.2; }
+.home-snapshot p { font-size: 0.82rem; color: var(--muted); margin-bottom: 18px; line-height: 1.6; }
+.stats-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.stat-chip { background: var(--white); border: 1px solid var(--border); border-radius: 100px; padding: 5px 14px; font-size: 0.75rem; color: var(--pine); font-weight: 400; }
 
-.notes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
-.sticky { border-radius: 4px 16px 16px 4px; padding: 14px; box-shadow: 3px 4px 16px rgba(0,0,0,0.10); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; min-height: 130px; display: flex; flex-direction: column; justify-content: space-between; animation: popIn 0.3s ease both; border-left: 5px solid transparent; }
+.big-add-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--pine); color: var(--white); border: none; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 16px 24px; width: 100%; cursor: pointer; transition: all 0.2s; margin-bottom: 28px; }
+.big-add-btn:hover { background: var(--pine2); }
+.big-add-btn:active { transform: scale(0.98); }
+
+.section-hd { margin-bottom: 20px; }
+.section-hd h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 400; color: var(--pine); }
+.section-hd p { font-size: 0.78rem; color: var(--muted); margin-top: 3px; }
+.recent-label { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; font-weight: 500; }
+
+/* STICKY NOTES */
+.notes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; }
+.sticky { border-radius: 12px; padding: 16px; box-shadow: 0 2px 12px rgba(31,66,54,0.06); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; min-height: 130px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid transparent; }
+.sticky:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(31,66,54,0.1); }
 .sticky:active { transform: scale(0.97); }
-.sticky h3 { font-size: 0.88rem; font-weight: 600; line-height: 1.35; color: var(--ink); }
-.sticky-takeaway { font-size: 0.75rem; color: #555; line-height: 1.4; margin-top: 6px; font-style: italic; }
+.sticky h3 { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 600; line-height: 1.35; color: var(--pine); }
+.sticky-takeaway { font-size: 0.73rem; color: var(--muted); line-height: 1.5; margin-top: 6px; font-style: italic; }
 .sticky-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
-.sticky-cat { font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-.avatar-dot { width: 22px; height: 22px; border-radius: 50%; font-size: 0.65rem; font-weight: 700; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0; }
+.sticky-cat { font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.avatar-dot { width: 20px; height: 20px; border-radius: 50%; font-size: 0.6rem; font-weight: 600; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0; }
 .av-T { background: var(--pine); } .av-C { background: #7a5c8a; }
-.nc-0 { background: var(--note-1); border-left-color: #f9a825; }
-.nc-1 { background: var(--note-2); border-left-color: #43a047; }
-.nc-2 { background: var(--note-3); border-left-color: #e91e63; }
-.nc-3 { background: var(--note-4); border-left-color: #1e88e5; }
-.nc-4 { background: var(--note-5); border-left-color: #8e24aa; }
-.pipeline-badge { display: table; background: var(--pine); color: var(--gold-light); font-family: 'DM Sans', sans-serif; font-size: 0.55rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border-radius: 5px; margin-bottom: 8px; }
+.nc-0 { background: var(--note-1); border-color: var(--note-border-1); }
+.nc-1 { background: var(--note-2); border-color: var(--note-border-2); }
+.nc-2 { background: var(--note-3); border-color: var(--note-border-3); }
+.nc-3 { background: var(--note-4); border-color: var(--note-border-4); }
+.nc-4 { background: var(--note-5); border-color: var(--note-border-5); }
+.pipeline-badge { display: inline-block; background: var(--gold-pale); color: var(--pine); border: 1px solid rgba(201,169,97,0.3); font-size: 0.55rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border-radius: 100px; margin-bottom: 8px; }
 
-.filter-row { display: flex; gap: 7px; margin-bottom: 18px; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
+/* FILTERS */
+.filter-row { display: flex; gap: 7px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
 .filter-row::-webkit-scrollbar { display: none; }
-.chip { flex-shrink: 0; font-size: 0.7rem; letter-spacing: 0.07em; text-transform: uppercase; padding: 6px 14px; border-radius: 100px; border: 1px solid var(--border); background: white; cursor: pointer; transition: all 0.18s; font-family: 'DM Sans', sans-serif; color: var(--muted); white-space: nowrap; }
-.chip.active, .chip:hover { background: var(--pine); color: var(--gold-light); border-color: var(--pine); }
+.chip { flex-shrink: 0; font-size: 0.68rem; letter-spacing: 0.07em; text-transform: uppercase; padding: 6px 14px; border-radius: 100px; border: 1px solid var(--border-mid); background: var(--white); cursor: pointer; transition: all 0.18s; font-family: 'DM Sans', sans-serif; color: var(--muted); white-space: nowrap; font-weight: 400; }
+.chip.active, .chip:hover { background: var(--pine); color: var(--white); border-color: var(--pine); }
 
-.upload-zone { border: 2px dashed var(--border); border-radius: 18px; padding: 36px 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: white; margin-bottom: 22px; }
+/* UPLOAD */
+.upload-zone { border: 1.5px dashed var(--border-mid); border-radius: 14px; padding: 36px 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--cream); margin-bottom: 22px; }
 .upload-zone:active, .upload-zone.drag-over { border-color: var(--gold); background: var(--gold-pale); }
 .upload-zone input { display: none; }
-.upload-icon { font-size: 2.2rem; display: block; margin-bottom: 8px; }
-.upload-zone h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: var(--pine); margin-bottom: 4px; }
-.upload-zone p { font-size: 0.8rem; color: var(--muted); }
+.upload-icon { font-size: 2rem; display: block; margin-bottom: 8px; }
+.upload-zone h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: var(--pine); margin-bottom: 4px; font-weight: 400; }
+.upload-zone p { font-size: 0.78rem; color: var(--muted); }
 .shots-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap: 12px; }
-.shot-card { background: white; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); cursor: pointer; transition: transform 0.2s; animation: popIn 0.3s ease both; }
+.shot-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+.shot-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(31,66,54,0.08); }
 .shot-card:active { transform: scale(0.97); }
-.shot-card img { width: 100%; height: 200px; object-fit: cover; display: block; }
+.shot-card img { width: 100%; height: 180px; object-fit: cover; display: block; }
 .shot-info { padding: 10px 12px; }
-.shot-info p { font-size: 0.78rem; color: var(--ink); line-height: 1.4; }
+.shot-info p { font-size: 0.76rem; color: var(--ink); line-height: 1.4; }
 .shot-info .shot-empty { color: var(--muted); font-style: italic; }
 
-.kanban { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; align-items: start; }
-.kanban-col { background: white; border-radius: 16px; padding: 14px; border: 1px solid var(--border); }
-.kanban-col-header { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 7px; }
-.col-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+/* KANBAN */
+.kanban { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; align-items: start; }
+.kanban-col { background: var(--cream); border-radius: 14px; padding: 16px; border: 1px solid var(--border); }
+.kanban-col-header { font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 7px; color: var(--pine); }
+.col-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 .col-idea .col-dot { background: var(--gold); }
-.col-recorded .col-dot { background: var(--pine-light); }
+.col-recorded .col-dot { background: #3a7a62; }
 .col-live .col-dot { background: #43a047; }
-.ep-card { background: var(--cream); border-radius: 12px; padding: 13px 14px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s; border: 1px solid var(--border); animation: popIn 0.3s ease both; }
+.ep-card { background: var(--white); border-radius: 10px; padding: 14px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s; border: 1px solid var(--border); }
+.ep-card:hover { box-shadow: 0 4px 14px rgba(31,66,54,0.08); transform: translateY(-1px); }
 .ep-card:active { transform: scale(0.97); }
-.ep-card h4 { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 600; margin-bottom: 3px; }
-.ep-card p { font-size: 0.76rem; color: var(--muted); line-height: 1.4; }
-.ep-advance { display: flex; align-items: center; gap: 5px; margin-top: 9px; font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pine); font-weight: 600; }
-.kanban-add { background: transparent; border: 1px dashed var(--border); border-radius: 10px; padding: 10px; width: 100%; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; color: var(--muted); cursor: pointer; transition: all 0.2s; text-align: center; }
+.ep-card h4 { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 600; margin-bottom: 4px; color: var(--pine); }
+.ep-card p { font-size: 0.74rem; color: var(--muted); line-height: 1.45; }
+.ep-advance { display: flex; align-items: center; gap: 5px; margin-top: 10px; font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+.kanban-add { background: transparent; border: 1px dashed var(--border-mid); border-radius: 10px; padding: 10px; width: 100%; font-family: 'DM Sans', sans-serif; font-size: 0.76rem; color: var(--muted); cursor: pointer; transition: all 0.2s; text-align: center; }
 .kanban-add:hover { border-color: var(--pine); color: var(--pine); }
 
-/* ── CALENDAR STYLES ── */
-.cal-header-bar { background: var(--pine); border-radius: 16px; padding: 20px 22px; margin-bottom: 22px; color: white; }
-.cal-header-bar h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 300; color: var(--gold-light); margin-bottom: 4px; }
-.cal-header-bar p { font-size: 0.78rem; color: rgba(255,255,255,0.5); }
-.cal-legend { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
-.leg { display: flex; align-items: center; gap: 6px; font-size: 0.7rem; color: var(--muted); }
-.leg-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.leg-brief { background: #1f4236; }
+/* CALENDAR */
+.cal-header-bar { border: 1px solid var(--border); border-radius: 16px; padding: 24px 28px; margin-bottom: 24px; background: var(--cream); }
+.cal-eyebrow { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; font-weight: 500; }
+.cal-header-bar h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 400; color: var(--pine); margin-bottom: 4px; }
+.cal-header-bar p { font-size: 0.78rem; color: var(--muted); }
+.cal-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }
+.leg { display: flex; align-items: center; gap: 6px; font-size: 0.68rem; color: var(--muted); }
+.leg-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.leg-brief { background: var(--pine); }
 .leg-pod { background: #8B4513; }
 .leg-yt { background: #cc0000; }
 .leg-tt-solo { background: #6b21a8; }
-.leg-tt-rfs { background: #e91e63; }
-.leg-yc { background: #43a047; }
+.leg-tt-rfs { background: #be185d; }
+.leg-yc { background: #15803d; }
 
-.cal-week { background: white; border: 1px solid var(--border); border-radius: 16px; margin-bottom: 16px; overflow: hidden; }
-.cal-week-header { background: var(--pine); padding: 11px 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px; cursor: pointer; }
-.cal-week-num { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); }
-.cal-week-theme { font-size: 0.78rem; color: rgba(255,255,255,0.75); font-family: 'Cormorant Garamond', serif; font-style: italic; }
-.cal-week-toggle { font-size: 0.7rem; color: rgba(255,255,255,0.4); }
-.cal-week-body { display: none; }
+.cal-week { background: var(--white); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 12px; overflow: hidden; transition: box-shadow 0.2s; }
+.cal-week:hover { box-shadow: 0 4px 16px rgba(31,66,54,0.06); }
+.cal-week-header { padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; cursor: pointer; border-bottom: 1px solid transparent; transition: background 0.2s; }
+.cal-week-header:hover { background: var(--cream); }
+.cal-week-num { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--pine); }
+.cal-week-theme { font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; color: var(--muted); font-style: italic; }
+.cal-week-toggle { font-size: 0.65rem; color: var(--gold); font-weight: 600; }
+.cal-week-body { display: none; border-top: 1px solid var(--border); }
 .cal-week-body.open { display: block; }
-.cal-blog-row { padding: 10px 16px; border-bottom: 1px solid var(--border); background: var(--gold-pale); }
-.cal-blog-label { font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
-.cal-blog-title { font-size: 0.82rem; color: var(--pine); font-weight: 500; }
+.cal-blog-row { padding: 12px 20px; border-bottom: 1px solid var(--border); background: var(--gold-pale); }
+.cal-blog-label { font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 3px; font-weight: 600; }
+.cal-blog-title { font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; color: var(--pine); font-weight: 400; }
 .cal-channels { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); }
-.cal-ch { padding: 12px 10px; border-right: 1px solid var(--border); }
+.cal-ch { padding: 14px 14px; border-right: 1px solid var(--border); }
 .cal-ch:last-child { border-right: none; }
-.cal-ch-label { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; padding-bottom: 5px; border-bottom: 1px solid var(--border); }
-.cal-ch-label.brief { color: #1f4236; }
+.cal-ch-label { font-size: 0.58rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+.cal-ch-label.brief { color: var(--pine); }
 .cal-ch-label.pod { color: #8B4513; }
 .cal-ch-label.yt { color: #cc0000; }
 .cal-ch-label.tt { color: #6b21a8; }
-.cal-ch-label.yc { color: #43a047; }
-.cal-task { font-size: 0.72rem; color: var(--muted); line-height: 1.5; margin-bottom: 5px; }
-.cal-day-badge { display: inline-block; font-size: 0.58rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: white; padding: 2px 6px; border-radius: 4px; margin-bottom: 3px; }
+.cal-ch-label.yc { color: #15803d; }
+.cal-task { font-size: 0.72rem; color: var(--muted); line-height: 1.55; margin-bottom: 6px; font-weight: 300; }
+.cal-day-badge { display: inline-block; font-size: 0.56rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: white; padding: 2px 7px; border-radius: 100px; margin-bottom: 4px; }
 .cal-day-badge.tue { background: #6b21a8; }
 .cal-day-badge.thu-solo { background: #6b21a8; }
-.cal-day-badge.thu-rfs { background: #e91e63; }
-.cal-day-badge.mon { background: #1f4236; }
-.cal-day-badge.wed { background: #cc0000; }
-.cal-repurpose { display: inline-block; font-size: 0.58rem; font-weight: 600; background: #fff3e0; color: #e65100; padding: 2px 6px; border-radius: 4px; margin-bottom: 4px; }
+.cal-day-badge.thu-rfs { background: #be185d; }
+.cal-day-badge.mon { background: var(--pine); }
+.cal-day-badge.wed-yt { background: #cc0000; }
+.cal-day-badge.wed-yc { background: #15803d; }
+.cal-repurpose { display: inline-block; font-size: 0.56rem; font-weight: 600; background: var(--gold-pale); color: #92400e; border: 1px solid rgba(201,169,97,0.3); padding: 2px 7px; border-radius: 100px; margin-bottom: 4px; }
 
-.drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 500; opacity: 0; transition: opacity 0.25s; backdrop-filter: blur(2px); pointer-events: none; }
+/* DRAWER */
+.drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 500; opacity: 0; transition: opacity 0.25s; backdrop-filter: blur(2px); pointer-events: none; }
 .drawer-overlay.open { opacity: 1; pointer-events: all; }
-.drawer { position: fixed; bottom: 0; left: 0; right: 0; background: var(--cream); border-radius: 24px 24px 0 0; padding: 0 20px calc(40px + env(safe-area-inset-bottom)); z-index: 501; transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.34,1.1,0.64,1); max-height: 92vh; overflow-y: auto; }
+.drawer { position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-radius: 20px 20px 0 0; padding: 0 24px calc(40px + env(safe-area-inset-bottom)); z-index: 501; transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.34,1.1,0.64,1); max-height: 92vh; overflow-y: auto; border-top: 1px solid var(--border); }
 .drawer.open { transform: translateY(0); }
-.drawer-handle { width: 40px; height: 4px; background: var(--border); border-radius: 100px; margin: 14px auto 20px; }
-.drawer-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; color: var(--pine); margin-bottom: 20px; }
+.drawer-handle { width: 36px; height: 3px; background: var(--border-mid); border-radius: 100px; margin: 14px auto 22px; }
+.drawer-title { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 400; color: var(--pine); margin-bottom: 22px; }
 .guided-field { margin-bottom: 18px; }
-.guided-prompt { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--pine); margin-bottom: 8px; font-style: italic; }
-textarea.guided-input, input.guided-input { width: 100%; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: var(--ink); background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 12px 14px; outline: none; transition: border-color 0.2s; resize: none; }
-textarea.guided-input:focus, input.guided-input:focus { border-color: var(--gold); }
+.guided-prompt { font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; color: var(--pine); margin-bottom: 8px; font-style: italic; }
+textarea.guided-input, input.guided-input { width: 100%; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; color: var(--ink); background: var(--cream); border: 1px solid var(--border-mid); border-radius: 10px; padding: 12px 14px; outline: none; transition: border-color 0.2s; resize: none; font-weight: 300; }
+textarea.guided-input:focus, input.guided-input:focus { border-color: var(--pine); background: var(--white); }
 textarea.guided-input { min-height: 72px; }
 .who-row { display: flex; gap: 10px; margin-bottom: 20px; }
-.who-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 14px 10px; border-radius: 14px; border: 2px solid var(--border); background: white; cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif; }
-.who-btn .who-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 700; color: white; }
-.who-btn span { font-size: 0.75rem; color: var(--muted); font-weight: 500; }
-.who-btn.selected { border-color: var(--gold); background: var(--gold-pale); }
-.who-btn.selected span { color: var(--pine); font-weight: 600; }
+.who-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 14px 10px; border-radius: 12px; border: 1px solid var(--border-mid); background: var(--cream); cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif; }
+.who-btn .who-avatar { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 600; color: white; }
+.who-btn span { font-size: 0.72rem; color: var(--muted); font-weight: 400; }
+.who-btn.selected { border-color: var(--pine); background: var(--white); }
+.who-btn.selected span { color: var(--pine); font-weight: 500; }
 .cat-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
-.cat-btn { padding: 7px 14px; border-radius: 100px; border: 1.5px solid var(--border); background: white; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.75rem; color: var(--muted); transition: all 0.18s; }
-.cat-btn.selected { border-color: var(--pine); background: var(--pine); color: var(--gold-light); font-weight: 600; }
-.drawer-save-btn { width: 100%; background: var(--pine); color: var(--gold-light); border: none; border-radius: 14px; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600; padding: 16px; cursor: pointer; transition: all 0.2s; margin-top: 4px; }
+.cat-btn { padding: 6px 14px; border-radius: 100px; border: 1px solid var(--border-mid); background: var(--cream); cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.72rem; color: var(--muted); transition: all 0.18s; font-weight: 400; }
+.cat-btn.selected { border-color: var(--pine); background: var(--pine); color: var(--white); }
+.drawer-save-btn { width: 100%; background: var(--pine); color: var(--white); border: none; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 15px; cursor: pointer; transition: all 0.2s; margin-top: 4px; }
+.drawer-save-btn:hover { background: var(--pine2); }
 .drawer-save-btn:active { transform: scale(0.98); }
 .drawer-save-btn:disabled { opacity: 0.5; }
-.drawer-danger-btn { width: 100%; background: transparent; color: #e53935; border: 1.5px solid #ffcdd2; border-radius: 14px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500; padding: 12px; cursor: pointer; transition: all 0.2s; margin-top: 10px; }
-.drawer-promote-btn { width: 100%; background: var(--gold); color: var(--pine); border: none; border-radius: 14px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600; padding: 13px; cursor: pointer; transition: all 0.2s; margin-top: 10px; }
+.drawer-danger-btn { width: 100%; background: transparent; color: #dc2626; border: 1px solid #fca5a5; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 400; padding: 12px; cursor: pointer; transition: all 0.2s; margin-top: 10px; }
+.drawer-promote-btn { width: 100%; background: var(--gold-pale); color: var(--pine); border: 1px solid rgba(201,169,97,0.4); border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 500; padding: 13px; cursor: pointer; transition: all 0.2s; margin-top: 10px; letter-spacing: 0.04em; }
+.drawer-promote-btn:hover { background: var(--gold); color: var(--pine); }
 .drawer-divider { height: 1px; background: var(--border); margin: 16px 0; }
 
-.empty { text-align: center; padding: 48px 20px; color: var(--muted); }
-.empty-icon { font-size: 2.8rem; display: block; margin-bottom: 12px; }
-.empty h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--pine); margin-bottom: 6px; }
-.empty p { font-size: 0.82rem; }
+/* EMPTY */
+.empty { text-align: center; padding: 56px 20px; color: var(--muted); }
+.empty-icon { font-size: 2.5rem; display: block; margin-bottom: 14px; opacity: 0.5; }
+.empty h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--pine); margin-bottom: 6px; font-weight: 400; }
+.empty p { font-size: 0.8rem; }
 
-#bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--pine); z-index: 200; padding-bottom: env(safe-area-inset-bottom); border-top: 1px solid rgba(201,169,97,0.15); box-shadow: 0 -4px 20px rgba(0,0,0,0.2); }
+/* BOTTOM NAV */
+#bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); z-index: 200; padding-bottom: env(safe-area-inset-bottom); border-top: 1px solid var(--border); }
 .bnav-inner { display: grid; grid-template-columns: repeat(5,1fr); }
-.bnav-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 10px 4px 8px; background: transparent; border: none; cursor: pointer; color: rgba(255,255,255,0.4); font-family: 'DM Sans', sans-serif; font-size: 0.58rem; letter-spacing: 0.07em; text-transform: uppercase; transition: color 0.18s; position: relative; }
-.bnav-icon { font-size: 1.25rem; line-height: 1; }
-.bnav-btn.active { color: var(--gold); }
-.bnav-new-dot { position: absolute; top: 8px; right: 18px; width: 8px; height: 8px; border-radius: 50%; background: #e53935; border: 2px solid var(--pine); }
+.bnav-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 10px 4px 8px; background: transparent; border: none; cursor: pointer; color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 0.55rem; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.18s; position: relative; font-weight: 400; }
+.bnav-icon { font-size: 1.15rem; line-height: 1; }
+.bnav-btn.active { color: var(--pine); }
+.bnav-new-dot { position: absolute; top: 8px; right: 16px; width: 7px; height: 7px; border-radius: 50%; background: #dc2626; border: 1.5px solid var(--white); }
 
-#toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--pine); color: var(--gold-light); padding: 11px 22px; border-radius: 100px; font-size: 0.84rem; font-weight: 500; box-shadow: 0 6px 24px rgba(0,0,0,0.2); opacity: 0; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); z-index: 9999; pointer-events: none; white-space: nowrap; }
+/* TOAST */
+#toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--pine); color: var(--white); padding: 10px 22px; border-radius: 100px; font-size: 0.82rem; font-weight: 400; opacity: 0; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); z-index: 9999; pointer-events: none; white-space: nowrap; }
 #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-#loading-overlay { position: fixed; inset: 0; background: rgba(31,66,54,0.5); display: flex; align-items: center; justify-content: center; z-index: 600; backdrop-filter: blur(3px); }
-.spinner { width: 40px; height: 40px; border: 3px solid rgba(201,169,97,0.3); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
-.section-hd { margin-bottom: 18px; }
-.section-hd h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; color: var(--pine); }
-.section-hd p { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
 
-@keyframes popIn { from{opacity:0;transform:scale(0.94)} to{opacity:1;transform:scale(1)} }
+#loading-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.8); display: flex; align-items: center; justify-content: center; z-index: 600; backdrop-filter: blur(4px); }
+.spinner { width: 36px; height: 36px; border: 2px solid var(--border-mid); border-top-color: var(--pine); border-radius: 50%; animation: spin 0.8s linear infinite; }
+
+@keyframes popIn { from{opacity:0;transform:scale(0.95)} to{opacity:1;transform:scale(1)} }
 @keyframes spin { to{transform:rotate(360deg)} }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
 @media(min-width:681px){
   #bottom-nav { display: none; }
-  main { padding: 28px 24px 60px; }
+  main { padding: 36px 32px 60px; }
   .notes-grid { grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); }
   .shots-grid { grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); }
-  .drawer { max-width: 480px; left: 50%; transform: translateX(-50%) translateY(100%); right: auto; border-radius: 24px; bottom: 40px; }
+  .drawer { max-width: 480px; left: 50%; transform: translateX(-50%) translateY(100%); right: auto; border-radius: 20px; bottom: 40px; border: 1px solid var(--border); }
   .drawer.open { transform: translateX(-50%) translateY(0); }
 }
 @media(max-width:680px){
@@ -211,7 +246,6 @@ textarea.guided-input { min-height: 72px; }
   .notes-grid { grid-template-columns: repeat(2,1fr); }
   .shots-grid { grid-template-columns: 1fr; }
   .kanban { grid-template-columns: 1fr; gap: 12px; }
-  .home-snapshot h2 { font-size: 1.25rem; }
   .cal-channels { grid-template-columns: 1fr; }
   .cal-ch { border-right: none; border-bottom: 1px solid var(--border); }
   .cal-ch:last-child { border-bottom: none; }
@@ -269,11 +303,12 @@ textarea.guided-input { min-height: 72px; }
 <main>
   <div id="panel-home" class="panel active">
     <div class="home-snapshot">
-      <h2>Good to see you ✦</h2>
+      <div class="home-eyebrow">Creative Studio</div>
+      <h2>Good to see you</h2>
       <p id="home-sub">Loading your board…</p>
       <div class="stats-row" id="stats-row"></div>
     </div>
-    <button class="big-add-btn" onclick="openAddDrawer()"><span style="font-size:1.4rem;">+</span> Drop a new idea</button>
+    <button class="big-add-btn" onclick="openAddDrawer()"><span style="font-size:1.2rem;">+</span> Drop a new idea</button>
     <div class="recent-label" id="recent-label">Recent ideas</div>
     <div class="notes-grid" id="home-recent"></div>
   </div>
@@ -311,26 +346,26 @@ textarea.guided-input { min-height: 72px; }
     <div class="section-hd"><h2>Episode Pipeline</h2><p>Tap an episode to advance or edit it.</p></div>
     <div class="kanban">
       <div class="kanban-col col-idea">
-        <div class="kanban-col-header" style="color:#8a6a00;"><span class="col-dot"></span>Ideas<span id="cnt-idea" style="margin-left:auto;font-size:0.75rem;font-weight:700;"></span></div>
+        <div class="kanban-col-header"><span class="col-dot"></span>Ideas<span id="cnt-idea" style="margin-left:auto;"></span></div>
         <div id="lane-idea"></div>
         <button class="kanban-add" onclick="openEpDrawer()">+ Add episode</button>
       </div>
       <div class="kanban-col col-recorded">
-        <div class="kanban-col-header" style="color:var(--pine);"><span class="col-dot"></span>Recorded<span id="cnt-recorded" style="margin-left:auto;font-size:0.75rem;font-weight:700;"></span></div>
+        <div class="kanban-col-header"><span class="col-dot"></span>Recorded<span id="cnt-recorded" style="margin-left:auto;"></span></div>
         <div id="lane-recorded"></div>
       </div>
       <div class="kanban-col col-live">
-        <div class="kanban-col-header" style="color:#2e7d32;"><span class="col-dot"></span>Live<span id="cnt-live" style="margin-left:auto;font-size:0.75rem;font-weight:700;"></span></div>
+        <div class="kanban-col-header"><span class="col-dot"></span>Live<span id="cnt-live" style="margin-left:auto;"></span></div>
         <div id="lane-live"></div>
       </div>
     </div>
   </div>
 
-  <!-- CALENDAR TAB -->
   <div id="panel-calendar" class="panel">
     <div class="cal-header-bar">
-      <h2>Content Calendar — March 31 to June 7, 2026</h2>
-      <p>Tap any week to expand. Monday = batch day. Brief publishes daily automatically.</p>
+      <div class="cal-eyebrow">Rich Friends Show</div>
+      <h2>Content Calendar</h2>
+      <p>March 31 to June 7, 2026 &nbsp;·&nbsp; Tap any week to expand &nbsp;·&nbsp; Monday is batch day</p>
     </div>
     <div class="cal-legend">
       <div class="leg"><span class="leg-dot leg-brief"></span>Brief (daily)</div>
@@ -358,7 +393,7 @@ textarea.guided-input { min-height: 72px; }
 
 <div class="drawer" id="add-drawer">
   <div class="drawer-handle"></div>
-  <div class="drawer-title">New Idea ✦</div>
+  <div class="drawer-title">New Idea</div>
   <div class="guided-field">
     <div class="guided-prompt">"The episode is about…"</div>
     <input class="guided-input" id="add-topic" type="text" placeholder="e.g. Money conversations nurses avoid…">
@@ -413,7 +448,7 @@ textarea.guided-input { min-height: 72px; }
     </div>
   </div>
   <button class="drawer-save-btn" id="edit-save-btn" onclick="updateIdea()">Save Changes</button>
-  <button class="drawer-promote-btn" onclick="promoteIdea()">→ Promote to Episode Pipeline</button>
+  <button class="drawer-promote-btn" onclick="promoteIdea()">Promote to Episode Pipeline</button>
   <div class="drawer-divider"></div>
   <button class="drawer-danger-btn" onclick="deleteIdea()">Delete this idea</button>
 </div>
@@ -421,13 +456,13 @@ textarea.guided-input { min-height: 72px; }
 <div class="drawer" id="shot-drawer">
   <div class="drawer-handle"></div>
   <div class="drawer-title">Screenshot</div>
-  <img id="shot-preview" src="" style="width:100%;border-radius:12px;margin-bottom:16px;object-fit:contain;max-height:60vh;">
+  <img id="shot-preview" src="" style="width:100%;border-radius:10px;margin-bottom:16px;object-fit:contain;max-height:55vh;">
   <div class="guided-field">
     <div class="guided-prompt">"This could become an episode about…"</div>
     <textarea class="guided-input" id="shot-caption" rows="2" placeholder="What's the episode angle?"></textarea>
   </div>
   <button class="drawer-save-btn" onclick="saveShotCaption()">Save Caption</button>
-  <button class="drawer-promote-btn" onclick="convertShotToIdea()">→ Turn into Idea Card</button>
+  <button class="drawer-promote-btn" onclick="convertShotToIdea()">Turn into Idea Card</button>
   <div class="drawer-divider"></div>
   <button class="drawer-danger-btn" onclick="deleteShot()">Remove screenshot</button>
 </div>
@@ -450,7 +485,7 @@ textarea.guided-input { min-height: 72px; }
   <button class="drawer-save-btn" id="ep-save-btn" onclick="saveEpisode()">Save Episode</button>
   <div id="ep-advance-section" style="display:none;">
     <div class="drawer-divider"></div>
-    <button class="drawer-promote-btn" id="ep-advance-btn" onclick="advanceEpisode()">→ Move to next stage</button>
+    <button class="drawer-promote-btn" id="ep-advance-btn" onclick="advanceEpisode()">Move to next stage</button>
     <button class="drawer-danger-btn" onclick="deleteEpisode()">Remove episode</button>
   </div>
 </div>
@@ -461,7 +496,6 @@ textarea.guided-input { min-height: 72px; }
 const SCRIPT_URL='https://script.google.com/macros/s/AKfycbzCZuDUIyXdc0h7EVu7Acxgn4PDKcZXhRLKOHsnDI9lXb-7QDoDBPs8PBuwWsG0BeXj/exec';
 const PIN_CODE='1975';
 const POLL_MS=30000;
-
 let ideas=[],screenshots=[],episodes=[];
 let activeFilter='all',activeDrawer=null;
 let editingIdeaId=null,editingShotId=null,editingEpId=null;
@@ -516,7 +550,7 @@ function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t
 function renderHome(){
   const liveCount=episodes.filter(e=>e.status==='live').length;
   const recCount=episodes.filter(e=>e.status==='recorded').length;
-  document.getElementById('home-sub').textContent=ideas.length===0?'Your board is ready — drop your first idea!':`${ideas.length} idea${ideas.length!==1?'s':''} on the board`;
+  document.getElementById('home-sub').textContent=ideas.length===0?'Your board is ready — drop your first idea.':`${ideas.length} idea${ideas.length!==1?'s':''} on the board.`;
   document.getElementById('stats-row').innerHTML=`<span class="stat-chip">💡 ${ideas.length} ideas</span>${recCount?`<span class="stat-chip">🎙️ ${recCount} recorded</span>`:''}${liveCount?`<span class="stat-chip">✅ ${liveCount} live</span>`:''}`;
   const recent=ideas.slice(0,4);
   document.getElementById('recent-label').style.display=recent.length?'block':'none';
@@ -524,14 +558,13 @@ function renderHome(){
 }
 
 const CAT_LABELS={'episode-idea':'Our idea','audience-question':'Audience Q','collab-note':'Collab note','comment-inspo':'Comment'};
-const NOTE_COLORS=5;
 
 function stickyHTML(idea,i){
-  const nc='nc-'+(i%NOTE_COLORS);
+  const nc='nc-'+(i%5);
   const inPipeline=String(idea.inPipeline)==='true';
   return `<div class="sticky ${nc}" onclick="openEditDrawer('${idea.id}')">
     <div>
-      ${inPipeline?'<div class="pipeline-badge">🎙 In Pipeline</div>':''}
+      ${inPipeline?'<div class="pipeline-badge">In Pipeline</div>':''}
       <h3>${esc(idea.title)}</h3>
       ${idea.takeaway?`<div class="sticky-takeaway">${esc(idea.takeaway)}</div>`:''}
     </div>
@@ -558,13 +591,13 @@ let selectedWho='T';
 function selWho(w){selectedWho=w;document.getElementById('who-T').classList.toggle('selected',w==='T');document.getElementById('who-C').classList.toggle('selected',w==='C');}
 
 async function saveIdea(){
-  const title=document.getElementById('add-topic').value.trim();if(!title){toast('Add a topic first!');return;}
+  const title=document.getElementById('add-topic').value.trim();if(!title){toast('Add a topic first.');return;}
   const takeaway=document.getElementById('add-takeaway').value.trim();
   const tag=document.querySelector('#add-cat-row .cat-btn.selected')?.dataset.cat||'episode-idea';
   const btn=document.getElementById('add-save-btn');btn.disabled=true;setSyncing();
   const row={id:Date.now().toString(),title,takeaway,tag,author:selectedWho,inPipeline:'false',date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})};
-  try{await apiPost({action:'write',tab:'ideas',row});ideas.unshift(row);lastSeenCount=ideas.length;localStorage.setItem('bb_lastSeen',lastSeenCount);renderAll();closeDrawer();setSynced();toast('Idea saved ✓');}
-  catch(e){setSyncErr();toast('Save failed');}
+  try{await apiPost({action:'write',tab:'ideas',row});ideas.unshift(row);lastSeenCount=ideas.length;localStorage.setItem('bb_lastSeen',lastSeenCount);renderAll();closeDrawer();setSynced();toast('Idea saved.');}
+  catch(e){setSyncErr();toast('Save failed.');}
   btn.disabled=false;
 }
 
@@ -578,7 +611,7 @@ function openEditDrawer(id){
 }
 
 async function updateIdea(){
-  const title=document.getElementById('edit-topic').value.trim();if(!title){toast('Title cannot be empty');return;}
+  const title=document.getElementById('edit-topic').value.trim();if(!title){toast('Title cannot be empty.');return;}
   const takeaway=document.getElementById('edit-takeaway').value.trim();
   const tag=document.querySelector('#edit-cat-row .cat-btn.selected')?.dataset.cat||'episode-idea';
   const btn=document.getElementById('edit-save-btn');btn.disabled=true;setSyncing();
@@ -586,14 +619,14 @@ async function updateIdea(){
     await apiPost({action:'update',tab:'ideas',id:editingIdeaId,row:{title,takeaway,tag}});
     const idea=ideas.find(i=>i.id==editingIdeaId);
     if(idea){idea.title=title;idea.takeaway=takeaway;idea.tag=tag;}
-    renderAll();closeDrawer();setSynced();toast('Updated ✓');
-  }catch(e){setSyncErr();toast('Update failed');}
+    renderAll();closeDrawer();setSynced();toast('Updated.');
+  }catch(e){setSyncErr();toast('Update failed.');}
   btn.disabled=false;
 }
 
 async function deleteIdea(){
   if(!confirm('Delete this idea?'))return;setSyncing();
-  try{await apiPost({action:'delete',tab:'ideas',id:editingIdeaId});ideas=ideas.filter(i=>i.id!=editingIdeaId);renderAll();closeDrawer();setSynced();toast('Idea removed');}
+  try{await apiPost({action:'delete',tab:'ideas',id:editingIdeaId});ideas=ideas.filter(i=>i.id!=editingIdeaId);renderAll();closeDrawer();setSynced();toast('Idea removed.');}
   catch(e){setSyncErr();}
 }
 
@@ -605,7 +638,7 @@ async function promoteIdea(){
     episodes.unshift(row);
     idea.inPipeline='true';
     await apiPost({action:'update',tab:'ideas',id:idea.id,row:{inPipeline:'true'}});
-    renderAll();closeDrawer();setSynced();toast('Promoted to Episodes 🎙️');
+    renderAll();closeDrawer();setSynced();toast('Promoted to Episodes.');
     goTab('episodes');
   }catch(e){setSyncErr();}
 }
@@ -619,8 +652,8 @@ function handleFileList(files){Array.from(files).forEach(file=>{if(!file.type.st
 async function saveShot(src){
   setSyncing();
   const row={id:Date.now().toString(),src,caption:'',tags:'',date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})};
-  try{await apiPost({action:'write',tab:'screenshots',row});screenshots.unshift({...row,tags:[]});renderScreenshots();setSynced();toast('Screenshot saved ✓');}
-  catch(e){setSyncErr();toast('Failed — try a smaller image');}
+  try{await apiPost({action:'write',tab:'screenshots',row});screenshots.unshift({...row,tags:[]});renderScreenshots();setSynced();toast('Screenshot saved.');}
+  catch(e){setSyncErr();toast('Failed — try a smaller image.');}
 }
 
 function renderScreenshots(){
@@ -634,7 +667,7 @@ function openShotDrawer(id){const s=screenshots.find(x=>x.id==id);if(!s)return;e
 
 async function saveShotCaption(){
   const caption=document.getElementById('shot-caption').value.trim();setSyncing();
-  try{await apiPost({action:'update',tab:'screenshots',id:editingShotId,row:{caption}});const s=screenshots.find(x=>x.id==editingShotId);if(s)s.caption=caption;renderScreenshots();closeDrawer();setSynced();toast('Caption saved ✓');}
+  try{await apiPost({action:'update',tab:'screenshots',id:editingShotId,row:{caption}});const s=screenshots.find(x=>x.id==editingShotId);if(s)s.caption=caption;renderScreenshots();closeDrawer();setSynced();toast('Caption saved.');}
   catch(e){setSyncErr();}
 }
 
@@ -651,12 +684,12 @@ function convertShotToIdea(){
 
 async function deleteShot(){
   if(!confirm('Remove this screenshot?'))return;setSyncing();
-  try{await apiPost({action:'delete',tab:'screenshots',id:editingShotId});screenshots=screenshots.filter(s=>s.id!=editingShotId);renderScreenshots();closeDrawer();setSynced();toast('Screenshot removed');}
+  try{await apiPost({action:'delete',tab:'screenshots',id:editingShotId});screenshots=screenshots.filter(s=>s.id!=editingShotId);renderScreenshots();closeDrawer();setSynced();toast('Screenshot removed.');}
   catch(e){setSyncErr();}
 }
 
 const EP_NEXT={'idea':'recorded','recorded':'live','live':'live'};
-const EP_NEXT_LABEL={'idea':'→ Mark as Recorded','recorded':'→ Mark as Live','live':'Already Live!'};
+const EP_NEXT_LABEL={'idea':'Mark as Recorded','recorded':'Mark as Live','live':'Already Live'};
 
 function renderEpisodes(){
   ['idea','recorded','live'].forEach(status=>{
@@ -664,7 +697,7 @@ function renderEpisodes(){
     const eps=episodes.filter(e=>e.status===status);
     document.getElementById('cnt-'+status).textContent=eps.length||'';
     if(!eps.length){lane.innerHTML='';return;}
-    lane.innerHTML=eps.map(ep=>`<div class="ep-card" onclick="openEpDrawer('${ep.id}')"><h4>${esc(ep.title)}</h4>${ep.desc?`<p>${esc(ep.desc)}</p>`:''}<div class="ep-advance">${EP_NEXT_LABEL[ep.status]} ›</div></div>`).join('');
+    lane.innerHTML=eps.map(ep=>`<div class="ep-card" onclick="openEpDrawer('${ep.id}')"><h4>${esc(ep.title)}</h4>${ep.desc?`<p>${esc(ep.desc)}</p>`:''}<div class="ep-advance">${EP_NEXT_LABEL[ep.status]} →</div></div>`).join('');
   });
 }
 
@@ -677,7 +710,7 @@ function openEpDrawer(id){
     document.getElementById('ep-title-input').value=ep.title||'';
     document.getElementById('ep-desc-input').value=ep.desc||'';
     document.getElementById('ep-notes-input').value=ep.notes||'';
-    document.getElementById('ep-advance-btn').textContent=EP_NEXT_LABEL[ep.status];
+    document.getElementById('ep-advance-btn').textContent=EP_NEXT_LABEL[ep.status]+' →';
     adv.style.display='block';
   }else{
     document.getElementById('ep-drawer-title').textContent='New Episode';
@@ -690,7 +723,7 @@ function openEpDrawer(id){
 }
 
 async function saveEpisode(){
-  const title=document.getElementById('ep-title-input').value.trim();if(!title){toast('Give the episode a title!');return;}
+  const title=document.getElementById('ep-title-input').value.trim();if(!title){toast('Give the episode a title.');return;}
   const desc=document.getElementById('ep-desc-input').value.trim();
   const notes=document.getElementById('ep-notes-input').value.trim();
   const btn=document.getElementById('ep-save-btn');btn.disabled=true;setSyncing();
@@ -698,11 +731,11 @@ async function saveEpisode(){
     try{
       await apiPost({action:'update',tab:'episodes',id:editingEpId,row:{title,desc,notes}});
       const ep=episodes.find(e=>e.id==editingEpId);if(ep){ep.title=title;ep.desc=desc;ep.notes=notes;}
-      renderEpisodes();closeDrawer();setSynced();toast('Episode updated ✓');
+      renderEpisodes();closeDrawer();setSynced();toast('Episode updated.');
     }catch(e){setSyncErr();}
   }else{
     const row={id:Date.now().toString(),title,desc,notes,status:'idea',num:episodes.length+1,date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})};
-    try{await apiPost({action:'write',tab:'episodes',row});episodes.unshift(row);renderEpisodes();closeDrawer();setSynced();toast('Episode added ✓');}
+    try{await apiPost({action:'write',tab:'episodes',row});episodes.unshift(row);renderEpisodes();closeDrawer();setSynced();toast('Episode added.');}
     catch(e){setSyncErr();}
   }
   btn.disabled=false;
@@ -711,13 +744,13 @@ async function saveEpisode(){
 async function advanceEpisode(){
   const ep=episodes.find(e=>e.id==editingEpId);if(!ep||ep.status==='live')return;
   const next=EP_NEXT[ep.status];setSyncing();
-  try{await apiPost({action:'update',tab:'episodes',id:editingEpId,row:{status:next}});ep.status=next;renderEpisodes();closeDrawer();setSynced();toast(next==='live'?'Episode is LIVE! 🎉':'Marked as Recorded 🎙️');}
+  try{await apiPost({action:'update',tab:'episodes',id:editingEpId,row:{status:next}});ep.status=next;renderEpisodes();closeDrawer();setSynced();toast(next==='live'?'Episode is live!':'Marked as recorded.');}
   catch(e){setSyncErr();}
 }
 
 async function deleteEpisode(){
   if(!confirm('Remove this episode?'))return;setSyncing();
-  try{await apiPost({action:'delete',tab:'episodes',id:editingEpId});episodes=episodes.filter(e=>e.id!=editingEpId);renderEpisodes();closeDrawer();setSynced();toast('Episode removed');}
+  try{await apiPost({action:'delete',tab:'episodes',id:editingEpId});episodes=episodes.filter(e=>e.id!=editingEpId);renderEpisodes();closeDrawer();setSynced();toast('Episode removed.');}
   catch(e){setSyncErr();}
 }
 
@@ -725,113 +758,23 @@ function openDrawer(id){if(activeDrawer)document.getElementById(activeDrawer).cl
 function closeDrawer(){if(activeDrawer)document.getElementById(activeDrawer).classList.remove('open');document.getElementById('drawer-overlay').classList.remove('open');document.body.style.overflow='';activeDrawer=null;}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');}
 
-// ── CALENDAR DATA ──
-const CAL_WEEKS = [
-  {
-    num:'Week 1', dates:'March 31 – April 5', theme:'From Bedside to Building Wealth',
-    blog:'From Bedside to Building Wealth: Why It\'s Time to Invest in Your Future',
-    brief:'Auto-publishes 6am daily. Themes: abundance, identity, scarcity mindset.',
-    pod:{type:'record',text:'Why nurses are perfectly built for wealth outside of nursing'},
-    yt:{text:'From bedside to building wealth — visual walkthrough + blog link in description'},
-    tue:{type:'solo',text:'"Nobody told me nursing was making me broke in a different way"'},
-    thu:{type:'solo',text:'"31 years of nursing — here is what I wish someone told me about money"'},
-    yc:'Blog graphic + caption. Link to blog and Tax Sale Academy.'
-  },
-  {
-    num:'Week 2', dates:'April 6 – April 12', theme:'Is Your Identity Holding Your Revenue?',
-    blog:'Is Your Identity Holding Your Revenue?',
-    brief:'Themes: self-concept, identity ceiling, scarcity language.',
-    pod:{type:'record',text:'The identity ceiling: why you keep stopping right before the breakthrough'},
-    yt:{text:'"Is your identity holding your revenue?" — share the blog + your personal story'},
-    tue:{type:'solo',text:'"You cannot talk like lack and build like abundance"'},
-    thu:{type:'solo',text:'"Some people with money still think like they are one step from losing it all"'},
-    yc:'Poll: "What identity story is keeping you small?" Link to blog.'
-  },
-  {
-    num:'Week 3', dates:'April 13 – April 19', theme:'The Anatomy of a Pivot',
-    blog:'The Anatomy of a Pivot',
-    brief:'Themes: resilience, bouncing back, one bad moment vs a whole season.',
-    pod:{type:'record',text:'How I pivoted from bedside nursing to serial entrepreneur without burning it down'},
-    yt:{text:'"The anatomy of a pivot" — walk through your actual pivot story on screen'},
-    tue:{type:'solo',text:'"A pivot is not quitting. Here is the difference"'},
-    thu:{type:'rfs',text:'Rich Friends Show clip — The moment that changed everything: Dr. Catrina\'s Big Black Bear story'},
-    yc:'"What pivot are you sitting on right now?" Link to blog + podcast.'
-  },
-  {
-    num:'Week 4', dates:'April 20 – April 26', theme:'Discipline Can\'t Fix Misalignment',
-    blog:'Discipline Can\'t Fix Misalignment (Blog + Podcast Ep. 1 — Jan 14)',
-    brief:'Themes: alignment, working harder vs working right, misalignment signals.',
-    pod:{type:'repurpose',text:'Repost or clip Ep. 1 with new intro. "We revisit this because it keeps coming up."'},
-    yt:{text:'"5 signs you are disciplined but deeply misaligned" — new angle from the podcast'},
-    tue:{type:'solo',text:'"Sometimes what we call processing is really prolonged hesitation"'},
-    thu:{type:'solo',text:'"You want a new life but rehearsing the same old personality every day"'},
-    yc:'G.O.L.F. graphic — Growth pillar spotlight. Link to blog.'
-  },
-  {
-    num:'Week 5', dates:'April 27 – May 3', theme:'The Permission Slip',
-    blog:'The Permission Slip You\'ve Been Waiting For (Blog + Podcast Ep. 2 — Jan 20)',
-    brief:'Themes: timing, trust, active faith, preparing before opportunity arrives.',
-    pod:{type:'repurpose',text:'Clip or repost Ep. 2 with new intro tying it to Tax Sale Academy action step'},
-    yt:{text:'"You do not need more information. You need permission to act." — end with Tax Sale Academy CTA'},
-    tue:{type:'solo',text:'"Timing is not an excuse to sit still and call it faith"'},
-    thu:{type:'rfs',text:'Rich Friends Show clip — Nursing, Business, and the Florida Pivot with Dr. Catrina'},
-    yc:'Tax Sale Academy graphic. "The tool is free. The excuse is not." Link in description.'
-  },
-  {
-    num:'Week 6', dates:'May 4 – May 10', theme:'Why We Say Yes When Our Gut Says No',
-    blog:'Why We Say "YES" When Our Gut Says No',
-    brief:'Themes: showing up in rooms, what the room knows about you, networking with clarity.',
-    pod:{type:'record',text:'How to stop overriding your instincts in business and in rooms'},
-    yt:{text:'"Why smart women say yes when everything inside says no" — personal story format'},
-    tue:{type:'solo',text:'"Before you show up anywhere, decide what you want the room to know about you"'},
-    thu:{type:'rfs',text:'Rich Friends Show clip — Why everything you know about weight loss is wrong after 40'},
-    yc:'Poll: "When did you last say yes when your gut said no?" Link to blog.'
-  },
-  {
-    num:'Week 7', dates:'May 11 – May 17', theme:'Why Smart Women Trade Happy Hours for Tee Times',
-    blog:'Why Smart Women Are Trading Happy Hours for Tee Times',
-    brief:'Themes: real estate on the course, partnerships, being in rooms that matter.',
-    pod:{type:'record',text:'How golf changed my network, my deals, and my life in under two years'},
-    yt:{text:'"Two holes in one. Here is what golf actually taught me about wealth building"'},
-    tue:{type:'solo',text:'"The most valuable real estate conversations do not begin in boardrooms. They begin on the course"'},
-    thu:{type:'rfs',text:'Rich Friends Show clip — The Golf Course Prescription: why two nurses trade stethoscopes for golf clubs'},
-    yc:'G.O.L.F. acronym graphic. Leisure pillar. Link to G.O.L.F. Blueprint.'
-  },
-  {
-    num:'Week 8', dates:'May 18 – May 24', theme:'The Loneliest Season of Success',
-    blog:'The Loneliest Season of Success',
-    brief:'Themes: being in the room, consistency, showing up when nobody is watching.',
-    pod:{type:'record',text:'Nobody talks about the loneliness that comes with leveling up'},
-    yt:{text:'"The loneliest season of success — and the room that changed everything for me"'},
-    tue:{type:'solo',text:'"Somebody else winning is not your loss. But nobody told me growth would feel this quiet"'},
-    thu:{type:'rfs',text:'Rich Friends Show clip — The Health & Wealth Connection: why broke and unhealthy usually show up together'},
-    yc:'"Who is in your corner as you build?" G.O.L.F. Circle soft push. Link to NOC.'
-  },
-  {
-    num:'Week 9', dates:'May 25 – May 31', theme:'The Mentor I Needed Was at the Driving Range',
-    blog:'The Mentor I Needed Was Not in a Mastermind. He Was at the Driving Range.',
-    brief:'Themes: mentorship, access, exposure to bigger thinking, acting on what you learn.',
-    pod:{type:'record',text:'Where real mentorship actually lives and how to find it without paying for a room'},
-    yt:{text:'"The mentor I needed was at the driving range — my full story"'},
-    tue:{type:'solo',text:'"Not all mentorship comes from a program. Not all access comes from a paid room"'},
-    thu:{type:'solo',text:'"Mentorship is not magic if you never act on what you learn"'},
-    yc:'"Who was your unexpected mentor?" Engagement post. Link to blog + podcast.'
-  },
-  {
-    num:'Week 10', dates:'June 1 – June 7', theme:'How to Turn Your Expertise Into a Paid System',
-    blog:'How to Turn Your Expertise Into a Paid System — G.O.L.F. Blueprint close',
-    brief:'Themes: relational assets, reputational capital, entering rooms with confidence.',
-    pod:{type:'record',text:'You are already an expert. Here is how to package what you know into real income'},
-    yt:{text:'"How to turn your expertise into a paid system in 90 days" — end with G.O.L.F. Blueprint CTA'},
-    tue:{type:'solo',text:'"Not all assets are financial at first. Some are relational. Some are reputational"'},
-    thu:{type:'rfs',text:'Rich Friends Show clip — How to Turn Your Expertise Into a Paid System with Dr. Catrina'},
-    yc:'Full G.O.L.F. Blueprint push. "What is next after June 7?" Link to tmacinspired.com/noc'
-  }
+// ── CALENDAR ──
+const CAL_WEEKS=[
+  {num:'Week 1',dates:'March 31 – April 5',theme:'From Bedside to Building Wealth',blog:'From Bedside to Building Wealth: Why It\'s Time to Invest in Your Future',brief:'Auto-publishes 6am daily. Themes: abundance, identity, scarcity mindset.',pod:{type:'record',text:'Why nurses are perfectly built for wealth outside of nursing'},yt:'From bedside to building wealth — visual walkthrough + blog link in description',tue:{type:'solo',text:'"Nobody told me nursing was making me broke in a different way"'},thu:{type:'solo',text:'"31 years of nursing — here is what I wish someone told me about money"'},yc:'Blog graphic + caption. Link to blog and Tax Sale Academy.'},
+  {num:'Week 2',dates:'April 6 – April 12',theme:'Is Your Identity Holding Your Revenue?',blog:'Is Your Identity Holding Your Revenue?',brief:'Themes: self-concept, identity ceiling, scarcity language.',pod:{type:'record',text:'The identity ceiling: why you keep stopping right before the breakthrough'},yt:'"Is your identity holding your revenue?" — share the blog + your personal story',tue:{type:'solo',text:'"You cannot talk like lack and build like abundance"'},thu:{type:'solo',text:'"Some people with money still think like they are one step from losing it all"'},yc:'Poll: "What identity story is keeping you small?" Link to blog.'},
+  {num:'Week 3',dates:'April 13 – April 19',theme:'The Anatomy of a Pivot',blog:'The Anatomy of a Pivot',brief:'Themes: resilience, bouncing back, one bad moment vs a whole season.',pod:{type:'record',text:'How I pivoted from bedside nursing to serial entrepreneur without burning it down'},yt:'"The anatomy of a pivot" — walk through your actual pivot story on screen',tue:{type:'solo',text:'"A pivot is not quitting. Here is the difference"'},thu:{type:'rfs',text:'RFS clip — The moment that changed everything: Dr. Catrina\'s Big Black Bear story'},yc:'"What pivot are you sitting on right now?" Link to blog + podcast.'},
+  {num:'Week 4',dates:'April 20 – April 26',theme:'Discipline Can\'t Fix Misalignment',blog:'Discipline Can\'t Fix Misalignment (Blog + Podcast Ep. 1)',brief:'Themes: alignment, working harder vs working right, misalignment signals.',pod:{type:'repurpose',text:'Repost or clip Ep. 1 with new intro. Free Monday — no new recording needed.'},yt:'"5 signs you are disciplined but deeply misaligned" — new angle from the podcast',tue:{type:'solo',text:'"Sometimes what we call processing is really prolonged hesitation"'},thu:{type:'solo',text:'"You want a new life but rehearsing the same old personality every day"'},yc:'G.O.L.F. graphic — Growth pillar spotlight. Link to blog.'},
+  {num:'Week 5',dates:'April 27 – May 3',theme:'The Permission Slip',blog:'The Permission Slip You\'ve Been Waiting For (Blog + Podcast Ep. 2)',brief:'Themes: timing, trust, active faith, preparing before opportunity arrives.',pod:{type:'repurpose',text:'Clip or repost Ep. 2 with new intro tying it to Tax Sale Academy action step. Free Monday.'},yt:'"You do not need more information. You need permission to act." — end with Tax Sale Academy CTA',tue:{type:'solo',text:'"Timing is not an excuse to sit still and call it faith"'},thu:{type:'rfs',text:'RFS clip — Nursing, Business, and the Florida Pivot with Dr. Catrina'},yc:'Tax Sale Academy graphic. "The tool is free. The excuse is not." Link in description.'},
+  {num:'Week 6',dates:'May 4 – May 10',theme:'Why We Say Yes When Our Gut Says No',blog:'Why We Say "YES" When Our Gut Says No',brief:'Themes: showing up in rooms, what the room knows about you, networking with clarity.',pod:{type:'record',text:'How to stop overriding your instincts in business and in rooms'},yt:'"Why smart women say yes when everything inside says no" — personal story format',tue:{type:'solo',text:'"Before you show up anywhere, decide what you want the room to know about you"'},thu:{type:'rfs',text:'RFS clip — Why everything you know about weight loss is wrong after 40'},yc:'Poll: "When did you last say yes when your gut said no?" Link to blog.'},
+  {num:'Week 7',dates:'May 11 – May 17',theme:'Why Smart Women Trade Happy Hours for Tee Times',blog:'Why Smart Women Are Trading Happy Hours for Tee Times',brief:'Themes: real estate on the course, partnerships, being in rooms that matter.',pod:{type:'record',text:'How golf changed my network, my deals, and my life in under two years'},yt:'"Two holes in one. Here is what golf actually taught me about wealth building"',tue:{type:'solo',text:'"The most valuable real estate conversations do not begin in boardrooms. They begin on the course"'},thu:{type:'rfs',text:'RFS clip — The Golf Course Prescription: why two nurses trade stethoscopes for golf clubs'},yc:'G.O.L.F. acronym graphic. Leisure pillar. Link to G.O.L.F. Blueprint.'},
+  {num:'Week 8',dates:'May 18 – May 24',theme:'The Loneliest Season of Success',blog:'The Loneliest Season of Success',brief:'Themes: being in the room, consistency, showing up when nobody is watching.',pod:{type:'record',text:'Nobody talks about the loneliness that comes with leveling up'},yt:'"The loneliest season of success — and the room that changed everything for me"',tue:{type:'solo',text:'"Somebody else winning is not your loss. But nobody told me growth would feel this quiet"'},thu:{type:'rfs',text:'RFS clip — The Health & Wealth Connection: why broke and unhealthy usually show up together'},yc:'"Who is in your corner as you build?" G.O.L.F. Circle soft push. Link to NOC.'},
+  {num:'Week 9',dates:'May 25 – May 31',theme:'The Mentor I Needed Was at the Driving Range',blog:'The Mentor I Needed Was Not in a Mastermind. He Was at the Driving Range.',brief:'Themes: mentorship, access, exposure to bigger thinking, acting on what you learn.',pod:{type:'record',text:'Where real mentorship actually lives and how to find it without paying for a room'},yt:'"The mentor I needed was at the driving range — my full story"',tue:{type:'solo',text:'"Not all mentorship comes from a program. Not all access comes from a paid room"'},thu:{type:'solo',text:'"Mentorship is not magic if you never act on what you learn"'},yc:'"Who was your unexpected mentor?" Engagement post. Link to blog + podcast.'},
+  {num:'Week 10',dates:'June 1 – June 7',theme:'How to Turn Your Expertise Into a Paid System',blog:'How to Turn Your Expertise Into a Paid System — G.O.L.F. Blueprint close',brief:'Themes: relational assets, reputational capital, entering rooms with confidence.',pod:{type:'record',text:'You are already an expert. Here is how to package what you know into real income'},yt:'"How to turn your expertise into a paid system in 90 days" — end with G.O.L.F. Blueprint CTA',tue:{type:'solo',text:'"Not all assets are financial at first. Some are relational. Some are reputational"'},thu:{type:'rfs',text:'RFS clip — How to Turn Your Expertise Into a Paid System with Dr. Catrina'},yc:'Full G.O.L.F. Blueprint push. "What is next after June 7?" Link to tmacinspired.com/noc'}
 ];
 
-function toggleWeek(idx){
-  const body=document.getElementById('cal-body-'+idx);
-  const icon=document.getElementById('cal-icon-'+idx);
+function toggleWeek(i){
+  const body=document.getElementById('cal-body-'+i);
+  const icon=document.getElementById('cal-icon-'+i);
   const open=body.classList.toggle('open');
   icon.textContent=open?'▲':'▼';
 }
@@ -843,12 +786,11 @@ function renderCalendar(){
       ?'<span class="cal-day-badge thu-rfs">Thu · RFS</span>'
       :'<span class="cal-day-badge thu-solo">Thu · Solo</span>';
     const podBadge=w.pod.type==='repurpose'
-      ?'<span class="cal-repurpose">Repurpose Ep</span>'
+      ?'<span class="cal-repurpose">Repurpose</span>'
       :'<span class="cal-day-badge mon">Mon · Record</span>';
-    return `
-    <div class="cal-week">
+    return `<div class="cal-week">
       <div class="cal-week-header" onclick="toggleWeek(${i})">
-        <span class="cal-week-num">${w.num} — ${w.dates}</span>
+        <span class="cal-week-num">${w.num} &nbsp;·&nbsp; ${w.dates}</span>
         <span class="cal-week-theme">${w.theme}</span>
         <span class="cal-week-toggle" id="cal-icon-${i}">▼</span>
       </div>
@@ -870,20 +812,19 @@ function renderCalendar(){
           <div class="cal-ch">
             <div class="cal-ch-label yt">YouTube</div>
             <span class="cal-day-badge mon">Mon · Record</span>
-            <span class="cal-day-badge wed" style="background:#cc0000; margin-left:2px;">Wed · Post</span>
-            <div class="cal-task">${w.yt.text}</div>
+            <span class="cal-day-badge wed-yt" style="margin-left:3px;">Wed · Post</span>
+            <div class="cal-task">${w.yt}</div>
           </div>
           <div class="cal-ch">
             <div class="cal-ch-label tt">TikTok</div>
             <span class="cal-day-badge tue">Tue · Solo</span>
             <div class="cal-task">${w.tue.text}</div>
-            <br/>
             ${thuBadge}
             <div class="cal-task">${w.thu.text}</div>
           </div>
           <div class="cal-ch">
-            <div class="cal-ch-label yc">YT Community</div>
-            <span class="cal-day-badge wed" style="background:#43a047;">Wed · Post</span>
+            <div class="cal-ch-label yc">Community</div>
+            <span class="cal-day-badge wed-yc">Wed · Post</span>
             <div class="cal-task">${w.yc}</div>
           </div>
         </div>
