@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Work With Dr. TMac | TMac Inspired</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --pine: #1f4236;
+      --gold: #c9a961;
+      --gold-light: #e8d5a3;
+      --cream: #fdfaf5;
+      --white: #ffffff;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --border: #ebebeb;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* TOP BAR */
+    .topbar {
+      display: flex;
+      justify-content: center;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: var(--pine);
+      text-transform: uppercase;
+    }
+
+    .logo span {
+      color: var(--gold);
+    }
+
+    /* HERO */
+    .hero {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 72px 24px 48px;
+      text-align: center;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 6vw, 3.6rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: 24px;
+      letter-spacing: -0.01em;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--pine);
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 520px;
+      margin: 0 auto 40px;
+    }
+
+    /* DIVIDER */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      max-width: 200px;
+      margin: 0 auto 56px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gold-light);
+    }
+
+    .divider-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    /* WHAT YOU GET */
+    .pillars {
+      max-width: 680px;
+      margin: 0 auto 64px;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 24px;
+      animation: fadeUp 0.7s 0.15s ease both;
+    }
+
+    .pillar {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 28px 24px;
+      text-align: left;
+    }
+
+    .pillar-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .pillar h3 {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--pine);
+      margin-bottom: 8px;
+    }
+
+    .pillar p {
+      font-size: 0.88rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* FORM SECTION */
+    .form-section {
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+      animation: fadeUp 0.7s 0.3s ease both;
+    }
+
+    .form-label-main {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      text-align: center;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .form-sublabel {
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--pine);
+    }
+
+    input, select, textarea {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--text);
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 14px 16px;
+      outline: none;
+      transition: border-color 0.2s ease;
+      width: 100%;
+      -webkit-appearance: none;
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: #c0c0c0;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--gold);
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9a961' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 40px;
+      cursor: pointer;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .submit-btn {
+      margin-top: 8px;
+      background: var(--pine);
+      color: var(--white);
+      border: none;
+      border-radius: 3px;
+      padding: 18px 32px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.1s ease;
+      width: 100%;
+    }
+
+    .submit-btn:hover {
+      background: #162e25;
+    }
+
+    .submit-btn:active {
+      transform: scale(0.99);
+    }
+
+    .form-note {
+      font-size: 0.75rem;
+      font-weight: 300;
+      color: #b0b0b0;
+      text-align: center;
+      margin-top: 14px;
+      line-height: 1.6;
+    }
+
+    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .spinner {
+      display: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin: 0 auto;
+    }
+    .submit-btn.loading .btn-text { display: none; }
+    .submit-btn.loading .spinner { display: block; }
+    .error-msg {
+      font-size: 0.8rem;
+      color: #c0392b;
+      text-align: center;
+      margin-top: 12px;
+      display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* SUCCESS STATE */
+    .success {
+      display: none;
+      text-align: center;
+      padding: 48px 24px;
+    }
+
+    .success-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+
+    .success-icon svg {
+      stroke: var(--gold);
+    }
+
+    .success h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+
+    .success p {
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px;
+      text-align: center;
+    }
+
+    footer p {
+      font-size: 0.75rem;
+      font-weight: 300;
+      color: #c0c0c0;
+      letter-spacing: 0.05em;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* MOBILE */
+    @media (max-width: 480px) {
+      .hero { padding: 48px 20px 36px; }
+      .pillars { grid-template-columns: 1fr; gap: 16px; padding: 0 20px; }
+      .form-section { padding: 0 20px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topbar">
+    <div class="logo">TMac <span>Inspired</span></div>
+  </nav>
+
+  <section class="hero">
+    <span class="eyebrow">Done-For-You Digital Infrastructure</span>
+    <h1>Your business deserves a system that <em>actually works.</em></h1>
+    <p>You built the career. You started the business. Now it is time to stop patching tools together and get a digital backbone built for the way you operate.</p>
+    <div class="divider"><div class="divider-dot"></div></div>
+  </section>
+
+  <div class="pillars">
+    <div class="pillar">
+      <div class="pillar-number">01</div>
+      <h3>Built for you</h3>
+      <p>No templates. No platforms to learn. A custom system built around your business logic.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-number">02</div>
+      <h3>Live in 14 days</h3>
+      <p>From intake call to deployed app in two weeks or less. Real infrastructure, real timeline.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-number">03</div>
+      <h3>You run it</h3>
+      <p>No developer dependency. No monthly platform fees. Just a system your business owns.</p>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <p class="form-label-main">Request a Consultation</p>
+    <p class="form-sublabel">Tell me about your business and your biggest tech headache. I will be in touch within 48 hours.</p>
+
+    <form class="form" id="leadForm">
+      <div class="field">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" placeholder="Dr. Jane Smith" required>
+      </div>
+      <div class="field">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="jane@yourbusiness.com" required>
+      </div>
+      <div class="field">
+        <label for="business">Type of Business</label>
+        <select id="business" required>
+          <option value="" disabled selected>Select your industry</option>
+          <option>Coaching or Consulting</option>
+          <option>Healthcare or Wellness</option>
+          <option>Real Estate or Property Management</option>
+          <option>Creative or Media</option>
+          <option>Professional Services</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="headache">Your Biggest Tech Headache</label>
+        <textarea id="headache" placeholder="Tell me what is not working. What are you doing manually that should be automated? What did you pay for that never got finished?" required></textarea>
+      </div>
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <span class="btn-text">Request My Consultation</span>
+        <span class="spinner"></span>
+      </button>
+      <p class="form-note">No pressure. No sales pitch on the call. Just a real conversation about what you need and whether I am the right person to build it.</p>
+      <p class="error-msg" id="errorMsg">Something went wrong. Please email support@tmacinspired.com directly.</p>
+    </form>
+
+    <div class="success" id="successMsg">
+      <div class="success-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <h2>You are on my radar.</h2>
+      <p>Thank you for reaching out. I review every submission personally and will be in touch within 48 hours. In the meantime, subscribe to the TMac Inspired YouTube channel for weekly content on building real business infrastructure.</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 TMac Inspired. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // ⚠️ REPLACE THIS with your deployed Apps Script Web App URL
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxlNRkXtHDv1nnQdWUAUJjg13gxO3t4vJqWUFa1T7BYnYA-nrQaMTDGUxqf8ekHnFDQXg/exec';
+
+    document.getElementById('leadForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const btn = document.getElementById('submitBtn');
+      const errorMsg = document.getElementById('errorMsg');
+
+      btn.classList.add('loading');
+      btn.disabled = true;
+      errorMsg.style.display = 'none';
+
+      const payload = {
+        name: document.getElementById('name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        business: document.getElementById('business').value,
+        headache: document.getElementById('headache').value.trim()
+      };
+
+      try {
+        const response = await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          document.getElementById('leadForm').style.display = 'none';
+          const success = document.getElementById('successMsg');
+          success.style.display = 'block';
+          success.style.animation = 'fadeUp 0.6s ease both';
+        } else {
+          throw new Error(result.error || 'Unknown error');
+        }
+
+      } catch (err) {
+        btn.classList.remove('loading');
+        btn.disabled = false;
+        errorMsg.style.display = 'block';
+        console.error('Submission error:', err);
+      }
+    });
+  </script>
+
+</body>
+</html>
