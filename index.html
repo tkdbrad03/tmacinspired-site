@@ -69,7 +69,6 @@
         }
         .header-banner img.logo { max-height: 80px; width: auto; }
         
-        /* New Nav Bar */
         .main-nav {
             text-align: center;
             padding: 1.5rem 0;
@@ -86,18 +85,18 @@
         }
         .main-nav a.active-link { color: var(--gold); border-bottom: 1px solid var(--gold); }
         .main-nav .btn-nav {
-    display: inline-block;
-    margin: 0 20px;
-    padding: 0.45rem 1.4rem;
-    border: 1px solid var(--gold);
-    color: var(--gold);
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    font-weight: 400;
-    transition: var(--transition);
-}
-.main-nav .btn-nav:hover { background: var(--gold); color: #fff; }
+            display: inline-block;
+            margin: 0 20px;
+            padding: 0.45rem 1.4rem;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 400;
+            transition: var(--transition);
+        }
+        .main-nav .btn-nav:hover { background: var(--gold); color: #fff; }
 
         header.hero { text-align: center; padding: 4rem 1rem 2rem 1rem; }
         .hero-statement { font-size: clamp(2rem, 4vw, 3rem); max-width: 800px; margin: 0 auto 1rem auto; }
@@ -119,6 +118,89 @@
         .section-padding { padding: 5rem 0; }
         .tee-room-section { background-color: #fcfbf9; text-align: center; border-top: 1px solid rgba(31, 66, 54, 0.05); border-bottom: 1px solid rgba(31, 66, 54, 0.05); margin: 4rem 0; }
 
+        /* --- DUAL PATH SECTION --- */
+        .dual-path {
+            margin: 3rem auto 5rem auto;
+            max-width: var(--max-w);
+            padding: 0 2rem;
+        }
+
+        .dual-path-label {
+            text-align: center;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .dual-path-heading {
+            text-align: center;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--text-light);
+            font-style: italic;
+            margin-bottom: 2.5rem;
+            font-weight: 400;
+        }
+
+        .dual-path-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+            border: 1px solid rgba(31, 66, 54, 0.08);
+        }
+
+        .path-card {
+            padding: 3rem 2.5rem;
+            background: #fdfaf5;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            transition: var(--transition);
+        }
+
+        .path-card:first-child {
+            border-right: 1px solid rgba(31, 66, 54, 0.08);
+        }
+
+        .path-card:hover {
+            background: #f7f2e8;
+        }
+
+        .path-card-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--gold);
+            margin-bottom: 0.75rem;
+        }
+
+        .path-card h2 {
+            font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+            color: var(--pine);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .path-card p {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            max-width: 28em;
+        }
+
+        .path-card .btn {
+            margin-top: auto;
+        }
+
+        .path-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
         /* --- FOOTER --- */
         footer { 
             padding: 6rem 0; 
@@ -138,6 +220,9 @@
             .offering-row:nth-child(even) .content-wrapper { order: 1; }
             .content-wrapper p { margin: 0 auto 2rem auto; }
             .main-nav a { margin: 0 10px; font-size: 0.7rem; }
+            .dual-path-grid { grid-template-columns: 1fr; gap: 2px; }
+            .path-card:first-child { border-right: none; border-bottom: 1px solid rgba(31, 66, 54, 0.08); }
+            .path-card { padding: 2.5rem 1.5rem; }
         }
     </style>
 </head>
@@ -151,93 +236,78 @@
     <a href="index.html" class="active-link">Home</a>
     <a href="about.html">About</a>
     <a href="https://tmacmastermind.com/tee-room.html">Blog</a>
-    <a href="tax-sale-academy-landing.html">Start Here</a>
     <a href="mailto:support@tmacinspired.com">Contact</a>
-    <a href="https://tmacinspired.com/noc" class="btn-nav">The G.O.L.F. Circle</a>
+    
 </nav>
 
 <header class="hero container reveal">
   <h1 class="hero-statement">
     The career you built was just the first chapter.<br>
-    Now, let’s design the one you actually want to live.<br>
-    Welcome to a life of leisure.
+    Now, let's design the one you actually want to live.<br>
   </h1>
-<p style="text-align:center; margin-top: 1rem; font-size: 1rem;">
-  Not sure where to begin? → 
-  <a href="tax-sale-academy-landing.html" style="color: var(--gold); text-decoration: underline;">
-    Start here
-  </a>
-</p>
 </header>
+
+<!-- DUAL PATH SECTION -->
+<div class="dual-path reveal">
+    <p class="dual-path-label">Where do you want to go?</p>
+    <p class="dual-path-heading">Tell me where you are and I will show you the door.</p>
+
+    <div class="dual-path-grid">
+        <div class="path-card">
+            <span class="path-card-label">For the woman ready to live</span>
+            <h2>I am designing my next chapter.</h2>
+            <p>You have built the career. You have done the work. Now you are ready to build a life that actually feels like yours — the golf, the freedom, the joy, the legacy.</p>
+            <a href="https://tmacinspired.com/noc" class="btn btn-gold">Enter The G.O.L.F. Circle</a>
+        </div>
+
+        <div class="path-card">
+            <span class="path-card-label">For the business owner ready to build</span>
+            <h2>I need my business system built.</h2>
+            <p>You have a real business but no digital infrastructure. No working portal, no automation, no app — just tools you paid for that never got finished. I build it. You run it.</p>
+            <a href="/work" class="btn">Get My System Built</a>
+        </div>
+    </div>
+</div>
 
 <main class="container">
     <div class="offering-grid">
         <section class="offering-row reveal">
-  <div class="image-wrapper">
-    <img src="TMac-Benny-Golf.png" alt="TMac and Benny golfing" loading="lazy">
-  </div>
-
-  <div class="content-wrapper">
-    <h3>THE ENTRY POINT</h3>
-    <h2>The Redesign</h2>
-
-    <p>
-      I spent years caring for others at the bedside. Now, I’m showing women over 40 and 50 how to care for their own dreams, their own time, and their own joy. From the grind to the fairway-this is how we redesign.
-    </p>
-
-    <a href="https://designrr.page/?id=493255&token=2163083487&type=FP&h=3111" class="btn" target="_blank" rel="noopener">
-      Redesign My Life
-    </a>
-  </div>
-</section>
+            <div class="image-wrapper">
+                <img src="TMac-Benny-Golf.png" alt="TMac and Benny golfing" loading="lazy">
+            </div>
+            <div class="content-wrapper">
+                <h3>THE ENTRY POINT</h3>
+                <h2>The Redesign</h2>
+                <p>I spent years caring for others at the bedside. Now, I'm showing women over 40 and 50 how to care for their own dreams, their own time, and their own joy. From the grind to the fairway — this is how we redesign.</p>
+                <a href="https://designrr.page/?id=493255&token=2163083487&type=FP&h=3111" class="btn" target="_blank" rel="noopener">Redesign My Life</a>
+            </div>
+        </section>
 
         <section class="offering-row reveal">
-    <div class="image-wrapper">
-        <img src="tee-room-hero.png" alt="TMac in the Tee Room" loading="lazy">
-    </div>
-    <div class="content-wrapper">
-        <h3>THE CONTENT</h3>
-        <h2>The Tee Room</h2>
-        <p>Daily permission for women who are ready to stop negotiating with the life they want. Enter the room where accomplished women play their own game.</p>
-        <a href="https://tmacmastermind.com/tee-room.html" class="btn">Read the Latest</a>
-    </div>
-</section>
+            <div class="image-wrapper">
+                <img src="tee-room-hero.png" alt="TMac in the Tee Room" loading="lazy">
+            </div>
+            <div class="content-wrapper">
+                <h3>THE CONTENT</h3>
+                <h2>The Tee Room</h2>
+                <p>Daily permission for women who are ready to stop negotiating with the life they want. Enter the room where accomplished women play their own game.</p>
+                <a href="https://tmacmastermind.com/tee-room.html" class="btn">Read the Latest</a>
+            </div>
+        </section>
+
 
         <section class="offering-row reveal">
-    <div class="image-wrapper horizontal">
-        <img src="tmac-private-jet.png" alt="TMac on plane" loading="lazy">
-    </div>
-    <div class="content-wrapper">
-        <h3>THE EXCLUSIVE DESIGN SESSION</h3>
-        <h2>The Pivot Masterclass: Opening for Registration Soon.</h2>
-        <p>I am currently focused on the nines and the current cohort of life architects. To ensure the highest level of proximity and transformation, I only host this intensive 90-minute design session a few times a year. Join the priority waitlist to get 'First Tee' access before the public release.</p>
-        <a href="https://forms.gle/ZMwbbeeLdwzEnnaK7" class="btn">SECURE MY PRIORITY ACCESS</a>
-    </div>
-</section>
+            <div class="image-wrapper book-mode">
+                <img src="fairway-cover.png" alt="The Fairway to Wealth Book">
+            </div>
+            <div class="content-wrapper">
+                <h3>The Book</h3>
+                <h2>The Fairway to Wealth</h2>
+                <p>This is not a book about golf. It is a strategy for entering rooms where relationships, access, and opportunity are already in motion. Read it. Use it. Move differently.</p>
+                <a href="https://www.tmacinspired.com/fairway-to-wealth" class="btn btn-gold">Get the Book</a>
+            </div>
+        </section>
 
-        <section class="offering-row reveal">
-    <div class="image-wrapper book-mode">
-        <img src="fairway-cover.png" alt="The Fairway to Wealth Book">
-    </div>
-    <div class="content-wrapper">
-        <h3>The Book</h3>
-        <h2>The Fairway to Wealth</h2>
-        <p>This is not a book about golf. It is a strategy for entering rooms where relationships, access, and opportunity are already in motion. Read it. Use it. Move differently.</p>
-        <a href="https://www.tmacinspired.com/fairway-to-wealth" class="btn btn-gold">Get the Book</a>
-    </div>
-</section>
-
-        <section class="offering-row reveal">
-    <div class="image-wrapper">
-        <img src="tax-sale-hero.png" alt="Tax Sale Academy" loading="lazy">
-    </div>
-    <div class="content-wrapper">
-        <h3>Free Resource</h3>
-        <h2>Tax Sale Academy</h2>
-        <p>Buy land and homes for as little as $500 at tax sales. A complete blueprint built for nurses building generational wealth -- yours free.</p>
-        <a href="tax-sale-academy-landing.html" class="btn">Get Free Access</a>
-    </div>
-</section>
 
         <section class="offering-row reveal">
             <div class="image-wrapper">
