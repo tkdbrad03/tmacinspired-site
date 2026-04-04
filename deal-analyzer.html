@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="description" content="TMac Inspired Deal Analyzer — Real Estate Investment Calculator">
+<meta name="theme-color" content="#1f4236">
+<title>Deal Analyzer — TMac Inspired</title>
+<link rel="icon" type="image/png" href="tmac-logo.png">
+
+<!-- PWA / Offline -->
+<link rel="manifest" href="#" />
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --pine:        #1f4236;
+    --pine-light:  #2d5a4a;
+    --pine-pale:   #eef4f1;
+    --gold:        #c9a961;
+    --gold-light:  #f0e8d5;
+    --gold-dark:   #a8883e;
+    --white:       #ffffff;
+    --cream:       #faf8f3;
+    --ink:         #1a1a1a;
+    --muted:       #6b7c75;
+    --border:      #e2ddd4;
+    --red:         #c0392b;
+    --green:       #1f7a4a;
+    --radius:      14px;
+    --shadow:      0 4px 24px rgba(31,66,54,0.10);
+    --shadow-sm:   0 2px 10px rgba(31,66,54,0.07);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /*  HEADER  */
+  .app-header {
+    background: var(--pine);
+    padding: 18px 20px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+  }
+  .header-inner {
+    max-width: 480px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo-block { display: flex; flex-direction: column; gap: 1px; }
+  .logo-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .logo-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 0.01em;
+    line-height: 1;
+  }
+
+
+  /*  DEAL TYPE TABS  */
+  .tabs-wrap {
+    background: var(--cream);
+    border-bottom: 1px solid var(--border);
+    padding: 0 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs-wrap::-webkit-scrollbar { display: none; }
+  .tabs {
+    max-width: 480px;
+    margin: 0 auto;
+    display: flex;
+    gap: 4px;
+    padding: 10px 0;
+    white-space: nowrap;
+  }
+  .tab-btn {
+    flex-shrink: 0;
+    padding: 7px 16px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab-btn.active {
+    background: var(--pine);
+    color: var(--white);
+    border-color: var(--pine);
+  }
+
+  /*  MAIN  */
+  .main {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 20px 16px 100px;
+  }
+
+  /*  DEAL PANELS  */
+  .deal-panel { display: none; }
+  .deal-panel.active { display: block; }
+
+  /*  SECTION CARD  */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .card-header {
+    background: var(--pine);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-icon {
+    width: 28px;
+    height: 28px;
+    background: var(--gold);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .card-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+  .card-body { padding: 16px; }
+
+  /*  FIELD  */
+  .field { margin-bottom: 14px; }
+  .field:last-child { margin-bottom: 0; }
+  .field-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .field-row {
+    display: flex;
+    gap: 10px;
+  }
+  .field-row .field { flex: 1; margin-bottom: 0; }
+
+  .input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .input-prefix, .input-suffix {
+    position: absolute;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    pointer-events: none;
+    z-index: 1;
+  }
+  .input-prefix { left: 12px; }
+  .input-suffix { right: 12px; }
+
+  input[type="number"], input[type="text"], select {
+    width: 100%;
+    height: 46px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    background: var(--white);
+    padding: 0 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+    outline: none;
+  }
+  input[type="number"]:focus, select:focus {
+    border-color: var(--pine);
+    box-shadow: 0 0 0 3px rgba(31,66,54,0.10);
+  }
+  .has-prefix input { padding-left: 26px; }
+  .has-suffix input { padding-right: 36px; }
+
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7c75' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+    cursor: pointer;
+  }
+
+  /*  RESULTS  */
+  .results-card {
+    background: var(--pine);
+    border-radius: var(--radius);
+    padding: 20px 16px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .results-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+  }
+  .results-sub {
+    font-size: 11px;
+    color: rgba(201,169,97,0.8);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .metric {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .metric.full { grid-column: 1 / -1; }
+  .metric.highlight {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+  .metric-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 5px;
+  }
+  .metric.highlight .metric-label { color: rgba(31,66,54,0.7); }
+  .metric-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+  }
+  .metric.highlight .metric-value { color: var(--pine); }
+  .metric-value.positive { color: #5dca8a; }
+  .metric-value.negative { color: #f07070; }
+  .metric-value.neutral  { color: var(--white); }
+
+  /*  VERDICT  */
+  .verdict {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .verdict.go    { background: rgba(93,202,138,0.12); border: 1px solid rgba(93,202,138,0.3); }
+  .verdict.caution { background: rgba(240,191,0,0.12); border: 1px solid rgba(240,191,0,0.3); }
+  .verdict.stop  { background: rgba(240,112,112,0.12); border: 1px solid rgba(240,112,112,0.3); }
+  .verdict-icon {
+    font-size: 13px;
+    font-weight: 800;
+    font-family: 'DM Sans', sans-serif;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+  .verdict.go    .verdict-icon { background: rgba(93,202,138,0.25); color: #5dca8a; }
+  .verdict.caution .verdict-icon { background: rgba(240,191,0,0.25); color: #f0bf00; }
+  .verdict.stop  .verdict-icon { background: rgba(240,112,112,0.25); color: #f07070; }
+  .verdict-text { flex: 1; }
+  .verdict-head {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 2px;
+    letter-spacing: 0.05em;
+  }
+  .verdict-body {
+    font-size: 11px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.5;
+  }
+
+  /*  CTA BUTTON  */
+  .calc-btn {
+    width: 100%;
+    height: 52px;
+    background: var(--gold);
+    color: var(--pine);
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: background 0.2s, transform 0.1s;
+    box-shadow: 0 4px 16px rgba(201,169,97,0.3);
+  }
+  .calc-btn:active { transform: scale(0.98); }
+  .calc-btn:hover  { background: var(--gold-dark); }
+
+  .reset-btn {
+    width: 100%;
+    height: 42px;
+    background: transparent;
+    color: var(--muted);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    margin-bottom: 20px;
+  }
+
+  /*  NOTES  */
+  .notes-area {
+    width: 100%;
+    min-height: 80px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    padding: 12px 14px;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .notes-area:focus { border-color: var(--pine); }
+
+  /*  TOGGLE HELPER  */
+  .helper-text {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+
+  /*  SAVE STRIP  */
+  .save-strip {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    padding: 12px 16px;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.07);
+  }
+  .save-btn {
+    flex: 1;
+    height: 46px;
+    background: var(--pine);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+  }
+  .history-btn {
+    height: 46px;
+    width: 46px;
+    background: var(--cream);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /*  HISTORY MODAL  */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 200;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--white);
+    border-radius: 20px 20px 0 0;
+    width: 100%;
+    max-width: 480px;
+    max-height: 75vh;
+    overflow-y: auto;
+    padding: 20px 16px 40px;
+  }
+  .modal-handle {
+    width: 40px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 0 auto 18px;
+  }
+  .modal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--pine);
+    margin-bottom: 16px;
+  }
+  .history-item {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .history-item:hover { border-color: var(--pine); }
+  .history-item-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 6px;
+  }
+  .history-address {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    flex: 1;
+    margin-right: 8px;
+  }
+  .history-type {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--pine);
+    background: var(--pine-pale);
+    padding: 3px 8px;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+  .history-meta {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .history-stat {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .history-stat span {
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .history-delete {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 2px 6px;
+    margin-left: 4px;
+  }
+  .empty-history {
+    text-align: center;
+    padding: 40px 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .empty-history .empty-icon { font-size: 36px; margin-bottom: 10px; }
+
+  /*  TOAST  */
+  .toast {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--pine);
+    color: var(--white);
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 300;
+    white-space: nowrap;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /*  PRINT  */
+  @media print {
+    .tabs-wrap, .save-strip, .calc-btn, .reset-btn, .app-header { display: none !important; }
+    .results-card { background: #1f4236 !important; -webkit-print-color-adjust: exact; }
+    .deal-panel { display: block !important; }
+  }
+
+  /*  ANIMATIONS  */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .card { animation: fadeIn 0.3s ease both; }
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.10s; }
+  .card:nth-child(3) { animation-delay: 0.15s; }
+  .card:nth-child(4) { animation-delay: 0.20s; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="app-header">
+  <div class="header-inner">
+    <div class="logo-block">
+      <span class="logo-eyebrow">TMac Inspired</span>
+      <span class="logo-name">Deal Analyzer</span>
+    </div>
+
+  </div>
+</header>
+
+<!-- DEAL TYPE TABS -->
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('rental')">Rental</button>
+    <button class="tab-btn" onclick="switchTab('flip')">Fix & Flip</button>
+    <button class="tab-btn" onclick="switchTab('grouphome')">Group Home</button>
+    <button class="tab-btn" onclick="switchTab('taxsale')">Tax Sale</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!--  RENTAL  -->
+  <div class="deal-panel active" id="panel-rental">
+
+    <!-- Property Info -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">&#9670;</div>
+        <span class="card-title">Property Info</span>
+      </div>
+      <div class="card-body">
+        <div class="field">
+          <label class="field-label">Property Address</label>
+          <input type="text" id="r-address" placeholder="123 Fairway Dr, Tampa FL" />
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Purchase Price</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="r-price" placeholder="150,000" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">After Repair Value</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="r-arv" placeholder="200,000" />
+            </div>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Down Payment %</label>
+            <div class="input-wrap has-suffix">
+              <input type="number" id="r-down" placeholder="20" value="20" />
+              <span class="input-suffix">%</span>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Repair Costs</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="r-repairs" placeholder="10,000" value="0" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Income -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">&#9670;</div>
+        <span class="card-title">Monthly Income</span>
+      </div>
+      <div class="card-body">
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Monthly Rent</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="r-rent" placeholder="1,500" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Vacancy Rate</label>
+            <div class="input-wrap has-suffix">
+              <input type="number" id="r-vacancy" placeholder="8" value="8" />
+              <span class="input-suffix">%</span>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Other Monthly Income (laundry, parking…)</label>
+          <div class="input-wrap has-prefix">
+            <span class="input-prefix">$</span>
+            <input type="number" id="r-other-income" placeholder="0" value="0" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Expenses -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">&#9670;</div>
+        <span class="card-title">Monthly Expenses</span>
+      </div>
+      <div class="card-body">
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Interest Rate</label>
+            <div class="input-wrap has-suffix">
+              <input type="number" id="r-rate" placeholder="7.5" value="7.5" step="0.1" />
+              <span class="input-suffix">%</span>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Loan Term</label>
+            <select id="r-term">
+              <option value="30">30 years</option>
+              <option value="20">20 years</option>
+              <option value="15">15 years</option>
+              <option value="10">10 years</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Property Tax / mo</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="r-tax" placeholder="150" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Insurance / mo</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="r-insurance" placeholder="100" />
+            </div>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">HOA / mo</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="r-hoa" placeholder="0" value="0" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Prop. Mgmt %</label>
+            <div class="input-wrap has-suffix">
+              <input type="number" id="r-mgmt" placeholder="10" value="10" />
+              <span class="input-suffix">%</span>
+            </div>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Maintenance / mo</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="r-maint" placeholder="100" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">CapEx Reserve / mo</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="r-capex" placeholder="100" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="calc-btn" onclick="calcRental()">Analyze This Deal</button>
+    <button class="reset-btn" onclick="resetPanel('rental')">Reset Fields</button>
+
+    <!-- Results -->
+    <div id="r-results" style="display:none;">
+      <div class="results-card">
+        <div class="results-title">Deal Scorecard</div>
+        <div class="results-sub">Rental Property Analysis</div>
+        <div class="metrics-grid">
+          <div class="metric highlight">
+            <div class="metric-label">Monthly Cash Flow</div>
+            <div class="metric-value" id="r-cashflow">—</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Cash-on-Cash ROI</div>
+            <div class="metric-value" id="r-coc">—</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Cap Rate</div>
+            <div class="metric-value" id="r-caprate">—</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Gross Rent Mult.</div>
+            <div class="metric-value" id="r-grm">—</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Monthly Mortgage</div>
+            <div class="metric-value" id="r-mortgage">—</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Total Cash In</div>
+            <div class="metric-value" id="r-cashin">—</div>
+          </div>
+          <div class="metric full">
+            <div class="metric-label">Annual NOI</div>
+            <div class="metric-value" id="r-noi">—</div>
+          </div>
+        </div>
+        <div id="r-verdict" class="verdict go" style="margin-top:14px;"></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">&#9670;</div>
+          <span class="card-title">Deal Notes</span>
+        </div>
+        <div class="card-body">
+          <textarea class="notes-area" id="r-notes" placeholder="Neighborhood notes, seller motivation, exit strategy…"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--  FIX & FLIP  -->
+  <div class="deal-panel" id="panel-flip">
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">&#9670;</div>
+        <span class="card-title">Property Info</span>
+      </div>
+      <div class="card-body">
+        <div class="field">
+          <label class="field-label">Property Address</label>
+          <input type="text" id="f-address" placeholder="456 Birdie Lane, Tampa FL" />
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Purchase Price</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="f-price" placeholder="80,000" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">After Repair Value</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="f-arv" placeholder="180,000" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">&#9670;</div>
+        <span class="card-title">Rehab & Costs</span>
+      </div>
+      <div class="card-body">
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Repair Costs</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="f-repairs" placeholder="40,000" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Holding Period</label>
+            <select id="f-hold">
+              <option value="3">3 months</option>
+              <option value="4">4 months</option>
+              <option value="5">5 months</option>
+              <option value="6" selected>6 months</option>
+              <option value="9">9 months</option>
+              <option value="12">12 months</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Closing Costs (buy)</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="f-close-buy" placeholder="2,500" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Closing Costs (sell)</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="f-close-sell" placeholder="5,000" />
+            </div>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Monthly Holding</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="f-holding" placeholder="1,200" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Agent Commission</label>
+            <div class="input-wrap has-suffix">
+              <input type="number" id="f-commission" placeholder="6" value="6" step="0.5" />
+              <span class="input-suffix">%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="calc-btn" onclick="calcFlip()">Analyze This Deal</button>
+    <button class="reset-btn" onclick="resetPanel('flip')">Reset Fields</button>
+
+    <div id="f-results" style="display:none;">
+      <div class="results-card">
+        <div class="results-title">Flip Scorecard</div>
+        <div class="results-sub">Fix & Flip Analysis</div>
+        <div class="metrics-grid">
+          <div class="metric highlight">
+            <div class="metric-label">Net Profit</div>
+            <div class="metric-value" id="f-profit">—</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">ROI</div>
+            <div class="metric-value" id="f-roi">—</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">MAO (70% Rule)</div>
+            <div class="metric-value" id="f-mao">—</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Total Invested</div>
+            <div class="metric-value" id="f-invested">—</div>
+          </div>
+          <div class="metric full">
+            <div class="metric-label">Total Costs</div>
+            <div class="metric-value" id="f-costs">—</div>
+          </div>
+        </div>
+        <div id="f-verdict" class="verdict go" style="margin-top:14px;"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-icon">&#9670;</div><span class="card-title">Deal Notes</span></div>
+        <div class="card-body">
+          <textarea class="notes-area" id="f-notes" placeholder="Contractor quotes, comparable sales, buyer pool notes…"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--  GROUP HOME  -->
+  <div class="deal-panel" id="panel-grouphome">
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">&#9670;</div>
+        <span class="card-title">Property Info</span>
+      </div>
+      <div class="card-body">
+        <div class="field">
+          <label class="field-label">Property Address</label>
+          <input type="text" id="g-address" placeholder="789 Eagle Ave, Tampa FL" />
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Purchase / Lease Price</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="g-price" placeholder="200,000" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Setup / Licensing Costs</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="g-setup" placeholder="15,000" />
+            </div>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">No. of Beds</label>
+            <input type="number" id="g-beds" placeholder="6" min="1" />
+          </div>
+          <div class="field">
+            <label class="field-label">Facility Type</label>
+            <select id="g-type">
+              <option value="alf">ALF</option>
+              <option value="group">Group Home</option>
+              <option value="sober">Sober Living</option>
+              <option value="memory">Memory Care</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">&#9670;</div>
+        <span class="card-title">Revenue</span>
+      </div>
+      <div class="card-body">
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Rate per Bed / mo</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="g-rate" placeholder="3,000" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Avg Occupancy</label>
+            <div class="input-wrap has-suffix">
+              <input type="number" id="g-occ" placeholder="85" value="85" />
+              <span class="input-suffix">%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">&#9670;</div>
+        <span class="card-title">Monthly Expenses</span>
+      </div>
+      <div class="card-body">
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Mortgage / Rent</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="g-mortgage" placeholder="1,400" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Staffing / mo</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="g-staff" placeholder="8,000" />
+            </div>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Food & Supplies</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="g-food" placeholder="1,500" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Insurance / mo</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="g-insurance" placeholder="600" />
+            </div>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Utilities / mo</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="g-utilities" placeholder="500" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Licensing Fees / mo</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="g-license" placeholder="200" />
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Other Monthly Expenses</label>
+          <div class="input-wrap has-prefix">
+            <span class="input-prefix">$</span>
+            <input type="number" id="g-other" placeholder="0" value="0" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="calc-btn" onclick="calcGroupHome()">Analyze This Deal</button>
+    <button class="reset-btn" onclick="resetPanel('grouphome')">Reset Fields</button>
+
+    <div id="g-results" style="display:none;">
+      <div class="results-card">
+        <div class="results-title">Group Home Scorecard</div>
+        <div class="results-sub">Residential Care Analysis</div>
+        <div class="metrics-grid">
+          <div class="metric highlight">
+            <div class="metric-label">Monthly Net Profit</div>
+            <div class="metric-value" id="g-netprofit">—</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Annual Net</div>
+            <div class="metric-value" id="g-annual">—</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Gross Revenue / mo</div>
+            <div class="metric-value" id="g-gross">—</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Total Expenses / mo</div>
+            <div class="metric-value" id="g-expenses">—</div>
+          </div>
+          <div class="metric full">
+            <div class="metric-label">Profit Margin</div>
+            <div class="metric-value" id="g-margin">—</div>
+          </div>
+        </div>
+        <div id="g-verdict" class="verdict go" style="margin-top:14px;"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-icon">&#9670;</div><span class="card-title">Deal Notes</span></div>
+        <div class="card-body">
+          <textarea class="notes-area" id="g-notes" placeholder="License status, referral sources, administrator notes…"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--  TAX SALE  -->
+  <div class="deal-panel" id="panel-taxsale">
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">&#9670;</div>
+        <span class="card-title">Property Info</span>
+      </div>
+      <div class="card-body">
+        <div class="field">
+          <label class="field-label">Property Address / Parcel</label>
+          <input type="text" id="t-address" placeholder="Parcel # or address" />
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Bid / Purchase Price</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="t-bid" placeholder="12,000" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Market Value (Est.)</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="t-market" placeholder="80,000" />
+            </div>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Back Taxes Owed</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="t-taxes" placeholder="5,000" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Redemption Period</label>
+            <select id="t-redemption">
+              <option value="0">None</option>
+              <option value="1">1 year</option>
+              <option value="2" selected>2 years</option>
+              <option value="3">3 years</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">&#9670;</div>
+        <span class="card-title">Costs & Exit Strategy</span>
+      </div>
+      <div class="card-body">
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Est. Repair Costs</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="t-repairs" placeholder="20,000" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Legal / Title Costs</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="t-legal" placeholder="2,000" />
+            </div>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Expected Sale Price</label>
+            <div class="input-wrap has-prefix">
+              <span class="input-prefix">$</span>
+              <input type="number" id="t-sale" placeholder="75,000" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Selling Costs</label>
+            <div class="input-wrap has-suffix">
+              <input type="number" id="t-sellcost" placeholder="8" value="8" step="0.5" />
+              <span class="input-suffix">%</span>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Exit Strategy</label>
+          <select id="t-exit">
+            <option value="flip">Flip / Sell</option>
+            <option value="rent">Hold & Rent</option>
+            <option value="lien">Tax Lien Interest</option>
+            <option value="wholesale">Wholesale</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <button class="calc-btn" onclick="calcTaxSale()">Analyze This Deal</button>
+    <button class="reset-btn" onclick="resetPanel('taxsale')">Reset Fields</button>
+
+    <div id="t-results" style="display:none;">
+      <div class="results-card">
+        <div class="results-title">Tax Sale Scorecard</div>
+        <div class="results-sub">Tax Deed / Lien Analysis</div>
+        <div class="metrics-grid">
+          <div class="metric highlight">
+            <div class="metric-label">Projected Profit</div>
+            <div class="metric-value" id="t-profit">—</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">ROI</div>
+            <div class="metric-value" id="t-roi">—</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Total All-In Cost</div>
+            <div class="metric-value" id="t-allin">—</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Equity Spread</div>
+            <div class="metric-value" id="t-equity">—</div>
+          </div>
+          <div class="metric full">
+            <div class="metric-label">Net After All Costs</div>
+            <div class="metric-value" id="t-net">—</div>
+          </div>
+        </div>
+        <div id="t-verdict" class="verdict go" style="margin-top:14px;"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-icon">&#9670;</div><span class="card-title">Deal Notes</span></div>
+        <div class="card-body">
+          <textarea class="notes-area" id="t-notes" placeholder="Parcel notes, title issues, neighborhood comps…"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- SAVE STRIP -->
+<div class="save-strip">
+  <button class="save-btn" onclick="saveDeal()">Save Deal</button>
+  <button class="history-btn" onclick="openHistory()" title="Deal History">📂</button>
+</div>
+
+<!-- HISTORY MODAL -->
+<div class="modal-overlay" id="historyModal" onclick="closeHistoryOutside(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Saved Deals</div>
+    <div id="history-list"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/*  UTILITIES  */
+const $ = id => document.getElementById(id);
+const val = id => parseFloat($( id)?.value) || 0;
+const fmt = n => '$' + Math.abs(n).toLocaleString('en-US', {minimumFractionDigits:0, maximumFractionDigits:0});
+const fmtPct = n => n.toFixed(1) + '%';
+
+function pmt(rate, nper, pv) {
+  if (rate === 0) return pv / nper;
+  return (rate * pv) / (1 - Math.pow(1 + rate, -nper));
+}
+
+function setMetric(id, value, isPositive) {
+  const el = $(id); if (!el) return;
+  el.textContent = value;
+  el.className = 'metric-value';
+  if (isPositive === true)  el.classList.add('positive');
+  if (isPositive === false) el.classList.add('negative');
+}
+
+function setVerdict(id, cashflow, type) {
+  const el = $(id); if (!el) return;
+  let cls, icon, head, body;
+  if (type === 'rental') {
+    if (cashflow >= 300)       { cls='go';      icon='+'; head='TMac Approved — Take the Shot'; body='Solid cash flow. This deal fits the blueprint.'; }
+    else if (cashflow >= 0)    { cls='caution'; icon='!'; head='On the Fence — Review Carefully'; body='Marginal cash flow. Negotiate harder or walk.'; }
+    else                       { cls='stop';    icon='×'; head='No-Go — Leave This One'; body='Negative cash flow. This deal costs you money.'; }
+  } else if (type === 'flip') {
+    if (cashflow >= 30000)     { cls='go';      icon='+'; head='TMac Approved — Green Light'; body='Strong profit margin. Pull the trigger.'; }
+    else if (cashflow >= 10000){ cls='caution'; icon='!'; head='Thin Margin — Negotiate Down'; body='Profit exists but leaves little room for error.'; }
+    else                       { cls='stop';    icon='×'; head='No-Go — Numbers Don\'t Work'; body='Not enough meat on the bone. Keep looking.'; }
+  } else if (type === 'grouphome') {
+    if (cashflow >= 3000)      { cls='go';      icon='+'; head='TMac Approved — Excellent Margins'; body='Strong monthly net. This is the leverage play.'; }
+    else if (cashflow >= 1000) { cls='caution'; icon='!'; head='Viable — Watch Your Expenses'; body='Workable but optimize staffing and occupancy.'; }
+    else                       { cls='stop';    icon='×'; head='No-Go — Too Thin'; body='Margins too low for the operational complexity.'; }
+  } else {
+    if (cashflow >= 20000)     { cls='go';      icon='+'; head='TMac Approved — Great Spread'; body='Strong equity position on this acquisition.'; }
+    else if (cashflow >= 5000) { cls='caution'; icon='!'; head='Possible — Verify Title Carefully'; body='Moderate upside. Do deep due diligence.'; }
+    else                       { cls='stop';    icon='×'; head='No-Go — Spread Too Thin'; body='Not enough equity buffer for the risk.'; }
+  }
+  el.className = `verdict ${cls}`;
+  el.innerHTML = `<span class="verdict-icon">${icon}</span><div class="verdict-text"><div class="verdict-head">${head}</div><div class="verdict-body">${body}</div></div>`;
+}
+
+/*  TAB SWITCH  */
+let currentTab = 'rental';
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.deal-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  $(`panel-${tab}`).classList.add('active');
+  event.target.classList.add('active');
+}
+
+/*  RESET  */
+function resetPanel(tab) {
+  const prefix = {rental:'r', flip:'f', grouphome:'g', taxsale:'t'}[tab];
+  $(`panel-${tab}`).querySelectorAll('input[type="number"], input[type="text"]').forEach(i => {
+    if (i.defaultValue) i.value = i.defaultValue; else i.value = '';
+  });
+  const res = $(`${prefix}-results`);
+  if (res) res.style.display = 'none';
+}
+
+/*  RENTAL CALC  */
+function calcRental() {
+  const price     = val('r-price');
+  const downPct   = val('r-down') / 100;
+  const repairs   = val('r-repairs');
+  const rent      = val('r-rent');
+  const vacancy   = val('r-vacancy') / 100;
+  const otherInc  = val('r-other-income');
+  const rate      = val('r-rate') / 100 / 12;
+  const term      = val('r-term') * 12;
+  const tax       = val('r-tax');
+  const ins       = val('r-insurance');
+  const hoa       = val('r-hoa');
+  const mgmtPct   = val('r-mgmt') / 100;
+  const maint     = val('r-maint');
+  const capex     = val('r-capex');
+
+  const loanAmt   = price * (1 - downPct);
+  const mortgage  = pmt(rate, term, loanAmt);
+  const effRent   = rent * (1 - vacancy) + otherInc;
+  const mgmt      = effRent * mgmtPct;
+  const totalExp  = mortgage + tax + ins + hoa + mgmt + maint + capex;
+  const cashflow  = effRent - totalExp;
+  const cashin    = price * downPct + repairs;
+  const noi       = (effRent - (tax + ins + hoa + mgmt + maint + capex)) * 12;
+  const capRate   = (noi / price) * 100;
+  const coc       = (cashflow * 12) / cashin * 100;
+  const grm       = price / (rent * 12);
+
+  $('r-results').style.display = 'block';
+  setMetric('r-cashflow', (cashflow >= 0 ? '+' : '-') + fmt(cashflow), cashflow >= 0);
+  setMetric('r-coc',      fmtPct(coc),  coc >= 8);
+  setMetric('r-caprate',  fmtPct(capRate), capRate >= 6);
+  setMetric('r-grm',      grm.toFixed(1) + 'x', null);
+  setMetric('r-mortgage', fmt(mortgage), null);
+  setMetric('r-cashin',   fmt(cashin), null);
+  setMetric('r-noi',      fmt(noi), noi > 0);
+  setVerdict('r-verdict', cashflow, 'rental');
+  $('r-results').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+/*  FLIP CALC  */
+function calcFlip() {
+  const price      = val('f-price');
+  const arv        = val('f-arv');
+  const repairs    = val('f-repairs');
+  const holdMos    = val('f-hold');
+  const closeBuy   = val('f-close-buy');
+  const closeSell  = val('f-close-sell');
+  const holdingMo  = val('f-holding');
+  const commPct    = val('f-commission') / 100;
+
+  const commission = arv * commPct;
+  const holdCost   = holdingMo * holdMos;
+  const totalCosts = price + repairs + closeBuy + closeSell + holdCost + commission;
+  const profit     = arv - totalCosts;
+  const invested   = price + repairs + closeBuy + holdCost;
+  const roi        = (profit / invested) * 100;
+  const mao        = (arv * 0.70) - repairs;
+
+  $('f-results').style.display = 'block';
+  setMetric('f-profit',   (profit >= 0 ? '' : '-') + fmt(profit), profit >= 0);
+  setMetric('f-roi',      fmtPct(roi), roi >= 20);
+  setMetric('f-mao',      fmt(mao), null);
+  setMetric('f-invested', fmt(invested), null);
+  setMetric('f-costs',    fmt(totalCosts), null);
+  setVerdict('f-verdict', profit, 'flip');
+  $('f-results').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+/*  GROUP HOME CALC  */
+function calcGroupHome() {
+  const beds    = val('g-beds');
+  const rate    = val('g-rate');
+  const occ     = val('g-occ') / 100;
+  const mort    = val('g-mortgage');
+  const staff   = val('g-staff');
+  const food    = val('g-food');
+  const ins     = val('g-insurance');
+  const util    = val('g-utilities');
+  const lic     = val('g-license');
+  const other   = val('g-other');
+
+  const gross    = beds * rate * occ;
+  const expenses = mort + staff + food + ins + util + lic + other;
+  const net      = gross - expenses;
+  const annual   = net * 12;
+  const margin   = (net / gross) * 100;
+
+  $('g-results').style.display = 'block';
+  setMetric('g-netprofit', (net >= 0 ? '+' : '-') + fmt(net), net >= 0);
+  setMetric('g-annual',    (annual >= 0 ? '+' : '') + fmt(annual), annual >= 0);
+  setMetric('g-gross',     fmt(gross), null);
+  setMetric('g-expenses',  fmt(expenses), null);
+  setMetric('g-margin',    fmtPct(isNaN(margin) ? 0 : margin), margin >= 20);
+  setVerdict('g-verdict', net, 'grouphome');
+  $('g-results').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+/*  TAX SALE CALC  */
+function calcTaxSale() {
+  const bid       = val('t-bid');
+  const market    = val('t-market');
+  const backTax   = val('t-taxes');
+  const repairs   = val('t-repairs');
+  const legal     = val('t-legal');
+  const sale      = val('t-sale');
+  const sellPct   = val('t-sellcost') / 100;
+
+  const sellCosts = sale * sellPct;
+  const allIn     = bid + backTax + repairs + legal;
+  const netSale   = sale - sellCosts;
+  const profit    = netSale - allIn;
+  const roi       = (profit / allIn) * 100;
+  const equity    = market - allIn;
+
+  $('t-results').style.display = 'block';
+  setMetric('t-profit', (profit >= 0 ? '+' : '-') + fmt(profit), profit >= 0);
+  setMetric('t-roi',    fmtPct(roi), roi >= 20);
+  setMetric('t-allin',  fmt(allIn), null);
+  setMetric('t-equity', fmt(equity), equity > 0);
+  setMetric('t-net',    (profit >= 0 ? '+' : '-') + fmt(profit), profit >= 0);
+  setVerdict('t-verdict', profit, 'taxsale');
+  $('t-results').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+/*  SAVE / HISTORY  */
+function getDeals() {
+  try { return JSON.parse(localStorage.getItem('tmac_deals') || '[]'); } catch { return []; }
+}
+function saveDeals(deals) {
+  try { localStorage.setItem('tmac_deals', JSON.stringify(deals)); } catch {}
+}
+
+function saveDeal() {
+  const tab = currentTab;
+  const prefixMap = {rental:'r', flip:'f', grouphome:'g', taxsale:'t'};
+  const p = prefixMap[tab];
+  const resultEl = $(`${p}-results`);
+  if (!resultEl || resultEl.style.display === 'none') {
+    showToast('Run the analysis first.');
+    return;
+  }
+  const addrEl = $(`${p}-address`);
+  const address = addrEl?.value || 'Unnamed Deal';
+  const keyMetricEl = document.querySelector(`#${p}-results .metric.highlight .metric-value`);
+  const keyMetric = keyMetricEl ? keyMetricEl.textContent : '—';
+  const notesEl = $(`${p}-notes`);
+  const notes = notesEl?.value || '';
+  const deal = {
+    id: Date.now(),
+    tab,
+    address,
+    keyMetric,
+    notes,
+    date: new Date().toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'})
+  };
+  const deals = getDeals();
+  deals.unshift(deal);
+  saveDeals(deals.slice(0, 50));
+  showToast('Deal saved.');
+}
+
+function openHistory() {
+  renderHistory();
+  $('historyModal').classList.add('open');
+}
+function closeHistoryOutside(e) {
+  if (e.target === $('historyModal')) $('historyModal').classList.remove('open');
+}
+
+function renderHistory() {
+  const deals = getDeals();
+  const list = $('history-list');
+  if (!deals.length) {
+    list.innerHTML = '<div class="empty-history"><div class="empty-icon"></div>No saved deals yet.<br>Analyze a deal and tap Save.</div>';
+    return;
+  }
+  const typeLabel = {rental:'Rental', flip:'Fix & Flip', grouphome:'Group Home', taxsale:'Tax Sale'};
+  list.innerHTML = deals.map(d => `
+    <div class="history-item">
+      <div class="history-item-top">
+        <div class="history-address">${d.address}</div>
+        <span class="history-type">${typeLabel[d.tab] || d.tab}</span>
+        <button class="history-delete" onclick="deleteDeal(${d.id})" title="Delete">&#x2715;</button>
+      </div>
+      <div class="history-meta">
+        <div class="history-stat">Key: <span>${d.keyMetric}</span></div>
+        <div class="history-stat">Saved: <span>${d.date}</span></div>
+        ${d.notes ? `<div class="history-stat" style="width:100%">Notes: ${d.notes.slice(0,60)}${d.notes.length>60?'…':''}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function deleteDeal(id) {
+  const deals = getDeals().filter(d => d.id !== id);
+  saveDeals(deals);
+  renderHistory();
+}
+
+function showToast(msg) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+/*  OFFLINE CACHE via Cache API  */
+if ('serviceWorker' in navigator) {
+  // Inline SW via blob for zero-config offline
+  const swCode = `
+    const CACHE = 'tmac-deal-v1';
+    self.addEventListener('install', e => {
+      e.waitUntil(caches.open(CACHE).then(c => c.addAll(['/deal-analyzer.html'])));
+    });
+    self.addEventListener('fetch', e => {
+      e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+    });
+  `;
+  const blob = new Blob([swCode], {type:'application/javascript'});
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl).catch(() => {});
+}
+</script>
+</body>
+</html>
