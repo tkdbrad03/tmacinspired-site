@@ -1284,6 +1284,15 @@
     <div class="mental-pill"><span class="mental-pill-icon">🤔</span><span class="mental-pill-text">Tempted to hero → <strong>"Smart bogey beats risky double."</strong></span></div>
     <div class="mental-pill"><span class="mental-pill-icon">📍</span><span class="mental-pill-text">Out of position → <strong>"Punch out. Set up wedge. Win."</strong></span></div>
   </div>
+  
+  <div class="section">
+  <div class="section-label">Voice Coach</div>
+
+  <button class="btn" onclick="playAudio('pregame')">Play Pre-Game</button>
+  <button class="btn" onclick="playAudio('preshot')">Play Pre-Shot</button>
+  <button class="btn" onclick="playAudio('reset')">Play Reset</button>
+  <button class="btn" onclick="playAudio('finish')">Play Finish</button>
+</div>
 
   <div class="section">
     <div class="section-label">Strategist Mindset</div>
@@ -1645,6 +1654,22 @@ function getCaddieDecision(distance, lie, hole) {
     avoid: 'Complication',
     cue: 'Keep it simple.'
   };
+}
+
+const audioMap = {
+  pregame: new Audio('pregame.m4a'),
+  preshot: new Audio('preshot.m4a'),
+  reset: new Audio('reset.m4a'),
+  finish: new Audio('finish.m4a')
+};
+
+function playAudio(key) {
+  Object.values(audioMap).forEach(a => {
+    a.pause();
+    a.currentTime = 0;
+  });
+
+  audioMap[key].play();
 }
 
 buildHoleList();
