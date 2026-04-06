@@ -931,6 +931,24 @@
     font-family: var(--font-serif);
   }
 
+  .caddie-select {
+  width: 100%;
+  padding: 14px 12px;
+  border: 1px solid var(--gray-line);
+  background: var(--bg);
+  color: var(--text-main);
+  font-family: var(--font-serif);
+  font-size: 14px;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+
+.caddie-select:focus {
+  border-color: var(--pine);
+}
+
   /* ─── TOAST ─── */
   .toast {
     position: fixed;
@@ -990,6 +1008,7 @@
   <button class="nav-tab" onclick="showPage('wedge', this)">Wedge</button>
   <button class="nav-tab" onclick="showPage('scorecard', this)">Score</button>
   <button class="nav-tab" onclick="showPage('goals', this)">Goals</button>
+  <button class="nav-tab" onclick="showPage('caddie', this)">Caddie</button>
   <button class="nav-tab" onclick="showPage('mental', this)">Mental</button>
 </nav>
 
@@ -1177,6 +1196,77 @@
 
 </div>
 
+<!-- ═══════════════ CADDIE ═══════════════ -->
+<div class="page" id="page-caddie">
+
+  <div class="hero-block">
+    <div class="hero-eyebrow">Caddie Mode</div>
+    <div class="hero-quote" style="font-size:1.2rem;">Get the play. Commit. Move.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Ask Caddie</div>
+
+    <div class="reminder-box" style="display:flex; flex-direction:column; gap:14px;">
+      
+      <div>
+        <div style="font-size:8px; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold); margin-bottom:8px;">Distance</div>
+        <select id="caddieDistance" class="caddie-select">
+          <option value="">Choose distance</option>
+          <option value="250plus">250+</option>
+          <option value="200to250">200–250</option>
+          <option value="150to200">150–200</option>
+          <option value="under150">Under 150</option>
+        </select>
+      </div>
+
+      <div>
+        <div style="font-size:8px; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold); margin-bottom:8px;">Lie</div>
+        <select id="caddieLie" class="caddie-select">
+          <option value="">Choose lie</option>
+          <option value="fairway">Fairway</option>
+          <option value="rough">Rough</option>
+          <option value="trouble">Trouble</option>
+        </select>
+      </div>
+
+      <div>
+        <div style="font-size:8px; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold); margin-bottom:8px;">Hole Type</div>
+        <select id="caddieHole" class="caddie-select">
+          <option value="">Choose hole type</option>
+          <option value="par3">Par 3</option>
+          <option value="par4">Par 4</option>
+          <option value="par5">Par 5</option>
+        </select>
+      </div>
+
+      <button class="btn" onclick="runCaddie()">Get The Play</button>
+    </div>
+  </div>
+
+  <div class="section" id="caddieResultSection" style="display:none;">
+    <div class="section-label">Caddie Says</div>
+
+    <div class="rule-pill accent" style="margin-bottom:8px;">
+      <span class="rule-icon">Shot</span>
+      <span class="rule-text" id="caddieShot"></span>
+    </div>
+
+    <div class="rule-pill" style="margin-bottom:8px;">
+      <span class="rule-icon">Target</span>
+      <span class="rule-text" id="caddieTarget"></span>
+    </div>
+
+    <div class="rule-pill danger" style="margin-bottom:8px;">
+      <span class="rule-icon">Avoid</span>
+      <span class="rule-text" id="caddieAvoid"></span>
+    </div>
+
+    <div class="coach-msg" id="caddieCue"></div>
+  </div>
+
+</div>  
+  
 <!-- ═══════════════ MENTAL ═══════════════ -->
 <div class="page" id="page-mental">
 
@@ -1416,6 +1506,145 @@ function showToast(msg) {
   t.textContent = msg;
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function runCaddie() {
+  const distance = document.getElementById('caddieDistance').value;
+  const lie = document.getElementById('caddieLie').value;
+  const hole = document.getElementById('caddieHole').value;
+
+  if (!distance || !lie || !hole) {
+    showToast('Choose all 3 inputs');
+    return;
+  }
+
+  const result = getCaddieDecision(distance, lie, hole);
+
+  document.getElementById('caddieShot').textContent = result.shot;
+  document.getElementById('caddieTarget').textContent = result.target;
+  document.getElementById('caddieAvoid').textContent = result.avoid;
+  document.getElementById('caddieCue').textContent = result.cue;
+  document.getElementById('caddieResultSection').style.display = 'block';
+  document.getElementById('caddieResultSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  showToast('Caddie ready');
+}
+
+function getCaddieDecision(distance, lie, hole) {
+  if (lie === 'trouble') {
+    return {
+      shot: 'Punch out immediately',
+      target: 'Get back to 30–50 yards',
+      avoid: 'Hero shot from trouble',
+      cue: 'Punch out. Set up your wedge. Win the next shot.'
+    };
+  }
+
+  if (hole === 'par5') {
+    if (distance === '250plus') {
+      return {
+        shot: 'Lay up',
+        target: '50 yards',
+        avoid: 'Going for it from too far back',
+        cue: 'This is not a go-for-it shot. Set up your wedge.'
+      };
+    }
+
+    if (distance === '200to250') {
+      return {
+        shot: lie === 'fairway' ? 'Lay up with control' : 'Lay up safely',
+        target: '40 yards',
+        avoid: 'Forcing a long second shot',
+        cue: 'No hero shot. Lay up to 40. That is the play.'
+      };
+    }
+
+    if (distance === '150to200') {
+      return {
+        shot: lie === 'fairway' ? 'Decide by safe miss' : 'Favor the layup',
+        target: lie === 'fairway' ? 'Middle or 30-yard wedge' : '30 yards',
+        avoid: 'Short-siding or bringing double into play',
+        cue: 'Protect the score. Your number matters more than the flag.'
+      };
+    }
+
+    return {
+      shot: 'Attack with discipline',
+      target: 'Middle of green or 30-yard leave',
+      avoid: 'Pin chasing',
+      cue: 'Commit to the number. Middle is always safe.'
+    };
+  }
+
+  if (hole === 'par4') {
+    if (distance === '250plus') {
+      return {
+        shot: 'Advance safely',
+        target: '50 yards',
+        avoid: 'Trying to create a miracle',
+        cue: 'Smart bogey beats risky double.'
+      };
+    }
+
+    if (distance === '200to250') {
+      return {
+        shot: 'Play the smart second shot',
+        target: '40–50 yards',
+        avoid: 'Overreaching from long range',
+        cue: 'Play to your wedge, not to ego.'
+      };
+    }
+
+    if (distance === '150to200') {
+      return {
+        shot: lie === 'fairway' ? 'Play to the middle' : 'Take the safer line',
+        target: 'Middle of green',
+        avoid: 'Pin hunting',
+        cue: 'Middle of green. Bogey is acceptable. Double is not.'
+      };
+    }
+
+    return {
+      shot: 'Controlled approach',
+      target: 'Middle of green',
+      avoid: 'Short side miss',
+      cue: 'Pick the landing spot. Commit. No guessing.'
+    };
+  }
+
+  if (hole === 'par3') {
+    if (distance === '250plus' || distance === '200to250') {
+      return {
+        shot: 'Take enough club and play safe',
+        target: 'Center of green',
+        avoid: 'Coming up short',
+        cue: 'Center green only. No pin hunting.'
+      };
+    }
+
+    if (distance === '150to200') {
+      return {
+        shot: 'Commit to center-green shot',
+        target: 'Middle of green',
+        avoid: 'Short-sided miss',
+        cue: 'Take enough club. Middle is the target.'
+      };
+    }
+
+    return {
+      shot: 'Simple committed swing',
+      target: 'Center or fat side',
+      avoid: 'Chasing tucked pins',
+      cue: 'Center green. Take your par or bogey and move.'
+    };
+  }
+
+  return {
+    shot: 'Reset',
+    target: '30 yards',
+    avoid: 'Complication',
+    cue: 'Keep it simple.'
+  };
 }
 
 buildHoleList();
