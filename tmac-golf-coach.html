@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
+<title>TMac Golf Coach</title>
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/tkdbrad03/tmacinspired-site/main/TMacs-Golf-Coach.png">
+<style>
+  /* ─── EXACT SITE VARIABLES ─── */
+  :root {
+    --bg: #ffffff;
+    --pine: #1f4236;
+    --gold: #c9a961;
+    --rose: #b76e79;
+    --text-main: #1f4236;
+    --text-light: #5c6b64;
+    --font-serif: Georgia, 'Times New Roman', Times, serif;
+    --transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+
+    /* App-specific additions */
+    --pine-dark: #162e25;
+    --pine-light: #e8eeeb;
+    --gold-light: #f5eddb;
+    --rose-light: #f9eeef;
+    --gray-line: rgba(31,66,54,0.08);
+    --gray-muted: rgba(31,66,54,0.35);
+    --radius: 2px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text-main);
+    font-family: var(--font-serif);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    max-width: 430px;
+    margin: 0 auto;
+    overflow-x: hidden;
+  }
+
+  /* ─── HEADER ─── */
+  .app-header {
+    background: var(--pine);
+    padding: 16px 20px 14px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand-name {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 28px;
+    color: var(--bg);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .brand-sub {
+    font-size: 8px;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 4px;
+    font-family: var(--font-serif);
+  }
+
+  .header-right { text-align: right; }
+
+  .target-label {
+    font-size: 8px;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .target-score {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 28px;
+    color: var(--bg);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  /* ─── NAV ─── */
+  .nav-tabs {
+    display: flex;
+    background: var(--bg);
+    border-bottom: 1px solid var(--gray-line);
+    overflow-x: auto;
+    scrollbar-width: none;
+    position: sticky;
+    top: 62px;
+    z-index: 99;
+  }
+
+  .nav-tabs::-webkit-scrollbar { display: none; }
+
+  .nav-tab {
+    flex: 1;
+    min-width: 68px;
+    padding: 12px 6px;
+    text-align: center;
+    font-family: var(--font-serif);
+    font-size: 9px;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    cursor: pointer;
+    border: none;
+    background: none;
+    border-bottom: 2px solid transparent;
+    transition: var(--transition);
+    white-space: nowrap;
+    margin-bottom: -1px;
+  }
+
+  .nav-tab.active {
+    color: var(--pine);
+    border-bottom-color: var(--gold);
+  }
+
+  /* ─── PAGES ─── */
+  .page { display: none; padding: 0 0 100px; animation: fadeIn 0.3s ease; }
+  .page.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ─── HERO BLOCK ─── */
+  .hero-block {
+    background: var(--pine);
+    padding: 32px 24px 24px;
+  }
+
+  .hero-eyebrow {
+    font-size: 8px;
+    font-family: var(--font-serif);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .hero-quote {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-style: italic;
+    font-size: clamp(1.3rem, 4vw, 1.6rem);
+    color: var(--bg);
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+
+  .hero-divider {
+    height: 1px;
+    background: rgba(201,169,97,0.3);
+    margin-bottom: 16px;
+  }
+
+  .hero-sub {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.05em;
+    line-height: 1.9;
+  }
+
+  .hero-sub strong { color: rgba(255,255,255,0.85); font-weight: 400; }
+
+  /* ─── SECTIONS ─── */
+  .section { padding: 24px 20px; border-bottom: 1px solid var(--gray-line); }
+  .section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-size: 8px;
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  /* ─── RULE PILLS ─── */
+  .rules-grid { display: flex; flex-direction: column; gap: 8px; }
+
+  .rule-pill {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 15px;
+    background: var(--pine-light);
+    border-left: 2px solid var(--pine);
+  }
+
+  .rule-pill.danger { border-left-color: var(--rose); background: var(--rose-light); }
+  .rule-pill.accent { border-left-color: var(--gold); background: var(--gold-light); }
+
+  .rule-icon { font-size: 16px; flex-shrink: 0; }
+
+  .rule-text {
+    font-family: var(--font-serif);
+    font-size: 13px;
+    color: var(--text-main);
+    line-height: 1.4;
+  }
+
+  /* ─── CHECKLIST ─── */
+  .checklist-wrap {
+    border: 1px solid var(--gray-line);
+    overflow: hidden;
+  }
+
+  .checklist-header {
+    padding: 13px 18px;
+    background: var(--pine);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .checklist-title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 15px;
+    color: var(--bg);
+    letter-spacing: -0.01em;
+  }
+
+  .checklist-reset {
+    font-family: var(--font-serif);
+    font-size: 9px;
+    color: rgba(255,255,255,0.5);
+    background: none;
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 4px 10px;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: var(--transition);
+  }
+
+  .checklist-reset:hover { color: var(--gold); border-color: var(--gold); }
+
+  .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 15px 18px;
+    border-bottom: 1px solid var(--gray-line);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .checklist-item:last-child { border-bottom: none; }
+  .checklist-item:active { background: var(--pine-light); }
+
+  .check-num {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    color: var(--gold);
+    line-height: 1;
+    width: 18px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .check-content { flex: 1; }
+
+  .check-q {
+    font-family: var(--font-serif);
+    font-size: 14px;
+    color: var(--text-main);
+    margin-bottom: 2px;
+    transition: color 0.2s;
+  }
+
+  .check-hint {
+    font-size: 11px;
+    color: var(--text-light);
+    letter-spacing: 0.03em;
+  }
+
+  .check-box {
+    width: 22px;
+    height: 22px;
+    border: 1px solid rgba(31,66,54,0.25);
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 3px;
+    transition: all 0.2s;
+  }
+
+  .check-box.checked { background: var(--pine); border-color: var(--pine); }
+  .check-tick { font-size: 11px; color: var(--gold); display: none; }
+  .check-box.checked .check-tick { display: block; }
+  .checklist-item.done .check-q { color: var(--text-light); text-decoration: line-through; }
+
+  /* ─── HOLE LIST ─── */
+  .hole-list-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 15px;
+    border: 1px solid var(--gray-line);
+    margin-bottom: 6px;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .hole-list-item:active { background: var(--pine-light); }
+
+  .hole-list-num {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 28px;
+    color: var(--pine);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    width: 26px;
+    flex-shrink: 0;
+  }
+
+  .hole-list-title {
+    font-family: var(--font-serif);
+    font-size: 13px;
+    color: var(--text-main);
+    margin-bottom: 2px;
+  }
+
+  .hole-list-tip {
+    font-size: 11px;
+    color: var(--text-light);
+  }
+
+  .hole-list-chevron { font-size: 16px; color: var(--gold); margin-left: auto; }
+
+  /* ─── WEDGE ─── */
+  .wedge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+  .wedge-card {
+    background: var(--pine);
+    padding: 18px 16px 14px;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    border: 2px solid transparent;
+  }
+
+  .wedge-card:active { opacity: 0.85; }
+
+  .wedge-card.active-wedge {
+    border-color: var(--gold);
+    background: var(--pine-dark);
+  }
+
+  .wedge-unit {
+    font-size: 8px;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .wedge-yards {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 52px;
+    color: var(--bg);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+
+  .wedge-desc {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.4;
+  }
+
+  .wedge-card.active-wedge .wedge-desc { color: rgba(255,255,255,0.8); }
+
+  .wedge-badge {
+    position: absolute;
+    top: 10px; right: 10px;
+    background: var(--gold);
+    color: var(--pine-dark);
+    font-size: 8px;
+    font-weight: 400;
+    padding: 2px 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ─── BUTTONS (site style) ─── */
+  .btn {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    border: 1px solid var(--pine);
+    color: var(--pine);
+    font-family: var(--font-serif);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: transparent;
+    cursor: pointer;
+    transition: var(--transition);
+    width: 100%;
+    margin-top: 12px;
+  }
+
+  .btn:hover, .btn:active { background: var(--pine); color: var(--bg); }
+
+  .btn-gold {
+    border-color: var(--gold);
+    color: var(--gold);
+    margin-top: 12px;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .btn-gold.ready { opacity: 1; pointer-events: auto; }
+  .btn-gold:hover, .btn-gold:active { background: var(--gold); color: var(--pine-dark); }
+
+  /* ─── COACH MSG ─── */
+  .coach-msg {
+    background: var(--pine-light);
+    border-left: 2px solid var(--pine);
+    padding: 16px;
+    font-family: var(--font-serif);
+    font-size: 14px;
+    font-style: italic;
+    line-height: 1.7;
+    color: var(--text-main);
+  }
+
+  /* ─── REMINDER BOX ─── */
+  .reminder-box {
+    border: 1px solid var(--gray-line);
+    padding: 16px;
+  }
+
+  .reminder-item {
+    font-family: var(--font-serif);
+    font-size: 13px;
+    color: var(--text-light);
+    line-height: 2;
+  }
+
+  .reminder-item strong { color: var(--text-main); font-weight: 400; }
+
+  /* ─── SCORECARD ─── */
+  .score-header-row {
+    display: grid;
+    grid-template-columns: 40px 42px 50px 1fr 68px;
+    background: var(--pine);
+    padding: 10px 14px;
+  }
+
+  .score-col-head {
+    font-size: 8px;
+    font-family: var(--font-serif);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-align: center;
+  }
+
+  .score-col-head:first-child { text-align: left; }
+
+  .nine-label {
+    background: var(--pine-light);
+    color: var(--text-main);
+    font-size: 8px;
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 7px 14px;
+    border-bottom: 1px solid var(--gray-line);
+  }
+
+  .score-row {
+    display: grid;
+    grid-template-columns: 40px 42px 50px 1fr 68px;
+    padding: 0 14px;
+    border-bottom: 1px solid var(--gray-line);
+    align-items: center;
+    min-height: 50px;
+  }
+
+  .hole-num {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 22px;
+    color: var(--pine);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .hole-par {
+    text-align: center;
+    font-family: var(--font-serif);
+    font-size: 13px;
+    color: var(--text-light);
+  }
+
+  .hole-goal-sc {
+    text-align: center;
+    font-size: 10px;
+    color: var(--text-light);
+  }
+
+  .hole-tip-sc {
+    font-size: 10px;
+    color: var(--text-light);
+    padding: 0 6px;
+    line-height: 1.3;
+  }
+
+  .score-input-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+  }
+
+  .score-btn {
+    width: 24px; height: 24px;
+    border: 1px solid var(--gray-line);
+    background: var(--bg);
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--pine);
+    font-weight: 400;
+    line-height: 1;
+    transition: var(--transition);
+  }
+
+  .score-btn:active { background: var(--pine); color: var(--bg); }
+
+  .score-val {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 24px;
+    width: 30px;
+    text-align: center;
+    color: var(--text-main);
+    letter-spacing: -0.02em;
+  }
+
+  .score-val.birdie { color: var(--gold); }
+  .score-val.par-score { color: var(--pine); }
+  .score-val.bogey { color: var(--text-main); }
+  .score-val.double { color: var(--rose); }
+  .score-val.worse { color: var(--rose); font-size: 18px; }
+
+  /* ─── TOTALS ─── */
+  .totals-bar {
+    background: var(--pine);
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .total-block { text-align: center; }
+  .total-block:first-child { text-align: left; }
+  .total-block:last-child { text-align: right; }
+
+  .total-label {
+    font-size: 8px;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .total-num {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 34px;
+    color: var(--bg);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .total-num.good { color: #a8d5b5; }
+  .total-num.warn { color: #e8a0a0; }
+
+  /* ─── PROGRESS ─── */
+  .progress-wrap { padding: 20px 20px 0; }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+
+  .progress-title {
+    font-size: 8px;
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-light);
+  }
+
+  .progress-pct {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    color: var(--pine);
+    letter-spacing: -0.02em;
+  }
+
+  .progress-bar { height: 2px; background: var(--gray-line); }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--pine), var(--gold));
+    transition: width 0.5s ease;
+  }
+
+  /* ─── GOALS ─── */
+  .goals-grid { display: flex; flex-direction: column; gap: 8px; }
+
+  .goal-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 15px;
+    border: 1px solid var(--gray-line);
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .goal-card.achieved {
+    background: var(--pine-light);
+    border-color: var(--pine);
+  }
+
+  .goal-icon { font-size: 17px; flex-shrink: 0; }
+
+  .goal-text {
+    font-family: var(--font-serif);
+    font-size: 13px;
+    color: var(--text-main);
+    flex: 1;
+    line-height: 1.4;
+  }
+
+  .goal-card.achieved .goal-text { color: var(--pine); }
+
+  .goal-check {
+    width: 20px; height: 20px;
+    border: 1px solid rgba(31,66,54,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: transparent;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .goal-card.achieved .goal-check {
+    background: var(--pine);
+    border-color: var(--pine);
+    color: var(--gold);
+  }
+
+  /* ─── TARGET TABLE ─── */
+  .target-table { border: 1px solid var(--gray-line); overflow: hidden; }
+
+  .tt-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    text-align: center;
+    padding: 10px 16px;
+    background: var(--pine);
+  }
+
+  .tt-head {
+    font-size: 8px;
+    font-family: var(--font-serif);
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .tt-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    text-align: center;
+    padding: 14px 16px;
+    border-top: 1px solid var(--gray-line);
+  }
+
+  .tt-type {
+    font-family: var(--font-serif);
+    font-size: 13px;
+    color: var(--text-main);
+  }
+
+  .tt-target {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    color: var(--pine);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .tt-note {
+    font-size: 11px;
+    color: var(--text-light);
+  }
+
+  /* ─── MENTAL ─── */
+  .mental-hero {
+    background: var(--pine);
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 44px 24px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .mental-bg {
+    position: absolute;
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 110px;
+    color: rgba(201,169,97,0.06);
+    letter-spacing: 10px;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .mental-quote {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.2rem, 4vw, 1.5rem);
+    color: var(--bg);
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+    position: relative;
+    z-index: 1;
+  }
+
+  .mental-attr {
+    font-size: 8px;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .mental-pill {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    border-left: 2px solid var(--gold);
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    background: var(--gold-light);
+  }
+
+  .mental-pill-icon { font-size: 14px; flex-shrink: 0; margin-top: 2px; }
+
+  .mental-pill-text {
+    font-family: var(--font-serif);
+    font-size: 13px;
+    color: var(--text-main);
+    line-height: 1.5;
+  }
+
+  .mental-pill-text strong { font-weight: 400; font-style: italic; color: var(--pine); }
+
+  .info-box {
+    background: var(--pine);
+    padding: 20px;
+  }
+
+  .info-box-title {
+    font-size: 8px;
+    font-family: var(--font-serif);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+
+  .info-box-body {
+    font-family: var(--font-serif);
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    line-height: 2.2;
+  }
+
+  .info-box-body span { color: var(--bg); }
+  .info-box-body .danger { color: #e8a0a0; }
+
+  .prose-block {
+    background: var(--pine-light);
+    padding: 18px;
+    border-left: 2px solid var(--pine);
+  }
+
+  .prose-block p {
+    font-family: var(--font-serif);
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--text-main);
+    max-width: none;
+    margin-bottom: 0;
+  }
+
+  .prose-block p + p { margin-top: 14px; }
+
+  /* ─── MODAL ─── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(31,66,54,0.6);
+    z-index: 200;
+    align-items: flex-end;
+    justify-content: center;
+    backdrop-filter: blur(3px);
+  }
+
+  .modal-overlay.open { display: flex; animation: slideUp 0.3s ease; }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+  .modal-card {
+    background: var(--bg);
+    padding: 24px 20px 48px;
+    width: 100%;
+    max-width: 430px;
+    max-height: 72vh;
+    overflow-y: auto;
+    position: relative;
+    border-top: 3px solid var(--pine);
+  }
+
+  .modal-pill {
+    width: 32px; height: 2px;
+    background: var(--gray-line);
+    margin: 0 auto 20px;
+  }
+
+  .modal-hole-num {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 52px;
+    color: var(--pine);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .modal-par-label {
+    font-size: 12px;
+    color: var(--text-light);
+    letter-spacing: 0.05em;
+    margin-bottom: 18px;
+    margin-top: 2px;
+  }
+
+  .modal-tip {
+    display: flex;
+    gap: 10px;
+    padding: 11px 14px;
+    margin-bottom: 8px;
+    align-items: flex-start;
+    border-left: 2px solid var(--pine);
+    background: var(--pine-light);
+  }
+
+  .modal-tip.bad { border-left-color: var(--rose); background: var(--rose-light); }
+  .modal-tip.warm { border-left-color: var(--gold); background: var(--gold-light); }
+  .modal-tip-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+  .modal-tip-text {
+    font-family: var(--font-serif);
+    font-size: 13px;
+    color: var(--text-main);
+    line-height: 1.5;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 16px; right: 18px;
+    background: var(--pine-light);
+    border: none;
+    width: 28px; height: 28px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-main);
+    font-family: var(--font-serif);
+  }
+
+  /* ─── TOAST ─── */
+  .toast {
+    position: fixed;
+    top: 76px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-14px);
+    background: var(--pine);
+    color: var(--bg);
+    padding: 10px 20px;
+    font-family: var(--font-serif);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    z-index: 300;
+    opacity: 0;
+    transition: all 0.3s;
+    white-space: nowrap;
+    pointer-events: none;
+    border-bottom: 1px solid var(--gold);
+  }
+
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  .reset-btn {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 1px solid var(--gray-line);
+    font-family: var(--font-serif);
+    font-size: 11px;
+    color: var(--text-light);
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: var(--transition);
+  }
+
+  .reset-btn:hover { border-color: var(--pine); color: var(--pine); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="app-header">
+  <div>
+    <div class="brand-name">TMac</div>
+    <div class="brand-sub">Golf · Strategist Mode</div>
+  </div>
+  <div class="header-right">
+    <div class="target-label">Break</div>
+    <div class="target-score" id="headerScore">83</div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="nav-tabs">
+  <button class="nav-tab active" onclick="showPage('strategy', this)">Strategy</button>
+  <button class="nav-tab" onclick="showPage('wedge', this)">Wedge</button>
+  <button class="nav-tab" onclick="showPage('scorecard', this)">Score</button>
+  <button class="nav-tab" onclick="showPage('goals', this)">Goals</button>
+  <button class="nav-tab" onclick="showPage('mental', this)">Mental</button>
+</nav>
+
+<!-- ═══════════════ STRATEGY ═══════════════ -->
+<div class="page active" id="page-strategy">
+
+  <div class="hero-block">
+    <div class="hero-eyebrow">TMac Inspired · Strategist Mode</div>
+    <div class="hero-quote">"I don't chase scores.<br>I execute my system."</div>
+    <div class="hero-divider"></div>
+    <div class="hero-sub">
+      <strong>Play to yardages,</strong> not flags &nbsp;·&nbsp; <strong>Bogey</strong> acceptable<br>
+      <strong>Doubles</strong> are not &nbsp;·&nbsp; Every hole has a <strong>safe miss</strong>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">My Game Rules</div>
+    <div class="rules-grid">
+      <div class="rule-pill"><span class="rule-icon">🎯</span><span class="rule-text">Play to yardages, not flags</span></div>
+      <div class="rule-pill accent"><span class="rule-icon">⭐</span><span class="rule-text">Stock wedge = 30 yards — my money shot</span></div>
+      <div class="rule-pill"><span class="rule-icon">✅</span><span class="rule-text">Bogey is acceptable</span></div>
+      <div class="rule-pill danger"><span class="rule-icon">❌</span><span class="rule-text">Doubles are not acceptable</span></div>
+      <div class="rule-pill"><span class="rule-icon">🛡️</span><span class="rule-text">Every hole has a safe miss — find it first</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Pre-Shot Checklist</div>
+    <div class="checklist-wrap">
+      <div class="checklist-header">
+        <span class="checklist-title">Every Shot · 4 Questions</span>
+        <button class="checklist-reset" onclick="resetChecklist()">Reset</button>
+      </div>
+      <div class="checklist-item" onclick="toggleCheck(this)">
+        <div class="check-num">1</div>
+        <div class="check-content"><div class="check-q">What's my number?</div><div class="check-hint">20 / 30 / 40 / 50 yards</div></div>
+        <div class="check-box"><span class="check-tick">✓</span></div>
+      </div>
+      <div class="checklist-item" onclick="toggleCheck(this)">
+        <div class="check-num">2</div>
+        <div class="check-content"><div class="check-q">Where's the safe miss?</div><div class="check-hint">Short side = never · Fat side = always</div></div>
+        <div class="check-box"><span class="check-tick">✓</span></div>
+      </div>
+      <div class="checklist-item" onclick="toggleCheck(this)">
+        <div class="check-num">3</div>
+        <div class="check-content"><div class="check-q">Where's my landing spot?</div><div class="check-hint">Specific target · Middle of green default</div></div>
+        <div class="check-box"><span class="check-tick">✓</span></div>
+      </div>
+      <div class="checklist-item" onclick="toggleCheck(this)">
+        <div class="check-num">4</div>
+        <div class="check-content"><div class="check-q">Commit.</div><div class="check-hint">No guessing after this point</div></div>
+        <div class="check-box"><span class="check-tick">✓</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Hole Strategy — Tap for detail</div>
+    <div id="holeList"></div>
+  </div>
+
+</div>
+
+<!-- ═══════════════ WEDGE ═══════════════ -->
+<div class="page" id="page-wedge">
+
+  <div class="hero-block" style="text-align:center;">
+    <div class="hero-eyebrow">Wedge System</div>
+    <div class="hero-quote" style="font-size:1.2rem;">"Pick the number. Commit. No guessing."</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Select Your Distance</div>
+    <div class="wedge-grid">
+      <div class="wedge-card" onclick="selectWedge(20, this)">
+        <span class="wedge-unit">yards</span>
+        <div class="wedge-yards">20</div>
+        <div class="wedge-desc">Small swing</div>
+      </div>
+      <div class="wedge-card" onclick="selectWedge(30, this)">
+        <span class="wedge-unit">yards ⭐ money</span>
+        <div class="wedge-yards">30</div>
+        <div class="wedge-desc">Choke down · &lt;½ swing</div>
+      </div>
+      <div class="wedge-card" onclick="selectWedge(40, this)">
+        <span class="wedge-unit">yards</span>
+        <div class="wedge-yards">40</div>
+        <div class="wedge-desc">½ swing</div>
+      </div>
+      <div class="wedge-card" onclick="selectWedge(50, this)">
+        <span class="wedge-unit">yards</span>
+        <div class="wedge-yards">50</div>
+        <div class="wedge-desc">¾ swing</div>
+      </div>
+    </div>
+    <button class="btn btn-gold" id="commitBtn" onclick="commitWedge()">⚑ &nbsp;Commit to Shot</button>
+  </div>
+
+  <div class="section" id="coachSection" style="display:none;">
+    <div class="section-label">Coach Says</div>
+    <div class="coach-msg" id="coachMsg"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Wedge Reminders</div>
+    <div class="reminder-box">
+      <div class="reminder-item">🎯 Layup target: <strong>30–50 yards</strong> on par 5s</div>
+      <div class="reminder-item">⛳ When in trouble → <strong>reset to wedge</strong></div>
+      <div class="reminder-item">💡 Middle of green = <strong>always safe</strong></div>
+      <div class="reminder-item">🚫 No hero shots when out of position</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════ SCORECARD ═══════════════ -->
+<div class="page" id="page-scorecard">
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span class="progress-title">Round Progress</span>
+      <span class="progress-pct" id="progressPct">0%</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+
+  <div class="score-header-row">
+    <span class="score-col-head">Hole</span>
+    <span class="score-col-head">Par</span>
+    <span class="score-col-head">Goal</span>
+    <span class="score-col-head">Tip</span>
+    <span class="score-col-head">Score</span>
+  </div>
+
+  <div class="nine-label">▸ Front 9</div>
+  <div id="front9Rows"></div>
+  <div class="nine-label">▸ Back 9</div>
+  <div id="back9Rows"></div>
+
+  <div class="totals-bar">
+    <div class="total-block"><div class="total-label">Front</div><div class="total-num" id="front9Total">–</div></div>
+    <div class="total-block"><div class="total-label">Total</div><div class="total-num" id="grandTotal" style="font-size:42px;">–</div></div>
+    <div class="total-block"><div class="total-label">Back</div><div class="total-num" id="back9Total">–</div></div>
+  </div>
+
+  <div style="padding:16px 20px;">
+    <button class="reset-btn" onclick="resetScores()">↺ &nbsp;Reset Scorecard</button>
+  </div>
+
+</div>
+
+<!-- ═══════════════ GOALS ═══════════════ -->
+<div class="page" id="page-goals">
+
+  <div class="hero-block">
+    <div class="hero-eyebrow">Round Goals</div>
+    <div class="hero-quote" style="font-size:1.2rem;">Execute the system.<br>The score takes care of itself.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Today's Goals — Tap to achieve</div>
+    <div class="goals-grid">
+      <div class="goal-card" onclick="toggleGoal(this)"><span class="goal-icon">🚫</span><span class="goal-text">Max 1 double bogey all round</span><div class="goal-check">✓</div></div>
+      <div class="goal-card" onclick="toggleGoal(this)"><span class="goal-icon">⭐</span><span class="goal-text">Hit at least 4 intentional wedge yardages</span><div class="goal-check">✓</div></div>
+      <div class="goal-card" onclick="toggleGoal(this)"><span class="goal-icon">🏁</span><span class="goal-text">Finish strong — Hole 18 under control (5 or 6, no 7s)</span><div class="goal-check">✓</div></div>
+      <div class="goal-card" onclick="toggleGoal(this)"><span class="goal-icon">🎯</span><span class="goal-text">Play to yardages on every approach</span><div class="goal-check">✓</div></div>
+      <div class="goal-card" onclick="toggleGoal(this)"><span class="goal-icon">🛡️</span><span class="goal-text">Zero penalty strokes from impulse hero shots</span><div class="goal-check">✓</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Score Target Breakdown</div>
+    <div class="target-table">
+      <div class="tt-header">
+        <span class="tt-head">Hole Type</span>
+        <span class="tt-head">Target</span>
+        <span class="tt-head">Count</span>
+      </div>
+      <div class="tt-row"><span class="tt-type">Par 3s</span><span class="tt-target">3–4</span><span class="tt-note">×4 holes</span></div>
+      <div class="tt-row"><span class="tt-type">Par 4s</span><span class="tt-target">4–5</span><span class="tt-note">×10 holes</span></div>
+      <div class="tt-row"><span class="tt-type">Par 5s</span><span class="tt-target">5–6</span><span class="tt-note">×4 holes</span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════ MENTAL ═══════════════ -->
+<div class="page" id="page-mental">
+
+  <div class="mental-hero">
+    <div class="mental-bg">TMAC</div>
+    <div class="mental-quote">"I don't chase scores.<br>I execute my system."</div>
+    <div class="mental-attr">— Read this on the 18th tee —</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Mental Resets</div>
+    <div class="mental-pill"><span class="mental-pill-icon">🔄</span><span class="mental-pill-text">After bad hole → <strong>"That hole is gone. Next target."</strong></span></div>
+    <div class="mental-pill"><span class="mental-pill-icon">😤</span><span class="mental-pill-text">Angry at miss → <strong>"Where's the safe miss? Reset."</strong></span></div>
+    <div class="mental-pill"><span class="mental-pill-icon">😰</span><span class="mental-pill-text">Nerves → <strong>"Pick the number. Commit."</strong></span></div>
+    <div class="mental-pill"><span class="mental-pill-icon">🤔</span><span class="mental-pill-text">Tempted to hero → <strong>"Smart bogey beats risky double."</strong></span></div>
+    <div class="mental-pill"><span class="mental-pill-icon">📍</span><span class="mental-pill-text">Out of position → <strong>"Punch out. Set up wedge. Win."</strong></span></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Strategist Mindset</div>
+    <div class="prose-block">
+      <p>You play like a strategist, not a reactor. A strategist sees each hole before the tee shot. A strategist knows the miss before the swing. A strategist accepts bogey and moves on without drama.</p>
+      <p><em>Bogey is in the plan. Double is not.</em></p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">18th Tee Ritual</div>
+    <div class="info-box">
+      <div class="info-box-title">Execute the Finish</div>
+      <div class="info-box-body">
+        ⛳ Tee: <span>Fairway finder · No hero</span><br>
+        📐 Layup: <span>30–40 yards exactly</span><br>
+        ⭐ Wedge: <span>Your money shot</span><br>
+        🏁 Result: <span>5 or 6. </span><span class="danger">Never 7.</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="holeModal" onclick="closeModalOutside(event)">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeHoleModal()">✕</button>
+    <div class="modal-pill"></div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const holes = [
+  { num:1,  par:4, tips:['Fairway first — club down if needed','Middle of green approach only','No short-side misses'], donts:[], goal:'5 max', gs:'5 max' },
+  { num:2,  par:3, tips:['Center green target — no pin hunting','Take enough club'], donts:['No pin hunting'], goal:'3 or 4', gs:'3–4' },
+  { num:3,  par:5, tips:['No hero shots — lay up to 30–50 yds','Set up your wedge — that is your scoring chance'], donts:['No hero shots'], goal:'Wedge in = scoring', gs:'5–6' },
+  { num:4,  par:4, tips:['Play to set up your wedge number','Don\'t force the approach'], donts:['Don\'t force approach'], goal:'Smart bogey > risky double', gs:'4–5' },
+  { num:5,  par:4, tips:['Same strategy as Hole 4','If out of position → reset to wedge'], donts:['Don\'t press when off-plan'], goal:'Reset to wedge if off', gs:'4–5' },
+  { num:6,  par:4, tips:['Fairway → middle green — simple golf wins'], donts:[], goal:'Simple golf wins', gs:'4–5' },
+  { num:7,  par:4, tips:['Pick safe side off the tee','Avoid short-siding yourself on approach'], donts:['Avoid short side'], goal:'Avoid short side', gs:'4–5' },
+  { num:8,  par:3, tips:['Center green only','Club up when unsure — never come up short'], donts:[], goal:'Center green', gs:'3–4' },
+  { num:9,  par:5, tips:['Treat like Hole 3 — lay up to 30–50 yards','Set up the wedge — that is the play'], donts:['No hero shots on second'], goal:'Set up wedge', gs:'5–6' },
+  { num:10, par:4, tips:['Repeat good habits from the front 9','Routine: Fairway · Green · 2 putt'], donts:[], goal:'Fairway → green → 2 putt', gs:'4–5' },
+  { num:11, par:4, tips:['Stay patient — same plan all day','Middle of green approach every time'], donts:[], goal:'Middle green approach', gs:'4–5' },
+  { num:12, par:3, tips:['Center green only','Zero short-sided misses on this hole'], donts:['No short-sided misses'], goal:'No short-sided misses', gs:'3–4' },
+  { num:13, par:4, tips:['Commit to your target','Don\'t guide the swing — trust it'], donts:['Don\'t guide the swing'], goal:'Commit to target', gs:'4–5' },
+  { num:14, par:4, tips:['If in trouble → punch out immediately','Play for wedge distance and reset'], donts:['Don\'t hero from trouble'], goal:'Punch out if trouble', gs:'4–5' },
+  { num:15, par:3, tips:['Safe target on this par 3','Accept the bogey — don\'t overcook it'], donts:[], goal:'Accept bogey if needed', gs:'3–4' },
+  { num:16, par:4, tips:['Fairway finder off tee','Smart second shot — don\'t go for broke'], donts:[], goal:'Smart second shot', gs:'4–5' },
+  { num:17, par:4, tips:['Stay disciplined — round is almost done','No late-round hero shots'], donts:['No hero shots'], goal:'Disciplined finish', gs:'4–5' },
+  { num:18, par:5, tips:['Tee: Fairway finder — nothing fancy','Layup to exactly 30–40 yards','Wedge: confident — this is your money shot'], donts:['No 7s — ever'], goal:'5 or 6 ONLY — no 7s', gs:'5–6' },
+];
+
+const scores = new Array(18).fill(0);
+
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function buildHoleList() {
+  const c = document.getElementById('holeList');
+  holes.forEach((h, i) => {
+    const d = document.createElement('div');
+    d.className = 'hole-list-item';
+    d.onclick = () => openHoleModal(i);
+    d.innerHTML = `
+      <div class="hole-list-num">${h.num}</div>
+      <div style="flex:1;">
+        <div class="hole-list-title">Par ${h.par} · ${h.goal}</div>
+        <div class="hole-list-tip">${h.tips[0]}</div>
+      </div>
+      <div class="hole-list-chevron">›</div>`;
+    c.appendChild(d);
+  });
+}
+
+function buildScorecard() {
+  const front = document.getElementById('front9Rows');
+  const back  = document.getElementById('back9Rows');
+  holes.forEach((h, i) => {
+    const row = document.createElement('div');
+    row.className = 'score-row';
+    row.innerHTML = `
+      <div class="hole-num">${h.num}</div>
+      <div class="hole-par">${h.par}</div>
+      <div class="hole-goal-sc">${h.gs}</div>
+      <div class="hole-tip-sc">${h.tips[0].slice(0, 24)}…</div>
+      <div class="score-input-wrap">
+        <button class="score-btn" onclick="adjustScore(${i},-1)">−</button>
+        <div class="score-val" id="sv-${i}">–</div>
+        <button class="score-btn" onclick="adjustScore(${i},1)">+</button>
+      </div>`;
+    (i < 9 ? front : back).appendChild(row);
+  });
+}
+
+function adjustScore(idx, delta) {
+  if (scores[idx] === 0) scores[idx] = holes[idx].par;
+  else scores[idx] = Math.max(1, scores[idx] + delta);
+  updateScoreDisplay(idx);
+  updateTotals();
+}
+
+function updateScoreDisplay(idx) {
+  const el = document.getElementById('sv-' + idx);
+  const s = scores[idx], par = holes[idx].par;
+  el.textContent = s === 0 ? '–' : s;
+  el.className = 'score-val';
+  if (!s) return;
+  if (s <= par - 1) el.classList.add('birdie');
+  else if (s === par) el.classList.add('par-score');
+  else if (s === par + 1) el.classList.add('bogey');
+  else if (s === par + 2) el.classList.add('double');
+  else el.classList.add('worse');
+}
+
+function updateTotals() {
+  const fa = scores.slice(0,9), ba = scores.slice(9);
+  const fs = fa.filter(s=>s>0).reduce((a,b)=>a+b,0);
+  const bs = ba.filter(s=>s>0).reduce((a,b)=>a+b,0);
+  const total = fs + bs;
+  const played = scores.filter(s=>s>0).length;
+  document.getElementById('front9Total').textContent = fa.some(s=>s>0) ? fs : '–';
+  document.getElementById('back9Total').textContent  = ba.some(s=>s>0) ? bs : '–';
+  const ge = document.getElementById('grandTotal');
+  ge.textContent = played > 0 ? total : '–';
+  ge.className = 'total-num';
+  if (total > 0 && total <= 83) ge.classList.add('good');
+  else if (total > 83) ge.classList.add('warn');
+  document.getElementById('headerScore').textContent = played > 0 ? total : '83';
+  const pct = Math.round((played/18)*100);
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function resetScores() {
+  scores.fill(0);
+  holes.forEach((_,i) => updateScoreDisplay(i));
+  updateTotals();
+  showToast('Scorecard reset');
+}
+
+let selectedWedge = null;
+const wedgeCoach = {
+  20: "Tiny swing — let the club do the work. Short finish, smooth tempo. Trust your hands.",
+  30: "Your money shot. Choke down. Less than half swing. Bread and butter — no thinking required.",
+  40: "Exactly half swing. Chest rotation controls this one. Don't flip. Let it land soft.",
+  50: "Three-quarter swing. Stay committed. Don't decelerate. Full follow-through to chest height."
+};
+
+function selectWedge(yds, el) {
+  document.querySelectorAll('.wedge-card').forEach(c => {
+    c.classList.remove('active-wedge');
+    const b = c.querySelector('.wedge-badge');
+    if (b) b.remove();
+  });
+  el.classList.add('active-wedge');
+  const badge = document.createElement('div');
+  badge.className = 'wedge-badge';
+  badge.textContent = 'Selected';
+  el.appendChild(badge);
+  selectedWedge = yds;
+  document.getElementById('commitBtn').classList.add('ready');
+  document.getElementById('coachSection').style.display = 'none';
+}
+
+function commitWedge() {
+  if (!selectedWedge) return;
+  const msg = document.getElementById('coachMsg');
+  const sec = document.getElementById('coachSection');
+  msg.textContent = wedgeCoach[selectedWedge];
+  sec.style.display = 'block';
+  sec.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  showToast('Committed to ' + selectedWedge + ' yards');
+}
+
+function toggleCheck(el) {
+  el.classList.toggle('done');
+  el.querySelector('.check-box').classList.toggle('checked');
+  if (document.querySelectorAll('.checklist-item.done').length === 4)
+    showToast('Pre-shot complete — commit');
+}
+
+function resetChecklist() {
+  document.querySelectorAll('.checklist-item').forEach(el => {
+    el.classList.remove('done');
+    el.querySelector('.check-box').classList.remove('checked');
+  });
+}
+
+function openHoleModal(idx) {
+  const h = holes[idx];
+  const tips  = h.tips.map(t => `<div class="modal-tip"><span class="modal-tip-icon">✅</span><span class="modal-tip-text">${t}</span></div>`).join('');
+  const donts = h.donts.map(d => `<div class="modal-tip bad"><span class="modal-tip-icon">❌</span><span class="modal-tip-text">${d}</span></div>`).join('');
+  document.getElementById('modalContent').innerHTML = `
+    <div class="modal-hole-num">Hole ${h.num}</div>
+    <div class="modal-par-label">Par ${h.par} &nbsp;·&nbsp; Target: ${h.gs}</div>
+    ${tips}${donts}
+    <div class="modal-tip warm"><span class="modal-tip-icon">⭐</span><span class="modal-tip-text"><em>Goal:</em> ${h.goal}</span></div>`;
+  document.getElementById('holeModal').classList.add('open');
+}
+
+function closeModalOutside(e) { if (e.target.id === 'holeModal') closeHoleModal(); }
+function closeHoleModal() { document.getElementById('holeModal').classList.remove('open'); }
+
+function toggleGoal(el) {
+  el.classList.toggle('achieved');
+  if (el.classList.contains('achieved')) showToast('Goal achieved');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+buildHoleList();
+buildScorecard();
+</script>
+</body>
+</html>
