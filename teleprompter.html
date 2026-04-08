@@ -1084,15 +1084,20 @@ function saveVideo() {
   if (!lastVideoBlob) return;
   const ext = lastVideoBlob.type.includes('mp4') ? 'mp4' : 'webm';
   const url = URL.createObjectURL(lastVideoBlob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'tmac-recording-' + Date.now() + '.' + ext;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(url), 5000);
+  
+  // iOS Safari — open in new tab so user can long-press to save
+  const newTab = window.open(url, '_blank');
+  if (!newTab) {
+    // Fallback if popup blocked
+    const a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+  setTimeout(() => URL.revokeObjectURL(url), 30000);
 }
-
 // ── Navigation ──
 function restartScript() {
   scrollY = 0;
