@@ -342,10 +342,11 @@ async function startPrompter() {
 
   await startCamera(camFacing);
 
-  requestAnimationFrame(() => {
+  setTimeout(() => {
     totalHeight = pt.scrollHeight;
     visibleHeight = document.getElementById('scriptOverlay').clientHeight;
-  });
+    console.log('total:', totalHeight, 'visible:', visibleHeight);
+  }, 300);
 }
 
 // ── Camera ──
@@ -399,7 +400,7 @@ function doScroll(ts) {
   const delta = ts - lastTs;
   lastTs = ts;
   scrollY += (speedMap[speed] * delta) / 1000;
-  const maxScroll = Math.max(1, totalHeight - visibleHeight + 60);
+  const maxScroll = Math.max(200, totalHeight - visibleHeight + 60);
   if (scrollY >= maxScroll) {
     scrollY = maxScroll;
     isScrolling = false;
