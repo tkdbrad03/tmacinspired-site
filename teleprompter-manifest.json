@@ -1,0 +1,25 @@
+{
+  "name": "Teleprompter · TMac Inspired™",
+  "short_name": "Teleprompter",
+  "description": "Your words. Your stage. A personal teleprompter by TMac Inspired™.",
+  "start_url": "/teleprompter.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1f4236",
+  "theme_color": "#1f4236",
+  "icons": [
+    {
+      "src": "/teleprompter-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/teleprompter-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

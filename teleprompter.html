@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="/teleprompter-manifest.json">
+<link rel="apple-touch-icon" href="/teleprompter-icon-512.png">
+<meta name="theme-color" content="#1f4236">
+<title>Teleprompter · TMac Inspired™</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --pine: #1f4236;
+    --pine-dark: #152e25;
+    --pine-deep: #0d1f18;
+    --gold: #c9a961;
+    --gold-light: #dfc68a;
+    --rose: #b76e79;
+    --text-main: #1f4236;
+    --text-light: #5c6b64;
+    --text-cream: #f5f0e8;
+    --border: rgba(31,66,54,0.12);
+    --font: Georgia, 'Times New Roman', Times, serif;
+    --transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--text-main);
+    font-family: var(--font);
+    -webkit-font-smoothing: antialiased;
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ════════════════════════════
+     SETUP SCREEN
+  ════════════════════════════ */
+  #setup {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .setup-header {
+    background: var(--pine);
+    padding: 52px 28px 28px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .setup-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      -55deg, transparent, transparent 40px,
+      rgba(201,169,97,0.04) 40px, rgba(201,169,97,0.04) 41px
+    );
+    pointer-events: none;
+  }
+
+  .brand-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .brand-t {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 400;
+  }
+
+  .brand-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--rose);
+    animation: breathe 3s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes breathe {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.35; transform: scale(0.65); }
+  }
+
+  .setup-title {
+    font-size: clamp(28px, 7vw, 38px);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--text-cream);
+  }
+
+  .setup-title em { font-style: italic; color: var(--gold-light); }
+
+  .setup-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 28px 40px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .field-label {
+    display: block;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    margin-bottom: 10px;
+    font-weight: 400;
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 170px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    color: var(--text-main);
+    font-family: var(--font);
+    font-size: 17px;
+    line-height: 1.65;
+    padding: 16px;
+    resize: none;
+    outline: none;
+    -webkit-appearance: none;
+    transition: border-color 0.3s;
+    margin-bottom: 24px;
+  }
+
+  textarea:focus { border-color: var(--pine); }
+  textarea::placeholder { color: #b0b8b3; font-style: italic; }
+
+  .controls-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .control-box {
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 14px;
+    background: #fafaf8;
+  }
+
+  .control-box .field-label { margin-bottom: 12px; }
+
+  .slider-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  input[type=range] {
+    -webkit-appearance: none;
+    flex: 1;
+    height: 2px;
+    background: var(--border);
+    border-radius: 1px;
+    outline: none;
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--pine);
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px var(--pine);
+  }
+
+  .slider-val {
+    font-size: 13px;
+    color: var(--gold);
+    min-width: 26px;
+    text-align: right;
+    font-style: italic;
+  }
+
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .toggle-label-text {
+    font-size: 12px;
+    color: var(--text-light);
+    font-style: italic;
+    line-height: 1.4;
+    flex: 1;
+  }
+
+  .toggle {
+    position: relative;
+    width: 42px; height: 24px;
+    flex-shrink: 0;
+  }
+
+  .toggle input { display: none; }
+
+  .toggle-track {
+    position: absolute;
+    inset: 0;
+    background: #dde2df;
+    border-radius: 12px;
+    transition: background 0.25s;
+    cursor: pointer;
+  }
+
+  .toggle-track::after {
+    content: '';
+    position: absolute;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    top: 3px; left: 3px;
+    transition: transform 0.25s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+
+  .toggle input:checked + .toggle-track { background: var(--pine); }
+  .toggle input:checked + .toggle-track::after { transform: translateX(18px); }
+
+  /* camera selector */
+  .cam-selector {
+    display: flex;
+    gap: 8px;
+    margin-top: 2px;
+  }
+
+  .cam-opt {
+    flex: 1;
+    padding: 8px 4px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    background: transparent;
+    color: var(--text-light);
+    font-family: var(--font);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-style: italic;
+  }
+
+  .cam-opt.selected {
+    background: var(--pine);
+    border-color: var(--pine);
+    color: var(--text-cream);
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 4px 0 20px;
+  }
+
+  .start-btn {
+    width: 100%;
+    padding: 18px 24px;
+    background: var(--pine);
+    border: none;
+    border-radius: 2px;
+    color: var(--text-cream);
+    font-family: var(--font);
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .start-btn:active { opacity: 0.85; transform: scale(0.98); }
+
+  /* ════════════════════════════
+     PROMPTER / CAMERA SCREEN
+  ════════════════════════════ */
+  #prompter {
+    display: none;
+    height: 100%;
+    position: relative;
+    background: #000;
+    overflow: hidden;
+  }
+
+  #prompter.active { display: block; }
+
+  /* Live camera feed — fills the screen */
+  #cameraFeed {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform-origin: center;
+  }
+
+  #cameraFeed.front-cam { transform: scaleX(-1); }
+
+  /* Script overlay — semi-transparent dark band */
+  .script-overlay {
+    position: absolute;
+    inset: 0;
+    bottom: 70px;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* gradient mask so text fades in/out */
+  .script-overlay::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 120px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, transparent 100%);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .script-overlay::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 120px;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* Subtle dark band behind text for legibility */
+  .script-band {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.38);
+    pointer-events: none;
+  }
+
+  /* reading guide */
+  .reading-line {
+    position: absolute;
+    top: 32%;
+    left: 0; right: 0;
+    height: 1px;
+    background: rgba(201,169,97,0.3);
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .prompt-text {
+    position: relative;
+    z-index: 4;
+    padding: 80px 28px 60px;
+    font-size: var(--font-size, 34px);
+    line-height: 1.6;
+    color: #ffffff;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.7), 0 0 30px rgba(0,0,0,0.4);
+    will-change: transform;
+    transform: translateY(0);
+    user-select: none;
+    -webkit-user-select: none;
+    letter-spacing: 0.01em;
+    font-weight: 400;
+    pointer-events: all;
+    cursor: pointer;
+  }
+
+  /* progress bar */
+  .progress-bar {
+    position: absolute;
+    top: 0; left: 0;
+    height: 3px;
+    background: var(--gold);
+    transition: width 0.1s linear;
+    z-index: 20;
+    opacity: 0.9;
+  }
+
+  /* ── TOOLBAR ── */
+  .toolbar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 70px;
+    background: rgba(13,31,24,0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(201,169,97,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 4px;
+    z-index: 30;
+  }
+
+  .tb-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    background: none;
+    border: none;
+    color: rgba(245,240,232,0.45);
+    font-family: var(--font);
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-style: italic;
+    cursor: pointer;
+    padding: 8px 6px;
+    border-radius: 2px;
+    transition: color 0.2s;
+    -webkit-tap-highlight-color: transparent;
+    min-width: 50px;
+  }
+
+  .tb-btn svg {
+    width: 20px; height: 20px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .tb-btn:active, .tb-btn.active { color: var(--gold); }
+
+  /* record button — center */
+  .record-btn {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: transparent;
+    border: 2.5px solid rgba(245,240,232,0.7);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.15s, border-color 0.2s;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .record-btn:active { transform: scale(0.93); }
+
+  .record-inner {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: #e53935;
+    transition: border-radius 0.3s, transform 0.3s, background 0.2s;
+  }
+
+  .record-btn.recording {
+    border-color: #e53935;
+  }
+
+  .record-btn.recording .record-inner {
+    border-radius: 6px;
+    transform: scale(0.75);
+    background: #e53935;
+  }
+
+  /* rec indicator */
+  .rec-badge {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(0,0,0,0.55);
+    border: 1px solid rgba(229,57,53,0.6);
+    border-radius: 20px;
+    padding: 5px 14px;
+    z-index: 25;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+
+  .rec-badge.show { opacity: 1; }
+
+  .rec-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #e53935;
+    animation: recpulse 1s ease-in-out infinite;
+  }
+
+  @keyframes recpulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .rec-text {
+    font-family: var(--font);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #fff;
+    font-style: italic;
+  }
+
+  .rec-timer {
+    font-family: var(--font);
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.05em;
+    font-style: normal;
+  }
+
+  /* play/pause fab — floats above script */
+  .play-fab {
+    position: absolute;
+    right: 20px;
+    bottom: 86px;
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    background: rgba(201,169,97,0.9);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 25;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.15s, opacity 0.15s;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.4);
+  }
+
+  .play-fab:active { transform: scale(0.91); opacity: 0.85; }
+
+  .play-fab svg {
+    width: 18px; height: 18px;
+    stroke: var(--pine-deep);
+    fill: var(--pine-deep);
+  }
+
+  /* speed overlay */
+  .speed-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(21,46,37,0.9);
+    border: 1px solid var(--gold);
+    border-radius: 2px;
+    padding: 10px 24px;
+    font-family: var(--font);
+    font-size: 15px;
+    font-style: italic;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+
+  .speed-overlay.show { opacity: 1; }
+
+  /* done overlay */
+  .done-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(13,31,24,0.94);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    z-index: 60;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s;
+  }
+
+  .done-overlay.show { opacity: 1; pointer-events: all; }
+
+  .done-label {
+    font-family: var(--font);
+    font-size: 11px;
+    color: var(--text-cream);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    font-style: italic;
+  }
+
+  .done-title {
+    font-family: var(--font);
+    font-size: clamp(32px, 8vw, 48px);
+    color: var(--gold);
+    letter-spacing: -0.01em;
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .done-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 240px;
+    margin-top: 8px;
+  }
+
+  .done-btn {
+    padding: 12px 24px;
+    border: 1px solid var(--gold);
+    background: transparent;
+    color: var(--gold);
+    font-family: var(--font);
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    font-style: italic;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+  }
+
+  .done-btn.primary {
+    background: var(--gold);
+    color: var(--pine-deep);
+  }
+
+  .done-btn:active { opacity: 0.75; }
+
+  /* camera error state */
+  .cam-error {
+    position: absolute;
+    inset: 0;
+    background: var(--pine-deep);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    z-index: 5;
+    padding: 32px;
+    text-align: center;
+  }
+
+  .cam-error p {
+    font-family: var(--font);
+    font-size: 14px;
+    color: rgba(245,240,232,0.6);
+    font-style: italic;
+    line-height: 1.6;
+    max-width: 280px;
+  }
+
+  .cam-error .err-title {
+    font-size: 18px;
+    color: var(--gold);
+    opacity: 1;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ SETUP ══════════ -->
+<div id="setup">
+  <div class="setup-header">
+    <div class="brand-line">
+      <span class="brand-t">TMac Inspired™</span>
+      <span class="brand-dot"></span>
+    </div>
+    <div class="setup-title">Your words.<br><em>Your stage.</em></div>
+  </div>
+
+  <div class="setup-body">
+    <label class="field-label" for="script">Your Script</label>
+    <textarea id="script" placeholder="Paste your script here…
+
+Your words will scroll over your live camera feed so you can look straight into the lens while you speak."></textarea>
+
+    <div class="controls-grid">
+      <div class="control-box">
+        <label class="field-label">Speed</label>
+        <div class="slider-row">
+          <input type="range" id="speed" min="1" max="10" value="4">
+          <span class="slider-val" id="speed-val">4</span>
+        </div>
+      </div>
+      <div class="control-box">
+        <label class="field-label">Text Size</label>
+        <div class="slider-row">
+          <input type="range" id="fontsize" min="22" max="60" value="34" step="2">
+          <span class="slider-val" id="font-val">34</span>
+        </div>
+      </div>
+      <div class="control-box" style="grid-column: span 2;">
+        <label class="field-label">Camera</label>
+        <div class="cam-selector">
+          <button class="cam-opt selected" id="camFront" onclick="selectCam('user')">Front</button>
+          <button class="cam-opt" id="camBack" onclick="selectCam('environment')">Back</button>
+        </div>
+      </div>
+      <div class="control-box" style="grid-column: span 2;">
+        <label class="field-label">Mirror Text</label>
+        <div class="toggle-row">
+          <span class="toggle-label-text">Flip script for reflector rig</span>
+          <label class="toggle">
+            <input type="checkbox" id="mirror">
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <button class="start-btn" onclick="startPrompter()">Open Camera &amp; Begin</button>
+  </div>
+</div>
+
+<!-- ══════════ PROMPTER + CAMERA ══════════ -->
+<div id="prompter">
+  <!-- Live camera -->
+  <video id="cameraFeed" autoplay playsinline muted></video>
+
+  <!-- Script overlay -->
+  <div class="script-overlay" id="scriptOverlay">
+    <div class="script-band"></div>
+    <div class="reading-line"></div>
+    <div class="prompt-text" id="promptText" onclick="toggleScroll()"></div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-bar" id="progressBar" style="width:0%"></div>
+
+  <!-- REC badge -->
+  <div class="rec-badge" id="recBadge">
+    <div class="rec-dot"></div>
+    <span class="rec-text">Rec</span>
+    <span class="rec-timer" id="recTimer">0:00</span>
+  </div>
+
+  <!-- Play/pause FAB -->
+  <button class="play-fab" id="playFab" onclick="toggleScroll()">
+    <svg id="playIcon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" stroke="none"></polygon></svg>
+  </button>
+
+  <!-- Speed overlay -->
+  <div class="speed-overlay" id="speedOverlay"></div>
+
+  <!-- Done overlay -->
+  <div class="done-overlay" id="doneOverlay">
+    <div class="done-label">Script complete</div>
+    <div class="done-title">You did it.</div>
+    <div class="done-actions">
+      <button class="done-btn primary" id="saveVideoBtn" onclick="saveVideo()" style="display:none">Save Video</button>
+      <button class="done-btn" onclick="restartScript()">Record Again</button>
+      <button class="done-btn" onclick="goBack()">Back to Setup</button>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <button class="tb-btn" onclick="goBack()">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      Back
+    </button>
+    <button class="tb-btn" onclick="adjustSpeed(-1)">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      Slower
+    </button>
+    <!-- RECORD BUTTON -->
+    <button class="record-btn" id="recordBtn" onclick="toggleRecord()">
+      <div class="record-inner" id="recordInner"></div>
+    </button>
+    <button class="tb-btn" onclick="adjustSpeed(1)">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      Faster
+    </button>
+    <button class="tb-btn" id="flipBtn" onclick="flipCamera()">
+      <svg viewBox="0 0 24 24"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="7" r="3"/><circle cx="7" cy="17" r="3"/></svg>
+      Flip
+    </button>
+  </div>
+</div>
+
+<script>
+// ── State ──
+let isScrolling = false;
+let scrollY = 0;
+let speed = 4;
+let rafId = null;
+let lastTs = null;
+let isMirror = false;
+let totalHeight = 0;
+let visibleHeight = 0;
+let speedOverlayTimer = null;
+let camFacing = 'user';
+let currentStream = null;
+let mediaRecorder = null;
+let recordedChunks = [];
+let isRecording = false;
+let recTimerInterval = null;
+let recSeconds = 0;
+let lastVideoBlob = null;
+
+const speedMap = [0, 30, 50, 75, 100, 130, 165, 205, 250, 300, 360];
+
+// ── Camera selection ──
+function selectCam(facing) {
+  camFacing = facing;
+  document.getElementById('camFront').classList.toggle('selected', facing === 'user');
+  document.getElementById('camBack').classList.toggle('selected', facing === 'environment');
+}
+
+// ── Start everything ──
+async function startPrompter() {
+  const text = document.getElementById('script').value.trim();
+  if (!text) { document.getElementById('script').focus(); return; }
+
+  speed = parseInt(document.getElementById('speed').value);
+  const fontSize = parseInt(document.getElementById('fontsize').value);
+  isMirror = document.getElementById('mirror').checked;
+
+  // Show prompter screen first
+  document.getElementById('setup').style.display = 'none';
+  document.getElementById('prompter').classList.add('active');
+  document.getElementById('prompter').style.display = 'block';
+
+  // Set up script
+  const pt = document.getElementById('promptText');
+  pt.style.fontSize = fontSize + 'px';
+  pt.textContent = text;
+  if (isMirror) pt.style.transform = 'scaleX(-1)';
+
+  // Reset state
+  scrollY = 0;
+  isScrolling = false;
+  document.getElementById('doneOverlay').classList.remove('show');
+  document.getElementById('progressBar').style.width = '0%';
+  updatePlayIcon();
+
+  // Start camera
+  await startCamera(camFacing);
+
+  requestAnimationFrame(() => {
+    totalHeight = pt.scrollHeight;
+    visibleHeight = document.getElementById('scriptOverlay').clientHeight;
+  });
+}
+
+async function startCamera(facing) {
+  // Stop existing stream
+  if (currentStream) {
+    currentStream.getTracks().forEach(t => t.stop());
+    currentStream = null;
+  }
+
+  const video = document.getElementById('cameraFeed');
+
+  try {
+    const constraints = {
+      video: {
+        facingMode: facing,
+        width: { ideal: 1920 },
+        height: { ideal: 1080 }
+      },
+      audio: true
+    };
+
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    currentStream = stream;
+    video.srcObject = stream;
+
+    // Mirror front camera naturally
+    video.className = facing === 'user' ? 'front-cam' : '';
+
+    await video.play();
+  } catch (err) {
+    console.error('Camera error:', err);
+    showCamError(err);
+  }
+}
+
+function showCamError(err) {
+  const video = document.getElementById('cameraFeed');
+  video.style.display = 'none';
+
+  // Remove existing error if any
+  const existing = document.querySelector('.cam-error');
+  if (existing) existing.remove();
+
+  const div = document.createElement('div');
+  div.className = 'cam-error';
+  div.innerHTML = `
+    <p class="err-title">Camera Access Needed</p>
+    <p>Please allow camera and microphone access in your browser settings, then reload the page.</p>
+    <p style="font-size:12px; margin-top:8px; opacity:0.5">${err.message || 'Permission denied'}</p>
+  `;
+  document.getElementById('prompter').insertBefore(div, document.getElementById('scriptOverlay'));
+}
+
+// ── Flip camera ──
+async function flipCamera() {
+  camFacing = camFacing === 'user' ? 'environment' : 'user';
+
+  // Stop recording if active
+  if (isRecording) await stopRecording();
+
+  await startCamera(camFacing);
+}
+
+// ── Scroll control ──
+function toggleScroll() {
+  if (document.getElementById('doneOverlay').classList.contains('show')) return;
+  isScrolling = !isScrolling;
+  updatePlayIcon();
+  if (isScrolling) {
+    lastTs = null;
+    rafId = requestAnimationFrame(doScroll);
+  } else {
+    cancelAnimationFrame(rafId);
+  }
+}
+
+function updatePlayIcon() {
+  const icon = document.getElementById('playIcon');
+  if (isScrolling) {
+    icon.innerHTML = '<rect x="6" y="4" width="4" height="16" rx="1" stroke="none"/><rect x="14" y="4" width="4" height="16" rx="1" stroke="none"/>';
+  } else {
+    icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3" stroke="none"></polygon>';
+  }
+}
+
+function doScroll(ts) {
+  if (!lastTs) lastTs = ts;
+  const delta = ts - lastTs;
+  lastTs = ts;
+
+  scrollY += (speedMap[speed] * delta) / 1000;
+  const maxScroll = Math.max(1, totalHeight - visibleHeight + 60);
+
+  if (scrollY >= maxScroll) {
+    scrollY = maxScroll;
+    isScrolling = false;
+    updatePlayIcon();
+    applyScroll();
+    updateProgress();
+    document.getElementById('doneOverlay').classList.add('show');
+    // Show save button if we have a recording
+    document.getElementById('saveVideoBtn').style.display = isRecording ? 'block' : 'none';
+    return;
+  }
+
+  applyScroll();
+  updateProgress();
+  rafId = requestAnimationFrame(doScroll);
+}
+
+function applyScroll() {
+  const el = document.getElementById('promptText');
+  const tx = `translateY(${-scrollY}px)`;
+  el.style.transform = isMirror ? tx + ' scaleX(-1)' : tx;
+}
+
+function updateProgress() {
+  const maxScroll = Math.max(1, totalHeight - visibleHeight + 60);
+  document.getElementById('progressBar').style.width = Math.min(100, (scrollY / maxScroll) * 100) + '%';
+}
+
+function adjustSpeed(delta) {
+  speed = Math.max(1, Math.min(10, speed + delta));
+  const el = document.getElementById('speedOverlay');
+  el.textContent = 'Speed ' + speed + ' of 10';
+  el.classList.add('show');
+  clearTimeout(speedOverlayTimer);
+  speedOverlayTimer = setTimeout(() => el.classList.remove('show'), 1400);
+}
+
+// ── Recording ──
+function toggleRecord() {
+  if (isRecording) {
+    stopRecording();
+  } else {
+    startRecording();
+  }
+}
+
+function startRecording() {
+  if (!currentStream) return;
+
+  recordedChunks = [];
+  lastVideoBlob = null;
+
+  // Pick best supported codec
+  const mimeTypes = [
+    'video/webm;codecs=vp9,opus',
+    'video/webm;codecs=vp8,opus',
+    'video/webm',
+    'video/mp4'
+  ];
+
+  let mimeType = '';
+  for (const mt of mimeTypes) {
+    if (MediaRecorder.isTypeSupported(mt)) { mimeType = mt; break; }
+  }
+
+  try {
+    const options = mimeType ? { mimeType } : {};
+    mediaRecorder = new MediaRecorder(currentStream, options);
+  } catch (e) {
+    mediaRecorder = new MediaRecorder(currentStream);
+  }
+
+  mediaRecorder.ondataavailable = e => {
+    if (e.data && e.data.size > 0) recordedChunks.push(e.data);
+  };
+
+  mediaRecorder.onstop = () => {
+    const mType = mediaRecorder.mimeType || 'video/webm';
+    lastVideoBlob = new Blob(recordedChunks, { type: mType });
+    document.getElementById('saveVideoBtn').style.display = 'block';
+  };
+
+  mediaRecorder.start(250); // collect data every 250ms
+  isRecording = true;
+
+  // UI
+  document.getElementById('recordBtn').classList.add('recording');
+  document.getElementById('recBadge').classList.add('show');
+  recSeconds = 0;
+  updateRecTimer();
+  recTimerInterval = setInterval(() => {
+    recSeconds++;
+    updateRecTimer();
+  }, 1000);
+}
+
+async function stopRecording() {
+  if (!mediaRecorder || mediaRecorder.state === 'inactive') return;
+
+  return new Promise(resolve => {
+    mediaRecorder.onstop = () => {
+      const mType = mediaRecorder.mimeType || 'video/webm';
+      lastVideoBlob = new Blob(recordedChunks, { type: mType });
+      document.getElementById('saveVideoBtn').style.display = 'block';
+      resolve();
+    };
+    mediaRecorder.stop();
+  }).then(() => {
+    isRecording = false;
+    clearInterval(recTimerInterval);
+    document.getElementById('recordBtn').classList.remove('recording');
+    document.getElementById('recBadge').classList.remove('show');
+  });
+}
+
+function updateRecTimer() {
+  const m = Math.floor(recSeconds / 60);
+  const s = recSeconds % 60;
+  document.getElementById('recTimer').textContent = m + ':' + String(s).padStart(2, '0');
+}
+
+function saveVideo() {
+  if (!lastVideoBlob) return;
+  const ext = lastVideoBlob.type.includes('mp4') ? 'mp4' : 'webm';
+  const url = URL.createObjectURL(lastVideoBlob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'tmac-recording-' + Date.now() + '.' + ext;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+
+// ── Navigation ──
+function restartScript() {
+  scrollY = 0;
+  isScrolling = false;
+  updatePlayIcon();
+  applyScroll();
+  updateProgress();
+  document.getElementById('doneOverlay').classList.remove('show');
+  document.getElementById('saveVideoBtn').style.display = 'none';
+  cancelAnimationFrame(rafId);
+
+  // Refresh height measurement
+  requestAnimationFrame(() => {
+    totalHeight = document.getElementById('promptText').scrollHeight;
+    visibleHeight = document.getElementById('scriptOverlay').clientHeight;
+  });
+}
+
+function goBack() {
+  // Stop scroll
+  isScrolling = false;
+  cancelAnimationFrame(rafId);
+
+  // Stop recording
+  if (isRecording) stopRecording();
+
+  // Stop camera
+  if (currentStream) {
+    currentStream.getTracks().forEach(t => t.stop());
+    currentStream = null;
+  }
+
+  // Reset UI
+  document.getElementById('prompter').style.display = 'none';
+  document.getElementById('prompter').classList.remove('active');
+  document.getElementById('setup').style.display = 'flex';
+  document.getElementById('doneOverlay').classList.remove('show');
+  document.getElementById('saveVideoBtn').style.display = 'none';
+  document.getElementById('recBadge').classList.remove('show');
+  document.getElementById('recordBtn').classList.remove('recording');
+  document.getElementById('progressBar').style.width = '0%';
+  scrollY = 0;
+  updatePlayIcon();
+
+  const pt = document.getElementById('promptText');
+  pt.style.transform = 'translateY(0)';
+  isMirror = false;
+}
+
+// ── Sliders ──
+document.getElementById('speed').addEventListener('input', function() {
+  document.getElementById('speed-val').textContent = this.value;
+});
+document.getElementById('fontsize').addEventListener('input', function() {
+  document.getElementById('font-val').textContent = this.value;
+});
+
+// ── Keep screen on ──
+async function keepScreenOn() {
+  try {
+    if ('wakeLock' in navigator) await navigator.wakeLock.request('screen');
+  } catch(e) {}
+}
+keepScreenOn();
+</script>
+</body>
+</html>
