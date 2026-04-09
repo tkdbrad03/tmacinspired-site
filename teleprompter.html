@@ -8,6 +8,7 @@
 <link rel="manifest" href="/teleprompter-manifest.json">
 <link rel="apple-touch-icon" href="/teleprompter-icon-512.png">
 <meta name="theme-color" content="#1f4236">
+<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
 <title>Teleprompter · TMac Inspired™</title>
 <style>
   :root {
@@ -531,43 +532,54 @@ function updateRecTimer() {
   document.getElementById('recTimer').textContent = m + ':' + String(s).padStart(2, '0');
 }
 
-// ── Save video — iOS share sheet ──
-function saveVideo() {
-  if (!videoURL) {
-    showStatus('No video ready yet. Try again in a moment.');
-    return;
-  }
+// ── Save video — convert to MP4 with FFmpeg then share ──
+async function saveVideo() {
+  if (!videoURL) { showStatus('No video ready yet.'); return; }
 
-  // Try native Web Share API first (iOS 15+ supports sharing files)
-  fetch(videoURL)
-    .then(r => r.blob())
-    .then(blob => {
-      const ext = blob.type.includes('mp4') ? 'mp4' : 'webm';
-      const file = new File([blob], 'tmac-recording.' + ext, { type: blob.type });
+  const btn = document.getElementById('saveVideoBtn');
+  btn.textContent = 'Converting…';
+  btn.disabled = true;
+  showStatus('Converting to MP4, please wait…');
 
+  try {
+    const { createFFmpeg, fetchFile } = FFmpeg;
+    const ffmpeg = createFFmpeg({ log: false });
+    await ffmpeg.load();
+
+    const blob = await fetch(videoURL).then(r => r.blob());
+    ffmpeg.FS('writeFile', 'in.webm', await fetchFile(blob));
+    await ffmpeg.run('-i', 'in.webm', '-c:v', 'libx264', '-preset', 'ultrafast', '-c:a', 'aac', 'out.mp4');
+    const data = ffmpeg.FS('readFile', 'out.mp4');
+    const mp4Blob = new Blob([data.buffer], { type: 'video/mp4' });
+    const mp4File = new File([mp4Blob], 'tmac-recording.mp4', { type: 'video/mp4' });
+
+    btn.textContent = 'Tap to Save Video';
+    btn.disabled = false;
+
+    if (navigator.canShare && navigator.canShare({ files: [mp4File] })) {
+      navigator.share({ files: [mp4File], title: 'TMac Inspired Recording' });
+    } else {
+      const url = URL.createObjectURL(mp4Blob);
+      window.open(url, '_blank');
+    }
+
+  } catch(err) {
+    // FFmpeg failed — fall back to sharing the webm directly
+    btn.textContent = 'Tap to Save Video';
+    btn.disabled = false;
+    showStatus('Sharing original file…');
+    try {
+      const blob = await fetch(videoURL).then(r => r.blob());
+      const file = new File([blob], 'tmac-recording.webm', { type: blob.type });
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        navigator.share({
-          files: [file],
-          title: 'TMac Inspired Recording'
-        }).catch(err => {
-          if (err.name !== 'AbortError') fallbackSave();
-        });
+        navigator.share({ files: [file], title: 'TMac Inspired Recording' });
       } else {
-        fallbackSave();
+        window.open(videoURL, '_blank');
       }
-    })
-    .catch(() => fallbackSave());
-}
-
-function fallbackSave() {
-  if (!videoURL) return;
-  const a = document.createElement('a');
-  a.href = videoURL;
-  a.download = 'tmac-recording.webm';
-  a.target = '_blank';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+    } catch(e2) {
+      window.open(videoURL, '_blank');
+    }
+  }
 }
 
 // ── Navigation ──
