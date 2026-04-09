@@ -418,17 +418,19 @@ function updateRecTimer() {
 async function triggerShare() {
   if (!recordedBlob) { showStatus('No recording found.'); return; }
   try {
+    // Build file directly from blob — no fetch() needed, avoids service worker interference
     const ext = recordedBlob.type.includes('mp4') ? 'mp4' : 'webm';
     const file = new File([recordedBlob], 'tmac-recording.'+ext, { type: recordedBlob.type });
     if (navigator.canShare && navigator.canShare({ files:[file] })) {
       await navigator.share({ files:[file], title:'TMac Inspired Recording' });
     } else {
-      // Fallback: open in new tab
-      const url = URL.createObjectURL(recordedBlob);
+      // Fallback: create object URL and open
+      const url = URL.createObjectURL(file);
       window.open(url, '_blank');
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
     }
   } catch(e) {
-    if (e.name !== 'AbortError') showStatus('Could not open share sheet.');
+    if (e.name !== 'AbortError') showStatus('Could not open share sheet. Error: '+e.message);
   }
 }
 
