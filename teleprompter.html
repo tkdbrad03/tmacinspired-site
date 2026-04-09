@@ -8,7 +8,6 @@
 <link rel="manifest" href="/teleprompter-manifest.json">
 <link rel="apple-touch-icon" href="/teleprompter-icon-512.png">
 <meta name="theme-color" content="#1f4236">
-<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
 <title>Teleprompter · TMac Inspired™</title>
 <style>
   :root {
@@ -251,14 +250,14 @@ Your words will scroll over your live camera feed so you can look straight into 
     <div class="done-label">Script complete</div>
     <div class="done-title">You did it.</div>
     <div class="done-actions">
-      <button class="done-btn primary" id="saveVideoBtn" onclick="saveVideo()" style="display:none">
+      <button class="done-btn primary" id="saveVideoBtn" onclick="" style="display:none">
         Tap to Save Video
       </button>
       <button class="done-btn" onclick="restartScript()">Record Again</button>
       <button class="done-btn" onclick="goBack()">Back to Setup</button>
     </div>
     <p id="saveHint" style="display:none; font-family:Georgia,serif; font-size:11px; color:rgba(245,240,232,0.5); font-style:italic; text-align:center; margin-top:4px; line-height:1.6;">
-      Video opens in a new tab.<br>Long-press the video → Save to Photos.
+      Tap "Save Video" in the share menu to add it to Photos.
     </p>
   </div>
 
@@ -534,51 +533,30 @@ function updateRecTimer() {
 
 // ── Save video — convert to MP4 with FFmpeg then share ──
 async function saveVideo() {
-  if (!videoURL) { showStatus('No video ready yet.'); return; }
-
-  const btn = document.getElementById('saveVideoBtn');
-  btn.textContent = 'Converting…';
-  btn.disabled = true;
-  showStatus('Converting to MP4, please wait…');
+  if (!videoURL) { 
+    showStatus('No video ready yet.'); 
+    return; 
+  }
 
   try {
-    const { createFFmpeg, fetchFile } = FFmpeg;
-    const ffmpeg = createFFmpeg({ log: false });
-    await ffmpeg.load();
-
     const blob = await fetch(videoURL).then(r => r.blob());
-    ffmpeg.FS('writeFile', 'in.webm', await fetchFile(blob));
-    await ffmpeg.run('-i', 'in.webm', '-c:v', 'libx264', '-preset', 'ultrafast', '-c:a', 'aac', 'out.mp4');
-    const data = ffmpeg.FS('readFile', 'out.mp4');
-    const mp4Blob = new Blob([data.buffer], { type: 'video/mp4' });
-    const mp4File = new File([mp4Blob], 'tmac-recording.mp4', { type: 'video/mp4' });
+    const file = new File([blob], 'tmac-recording.webm', { type: blob.type });
 
-    btn.textContent = 'Tap to Save Video';
-    btn.disabled = false;
-
-    if (navigator.canShare && navigator.canShare({ files: [mp4File] })) {
-      navigator.share({ files: [mp4File], title: 'TMac Inspired Recording' });
+    // ✅ Use native share (best for iPhone)
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        files: [file],
+        title: 'TMac Inspired Recording'
+      });
+      showStatus('Choose "Save Video" to add to Photos');
     } else {
-      const url = URL.createObjectURL(mp4Blob);
+      // fallback
+      const url = URL.createObjectURL(blob);
       window.open(url, '_blank');
     }
 
-  } catch(err) {
-    // FFmpeg failed — fall back to sharing the webm directly
-    btn.textContent = 'Tap to Save Video';
-    btn.disabled = false;
-    showStatus('Sharing original file…');
-    try {
-      const blob = await fetch(videoURL).then(r => r.blob());
-      const file = new File([blob], 'tmac-recording.webm', { type: blob.type });
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        navigator.share({ files: [file], title: 'TMac Inspired Recording' });
-      } else {
-        window.open(videoURL, '_blank');
-      }
-    } catch(e2) {
-      window.open(videoURL, '_blank');
-    }
+  } catch (err) {
+    showStatus('Save failed. Try again.');
   }
 }
 
