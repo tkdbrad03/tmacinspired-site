@@ -176,13 +176,18 @@ function saveToURL() {
   const state = { n: names.slice(0, numPlayers), s: scores.map(r => r.slice(0, numPlayers)), p: numPlayers, b: betAmount, h: holeMode, par3: par3Holes, ctp: ctpWinners };
   params.set('data', btoa(JSON.stringify(state)));
   history.replaceState({}, '', '?' + params.toString());
+  localStorage.setItem('golf-state-' + room, btoa(JSON.stringify(state))); // ADD THIS LINE
 }
 
+
 function loadFromURL() {
-  const data = params.get('data');
+  let data = params.get('data');
+  if (!data) data = localStorage.getItem('golf-state-' + room); // ADD THIS LINE
   if (!data) return;
   try {
     const state = JSON.parse(atob(data));
+    // rest stays exactly the same
+
     if (state.h) {
       holeMode = state.h;
       document.getElementById('numHoles').value = state.h;
