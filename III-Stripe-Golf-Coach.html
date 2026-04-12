@@ -9,6 +9,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
 <title>III Stripe</title>
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/tkdbrad03/tmacinspired-site/main/III-Stripe.png">
+<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/tkdbrad03/tmacinspired-site/main/III-Stripe.png">
+<link rel="apple-touch-icon" sizes="152x152" href="https://raw.githubusercontent.com/tkdbrad03/tmacinspired-site/main/III-Stripe.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/tkdbrad03/tmacinspired-site/main/III-Stripe.png">
+<link rel="apple-touch-icon" sizes="167x167" href="https://raw.githubusercontent.com/tkdbrad03/tmacinspired-site/main/III-Stripe.png">
 <style>
   :root {
     --black: #0a0a0a;
@@ -1128,7 +1133,7 @@
       <div class="accordion-course-header" onclick="toggleCourse('river')">
         <div>
           <div class="acc-course-name">River Wilderness</div>
-          <div class="acc-course-meta">5,079 yds · Par 72 · Slope 111 · Very Scorable</div>
+          <div class="acc-course-meta">5,866 yds · Par 72 · Rating 69.0 · Slope 127 · White Tees</div>
         </div>
         <div class="acc-course-arrow">›</div>
       </div>
@@ -1247,25 +1252,26 @@
 
 <script>
 // ── RIVER WILDERNESS DATA (tailored for HCP 17.6 bag) ──
+// WHITE TEES — 5,866 yds · Par 72 · Rating 69.0 · Slope 127
 const riverHoles = [
-  { num:1,  yds:294, par:4, hcp:14, tee:'3W or 5W', approach:'9i or PW (short par 4)', note:'Don\'t reach for driver here. Easy position, then PW into the green.', goal:'Par or easy bogey', flag:'', type:'normal' },
-  { num:2,  yds:232, par:4, hcp:8,  tee:'3W', approach:'9i / PW', note:'Position over distance. Tighter than it looks. Play for 125–150 in.', goal:'Bogey = solid', flag:'', type:'normal' },
-  { num:3,  yds:273, par:4, hcp:16, tee:'Driver or 3W', approach:'PW or chip', note:'Short par 4 — you can get close. Attack hole. Birdie or tap-in par.', goal:'Birdie look', flag:'🔥', type:'score' },
-  { num:4,  yds:375, par:5, hcp:10, tee:'Driver (240)', approach:'5W → PW/9i in', note:'3-shot hole. Driver → 5W to ~80–100 out → PW in. Do not force it.', goal:'Easy par or bogey', flag:'', type:'normal' },
-  { num:5,  yds:133, par:3, hcp:12, tee:'9i or PW', approach:'Center green', note:'Inside 150 — this is your range. Commit and attack center.', goal:'Par', flag:'', type:'normal' },
-  { num:6,  yds:318, par:4, hcp:2,  tee:'3W — keep it in play', approach:'Lay up → 9i/PW in', note:'Hardest hole on the front. In play beats long in trouble. Bogey = WIN here.', goal:'Bogey = success', flag:'🚨', type:'danger' },
-  { num:7,  yds:105, par:3, hcp:18, tee:'PW', approach:'Attack the pin', note:'Easiest hole. Inside your PW distance. Attack. This is where you score.', goal:'Birdie or tap-in', flag:'🟢', type:'score' },
-  { num:8,  yds:417, par:5, hcp:4,  tee:'Driver (240)', approach:'5W → PW/9i in', note:'3-shot hole. Driver → 5W → PW. Don\'t try to reach in 2. Par from the wedge.', goal:'Par from wedge approach', flag:'', type:'normal' },
-  { num:9,  yds:297, par:4, hcp:6,  tee:'3W or 5W', approach:'9i or PW — controlled', note:'Stay controlled into the turn. Position off tee. Commit to the approach.', goal:'Solid bogey or par', flag:'', type:'normal' },
-  { num:10, yds:302, par:4, hcp:3,  tee:'3W — smart', approach:'8i or 9i', note:'Tough hole. Fairway first. Take your 8i or 9i to middle of green. No heroics.', goal:'Bogey = win', flag:'🚨', type:'danger' },
-  { num:11, yds:419, par:5, hcp:11, tee:'Driver (240)', approach:'5W → PW/9i in', note:'Same formula as 4 and 8. It works. Trust it. Three controlled shots.', goal:'Par or birdie look', flag:'', type:'normal' },
-  { num:12, yds:142, par:3, hcp:13, tee:'9i', approach:'Center of green', note:'135–140 is your 9i range. Center green. Take the 2-putt par.', goal:'Par', flag:'', type:'normal' },
-  { num:13, yds:292, par:4, hcp:15, tee:'Driver', approach:'Short PW or chip', note:'Driver puts you in wedge range. Birdie opportunity — attack.', goal:'Birdie opportunity', flag:'🔥', type:'score' },
-  { num:14, yds:346, par:4, hcp:1,  tee:'3W — survive', approach:'9i or PW — don\'t chase', note:'Hardest hole on the course. In play, in play, in play. Bogey is a victory here.', goal:'Bogey = win', flag:'🚨', type:'danger' },
-  { num:15, yds:453, par:5, hcp:7,  tee:'Driver (240)', approach:'5W → PW in', note:'NOT going for green in 2. Three shots. Get to 125–140 for your PW.', goal:'Par or easy bogey', flag:'', type:'normal' },
-  { num:16, yds:244, par:4, hcp:9,  tee:'3W or 5W', approach:'PW or 9i', note:'Short-ish par 4. Stay steady. Position off tee into your scoring zone.', goal:'Par', flag:'', type:'normal' },
-  { num:17, yds:110, par:3, hcp:17, tee:'PW', approach:'Attack the pin', note:'Scoring hole. Your PW distance. Attack this flag. Score here.', goal:'Birdie / par', flag:'🟢', type:'score' },
-  { num:18, yds:327, par:4, hcp:5,  tee:'3W or 5W', approach:'9i or PW — finish strong', note:'Controlled finish. Position off tee. 9i or PW into green. No hero to close.', goal:'Par — finish strong', flag:'', type:'normal' },
+  { num:1,  yds:331, par:4, hcp:14, tee:'Driver (240)', approach:'9i → ~91 yds remaining', note:'331 yds — driver leaves ~91 in. Nice easy PW or 9i to center green. Good start hole.', goal:'Par or easy bogey', flag:'', type:'normal' },
+  { num:2,  yds:285, par:4, hcp:8,  tee:'3W (220)', approach:'PW — ~65 yds in', note:'285 yds — 3W leaves about 65 in. Short pitch to the green. Position over power here.', goal:'Par or bogey', flag:'', type:'normal' },
+  { num:3,  yds:318, par:4, hcp:16, tee:'Driver (240)', approach:'PW / chip — ~78 yds in', note:'318 yds — driver puts you just off or on the green fringe. Attack hole. Birdie look.', goal:'Birdie look 🔥', flag:'🔥', type:'score' },
+  { num:4,  yds:423, par:5, hcp:10, tee:'Driver (240)', approach:'5W → PW/9i in', note:'3-shot hole. Driver (240) → 5W (200) → leaves ~17 left. Lay up shorter with 5W, then PW. Don\'t force it.', goal:'Par or easy bogey', flag:'', type:'normal' },
+  { num:5,  yds:163, par:3, hcp:12, tee:'7i (160–165)', approach:'Center green', note:'163 yds — right in your 7i range. Smooth 7i to center. Do not short-side yourself.', goal:'Par', flag:'', type:'normal' },
+  { num:6,  yds:343, par:4, hcp:2,  tee:'3W (220)', approach:'8i → ~123 yds in', note:'HCP 2 — hardest hole on the front. 3W keeps you in play. ~123 left = PW. Bogey is a win.', goal:'Bogey = success', flag:'🚨', type:'danger' },
+  { num:7,  yds:133, par:3, hcp:18, tee:'9i (135–140)', approach:'Attack the pin', note:'Easiest hole. 133 yds = 9i all day. Attack this flag. This is where you score.', goal:'Birdie or tap-in par', flag:'🟢', type:'score' },
+  { num:8,  yds:461, par:5, hcp:4,  tee:'Driver (240)', approach:'5W → 9i/PW in', note:'461 yds — Driver (240) → 5W (200) leaves ~21 extra. Lay 5W to ~130 out → PW in. 3 shots. No hero.', goal:'Par from wedge', flag:'', type:'normal' },
+  { num:9,  yds:366, par:4, hcp:6,  tee:'Driver (240)', approach:'7i → ~126 yds in', note:'366 yds — driver leaves ~126. That\'s PW range. Stay controlled heading into the turn.', goal:'Par or bogey', flag:'', type:'normal' },
+  { num:10, yds:367, par:4, hcp:3,  tee:'Driver (240)', approach:'7i → ~127 yds in', note:'HCP 3 — tough hole. Driver + PW in. Middle of green only. No pin hunting on the toughest par 4.', goal:'Bogey = win', flag:'🚨', type:'danger' },
+  { num:11, yds:452, par:5, hcp:11, tee:'Driver (240)', approach:'5W → PW in', note:'452 yds — same formula. Driver → 5W to ~12 left, or lay 5W shorter → PW. Three shots. Works every time.', goal:'Par or birdie look', flag:'', type:'normal' },
+  { num:12, yds:177, par:3, hcp:13, tee:'6i (165–175)', approach:'Center green', note:'177 yds — smooth 6i. Don\'t try to overpower it. Center green and take your 2-putt.', goal:'Par', flag:'', type:'normal' },
+  { num:13, yds:323, par:4, hcp:15, tee:'Driver (240)', approach:'PW — ~83 yds in', note:'323 yds — driver leaves ~83 yds. Scoring hole. Short wedge in = birdie opportunity. Attack.', goal:'Birdie opportunity', flag:'🔥', type:'score' },
+  { num:14, yds:378, par:4, hcp:1,  tee:'3W (220)', approach:'8i → ~158 yds in', note:'HCP 1 — hardest hole on the course. 3W + 8i. Stay in play at ALL costs. Bogey is a trophy here.', goal:'Bogey = win', flag:'🚨', type:'danger' },
+  { num:15, yds:501, par:5, hcp:7,  tee:'Driver (240)', approach:'5W → PW in', note:'501 yds — Driver (240) → 5W (200) → ~61 left. Lay shorter with 5W to get to 125–140 → PW. 3 shots only.', goal:'Par or easy bogey', flag:'', type:'normal' },
+  { num:16, yds:323, par:4, hcp:9,  tee:'Driver (240)', approach:'PW — ~83 yds in', note:'323 yds — driver leaves ~83 in. Easy wedge into the green. Stay steady, don\'t get loose late.', goal:'Par', flag:'', type:'normal' },
+  { num:17, yds:158, par:3, hcp:17, tee:'7i (160–165)', approach:'Attack the pin', note:'Scoring hole — HCP 17. 158 yds = smooth 7i. Attack this pin. Score here.', goal:'Birdie / par', flag:'🟢', type:'score' },
+  { num:18, yds:364, par:4, hcp:5,  tee:'Driver (240)', approach:'7i → ~124 yds in', note:'364 yds — driver leaves ~124. That\'s PW. Finish strong. No hero off the tee. Controlled approach to center green.', goal:'Par — finish strong', flag:'', type:'normal' },
 ];
 
 // Scorecard par data
