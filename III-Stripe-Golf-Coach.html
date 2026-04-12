@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<title>III Stripe</title>
+<style>
+  :root {
+    --black: #0a0a0a;
+    --black-2: #111111;
+    --black-3: #1a1a1a;
+    --black-4: #222222;
+    --gold: #d4a017;
+    --gold-bright: #f0c040;
+    --gold-dim: #8a6810;
+    --gold-pale: rgba(212,160,23,0.1);
+    --gold-line: rgba(212,160,23,0.25);
+    --white: #f5f0e8;
+    --white-dim: rgba(245,240,232,0.55);
+    --white-mute: rgba(245,240,232,0.25);
+    --green-score: #4a9b6f;
+    --red-danger: #c0392b;
+    --font-display: 'Oswald', sans-serif;
+    --font-body: 'Source Serif 4', Georgia, serif;
+    --transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    max-width: 430px;
+    margin: 0 auto;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── THREE STRIPE DIVIDER ── */
+  .stripe-bar {
+    display: flex;
+    height: 4px;
+    width: 100%;
+  }
+  .stripe-bar span { flex: 1; }
+  .stripe-bar span:nth-child(1) { background: var(--gold); }
+  .stripe-bar span:nth-child(2) { background: var(--black-4); }
+  .stripe-bar span:nth-child(3) { background: var(--gold); }
+
+  /* ── HEADER ── */
+  .app-header {
+    background: var(--black);
+    border-bottom: 1px solid var(--gold-line);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-inner {
+    padding: 14px 20px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand-block { display: flex; flex-direction: column; }
+
+  .brand-name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 30px;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .brand-roman {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 9px;
+    color: var(--white-dim);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  .header-right { text-align: right; }
+
+  .target-label {
+    font-family: var(--font-display);
+    font-size: 8px;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .target-score {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 30px;
+    color: var(--white);
+    letter-spacing: 0.05em;
+    line-height: 1;
+  }
+
+  .target-score.good { color: var(--green-score); }
+  .target-score.warn { color: var(--red-danger); }
+
+  /* ── NAV ── */
+  .nav-tabs {
+    display: flex;
+    background: var(--black-2);
+    border-bottom: 1px solid var(--gold-line);
+    overflow-x: auto;
+    scrollbar-width: none;
+    position: sticky;
+    top: 65px;
+    z-index: 99;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+
+  .nav-tab {
+    flex: 1;
+    min-width: 60px;
+    padding: 11px 4px;
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--white-dim);
+    cursor: pointer;
+    border: none;
+    background: none;
+    border-bottom: 2px solid transparent;
+    transition: var(--transition);
+    white-space: nowrap;
+    margin-bottom: -1px;
+  }
+
+  .nav-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* ── PAGES ── */
+  .page { display: none; padding: 0 0 100px; animation: fadeIn 0.25s ease; }
+  .page.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── HERO ── */
+  .hero-block {
+    background: var(--black-2);
+    border-bottom: 1px solid var(--gold-line);
+    padding: 28px 22px 22px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-block::before {
+    content: 'III';
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 120px;
+    color: rgba(212,160,23,0.04);
+    letter-spacing: 0.1em;
+    line-height: 1;
+    user-select: none;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-display);
+    font-size: 8px;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+
+  .hero-quote {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.3rem, 4vw, 1.7rem);
+    color: var(--white);
+    line-height: 1.25;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .hero-quote em { color: var(--gold); font-style: normal; }
+
+  .hero-divider { height: 1px; background: var(--gold-line); margin-bottom: 14px; }
+
+  .hero-sub {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--white-dim);
+    line-height: 1.9;
+    letter-spacing: 0.02em;
+  }
+
+  .hero-sub strong { color: var(--white); font-weight: 400; }
+
+  /* ── SECTIONS ── */
+  .section { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+
+  /* ── BAG CARDS ── */
+  .bag-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+
+  .bag-card {
+    background: var(--black-3);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 12px 14px;
+    border-left: 2px solid var(--gold-dim);
+    position: relative;
+  }
+
+  .bag-card.scoring-zone {
+    border-left-color: var(--gold);
+    background: var(--gold-pale);
+  }
+
+  .bag-club {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .bag-dist {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--white);
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+
+  .bag-card.scoring-zone .bag-dist { color: var(--gold-bright); }
+
+  .bag-label {
+    font-size: 9px;
+    color: var(--white-mute);
+    margin-top: 2px;
+    letter-spacing: 0.05em;
+  }
+
+  .scoring-tag {
+    position: absolute;
+    top: 8px; right: 8px;
+    font-family: var(--font-display);
+    font-size: 8px;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--gold-pale);
+    border: 1px solid var(--gold-line);
+    padding: 1px 6px;
+  }
+
+  /* ── RULE PILLS ── */
+  .rules-grid { display: flex; flex-direction: column; gap: 7px; }
+
+  .rule-pill {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--black-3);
+    border-left: 2px solid var(--gold-dim);
+  }
+
+  .rule-pill.danger { border-left-color: var(--red-danger); }
+  .rule-pill.go { border-left-color: var(--green-score); }
+  .rule-icon { font-size: 15px; flex-shrink: 0; }
+
+  .rule-text {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--white);
+    line-height: 1.4;
+  }
+
+  /* ── CHECKLIST ── */
+  .checklist-wrap { border: 1px solid var(--gold-line); overflow: hidden; }
+
+  .checklist-header {
+    padding: 12px 16px;
+    background: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .checklist-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--black);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .checklist-reset {
+    font-family: var(--font-display);
+    font-size: 9px;
+    color: rgba(0,0,0,0.5);
+    background: none;
+    border: 1px solid rgba(0,0,0,0.2);
+    padding: 3px 9px;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    padding: 13px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .checklist-item:last-child { border-bottom: none; }
+  .checklist-item:active { background: var(--black-3); }
+
+  .check-num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--gold);
+    line-height: 1;
+    width: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .check-content { flex: 1; }
+
+  .check-q {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--white);
+    margin-bottom: 2px;
+  }
+
+  .check-hint { font-size: 10px; color: var(--white-dim); }
+
+  .check-box {
+    width: 20px; height: 20px;
+    border: 1px solid rgba(212,160,23,0.3);
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+    transition: all 0.2s;
+  }
+
+  .check-box.checked { background: var(--gold); border-color: var(--gold); }
+  .check-tick { font-size: 11px; color: var(--black); display: none; font-weight: 700; }
+  .check-box.checked .check-tick { display: block; }
+  .checklist-item.done .check-q { color: var(--white-dim); text-decoration: line-through; }
+
+  /* ── STRATEGY GRID (Par type cards) ── */
+  .par-strategy-card {
+    background: var(--black-3);
+    border: 1px solid rgba(255,255,255,0.06);
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+
+  .par-card-header {
+    background: var(--black-4);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .par-card-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .par-card-tag {
+    font-family: var(--font-display);
+    font-size: 9px;
+    color: var(--white-mute);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .par-card-body { padding: 12px 14px; }
+
+  .par-row {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    align-items: flex-start;
+  }
+
+  .par-row:last-child { border-bottom: none; }
+
+  .par-row-label {
+    font-family: var(--font-display);
+    font-size: 9px;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    width: 55px;
+    flex-shrink: 0;
+    padding-top: 1px;
+  }
+
+  .par-row-val {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--white);
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  /* ── COURSE ACCORDION ── */
+  .accordion-course {
+    border: 1px solid var(--gold-line);
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+
+  .accordion-course-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: var(--black-3);
+    cursor: pointer;
+    border-left: 3px solid var(--gold);
+  }
+
+  .acc-course-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--white);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .acc-course-meta {
+    font-family: var(--font-display);
+    font-size: 9px;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .acc-course-arrow {
+    font-size: 18px;
+    color: var(--gold);
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    margin-left: 12px;
+  }
+
+  .accordion-course.open .acc-course-arrow { transform: rotate(90deg); }
+  .accordion-course-body { display: none; border-top: 1px solid var(--gold-line); }
+  .accordion-course.open .accordion-course-body { display: block; }
+
+  .course-intro {
+    background: var(--black-2);
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .course-formula {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--white-dim);
+    line-height: 1.9;
+  }
+
+  .course-formula strong { color: var(--gold); font-weight: 400; }
+
+  .course-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .badge {
+    font-family: var(--font-display);
+    font-size: 9px;
+    padding: 3px 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid;
+  }
+
+  .badge-score { border-color: var(--gold); color: var(--gold); background: var(--gold-pale); }
+  .badge-danger { border-color: var(--red-danger); color: var(--red-danger); background: rgba(192,57,43,0.08); }
+
+  /* Hole accordion */
+  .hole-acc { border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .hole-acc:last-child { border-bottom: none; }
+
+  .hole-acc-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 16px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .hole-acc-header:active { background: var(--black-3); }
+
+  .hole-acc-num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--gold);
+    line-height: 1;
+    width: 22px;
+    flex-shrink: 0;
+  }
+
+  .hole-acc-info { flex: 1; }
+
+  .hole-acc-title {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--white);
+    line-height: 1.3;
+    margin-bottom: 1px;
+  }
+
+  .hole-acc-sub {
+    font-size: 10px;
+    color: var(--white-dim);
+  }
+
+  .hole-flag { font-size: 13px; flex-shrink: 0; }
+
+  .hole-acc-arrow { font-size: 13px; color: var(--gold); transition: transform 0.25s; flex-shrink: 0; }
+  .hole-acc.open .hole-acc-arrow { transform: rotate(90deg); }
+  .hole-acc-body { display: none; padding: 0 16px 12px 50px; }
+  .hole-acc.open .hole-acc-body { display: block; }
+
+  .hole-detail-row {
+    display: flex;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    align-items: flex-start;
+  }
+
+  .hole-detail-row:last-child { border-bottom: none; }
+
+  .hole-detail-label {
+    font-family: var(--font-display);
+    font-size: 8px;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    width: 50px;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+
+  .hole-detail-val {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--white);
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .hole-goal-tag {
+    display: inline-block;
+    margin-top: 3px;
+    font-family: var(--font-display);
+    font-size: 9px;
+    padding: 2px 8px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid;
+  }
+
+  .tag-score { border-color: var(--gold); color: var(--gold); background: var(--gold-pale); }
+  .tag-danger { border-color: var(--red-danger); color: var(--red-danger); background: rgba(192,57,43,0.08); }
+  .tag-normal { border-color: rgba(255,255,255,0.15); color: var(--white-dim); }
+
+  /* ── SCORECARD ── */
+  .score-header-row {
+    display: grid;
+    grid-template-columns: 40px 40px 48px 1fr 68px;
+    background: var(--gold);
+    padding: 9px 14px;
+  }
+
+  .score-col-head {
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--black);
+    text-align: center;
+  }
+
+  .score-col-head:first-child { text-align: left; }
+
+  .nine-label {
+    background: var(--black-3);
+    color: var(--gold);
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 7px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .score-row {
+    display: grid;
+    grid-template-columns: 40px 40px 48px 1fr 68px;
+    padding: 0 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    align-items: center;
+    min-height: 48px;
+  }
+
+  .hole-num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .hole-par { text-align: center; font-family: var(--font-display); font-size: 13px; color: var(--white-dim); }
+  .hole-goal-sc { text-align: center; font-size: 10px; color: var(--white-dim); }
+  .hole-tip-sc { font-size: 10px; color: var(--white-dim); padding: 0 5px; line-height: 1.3; }
+
+  .score-input-wrap { display: flex; align-items: center; justify-content: center; gap: 2px; }
+
+  .score-btn {
+    width: 24px; height: 24px;
+    border: 1px solid rgba(212,160,23,0.25);
+    background: var(--black-3);
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    line-height: 1;
+    transition: var(--transition);
+  }
+
+  .score-btn:active { background: var(--gold); color: var(--black); }
+
+  .score-val {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 22px;
+    width: 28px;
+    text-align: center;
+    color: var(--white);
+    letter-spacing: 0.02em;
+  }
+
+  .score-val.birdie { color: var(--gold-bright); }
+  .score-val.par-score { color: var(--green-score); }
+  .score-val.bogey { color: var(--white); }
+  .score-val.double { color: var(--red-danger); }
+  .score-val.worse { color: var(--red-danger); font-size: 17px; }
+
+  .totals-bar {
+    background: var(--black-2);
+    border-top: 2px solid var(--gold);
+    padding: 18px 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .total-block { text-align: center; }
+  .total-block:first-child { text-align: left; }
+  .total-block:last-child { text-align: right; }
+
+  .total-label {
+    font-family: var(--font-display);
+    font-size: 8px;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+
+  .total-num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 32px;
+    color: var(--white);
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+
+  .total-num.good { color: var(--green-score); }
+  .total-num.warn { color: var(--red-danger); }
+
+  /* ── PROGRESS ── */
+  .progress-wrap { padding: 18px 20px 0; }
+  .progress-label { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .progress-title { font-family: var(--font-display); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--white-dim); }
+  .progress-pct { font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--gold); }
+  .progress-bar { height: 3px; background: rgba(255,255,255,0.08); }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright)); transition: width 0.5s ease; }
+
+  /* ── GOALS ── */
+  .goals-grid { display: flex; flex-direction: column; gap: 7px; }
+
+  .goal-card {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 12px 14px;
+    background: var(--black-3);
+    border: 1px solid rgba(255,255,255,0.05);
+    cursor: pointer;
+    transition: var(--transition);
+    border-left: 2px solid transparent;
+  }
+
+  .goal-card.achieved { background: var(--gold-pale); border-left-color: var(--gold); }
+  .goal-icon { font-size: 16px; flex-shrink: 0; }
+  .goal-text { font-family: var(--font-body); font-size: 13px; color: var(--white); flex: 1; line-height: 1.4; }
+  .goal-card.achieved .goal-text { color: var(--gold); }
+
+  .goal-check {
+    width: 20px; height: 20px;
+    border: 1px solid rgba(212,160,23,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: transparent;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    font-weight: 700;
+  }
+
+  .goal-card.achieved .goal-check { background: var(--gold); border-color: var(--gold); color: var(--black); }
+
+  /* ── TARGET TABLE ── */
+  .target-table { border: 1px solid var(--gold-line); overflow: hidden; }
+  .tt-header { display: grid; grid-template-columns: 1fr 1fr 1fr; text-align: center; padding: 9px 16px; background: var(--gold); }
+  .tt-head { font-family: var(--font-display); font-size: 9px; color: var(--black); letter-spacing: 0.15em; text-transform: uppercase; font-weight: 600; }
+  .tt-row { display: grid; grid-template-columns: 1fr 1fr 1fr; text-align: center; padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.04); }
+  .tt-type { font-family: var(--font-body); font-size: 13px; color: var(--white); }
+  .tt-target { font-family: var(--font-display); font-weight: 700; font-size: 20px; color: var(--gold); line-height: 1; }
+  .tt-note { font-size: 11px; color: var(--white-dim); }
+
+  /* ── MENTAL ── */
+  .mental-hero {
+    background: var(--black-2);
+    min-height: 190px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 22px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    border-bottom: 2px solid var(--gold);
+  }
+
+  .mental-bg {
+    position: absolute;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 120px;
+    color: rgba(212,160,23,0.04);
+    letter-spacing: 15px;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .mental-quote {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+    color: var(--white);
+    line-height: 1.3;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+
+  .mental-quote em { color: var(--gold); font-style: normal; }
+
+  .mental-attr {
+    font-family: var(--font-display);
+    font-size: 9px;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-top: 14px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .mental-pill {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    border-left: 2px solid var(--gold);
+    padding: 11px 13px;
+    margin-bottom: 7px;
+    background: var(--black-3);
+  }
+
+  .mental-pill-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+  .mental-pill-text {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--white);
+    line-height: 1.5;
+  }
+
+  .mental-pill-text strong { font-weight: 400; color: var(--gold); font-style: italic; }
+
+  .cheat-sheet {
+    background: var(--black-3);
+    border: 1px solid var(--gold-line);
+    padding: 16px;
+  }
+
+  .cheat-item {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 13px;
+  }
+
+  .cheat-item:last-child { border-bottom: none; }
+
+  .cheat-trigger {
+    font-family: var(--font-display);
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    min-width: 90px;
+  }
+
+  .cheat-action {
+    font-family: var(--font-body);
+    color: var(--white);
+    line-height: 1.4;
+  }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    top: 72px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-14px);
+    background: var(--gold);
+    color: var(--black);
+    padding: 10px 18px;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    z-index: 300;
+    opacity: 0;
+    transition: all 0.3s;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  .reset-btn {
+    width: 100%;
+    padding: 11px;
+    background: transparent;
+    border: 1px solid rgba(212,160,23,0.25);
+    font-family: var(--font-display);
+    font-size: 11px;
+    color: var(--white-dim);
+    cursor: pointer;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: var(--transition);
+  }
+
+  .reset-btn:hover { border-color: var(--gold); color: var(--gold); }
+</style>
+</head>
+<body>
+
+<!-- THREE STRIPE TOP -->
+<div class="stripe-bar"><span></span><span></span><span></span></div>
+
+<!-- HEADER -->
+<header class="app-header">
+  <div class="header-inner">
+    <div class="brand-block">
+      <div class="brand-name">III Stripe</div>
+      <div class="brand-roman">Golf · Strategic Play</div>
+    </div>
+    <div class="header-right">
+      <div class="target-label">Score</div>
+      <div class="target-score" id="headerScore">85</div>
+    </div>
+  </div>
+  <div class="stripe-bar"><span></span><span></span><span></span></div>
+</header>
+
+<!-- NAV -->
+<nav class="nav-tabs">
+  <button class="nav-tab active" onclick="showPage('game',this)">Game Plan</button>
+  <button class="nav-tab" onclick="showPage('bag',this)">Bag</button>
+  <button class="nav-tab" onclick="showPage('course',this)">Course</button>
+  <button class="nav-tab" onclick="showPage('scorecard',this)">Score</button>
+  <button class="nav-tab" onclick="showPage('goals',this)">Goals</button>
+  <button class="nav-tab" onclick="showPage('mental',this)">Mental</button>
+</nav>
+
+<!-- ═══════════════════════════════════
+     GAME PLAN
+═══════════════════════════════════ -->
+<div class="page active" id="page-game">
+
+  <div class="hero-block">
+    <div class="hero-eyebrow">III Stripe · HCP 17.6 · Target 85</div>
+    <div class="hero-quote">Smooth off the tee.<br><em>Deadly inside 150.</em></div>
+    <div class="hero-divider"></div>
+    <div class="hero-sub"><strong>Position over ego</strong> · Lay up to 125–150 · <strong>No blow-up holes</strong><br>Bogey is a good score · Doubles are the enemy</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Pre-Shot Routine</div>
+    <div class="checklist-wrap">
+      <div class="checklist-header">
+        <span class="checklist-title">Every Shot</span>
+        <button class="checklist-reset" onclick="resetChecklist()">Reset</button>
+      </div>
+      <div class="checklist-item" onclick="toggleCheck(this)">
+        <div class="check-num">1</div>
+        <div class="check-content"><div class="check-q">Wide or tight off tee?</div><div class="check-hint">Wide → Driver · Tight → 3W or 5W</div></div>
+        <div class="check-box"><span class="check-tick">✓</span></div>
+      </div>
+      <div class="checklist-item" onclick="toggleCheck(this)">
+        <div class="check-num">2</div>
+        <div class="check-content"><div class="check-q">What's my distance?</div><div class="check-hint">Scoring zone = 125–150 · Commit to the club</div></div>
+        <div class="check-box"><span class="check-tick">✓</span></div>
+      </div>
+      <div class="checklist-item" onclick="toggleCheck(this)">
+        <div class="check-num">3</div>
+        <div class="check-content"><div class="check-q">Middle of green or attack?</div><div class="check-hint">Default: middle · Only attack when confident</div></div>
+        <div class="check-box"><span class="check-tick">✓</span></div>
+      </div>
+      <div class="checklist-item" onclick="toggleCheck(this)">
+        <div class="check-num">4</div>
+        <div class="check-content"><div class="check-q">Smooth swing. Commit.</div><div class="check-hint">Not max — smooth. Trust the number.</div></div>
+        <div class="check-box"><span class="check-tick">✓</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Par Strategy</div>
+
+    <div class="par-strategy-card">
+      <div class="par-card-header">
+        <span class="par-card-title">Par 3</span>
+        <span class="par-card-tag">Play Smart</span>
+      </div>
+      <div class="par-card-body">
+        <div class="par-row"><span class="par-row-label">150 in</span><span class="par-row-val">8i or less → attack center of green</span></div>
+        <div class="par-row"><span class="par-row-label">160–180</span><span class="par-row-val">6i–7i → don't chase pins</span></div>
+        <div class="par-row"><span class="par-row-label">180+</span><span class="par-row-val">Smooth 5i or 5W → middle of green, take the 2-putt</span></div>
+        <div class="par-row"><span class="par-row-label">Rule</span><span class="par-row-val">Middle of green = your best friend. Always.</span></div>
+      </div>
+    </div>
+
+    <div class="par-strategy-card">
+      <div class="par-card-header">
+        <span class="par-card-title">Par 4</span>
+        <span class="par-card-tag">Where You Score</span>
+      </div>
+      <div class="par-card-body">
+        <div class="par-row"><span class="par-row-label">Short &lt;360</span><span class="par-row-val">3W or 5W off tee · 9i/PW in · Easy golf</span></div>
+        <div class="par-row"><span class="par-row-label">Mid 360–400</span><span class="par-row-val">Driver (240) · 7i–9i approach · GIR opportunity</span></div>
+        <div class="par-row"><span class="par-row-label">Long 400+</span><span class="par-row-val">Driver · 5i–6i approach · Miss green = bogey is fine</span></div>
+      </div>
+    </div>
+
+    <div class="par-strategy-card">
+      <div class="par-card-header">
+        <span class="par-card-title">Par 5</span>
+        <span class="par-card-tag">3-Shot Hole. Always.</span>
+      </div>
+      <div class="par-card-body">
+        <div class="par-row"><span class="par-row-label">Shot 1</span><span class="par-row-val">Driver (240)</span></div>
+        <div class="par-row"><span class="par-row-label">Shot 2</span><span class="par-row-val">5W (200) → lands 80–100 out</span></div>
+        <div class="par-row"><span class="par-row-label">Shot 3</span><span class="par-row-val">PW or 9i into green</span></div>
+        <div class="par-row"><span class="par-row-label">Result</span><span class="par-row-val">Easy bogey · Sneaky par · Occasional birdie look</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Game Rules</div>
+    <div class="rules-grid">
+      <div class="rule-pill go"><span class="rule-icon">✅</span><span class="rule-text">Bogey is a good score — accept it and move on</span></div>
+      <div class="rule-pill danger"><span class="rule-icon">❌</span><span class="rule-text">Doubles are the enemy — avoid at all costs</span></div>
+      <div class="rule-pill"><span class="rule-icon">🎯</span><span class="rule-text">Scoring zone: 125–150 yards out</span></div>
+      <div class="rule-pill"><span class="rule-icon">⛳</span><span class="rule-text">Lay up to scoring zone on par 5s — don't force it</span></div>
+      <div class="rule-pill danger"><span class="rule-icon">🚫</span><span class="rule-text">Bad lie? Punch out. Never be a hero from trouble.</span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════
+     BAG
+═══════════════════════════════════ -->
+<div class="page" id="page-bag">
+
+  <div class="hero-block">
+    <div class="hero-eyebrow">Your Bag · HCP 17.6</div>
+    <div class="hero-quote">Your scoring window:<br><em>125–150 yards.</em></div>
+    <div class="hero-divider"></div>
+    <div class="hero-sub">8i, 9i, and PW are your <strong>bread and butter</strong>. When in doubt, lay up to this range instead of forcing a hero shot.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Club Distances</div>
+    <div class="bag-grid">
+      <div class="bag-card"><div class="bag-club">Driver</div><div class="bag-dist">240</div><div class="bag-label">yards · max distance</div></div>
+      <div class="bag-card"><div class="bag-club">3 Wood</div><div class="bag-dist">220</div><div class="bag-label">yards · tight tees</div></div>
+      <div class="bag-card"><div class="bag-club">5 Wood</div><div class="bag-dist">200</div><div class="bag-label">yards · layup weapon</div></div>
+      <div class="bag-card"><div class="bag-club">5 Iron</div><div class="bag-dist">180–195</div><div class="bag-label">yards</div></div>
+      <div class="bag-card"><div class="bag-club">6 Iron</div><div class="bag-dist">165–175</div><div class="bag-label">yards</div></div>
+      <div class="bag-card"><div class="bag-club">7 Iron</div><div class="bag-dist">160–165</div><div class="bag-label">yards</div></div>
+      <div class="bag-card scoring-zone"><div class="bag-club">8 Iron</div><div class="bag-dist">150</div><div class="bag-label">yards</div><span class="scoring-tag">Zone</span></div>
+      <div class="bag-card scoring-zone"><div class="bag-club">9 Iron</div><div class="bag-dist">135–140</div><div class="bag-label">yards</div><span class="scoring-tag">Zone</span></div>
+      <div class="bag-card scoring-zone" style="grid-column: 1/-1;"><div class="bag-club">Pitching Wedge ⭐</div><div class="bag-dist">125–130</div><div class="bag-label">yards · bread & butter</div><span class="scoring-tag">Zone</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Tee Club Decision</div>
+    <div class="rules-grid">
+      <div class="rule-pill go"><span class="rule-icon">🟢</span><span class="rule-text">Wide fairway → Driver (240) — let the big dog eat</span></div>
+      <div class="rule-pill"><span class="rule-icon">⚠️</span><span class="rule-text">Tight / trouble both sides → 3W (220) or 5W (200)</span></div>
+      <div class="rule-pill danger"><span class="rule-icon">🚫</span><span class="rule-text">20 yards longer in the trees is worse than 20 yards shorter in the fairway</span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════
+     COURSE
+═══════════════════════════════════ -->
+<div class="page" id="page-course">
+
+  <div class="hero-block">
+    <div class="hero-eyebrow">Course Playbook</div>
+    <div class="hero-quote">Tee club chosen.<br><em>Target locked.</em></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Select Your Course</div>
+
+    <div class="accordion-course" id="acc-river">
+      <div class="accordion-course-header" onclick="toggleCourse('river')">
+        <div>
+          <div class="acc-course-name">River Wilderness</div>
+          <div class="acc-course-meta">5,079 yds · Par 72 · Slope 111 · Very Scorable</div>
+        </div>
+        <div class="acc-course-arrow">›</div>
+      </div>
+      <div class="accordion-course-body">
+        <div class="course-intro">
+          <div class="course-formula">
+            <strong>Formula:</strong> Driver → 5W layup → PW/9i into green<br>
+            <strong>Scoring zone:</strong> 125–150 yards — that's YOUR distance<br>
+            <strong>Mindset:</strong> Smooth swing. Commit to the number.
+          </div>
+        </div>
+        <div class="course-badges">
+          <span class="badge badge-score">✦ Attack: 3, 7, 13, 17</span>
+          <span class="badge badge-danger">⚠ Survive: 6, 10, 14</span>
+        </div>
+        <div id="river-holes"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     SCORECARD
+═══════════════════════════════════ -->
+<div class="page" id="page-scorecard">
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span class="progress-title">Round Progress</span>
+      <span class="progress-pct" id="progressPct">0%</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+  <div class="score-header-row">
+    <span class="score-col-head">Hole</span>
+    <span class="score-col-head">Par</span>
+    <span class="score-col-head">Goal</span>
+    <span class="score-col-head">Tip</span>
+    <span class="score-col-head">Score</span>
+  </div>
+  <div class="nine-label">▸ Front 9</div>
+  <div id="front9Rows"></div>
+  <div class="nine-label">▸ Back 9</div>
+  <div id="back9Rows"></div>
+  <div class="totals-bar">
+    <div class="total-block"><div class="total-label">Front</div><div class="total-num" id="front9Total">–</div></div>
+    <div class="total-block"><div class="total-label">Total</div><div class="total-num" id="grandTotal" style="font-size:40px;">–</div></div>
+    <div class="total-block"><div class="total-label">Back</div><div class="total-num" id="back9Total">–</div></div>
+  </div>
+  <div style="padding:14px 20px;">
+    <button class="reset-btn" onclick="resetScores()">↺ &nbsp;Reset Scorecard</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     GOALS
+═══════════════════════════════════ -->
+<div class="page" id="page-goals">
+  <div class="hero-block">
+    <div class="hero-eyebrow">Round Goals</div>
+    <div class="hero-quote">No blow-up holes.<br><em>That alone drops strokes fast.</em></div>
+  </div>
+  <div class="section">
+    <div class="section-label">Today's Goals — Tap to lock in</div>
+    <div class="goals-grid">
+      <div class="goal-card" onclick="toggleGoal(this)"><span class="goal-icon">🚫</span><span class="goal-text">Zero doubles or worse on the card</span><div class="goal-check">✓</div></div>
+      <div class="goal-card" onclick="toggleGoal(this)"><span class="goal-icon">🎯</span><span class="goal-text">Hit at least 4 approaches from 125–150 yards</span><div class="goal-check">✓</div></div>
+      <div class="goal-card" onclick="toggleGoal(this)"><span class="goal-icon">🌳</span><span class="goal-text">Punch out from trouble every time — no heroes</span><div class="goal-check">✓</div></div>
+      <div class="goal-card" onclick="toggleGoal(this)"><span class="goal-icon">⛳</span><span class="goal-text">3-shot every par 5 — no going for it in 2</span><div class="goal-check">✓</div></div>
+      <div class="goal-card" onclick="toggleGoal(this)"><span class="goal-icon">🧠</span><span class="goal-text">Hit 3W or 5W off every tight / trouble tee</span><div class="goal-check">✓</div></div>
+      <div class="goal-card" onclick="toggleGoal(this)"><span class="goal-icon">🏁</span><span class="goal-text">Finish Hole 18 with a par or bogey — controlled</span><div class="goal-check">✓</div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">Score Target</div>
+    <div class="target-table">
+      <div class="tt-header"><span class="tt-head">Hole Type</span><span class="tt-head">Target</span><span class="tt-head">Count</span></div>
+      <div class="tt-row"><span class="tt-type">Par 3s</span><span class="tt-target">3–4</span><span class="tt-note">×4 holes</span></div>
+      <div class="tt-row"><span class="tt-type">Par 4s</span><span class="tt-target">4–5</span><span class="tt-note">×10 holes</span></div>
+      <div class="tt-row"><span class="tt-type">Par 5s</span><span class="tt-target">5–6</span><span class="tt-note">×4 holes</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     MENTAL
+═══════════════════════════════════ -->
+<div class="page" id="page-mental">
+  <div class="mental-hero">
+    <div class="mental-bg">III</div>
+    <div class="mental-quote">Smooth, not max.<br><em>Commit to the number.</em><br>No blow-up holes.</div>
+    <div class="mental-attr">— Read on every tee —</div>
+  </div>
+  <div class="section">
+    <div class="section-label">In-Round Resets</div>
+    <div class="mental-pill"><span class="mental-pill-icon">🔄</span><span class="mental-pill-text">Bad hole → <strong>"That hole is done. Position off this tee."</strong></span></div>
+    <div class="mental-pill"><span class="mental-pill-icon">😤</span><span class="mental-pill-text">Missed green → <strong>"What's my chip? Get it close. Move on."</strong></span></div>
+    <div class="mental-pill"><span class="mental-pill-icon">🌳</span><span class="mental-pill-text">In trouble → <strong>"Punch out. Reset. Bogey is fine."</strong></span></div>
+    <div class="mental-pill"><span class="mental-pill-icon">💪</span><span class="mental-pill-text">Tempted to go big → <strong>"Smooth swing. 3-shot hole. Trust it."</strong></span></div>
+    <div class="mental-pill"><span class="mental-pill-icon">😰</span><span class="mental-pill-text">Nerves → <strong>"Commit to the number. Middle of green."</strong></span></div>
+  </div>
+  <div class="section">
+    <div class="section-label">Quick Cheat Sheet</div>
+    <div class="cheat-sheet">
+      <div class="cheat-item"><span class="cheat-trigger">Tight tee</span><span class="cheat-action">3W or 5W — position beats distance</span></div>
+      <div class="cheat-item"><span class="cheat-trigger">Target dist</span><span class="cheat-action">Lay up to 125–150 yards</span></div>
+      <div class="cheat-item"><span class="cheat-trigger">Par 5</span><span class="cheat-action">3 shots. Always. Driver → 5W → wedge.</span></div>
+      <div class="cheat-item"><span class="cheat-trigger">Par 3</span><span class="cheat-action">Middle of green. Every time.</span></div>
+      <div class="cheat-item"><span class="cheat-trigger">Bad lie</span><span class="cheat-action">Punch out. Don't be a hero.</span></div>
+      <div class="cheat-item"><span class="cheat-trigger">Swing key</span><span class="cheat-action">Smooth, not max. Commit.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── RIVER WILDERNESS DATA (tailored for HCP 17.6 bag) ──
+const riverHoles = [
+  { num:1,  yds:294, par:4, hcp:14, tee:'3W or 5W', approach:'9i or PW (short par 4)', note:'Don\'t reach for driver here. Easy position, then PW into the green.', goal:'Par or easy bogey', flag:'', type:'normal' },
+  { num:2,  yds:232, par:4, hcp:8,  tee:'3W', approach:'9i / PW', note:'Position over distance. Tighter than it looks. Play for 125–150 in.', goal:'Bogey = solid', flag:'', type:'normal' },
+  { num:3,  yds:273, par:4, hcp:16, tee:'Driver or 3W', approach:'PW or chip', note:'Short par 4 — you can get close. Attack hole. Birdie or tap-in par.', goal:'Birdie look', flag:'🔥', type:'score' },
+  { num:4,  yds:375, par:5, hcp:10, tee:'Driver (240)', approach:'5W → PW/9i in', note:'3-shot hole. Driver → 5W to ~80–100 out → PW in. Do not force it.', goal:'Easy par or bogey', flag:'', type:'normal' },
+  { num:5,  yds:133, par:3, hcp:12, tee:'9i or PW', approach:'Center green', note:'Inside 150 — this is your range. Commit and attack center.', goal:'Par', flag:'', type:'normal' },
+  { num:6,  yds:318, par:4, hcp:2,  tee:'3W — keep it in play', approach:'Lay up → 9i/PW in', note:'Hardest hole on the front. In play beats long in trouble. Bogey = WIN here.', goal:'Bogey = success', flag:'🚨', type:'danger' },
+  { num:7,  yds:105, par:3, hcp:18, tee:'PW', approach:'Attack the pin', note:'Easiest hole. Inside your PW distance. Attack. This is where you score.', goal:'Birdie or tap-in', flag:'🟢', type:'score' },
+  { num:8,  yds:417, par:5, hcp:4,  tee:'Driver (240)', approach:'5W → PW/9i in', note:'3-shot hole. Driver → 5W → PW. Don\'t try to reach in 2. Par from the wedge.', goal:'Par from wedge approach', flag:'', type:'normal' },
+  { num:9,  yds:297, par:4, hcp:6,  tee:'3W or 5W', approach:'9i or PW — controlled', note:'Stay controlled into the turn. Position off tee. Commit to the approach.', goal:'Solid bogey or par', flag:'', type:'normal' },
+  { num:10, yds:302, par:4, hcp:3,  tee:'3W — smart', approach:'8i or 9i', note:'Tough hole. Fairway first. Take your 8i or 9i to middle of green. No heroics.', goal:'Bogey = win', flag:'🚨', type:'danger' },
+  { num:11, yds:419, par:5, hcp:11, tee:'Driver (240)', approach:'5W → PW/9i in', note:'Same formula as 4 and 8. It works. Trust it. Three controlled shots.', goal:'Par or birdie look', flag:'', type:'normal' },
+  { num:12, yds:142, par:3, hcp:13, tee:'9i', approach:'Center of green', note:'135–140 is your 9i range. Center green. Take the 2-putt par.', goal:'Par', flag:'', type:'normal' },
+  { num:13, yds:292, par:4, hcp:15, tee:'Driver', approach:'Short PW or chip', note:'Driver puts you in wedge range. Birdie opportunity — attack.', goal:'Birdie opportunity', flag:'🔥', type:'score' },
+  { num:14, yds:346, par:4, hcp:1,  tee:'3W — survive', approach:'9i or PW — don\'t chase', note:'Hardest hole on the course. In play, in play, in play. Bogey is a victory here.', goal:'Bogey = win', flag:'🚨', type:'danger' },
+  { num:15, yds:453, par:5, hcp:7,  tee:'Driver (240)', approach:'5W → PW in', note:'NOT going for green in 2. Three shots. Get to 125–140 for your PW.', goal:'Par or easy bogey', flag:'', type:'normal' },
+  { num:16, yds:244, par:4, hcp:9,  tee:'3W or 5W', approach:'PW or 9i', note:'Short-ish par 4. Stay steady. Position off tee into your scoring zone.', goal:'Par', flag:'', type:'normal' },
+  { num:17, yds:110, par:3, hcp:17, tee:'PW', approach:'Attack the pin', note:'Scoring hole. Your PW distance. Attack this flag. Score here.', goal:'Birdie / par', flag:'🟢', type:'score' },
+  { num:18, yds:327, par:4, hcp:5,  tee:'3W or 5W', approach:'9i or PW — finish strong', note:'Controlled finish. Position off tee. 9i or PW into green. No hero to close.', goal:'Par — finish strong', flag:'', type:'normal' },
+];
+
+// Scorecard par data
+const holePars = riverHoles.map(h => h.par);
+const scores = new Array(18).fill(0);
+
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function toggleCourse(id) {
+  document.getElementById('acc-' + id).classList.toggle('open');
+}
+
+function toggleHole(el) { el.classList.toggle('open'); }
+
+// ── BUILD RIVER ACCORDION ──
+function buildRiverAccordion() {
+  const c = document.getElementById('river-holes');
+  riverHoles.forEach(h => {
+    const tagClass = h.type === 'score' ? 'tag-score' : h.type === 'danger' ? 'tag-danger' : 'tag-normal';
+    const div = document.createElement('div');
+    div.className = 'hole-acc';
+    div.innerHTML = `
+      <div class="hole-acc-header" onclick="toggleHole(this.closest('.hole-acc'))">
+        <div class="hole-acc-num">${h.num}</div>
+        <div class="hole-acc-info">
+          <div class="hole-acc-title">Par ${h.par} · ${h.yds} yds · HCP ${h.hcp}</div>
+          <div class="hole-acc-sub">${h.tee} · ${h.goal}</div>
+        </div>
+        ${h.flag ? `<span class="hole-flag">${h.flag}</span>` : ''}
+        <div class="hole-acc-arrow">›</div>
+      </div>
+      <div class="hole-acc-body">
+        <div class="hole-detail-row"><span class="hole-detail-label">Tee</span><span class="hole-detail-val">${h.tee}</span></div>
+        <div class="hole-detail-row"><span class="hole-detail-label">Approach</span><span class="hole-detail-val">${h.approach}</span></div>
+        <div class="hole-detail-row"><span class="hole-detail-label">Key</span><span class="hole-detail-val">${h.note}</span></div>
+        <div class="hole-detail-row"><span class="hole-detail-label">Goal</span><span class="hole-detail-val"><span class="hole-goal-tag ${tagClass}">${h.goal}</span></span></div>
+      </div>`;
+    c.appendChild(div);
+  });
+}
+
+// ── SCORECARD ──
+function buildScorecard() {
+  const front = document.getElementById('front9Rows');
+  const back  = document.getElementById('back9Rows');
+  riverHoles.forEach((h, i) => {
+    const row = document.createElement('div');
+    row.className = 'score-row';
+    const goalShort = h.type === 'score' ? '🔥' : h.type === 'danger' ? '⚠️' : '–';
+    row.innerHTML = `
+      <div class="hole-num">${h.num}</div>
+      <div class="hole-par">${h.par}</div>
+      <div class="hole-goal-sc">${goalShort}</div>
+      <div class="hole-tip-sc">${h.tee.slice(0,18)}</div>
+      <div class="score-input-wrap">
+        <button class="score-btn" onclick="adjustScore(${i},-1)">−</button>
+        <div class="score-val" id="sv-${i}">–</div>
+        <button class="score-btn" onclick="adjustScore(${i},1)">+</button>
+      </div>`;
+    (i < 9 ? front : back).appendChild(row);
+  });
+}
+
+function adjustScore(idx, delta) {
+  if (scores[idx] === 0) scores[idx] = holePars[idx];
+  else scores[idx] = Math.max(1, scores[idx] + delta);
+  updateScoreDisplay(idx);
+  updateTotals();
+}
+
+function updateScoreDisplay(idx) {
+  const el = document.getElementById('sv-' + idx);
+  const s = scores[idx], par = holePars[idx];
+  el.textContent = s === 0 ? '–' : s;
+  el.className = 'score-val';
+  if (!s) return;
+  if (s <= par - 1) el.classList.add('birdie');
+  else if (s === par) el.classList.add('par-score');
+  else if (s === par + 1) el.classList.add('bogey');
+  else if (s === par + 2) el.classList.add('double');
+  else el.classList.add('worse');
+}
+
+function updateTotals() {
+  const fa = scores.slice(0,9), ba = scores.slice(9);
+  const fs = fa.filter(s=>s>0).reduce((a,b)=>a+b,0);
+  const bs = ba.filter(s=>s>0).reduce((a,b)=>a+b,0);
+  const total = fs + bs;
+  const played = scores.filter(s=>s>0).length;
+  document.getElementById('front9Total').textContent = fa.some(s=>s>0) ? fs : '–';
+  document.getElementById('back9Total').textContent  = ba.some(s=>s>0) ? bs : '–';
+  const ge = document.getElementById('grandTotal');
+  ge.textContent = played > 0 ? total : '–';
+  ge.className = 'total-num';
+  if (total > 0 && total <= 85) ge.classList.add('good');
+  else if (total > 85) ge.classList.add('warn');
+  const hs = document.getElementById('headerScore');
+  hs.textContent = played > 0 ? total : '85';
+  hs.className = 'target-score' + (total > 0 && total <= 85 ? ' good' : total > 85 ? ' warn' : '');
+  const pct = Math.round((played/18)*100);
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function resetScores() {
+  scores.fill(0);
+  riverHoles.forEach((_,i) => updateScoreDisplay(i));
+  updateTotals();
+  showToast('Scorecard reset');
+}
+
+function toggleCheck(el) {
+  el.classList.toggle('done');
+  el.querySelector('.check-box').classList.toggle('checked');
+  if (document.querySelectorAll('.checklist-item.done').length === 4) showToast('Pre-shot complete — commit');
+}
+
+function resetChecklist() {
+  document.querySelectorAll('.checklist-item').forEach(el => {
+    el.classList.remove('done');
+    el.querySelector('.check-box').classList.remove('checked');
+  });
+}
+
+function toggleGoal(el) {
+  el.classList.toggle('achieved');
+  if (el.classList.contains('achieved')) showToast('Locked in');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+buildRiverAccordion();
+buildScorecard();
+</script>
+</body>
+</html>
