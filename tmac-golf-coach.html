@@ -542,6 +542,13 @@ line-height: 1.7;
         </div>
         <div class="course-card-badge badge-loaded">Playbook ✓</div>
       </div>
+      <div class="course-card has-playbook" onclick="selectCourse('ocn')">
+        <div>
+          <div class="course-card-name">OC National · Crooked Cat</div>
+          <div class="course-card-meta">Tan · 5,052 yds · Par 72 · Slope 123</div>
+        </div>
+        <div class="course-card-badge badge-loaded">Playbook ✓</div>
+      </div>
       <div class="course-card" onclick="selectCourse('cypress')">
         <div>
           <div class="course-card-name">Cypress Creek GC</div>
@@ -767,6 +774,7 @@ line-height: 1.7;
     <select class="intel-select" id="intelCourse">
       <option value="">Select course</option>
       <option value="Summerfield Crossing">Summerfield Crossing</option>
+      <option value="OC National · Crooked Cat">OC National · Crooked Cat</option>
       <option value="Cypress Creek GC">Cypress Creek GC</option>
       <option value="Diamond Hill GC">Diamond Hill GC</option>
       <option value="Huntington Hills">Huntington Hills</option>
@@ -863,6 +871,36 @@ const courseData = {
       { num:16, yds:null, par:4, hcp:9,  tee:'Fairway finder', approach:'Smart second shot', key:'Don\'t go for broke. Smart second shot wins.', goal:'4 or 5', type:'normal' },
       { num:17, yds:null, par:4, hcp:17, tee:'Stay disciplined', approach:'No late-round hero shots', key:'Round is almost done. Stay in your system.', goal:'4 or 5', type:'normal' },
       { num:18, yds:null, par:5, hcp:5,  tee:'Fairway finder — nothing fancy', approach:'Layup 30–40 yds → confident wedge', key:'This is your money shot. Execute the finish. 5 or 6 only.', goal:'5 or 6', type:'score' },
+    ]
+  },
+
+  ocn: {
+    name: 'OC National · Crooked Cat',
+    meta: 'Tan Tees · 5,052 yds · Par 72 · Slope 123',
+    formula: 'Attack the short par 3s · Survive H4 · Wedge on par 5s',
+    weapon: '4 par 3s under 150 yds — these are birdie holes for you',
+    mindset: 'This course rewards patience. The par 3s are gifts. Take them.',
+    scoring: [6,8,13,15],
+    danger: [4,12,14],
+    holes: [
+      { num:1,  yds:401, par:5, hcp:17, tee:'Driver — wide open par 5', approach:'3W layup → wedge in', key:'HCP 17 — easiest hole. 3-shot formula. Driver → 3W → wedge. Easy start.', goal:'Par or birdie', type:'score' },
+      { num:2,  yds:312, par:4, hcp:3,  tee:'Driver (240) → wedge in', approach:'Short wedge — ~70 yds in', key:'HCP 3 but short. Driver leaves 70 in. Attack. This is a scoring opportunity.', goal:'Par', type:'normal' },
+      { num:3,  yds:250, par:4, hcp:13, tee:'3W or 5W — don\'t overpower', approach:'Wedge or short iron in', key:'Short par 4. Don\'t force driver. 3W puts you in wedge range. Simple.', goal:'Par', type:'normal' },
+      { num:4,  yds:404, par:5, hcp:1,  tee:'Driver — stay in play', approach:'3W layup → wedge', key:'HCP 1 — hardest hole. Don\'t be a hero. Driver → 3W → wedge. Bogey is fine here.', goal:'Bogey max', type:'danger' },
+      { num:5,  yds:286, par:4, hcp:11, tee:'Driver or 3W', approach:'Short wedge in', key:'Short par 4. Driver or 3W. You\'ll have a short wedge in. Attack center green.', goal:'Par', type:'normal' },
+      { num:6,  yds:123, par:3, hcp:15, tee:'PW or 50–60° wedge', approach:'Attack the pin', key:'123 yds — MUST SCORE. This is your PW distance. Attack this flag. No excuses.', goal:'Birdie / par', type:'score' },
+      { num:7,  yds:322, par:4, hcp:7,  tee:'Driver → short iron', approach:'Middle of green', key:'Straightforward par 4. Driver + short iron. Middle of green. Routine golf.', goal:'Par or bogey', type:'normal' },
+      { num:8,  yds:108, par:3, hcp:5,  tee:'PW or gap wedge', approach:'Attack the pin', key:'108 yds — MUST SCORE. Gap wedge or PW. Attack. This is a birdie hole. Take it.', goal:'Birdie / par', type:'score' },
+      { num:9,  yds:253, par:4, hcp:9,  tee:'Driver or 3W', approach:'Short iron / wedge', key:'Short par 4. Controlled tee shot. Get in play, wedge it close. Solid finish to front 9.', goal:'Par', type:'normal' },
+      { num:10, yds:321, par:4, hcp:10, tee:'Driver → short wedge', approach:'Middle of green', key:'Driver leaves a short wedge. Stay aggressive. Middle of green. Keep the momentum.', goal:'Par', type:'normal' },
+      { num:11, yds:320, par:4, hcp:12, tee:'Driver → short wedge', approach:'Middle of green', key:'Nearly identical to H10. Same plan. Driver → wedge → middle green. Routine.', goal:'Par', type:'normal' },
+      { num:12, yds:289, par:4, hcp:2,  tee:'Driver — careful', approach:'Middle of green — no short side', key:'HCP 2 — looks short but plays hard. Driver but stay in play. Middle green only.', goal:'Bogey max', type:'danger' },
+      { num:13, yds:86,  par:3, hcp:4,  tee:'50–60° wedge — smooth', approach:'Attack the pin', key:'86 yds — GIFT HOLE. Smooth 60° wedge. Attack this pin. Birdie or tap-in par expected.', goal:'Birdie / par', type:'score' },
+      { num:14, yds:397, par:5, hcp:18, tee:'Driver → 3W layup', approach:'Wedge in', key:'HCP 18 — easiest on back but 397 yds. Don\'t blow up. 3-shot formula. Par minimum.', goal:'Par', type:'danger' },
+      { num:15, yds:147, par:3, hcp:14, tee:'9i or PW', approach:'Center of green', key:'147 yds — your 9i range. Center green. No short side. Clean par and move.', goal:'Par', type:'score' },
+      { num:16, yds:309, par:4, hcp:6,  tee:'Driver → wedge', approach:'Middle of green', key:'Driver + wedge. Straightforward. Stay disciplined — don\'t get sloppy late in the round.', goal:'Par', type:'normal' },
+      { num:17, yds:374, par:5, hcp:16, tee:'Driver → 3W layup', approach:'Wedge in', key:'Par 5 to finish strong. 3-shot formula. Driver → 3W → wedge. Execute the system.', goal:'Par or birdie', type:'score' },
+      { num:18, yds:350, par:4, hcp:8,  tee:'Driver → short iron', approach:'Middle of green — finish strong', key:'350 yds. Driver + short iron. Middle green. No hero shots to close. Finish clean.', goal:'Par', type:'normal' },
     ]
   }
 };
