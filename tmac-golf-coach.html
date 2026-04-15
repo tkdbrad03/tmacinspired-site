@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -624,6 +625,9 @@ line-height: 1.7;
       <div class="section-label">Today's Game Plan</div>
       <div id="courseBriefContent"></div>
     </div>
+    <div class="section">
+      <button onclick="resetRound()" style="width:100%; padding:11px; background:transparent; border:1px solid var(--gray-line); font-family:var(--font-serif); font-size:11px; color:var(--text-light); cursor:pointer; letter-spacing:0.1em; text-transform:uppercase;">↺ &nbsp;New Round — Reset</button>
+    </div>
   </div>
 
 </div>
@@ -650,7 +654,7 @@ line-height: 1.7;
       <div class="empty-state">Select a course first, then tap a hole number above to load the play.</div>
     </div>
 
-
+```
 <div id="scoreLogSection" style="display:none; margin-top:16px;">
   <div class="section-label">Log This Hole</div>
   <div class="score-logger">
@@ -664,7 +668,7 @@ line-height: 1.7;
     <button class="hole-arrow-btn" onclick="nextHole()">Next →</button>
   </div>
 </div>
-
+```
 
   </div>
 
@@ -770,7 +774,7 @@ line-height: 1.7;
     <div class="section-label">Log This Round</div>
     <div class="intel-log-form">
 
-
+```
   <div>
     <div class="intel-label">Course</div>
     <select class="intel-select" id="intelCourse">
@@ -826,7 +830,7 @@ line-height: 1.7;
 
   <button class="btn" onclick="saveIntelEntry()">Save Round</button>
 </div>
-
+```
 
   </div>
 
@@ -908,11 +912,45 @@ const courseData = {
 };
 
 // ══════════════════════════════════════
-// STATE
+// STATE — persisted to localStorage
 // ══════════════════════════════════════
-let activeCourse = null;
-let activeHole = 1;
-const holeScores = new Array(18).fill(null); // null = unplayed
+function loadState() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('tmac_round') || '{}');
+    return {
+      activeCourse: saved.activeCourse || null,
+      activeHole:   saved.activeHole   || 1,
+      holeScores:   saved.holeScores   || new Array(18).fill(null)
+    };
+  } catch(e) {
+    return { activeCourse: null, activeHole: 1, holeScores: new Array(18).fill(null) };
+  }
+}
+
+function saveState() {
+  try {
+    localStorage.setItem('tmac_round', JSON.stringify({ activeCourse, activeHole, holeScores }));
+  } catch(e) {}
+}
+
+function resetRound() {
+  activeCourse = null;
+  activeHole = 1;
+  holeScores.fill(null);
+  saveState();
+  document.getElementById('headerCourse').textContent = 'No Course';
+  document.getElementById('headerHole').textContent = '––';
+  document.querySelectorAll('.course-card').forEach(c => c.classList.remove('active-course'));
+  document.getElementById('courseBriefSection').style.display = 'none';
+  buildHoleNav();
+  renderHolePlan();
+  showToast('Round reset');
+}
+
+const _state = loadState();
+let activeCourse = _state.activeCourse;
+let activeHole   = _state.activeHole;
+const holeScores = _state.holeScores;
 
 // ══════════════════════════════════════
 // NAVIGATION
@@ -970,6 +1008,8 @@ function selectCourse(id) {
   buildHoleNav();
   // Load hole 1
   activeHole = 1;
+  holeScores.fill(null);
+  saveState();
   renderHolePlan();
   showToast(course.name + ' loaded');
 }
@@ -984,7 +1024,7 @@ function buildHoleNav() {
     const dot = document.createElement('div');
     dot.className = 'hole-dot' + (i === activeHole ? ' active-hole' : '');
     dot.textContent = i;
-    dot.onclick = () => { activeHole = i; renderHolePlan(); updateHoleNav(); };
+    dot.onclick = () => { activeHole = i; saveState(); renderHolePlan(); updateHoleNav(); };
     dot.id = 'hdot-' + i;
     nav.appendChild(dot);
   }
@@ -1079,6 +1119,7 @@ function logScore(type) {
   holeScores[activeHole - 1] = type;
   highlightScore(type);
   updateHoleNav();
+  saveState();
   showToast('Hole ' + activeHole + ' — ' + type);
 }
 
@@ -1092,12 +1133,12 @@ function highlightScore(type) {
 }
 
 function nextHole() {
-  if (activeHole < 18) { activeHole++; renderHolePlan(); }
+  if (activeHole < 18) { activeHole++; saveState(); renderHolePlan(); }
   else showToast('That\'s the round');
 }
 
 function prevHole() {
-  if (activeHole > 1) { activeHole--; renderHolePlan(); }
+  if (activeHole > 1) { activeHole--; saveState(); renderHolePlan(); }
 }
 
 // ══════════════════════════════════════
@@ -1208,10 +1249,47 @@ function showToast(msg) {
 }
 
 // ══════════════════════════════════════
-// INIT
+// INIT — restore saved state
 // ══════════════════════════════════════
 buildHoleNav();
 loadIntel();
+
+// Restore course and hole if previously selected
+if (activeCourse && courseData[activeCourse]) {
+  const course = courseData[activeCourse];
+  document.getElementById('headerCourse').textContent = course.name.split(' ')[0];
+  document.getElementById('headerHole').textContent = 'H' + activeHole;
+
+  // Mark course card active
+  document.querySelectorAll('.course-card').forEach(c => {
+    if (c.getAttribute('onclick') && c.getAttribute('onclick').includes(activeCourse)) {
+      c.classList.add('active-course');
+    }
+  });
+
+  // Show course brief
+  const briefSection = document.getElementById('courseBriefSection');
+  const briefContent = document.getElementById('courseBriefContent');
+  briefSection.style.display = 'block';
+  briefContent.innerHTML = `
+    <div style="background:var(--pine); padding:16px 18px; margin-bottom:8px;">
+      <div style="font-size:8px; color:var(--gold); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:10px;">Game Plan</div>
+      <div style="font-size:13px; color:rgba(255,255,255,0.75); line-height:1.9;">
+        <strong style="color:var(--bg); font-weight:400;">Formula:</strong> ${course.formula}<br>
+        <strong style="color:var(--bg); font-weight:400;">Weapon:</strong> ${course.weapon}<br>
+        <strong style="color:var(--bg); font-weight:400;">Mindset:</strong> ${course.mindset}
+      </div>
+    </div>
+    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+      <span style="font-size:10px; padding:3px 10px; border:1px solid var(--gold); color:var(--gold); background:var(--gold-light); letter-spacing:0.08em; text-transform:uppercase;">✦ Score: H${course.scoring.join(', H')}</span>
+      <span style="font-size:10px; padding:3px 10px; border:1px solid var(--rose); color:var(--rose); background:var(--rose-light); letter-spacing:0.08em; text-transform:uppercase;">⚠ Danger: H${course.danger.join(', H')}</span>
+    </div>
+    <div style="margin-top:14px; padding:14px 16px; background:var(--gold-light); border-left:2px solid var(--gold);">
+      <div style="font-size:13px; font-style:italic; color:var(--pine);">Resuming round — tap any hole to load the play.</div>
+    </div>`;
+
+  renderHolePlan();
+}
 </script>
 
 </body>
