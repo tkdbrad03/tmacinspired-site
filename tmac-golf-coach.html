@@ -117,26 +117,28 @@ padding: 14px 16px;
 border: 1px solid var(–gray-line);
 cursor: pointer;
 transition: var(–transition);
-border-left: 3px solid transparent;
+border-left: 3px solid var(–gray-line);
+background: var(–bg);
 }
 
 .course-card:active { background: var(–pine-light); }
 .course-card.active-course { border-left-color: var(–gold); background: var(–gold-light); }
-.course-card.has-playbook { border-left-color: var(–pine); }
-.course-card.active-course.has-playbook { border-left-color: var(–gold); }
+.course-card.has-playbook { border-left-color: var(–pine); background: var(–pine-light); }
+.course-card.active-course.has-playbook { border-left-color: var(–gold); background: var(–gold-light); }
 
-.course-card-name { font-size: 14px; color: var(–text-main); margin-bottom: 2px; }
+.course-card-name { font-size: 14px; color: var(–text-main); margin-bottom: 2px; font-family: var(–font-serif); }
 .course-card-meta { font-size: 10px; color: var(–text-light); letter-spacing: 0.05em; }
 .course-card-badge {
 font-size: 8px;
-padding: 2px 8px;
+padding: 3px 10px;
 letter-spacing: 0.1em;
 text-transform: uppercase;
 border: 1px solid;
 flex-shrink: 0;
+font-family: var(–font-serif);
 }
-.badge-loaded { border-color: var(–pine); color: var(–pine); background: var(–pine-light); }
-.badge-soon { border-color: var(–gray-line); color: var(–text-light); }
+.badge-loaded { border-color: var(–pine); color: var(–pine); background: var(–bg); }
+.badge-soon { border-color: var(–gray-line); color: var(–text-light); background: var(–bg); }
 
 /* ─── HOLE NAVIGATOR ─── */
 .hole-nav {
