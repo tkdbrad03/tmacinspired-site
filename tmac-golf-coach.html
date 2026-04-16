@@ -636,84 +636,84 @@
   <div class="section">
     <div class="section-label">Select This Round's Course</div>
     <div class="course-grid">
-      <div class="course-card has-playbook" onclick="selectCourse('summerfield')">
+      <div class="course-card has-playbook" onclick="selectCourse('summerfield', this)">
         <div>
           <div class="course-card-name">Summerfield Crossing</div>
           <div class="course-card-meta">Par 72 · HCP 15 · Home Course</div>
         </div>
         <div class="course-card-badge badge-loaded">Playbook ✓</div>
       </div>
-      <div class="course-card has-playbook" onclick="selectCourse('ocn')">
+      <div class="course-card has-playbook" onclick="selectCourse('ocn', this)">
         <div>
           <div class="course-card-name">OC National · Crooked Cat</div>
           <div class="course-card-meta">Tan · 5,052 yds · Par 72 · Slope 123</div>
         </div>
         <div class="course-card-badge badge-loaded">Playbook ✓</div>
       </div>
-      <div class="course-card has-playbook" onclick="selectCourse('panther')">
+      <div class="course-card has-playbook" onclick="selectCourse('panther', this)">
         <div>
           <div class="course-card-name">OC National · Panther Lake</div>
           <div class="course-card-meta">Tan · 5,421 yds · Par 72 · Slope 129</div>
         </div>
         <div class="course-card-badge badge-loaded">Playbook ✓</div>
       </div>
-      <div class="course-card" onclick="selectCourse('cypress')">
+      <div class="course-card" onclick="selectCourse('cypress', this)">
         <div>
           <div class="course-card-name">Cypress Creek GC</div>
           <div class="course-card-meta">Home Course · FPG League</div>
         </div>
         <div class="course-card-badge badge-soon">Coming Soon</div>
       </div>
-      <div class="course-card" onclick="selectCourse('diamond')">
+      <div class="course-card" onclick="selectCourse('diamond', this)">
         <div>
           <div class="course-card-name">Diamond Hill GC</div>
           <div class="course-card-meta">FPG League</div>
         </div>
         <div class="course-card-badge badge-soon">Coming Soon</div>
       </div>
-      <div class="course-card" onclick="selectCourse('huntington')">
+      <div class="course-card" onclick="selectCourse('huntington', this)">
         <div>
           <div class="course-card-name">Huntington Hills</div>
           <div class="course-card-meta">FPG League</div>
         </div>
         <div class="course-card-badge badge-soon">Coming Soon</div>
       </div>
-      <div class="course-card" onclick="selectCourse('esplanade')">
+      <div class="course-card" onclick="selectCourse('esplanade', this)">
         <div>
           <div class="course-card-name">Esplanade Azario</div>
           <div class="course-card-meta">FPG League</div>
         </div>
         <div class="course-card-badge badge-soon">Coming Soon</div>
       </div>
-      <div class="course-card" onclick="selectCourse('river')">
+      <div class="course-card" onclick="selectCourse('river', this)">
         <div>
           <div class="course-card-name">The River Club</div>
           <div class="course-card-meta">FPG League</div>
         </div>
         <div class="course-card-badge badge-soon">Coming Soon</div>
       </div>
-      <div class="course-card" onclick="selectCourse('hunters')">
+      <div class="course-card" onclick="selectCourse('hunters', this)">
         <div>
           <div class="course-card-name">Hunter's Green CC</div>
           <div class="course-card-meta">FPG League</div>
         </div>
         <div class="course-card-badge badge-soon">Coming Soon</div>
       </div>
-      <div class="course-card" onclick="selectCourse('heritage')">
+      <div class="course-card" onclick="selectCourse('heritage', this)">
         <div>
           <div class="course-card-name">Heritage Isles G&CC</div>
           <div class="course-card-meta">FPG League</div>
         </div>
         <div class="course-card-badge badge-soon">Coming Soon</div>
       </div>
-      <div class="course-card" onclick="selectCourse('greenfield')">
+      <div class="course-card" onclick="selectCourse('greenfield', this)">
         <div>
           <div class="course-card-name">Links at Greenfield</div>
           <div class="course-card-meta">FPG League</div>
         </div>
         <div class="course-card-badge badge-soon">Coming Soon</div>
       </div>
-      <div class="course-card" onclick="selectCourse('lexington')">
+      <div class="course-card" onclick="selectCourse('lexington', this)">
         <div>
           <div class="course-card-name">Lexington Oaks GC</div>
           <div class="course-card-meta">FPG League</div>
@@ -1119,10 +1119,10 @@ function showPage(id, btn) {
 // ══════════════════════════════════════
 // COURSE SELECTION
 // ══════════════════════════════════════
-function selectCourse(id) {
+function selectCourse(id, el) {
   // Mark card active
   document.querySelectorAll('.course-card').forEach(c => c.classList.remove('active-course'));
-  event.currentTarget.classList.add('active-course');
+  if (el) el.classList.add('active-course');
 
   if (!courseData[id]) {
     showToast('Playbook coming soon');
