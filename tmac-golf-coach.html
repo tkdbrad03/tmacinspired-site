@@ -163,6 +163,7 @@
 
   .hole-dot:active { background: var(--pine-light); }
   .hole-dot.active-hole { background: var(--pine); color: var(--gold); border-color: var(--pine); }
+  .hole-dot.scored-birdie { background: var(--gold); color: var(--bg); border-color: var(--gold); }
   .hole-dot.scored-par { background: var(--pine-light); color: var(--pine); border-color: var(--pine); }
   .hole-dot.scored-bogey { background: var(--gold-light); color: var(--text-main); border-color: var(--gold); }
   .hole-dot.scored-double { background: var(--rose-light); color: var(--rose); border-color: var(--rose); }
@@ -243,37 +244,137 @@
   .play-row.mantra-row { background: var(--gold-light); border-left: 2px solid var(--gold); }
   .play-row.mantra-row .play-row-val { font-style: italic; color: var(--pine); }
 
-  /* ─── SCORE LOGGER ─── */
-  .score-logger {
+  /* ─── STROKE COUNTER ─── */
+  .stroke-counter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid var(--gray-line);
+    margin-top: 0;
+    overflow: hidden;
+  }
+
+  .stroke-btn {
+    width: 64px;
+    height: 64px;
+    border: none;
+    background: var(--pine-light);
+    font-size: 28px;
+    color: var(--pine);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: var(--transition);
+    font-family: var(--font-serif);
+  }
+
+  .stroke-btn:active { background: var(--pine); color: var(--bg); }
+
+  .stroke-display {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    background: var(--bg);
+  }
+
+  .stroke-num {
+    font-family: var(--font-serif);
+    font-size: 44px;
+    color: var(--pine);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .stroke-num.score-birdie { color: var(--gold); }
+  .stroke-num.score-par { color: var(--pine); }
+  .stroke-num.score-bogey { color: var(--text-light); }
+  .stroke-num.score-double { color: var(--rose); }
+  .stroke-num.score-worse { color: var(--rose); }
+
+  .stroke-label {
+    font-size: 10px;
+    color: var(--text-light);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* ─── ROUND SUMMARY ─── */
+  .round-summary {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 6px;
-    margin-top: 14px;
+    background: var(--pine);
+    margin-top: 8px;
   }
 
-  .score-log-btn {
-    padding: 12px 4px;
-    border: 1px solid var(--gray-line);
-    background: var(--bg);
-    font-family: var(--font-serif);
-    font-size: 12px;
-    color: var(--text-light);
-    cursor: pointer;
+  .summary-block {
+    padding: 12px 6px;
     text-align: center;
-    transition: var(--transition);
-    letter-spacing: 0.05em;
+    border-right: 1px solid rgba(255,255,255,0.08);
   }
 
-  .score-log-btn:active { opacity: 0.7; }
-  .score-log-btn.birdie-btn { border-color: var(--gold); color: var(--gold); }
-  .score-log-btn.par-btn { border-color: var(--pine); color: var(--pine); }
-  .score-log-btn.bogey-btn { border-color: var(--text-light); color: var(--text-light); }
-  .score-log-btn.double-btn { border-color: var(--rose); color: var(--rose); }
+  .summary-block:last-child { border-right: none; }
 
-  .score-log-btn.selected-birdie { background: var(--gold); color: var(--bg); border-color: var(--gold); }
-  .score-log-btn.selected-par { background: var(--pine); color: var(--bg); border-color: var(--pine); }
-  .score-log-btn.selected-bogey { background: var(--text-light); color: var(--bg); border-color: var(--text-light); }
-  .score-log-btn.selected-double { background: var(--rose); color: var(--bg); border-color: var(--rose); }
+  .summary-label {
+    font-size: 8px;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    font-family: var(--font-serif);
+  }
+
+  .summary-val {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    color: var(--bg);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .summary-val.on-track { color: #a8d5b5; }
+  .summary-val.off-track { color: #e8a0a0; }
+
+  /* ─── HOLE BY HOLE MINI SCORECARD ─── */
+  .hbh-row {
+    display: grid;
+    grid-template-columns: 28px 28px 1fr 36px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--gray-line);
+    align-items: center;
+    font-family: var(--font-serif);
+  }
+
+  .hbh-row:last-child { border-bottom: none; }
+
+  .hbh-hole { font-size: 12px; color: var(--text-light); }
+  .hbh-par  { font-size: 12px; color: var(--text-light); text-align: center; }
+  .hbh-goal { font-size: 11px; color: var(--text-light); padding: 0 6px; }
+
+  .hbh-score {
+    font-size: 18px;
+    color: var(--text-main);
+    text-align: right;
+    font-family: var(--font-serif);
+  }
+
+  .hbh-score.sc-birdie { color: var(--gold); }
+  .hbh-score.sc-par    { color: var(--pine); }
+  .hbh-score.sc-bogey  { color: var(--text-light); }
+  .hbh-score.sc-double { color: var(--rose); }
+  .hbh-score.sc-worse  { color: var(--rose); }
+
+  .hbh-nine-label {
+    font-size: 8px;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 8px 0 4px;
+    border-bottom: 1px solid var(--gray-line);
+    font-family: var(--font-serif);
+  }
 
   /* ─── HOLE NAV ARROWS ─── */
   .hole-nav-arrows {
@@ -549,6 +650,13 @@
         </div>
         <div class="course-card-badge badge-loaded">Playbook ✓</div>
       </div>
+      <div class="course-card has-playbook" onclick="selectCourse('panther')">
+        <div>
+          <div class="course-card-name">OC National · Panther Lake</div>
+          <div class="course-card-meta">Tan · 5,421 yds · Par 72 · Slope 129</div>
+        </div>
+        <div class="course-card-badge badge-loaded">Playbook ✓</div>
+      </div>
       <div class="course-card" onclick="selectCourse('cypress')">
         <div>
           <div class="course-card-name">Cypress Creek GC</div>
@@ -636,11 +744,12 @@
   <div class="section" style="padding-bottom:12px;">
     <div class="section-label">Select Hole</div>
     <div class="hole-nav" id="holeNav"></div>
-    <div style="display:flex; gap:6px;">
-      <div style="display:flex; align-items:center; gap:5px; font-size:10px; color:var(--text-light);"><div style="width:10px;height:10px;background:var(--pine);"></div> Active</div>
-      <div style="display:flex; align-items:center; gap:5px; font-size:10px; color:var(--text-light);"><div style="width:10px;height:10px;background:var(--pine-light); border:1px solid var(--pine);"></div> Par</div>
-      <div style="display:flex; align-items:center; gap:5px; font-size:10px; color:var(--text-light);"><div style="width:10px;height:10px;background:var(--gold-light); border:1px solid var(--gold);"></div> Bogey</div>
-      <div style="display:flex; align-items:center; gap:5px; font-size:10px; color:var(--text-light);"><div style="width:10px;height:10px;background:var(--rose-light); border:1px solid var(--rose);"></div> Dbl+</div>
+    <div style="display:flex; gap:6px; flex-wrap:wrap;">
+      <div style="display:flex; align-items:center; gap:4px; font-size:10px; color:var(--text-light);"><div style="width:10px;height:10px;background:var(--pine);"></div> Active</div>
+      <div style="display:flex; align-items:center; gap:4px; font-size:10px; color:var(--text-light);"><div style="width:10px;height:10px;background:var(--gold);"></div> Birdie</div>
+      <div style="display:flex; align-items:center; gap:4px; font-size:10px; color:var(--text-light);"><div style="width:10px;height:10px;background:var(--pine-light);border:1px solid var(--pine);"></div> Par</div>
+      <div style="display:flex; align-items:center; gap:4px; font-size:10px; color:var(--text-light);"><div style="width:10px;height:10px;background:var(--gold-light);border:1px solid var(--gold);"></div> Bogey</div>
+      <div style="display:flex; align-items:center; gap:4px; font-size:10px; color:var(--text-light);"><div style="width:10px;height:10px;background:var(--rose-light);border:1px solid var(--rose);"></div> Dbl+</div>
     </div>
   </div>
 
@@ -651,12 +760,40 @@
 
     <div id="scoreLogSection" style="display:none; margin-top:16px;">
       <div class="section-label">Log This Hole</div>
-      <div class="score-logger">
-        <button class="score-log-btn birdie-btn" onclick="logScore('birdie')">Birdie<br>−1</button>
-        <button class="score-log-btn par-btn" onclick="logScore('par')">Par</button>
-        <button class="score-log-btn bogey-btn" onclick="logScore('bogey')">Bogey<br>+1</button>
-        <button class="score-log-btn double-btn" onclick="logScore('double')">Dbl+<br>+2</button>
+
+      <!-- Stroke counter -->
+      <div class="stroke-counter">
+        <button class="stroke-btn" onclick="adjustStroke(-1)">−</button>
+        <div class="stroke-display">
+          <div class="stroke-num" id="strokeNum">–</div>
+          <div class="stroke-label" id="strokeLabel">tap to score</div>
+        </div>
+        <button class="stroke-btn" onclick="adjustStroke(1)">+</button>
       </div>
+
+      <!-- Running summary -->
+      <div class="round-summary" id="roundSummary">
+        <div class="summary-block">
+          <div class="summary-label">Played</div>
+          <div class="summary-val" id="sumPlayed">0</div>
+        </div>
+        <div class="summary-block">
+          <div class="summary-label">Total</div>
+          <div class="summary-val" id="sumTotal">–</div>
+        </div>
+        <div class="summary-block">
+          <div class="summary-label">vs Target</div>
+          <div class="summary-val" id="sumVsTarget">–</div>
+        </div>
+        <div class="summary-block">
+          <div class="summary-label">Need</div>
+          <div class="summary-val" id="sumNeed">–</div>
+        </div>
+      </div>
+
+      <!-- Hole by hole -->
+      <div id="holeByHole" style="margin-top:12px;"></div>
+
       <div class="hole-nav-arrows">
         <button class="hole-arrow-btn" onclick="prevHole()">← Prev</button>
         <button class="hole-arrow-btn" onclick="nextHole()">Next →</button>
@@ -770,6 +907,7 @@
           <option value="">Select course</option>
           <option value="Summerfield Crossing">Summerfield Crossing</option>
           <option value="OC National · Crooked Cat">OC National · Crooked Cat</option>
+          <option value="OC National · Panther Lake">OC National · Panther Lake</option>
           <option value="Cypress Creek GC">Cypress Creek GC</option>
           <option value="Diamond Hill GC">Diamond Hill GC</option>
           <option value="Huntington Hills">Huntington Hills</option>
@@ -895,8 +1033,37 @@ const courseData = {
       { num:17, yds:374, par:5, hcp:16, tee:'Driver → 3W layup', approach:'Wedge in', key:'Par 5 to finish strong. 3-shot formula. Driver → 3W → wedge. Execute the system.', goal:'Par or birdie', type:'score' },
       { num:18, yds:350, par:4, hcp:8,  tee:'Driver → short iron', approach:'Middle of green — finish strong', key:'350 yds. Driver + short iron. Middle green. No hero shots to close. Finish clean.', goal:'Par', type:'normal' },
     ]
+  },
+
+  panther: {
+    name: 'OC National · Panther Lake',
+    meta: 'Tan Tees · 5,421 yds · Par 72 · Rating 71.2 · Slope 129',
+    formula: 'Score on the short par 3s · 3-shot every par 5 · Survive H3 and H11',
+    weapon: '4 par 3s under 145 yds — all in your wedge range · Must score every one',
+    mindset: 'Five par 5s = five free pars. Execute the 3-shot formula every time.',
+    scoring: [4,6,15,17],
+    danger: [3,11,14],
+    holes: [
+      { num:1,  yds:357, par:4, hcp:7,  tee:'Driver', approach:'Short iron → middle green', key:'Solid opening par 4. Driver + short iron. Middle green. Start clean.', goal:'Par', type:'normal' },
+      { num:2,  yds:422, par:5, hcp:11, tee:'Driver', approach:'3W layup → wedge in', key:'First par 5. 3-shot formula. Driver → 3W → wedge. Easy par. Don\'t force it.', goal:'Par', type:'normal' },
+      { num:3,  yds:340, par:4, hcp:1,  tee:'Driver — stay in play', approach:'Middle green only — no short side', key:'HCP 1 — hardest hole. Short but plays brutal. Stay in play. Middle green. Bogey is fine.', goal:'Bogey max', type:'danger' },
+      { num:4,  yds:129, par:3, hcp:13, tee:'PW or gap wedge', approach:'Attack the pin', key:'129 yds — MUST SCORE. Your PW distance. Attack this flag. Birdie or tap-in par expected.', goal:'Birdie / par', type:'score' },
+      { num:5,  yds:328, par:4, hcp:9,  tee:'Driver', approach:'Short iron → middle green', key:'Driver + short iron. Routine par 4. Middle of green. Execute the system.', goal:'Par', type:'normal' },
+      { num:6,  yds:109, par:3, hcp:17, tee:'PW or gap wedge', approach:'Attack the pin', key:'109 yds — MUST SCORE. Gap wedge or PW. Attack. This is a birdie hole. Take it.', goal:'Birdie / par', type:'score' },
+      { num:7,  yds:409, par:5, hcp:5,  tee:'Driver', approach:'3W layup → wedge in', key:'Par 5 · 3-shot formula. Driver → 3W → wedge. No hero shots. Par comes from the wedge.', goal:'Par', type:'normal' },
+      { num:8,  yds:305, par:4, hcp:15, tee:'Driver or 3W', approach:'Wedge in close', key:'Short par 4. Driver or 3W leaves a short wedge. Attack center green.', goal:'Par', type:'normal' },
+      { num:9,  yds:324, par:4, hcp:3,  tee:'Driver', approach:'Short iron — controlled', key:'HCP 3 but manageable. Driver + short iron. Stay controlled heading into the turn.', goal:'Par or bogey', type:'normal' },
+      { num:10, yds:428, par:5, hcp:16, tee:'Driver', approach:'3W layup → wedge in', key:'Back 9 opener par 5. Same formula. Driver → 3W → wedge. Build momentum.', goal:'Par', type:'normal' },
+      { num:11, yds:145, par:3, hcp:2,  tee:'9i or PW', approach:'Center green — no short side', key:'HCP 2 — looks easy, plays hard. 9i or PW to CENTER only. Zero short-sided misses.', goal:'Par', type:'danger' },
+      { num:12, yds:310, par:4, hcp:12, tee:'Driver', approach:'Wedge in', key:'Short par 4. Driver + wedge in. Attack center green. Straightforward.', goal:'Par', type:'normal' },
+      { num:13, yds:333, par:4, hcp:4,  tee:'Driver', approach:'Short iron → middle green', key:'HCP 4 — commit to target. Don\'t guide the swing. Trust it and go.', goal:'Par or bogey', type:'normal' },
+      { num:14, yds:475, par:5, hcp:6,  tee:'Driver', approach:'3W layup → wedge in', key:'Longest hole — 475 yds. NOT going for it in 2. Driver → 3W → wedge. Stay patient.', goal:'Par', type:'danger' },
+      { num:15, yds:140, par:3, hcp:8,  tee:'9i or PW', approach:'Attack the pin', key:'140 yds — MUST SCORE. 9i or PW. Attack this pin. You\'ve been patient all day. Take the birdie.', goal:'Birdie / par', type:'score' },
+      { num:16, yds:321, par:4, hcp:14, tee:'Driver', approach:'Short iron → middle green', key:'Straightforward. Driver + short iron. Stay disciplined — don\'t get sloppy late in round.', goal:'Par', type:'normal' },
+      { num:17, yds:112, par:3, hcp:18, tee:'PW or gap wedge', approach:'Attack the pin', key:'112 yds — MUST SCORE. HCP 18 — easiest hole. PW or gap wedge. Attack. No excuses.', goal:'Birdie / par', type:'score' },
+      { num:18, yds:434, par:5, hcp:10, tee:'Driver', approach:'3W layup → wedge in', key:'Finish strong. Driver → 3W → wedge. Execute the system one last time. Clean finish.', goal:'Par', type:'normal' },
+    ]
   }
-};
 
 // ══════════════════════════════════════
 // STATE — persisted to localStorage
@@ -1018,14 +1185,26 @@ function buildHoleNav() {
 }
 
 function updateHoleNav() {
+  if (!activeCourse) return;
+  const course = courseData[activeCourse];
   for (let i = 1; i <= 18; i++) {
     const dot = document.getElementById('hdot-' + i);
     if (!dot) continue;
     dot.className = 'hole-dot';
-    if (i === activeHole) { dot.classList.add('active-hole'); }
-    else if (holeScores[i-1] === 'par') dot.classList.add('scored-par');
-    else if (holeScores[i-1] === 'bogey') dot.classList.add('scored-bogey');
-    else if (holeScores[i-1] === 'double') dot.classList.add('scored-double');
+    if (i === activeHole) {
+      dot.classList.add('active-hole');
+    } else {
+      const s = holeScores[i-1];
+      if (s !== null) {
+        const par = course.holes[i-1].par;
+        const diff = s - par;
+        if (diff <= -1) dot.classList.add('scored-birdie');
+        else if (diff === 0) dot.classList.add('scored-par');
+        else if (diff === 1) dot.classList.add('scored-bogey');
+        else dot.classList.add('scored-double');
+        dot.textContent = s;
+      }
+    }
   }
   document.getElementById('headerHole').textContent = 'H' + activeHole;
 }
@@ -1087,36 +1266,162 @@ function renderHolePlan() {
 
   logSection.style.display = 'block';
   updateHoleNav();
+  updateStrokeDisplay();
+  updateRoundSummary();
+  renderHoleByHole();
+}
 
-  // Reset score buttons
-  document.querySelectorAll('.score-log-btn').forEach(b => {
-    b.className = b.className.replace(/ selected-\w+/g, '');
-  });
+// ══════════════════════════════════════
+// SCORE LOGGING — actual strokes
+// ══════════════════════════════════════
+function adjustStroke(delta) {
+  if (!activeCourse) return;
+  const course = courseData[activeCourse];
+  const par = course.holes[activeHole - 1].par;
+  const current = holeScores[activeHole - 1];
 
-  // Re-highlight if already scored
-  if (holeScores[activeHole - 1]) {
-    highlightScore(holeScores[activeHole - 1]);
+  let newScore;
+  if (current === null) {
+    newScore = delta > 0 ? par : par - 1;
+  } else {
+    newScore = Math.max(1, current + delta);
+  }
+
+  holeScores[activeHole - 1] = newScore;
+  saveState();
+  updateStrokeDisplay();
+  updateHoleNav();
+  updateRoundSummary();
+  renderHoleByHole();
+}
+
+function updateStrokeDisplay() {
+  if (!activeCourse) return;
+  const course = courseData[activeCourse];
+  const par = course.holes[activeHole - 1].par;
+  const score = holeScores[activeHole - 1];
+  const el = document.getElementById('strokeNum');
+  const lbl = document.getElementById('strokeLabel');
+
+  if (score === null) {
+    el.textContent = '–';
+    el.className = 'stroke-num';
+    lbl.textContent = 'tap to score';
+    return;
+  }
+
+  el.textContent = score;
+  el.className = 'stroke-num';
+
+  const diff = score - par;
+  if (diff <= -1) { el.classList.add('score-birdie'); lbl.textContent = diff === -1 ? 'Birdie' : 'Eagle'; }
+  else if (diff === 0) { el.classList.add('score-par'); lbl.textContent = 'Par'; }
+  else if (diff === 1) { el.classList.add('score-bogey'); lbl.textContent = 'Bogey'; }
+  else if (diff === 2) { el.classList.add('score-double'); lbl.textContent = 'Double'; }
+  else { el.classList.add('score-worse'); lbl.textContent = '+' + diff; }
+}
+
+function updateRoundSummary() {
+  if (!activeCourse) return;
+  const course = courseData[activeCourse];
+  const played = holeScores.filter(s => s !== null).length;
+  const total  = holeScores.filter(s => s !== null).reduce((a,b) => a + b, 0);
+  const parSoFar = course.holes.slice(0, played).reduce((a, h) => a + h.par, 0);
+  const vsTarget = total - parSoFar; // vs par so far
+  const holesLeft = 18 - played;
+
+  // Projected need to break 83
+  const TARGET = 83;
+  const need = played > 0 ? TARGET - total : null;
+
+  document.getElementById('sumPlayed').textContent = played + '/18';
+  document.getElementById('sumTotal').textContent = played > 0 ? total : '–';
+
+  const vsEl = document.getElementById('sumVsTarget');
+  if (played > 0) {
+    vsEl.textContent = vsTarget === 0 ? 'E' : (vsTarget > 0 ? '+' + vsTarget : vsTarget);
+    vsEl.className = 'summary-val' + (vsTarget <= 0 ? ' on-track' : vsTarget <= 3 ? '' : ' off-track');
+  } else {
+    vsEl.textContent = '–';
+    vsEl.className = 'summary-val';
+  }
+
+  const needEl = document.getElementById('sumNeed');
+  if (need !== null && holesLeft > 0) {
+    needEl.textContent = need > 0 ? need + ' left' : '✓';
+    needEl.className = 'summary-val' + (need >= holesLeft ? ' on-track' : ' off-track');
+  } else if (need !== null && holesLeft === 0) {
+    needEl.textContent = total <= TARGET ? '✓ ' + total : total;
+    needEl.className = 'summary-val' + (total <= TARGET ? ' on-track' : ' off-track');
+  } else {
+    needEl.textContent = '–';
+    needEl.className = 'summary-val';
   }
 }
 
-// ══════════════════════════════════════
-// SCORE LOGGING
-// ══════════════════════════════════════
-function logScore(type) {
-  holeScores[activeHole - 1] = type;
-  highlightScore(type);
-  updateHoleNav();
-  saveState();
-  showToast('Hole ' + activeHole + ' — ' + type);
-}
+function renderHoleByHole() {
+  if (!activeCourse) return;
+  const course = courseData[activeCourse];
+  const container = document.getElementById('holeByHole');
+  const played = holeScores.some(s => s !== null);
+  if (!played) { container.innerHTML = ''; return; }
 
-function highlightScore(type) {
-  document.querySelectorAll('.score-log-btn').forEach(b => {
-    b.className = b.className.replace(/ selected-\w+/g, '');
+  let html = '<div style="font-size:8px; color:var(--gold); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:6px;">Hole by Hole</div>';
+  html += '<div style="display:grid; grid-template-columns:28px 28px 1fr 36px; padding:4px 0; border-bottom:1px solid var(--gray-line);">';
+  html += '<span style="font-size:9px;color:var(--text-light);">H</span>';
+  html += '<span style="font-size:9px;color:var(--text-light);text-align:center;">Par</span>';
+  html += '<span style="font-size:9px;color:var(--text-light);padding:0 6px;">Goal</span>';
+  html += '<span style="font-size:9px;color:var(--text-light);text-align:right;">Score</span></div>';
+
+  course.holes.forEach((h, i) => {
+    const s = holeScores[i];
+    if (s === null) return;
+    if (i === 9) {
+      html += '<div class="hbh-nine-label">▸ Back 9</div>';
+    } else if (i === 0) {
+      html += '<div class="hbh-nine-label">▸ Front 9</div>';
+    }
+    const diff = s - h.par;
+    let cls = 'sc-bogey';
+    if (diff <= -1) cls = 'sc-birdie';
+    else if (diff === 0) cls = 'sc-par';
+    else if (diff === 1) cls = 'sc-bogey';
+    else if (diff === 2) cls = 'sc-double';
+    else cls = 'sc-worse';
+
+    const diffStr = diff === 0 ? 'E' : diff > 0 ? '+' + diff : diff;
+    html += `<div class="hbh-row">
+      <span class="hbh-hole">${h.num}</span>
+      <span class="hbh-par">${h.par}</span>
+      <span class="hbh-goal">${h.goal}</span>
+      <span class="hbh-score ${cls}">${s}<span style="font-size:10px;color:inherit;opacity:0.7;"> ${diffStr}</span></span>
+    </div>`;
   });
-  const map = { birdie: 0, par: 1, bogey: 2, double: 3 };
-  const btns = document.querySelectorAll('.score-log-btn');
-  if (btns[map[type]]) btns[map[type]].classList.add('selected-' + type);
+
+  // Totals
+  const playedScores = holeScores.filter(s => s !== null);
+  const total = playedScores.reduce((a,b) => a+b, 0);
+  const front = holeScores.slice(0,9).filter(s=>s!==null).reduce((a,b)=>a+b,0);
+  const back  = holeScores.slice(9).filter(s=>s!==null).reduce((a,b)=>a+b,0);
+  const hasFront = holeScores.slice(0,9).some(s=>s!==null);
+  const hasBack  = holeScores.slice(9).some(s=>s!==null);
+
+  html += `<div style="display:grid;grid-template-columns:1fr 1fr 1fr;background:var(--pine);padding:12px 10px;margin-top:8px;">
+    <div style="text-align:left;">
+      <div style="font-size:8px;color:var(--gold);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:3px;">Front</div>
+      <div style="font-family:var(--font-serif);font-size:22px;color:var(--bg);">${hasFront ? front : '–'}</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-size:8px;color:var(--gold);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:3px;">Total</div>
+      <div style="font-family:var(--font-serif);font-size:28px;color:${total <= 83 ? '#a8d5b5' : '#e8a0a0'};letter-spacing:-0.02em;">${playedScores.length > 0 ? total : '–'}</div>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:8px;color:var(--gold);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:3px;">Back</div>
+      <div style="font-family:var(--font-serif);font-size:22px;color:var(--bg);">${hasBack ? back : '–'}</div>
+    </div>
+  </div>`;
+
+  container.innerHTML = html;
 }
 
 function nextHole() {
