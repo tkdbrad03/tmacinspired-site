@@ -485,7 +485,7 @@
       <svg class="nav-icon" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="13" rx="1" fill="none" stroke="#888880" stroke-width="1.5"/><path d="M6 1v4M12 1v4M2 8h14" stroke="#888880" stroke-width="1.5"/></svg>
       <div class="nav-label">Schedule</div>
     </div>
-    <div class="nav-item">
+    <div class="nav-item" onclick="showView('progressView'); updateProgressUI();">
       <svg class="nav-icon" viewBox="0 0 18 18"><path d="M2 14h2V8H2zM7 14h2V4H7zM12 14h2v-6h-2z" fill="#888880"/></svg>
       <div class="nav-label">Progress</div>
     </div>
@@ -563,6 +563,51 @@
 </div>
 
 <script>
+
+function updateProgressUI() {
+  const workouts = weekData.filter(d => d === "Workout").length;
+
+  // % Progress (out of 7 days)
+  const percent = Math.round((workouts / 7) * 100);
+
+  document.getElementById('progressBarFill').style.width = percent + '%';
+  document.getElementById('progressPercent').textContent = percent + '%';
+
+  // STREAK CALCULATION
+  let current = 0;
+  let best = 0;
+
+  for (let i = 0; i < weekData.length; i++) {
+    if (weekData[i] === "Workout") {
+      current++;
+      if (current > best) best = current;
+    } else {
+      current = 0;
+    }
+  }
+
+  function saveWeekData() {
+  localStorage.setItem('tmac_weekData', JSON.stringify(weekData));
+}
+
+function loadWeekData() {
+  const saved = localStorage.getItem('tmac_weekData');
+  if (saved) {
+    const parsed = JSON.parse(saved);
+
+    if (parsed.length === 7) {
+      for (let i = 0; i < 7; i++) {
+        weekData[i] = parsed[i];
+      }
+    }
+  }
+
+  renderWeek();
+}
+
+  document.getElementById('currentStreak').textContent = current;
+  document.getElementById('bestStreak').textContent = best;
+}
 
 document.addEventListener('click', () => {
   if (window.speechSynthesis) {
@@ -699,6 +744,8 @@ function setDay(index) {
   }
 
   renderWeek();
+  updateProgressUI();
+  saveWeekData();
 }
 
 function renderWeek() {
@@ -818,8 +865,15 @@ function tick() {
         nextExercise();
       } else {
         speak('Workout complete. Well done.');
-        pauseTimer();
-        setTimeout(() => document.getElementById('completeScreen').classList.add('show'), 1200);
+
+       // ✅ AUTO MARK TODAY
+       markTodayWorkout();
+
+       pauseTimer();
+
+setTimeout(() => {
+  document.getElementById('completeScreen').classList.add('show');
+}, 1200);
       }
     }
     return;
@@ -911,8 +965,30 @@ function renderQueue() {
 // Load voices on mobile (async on iOS)
 window.speechSynthesis && window.speechSynthesis.getVoices();
 window.speechSynthesis && (window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices());
+loadWeekData();
+updateProgressUI();
 </script>
+  
+function getTodayIndex() {
+  const today = new Date().getDay(); 
+  // JS: 0 = Sunday, 1 = Monday...
 
+  // Convert to your layout (Monday = 0)
+  return today === 0 ? 6 : today - 1;
+}
+
+function markTodayWorkout() {
+  const todayIndex = getTodayIndex();
+
+  // Only mark if it's not already set
+  if (weekData[todayIndex] !== "Workout") {
+    weekData[todayIndex] = "Workout";
+
+    renderWeek();
+    updateProgressUI();
+    saveWeekData();
+  }
+}
 <!-- ════════ SCHEDULE VIEW ════════ -->
 <div id="scheduleView" class="view">
 
@@ -957,6 +1033,59 @@ window.speechSynthesis && (window.speechSynthesis.onvoiceschanged = () => window
     <div class="day-row" onclick="setDay(6)">
       <div>Sunday</div>
       <div id="day-6" class="day-status">—</div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ════════ PROGRESS VIEW ════════ -->
+<div id="progressView" class="view">
+
+  <div class="home-header">
+    <div class="header-eyebrow">Your Progress</div>
+    <div class="header-wordmark">Track<span>It</span></div>
+    <div class="header-tagline">Consistency Wins</div>
+  </div>
+
+  <div style="padding: 28px 20px 120px;">
+
+    <!-- Progress Bar -->
+    <div style="margin-bottom:30px;">
+      <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--text-light);margin-bottom:8px;">
+        Weekly Completion
+      </div>
+
+      <div style="height:8px;background:var(--border);border-radius:10px;overflow:hidden;">
+        <div id="progressBarFill" style="height:100%;width:0%;background:var(--pine);transition:width 0.4s;"></div>
+      </div>
+
+      <div id="progressPercent" style="margin-top:10px;font-size:14px;font-weight:600;">
+        0%
+      </div>
+    </div>
+
+    <!-- Streaks -->
+    <div style="display:flex;gap:20px;">
+
+      <div style="flex:1;background:var(--white);padding:20px;border:1px solid var(--border);">
+        <div style="font-size:10px;letter-spacing:2px;color:var(--text-light);text-transform:uppercase;">
+          Current Streak
+        </div>
+        <div id="currentStreak" style="font-size:28px;font-weight:600;margin-top:6px;">
+          0
+        </div>
+      </div>
+
+      <div style="flex:1;background:var(--white);padding:20px;border:1px solid var(--border);">
+        <div style="font-size:10px;letter-spacing:2px;color:var(--text-light);text-transform:uppercase;">
+          Best Streak
+        </div>
+        <div id="bestStreak" style="font-size:28px;font-weight:600;margin-top:6px;">
+          0
+        </div>
+      </div>
+
     </div>
 
   </div>
