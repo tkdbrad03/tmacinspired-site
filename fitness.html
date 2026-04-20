@@ -586,24 +586,6 @@ function updateProgressUI() {
     }
   }
 
-  function saveWeekData() {
-  localStorage.setItem('tmac_weekData', JSON.stringify(weekData));
-}
-
-function loadWeekData() {
-  const saved = localStorage.getItem('tmac_weekData');
-  if (saved) {
-    const parsed = JSON.parse(saved);
-
-    if (parsed.length === 7) {
-      for (let i = 0; i < 7; i++) {
-        weekData[i] = parsed[i];
-      }
-    }
-  }
-
-  renderWeek();
-}
 
   document.getElementById('currentStreak').textContent = current;
   document.getElementById('bestStreak').textContent = best;
@@ -728,6 +710,25 @@ function showVoiceIndicator(text) {
 }
 
 const weekData = Array(7).fill(null);
+
+function saveWeekData() {
+  localStorage.setItem('tmac_weekData', JSON.stringify(weekData));
+}
+
+function loadWeekData() {
+  const saved = localStorage.getItem('tmac_weekData');
+  if (saved) {
+    const parsed = JSON.parse(saved);
+
+    if (parsed.length === 7) {
+      for (let i = 0; i < 7; i++) {
+        weekData[i] = parsed[i];
+      }
+    }
+  }
+
+  renderWeek();
+}
 
 function setDay(index) {
   const current = weekData[index];
@@ -967,8 +968,7 @@ window.speechSynthesis && window.speechSynthesis.getVoices();
 window.speechSynthesis && (window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices());
 loadWeekData();
 updateProgressUI();
-</script>
-  
+
 function getTodayIndex() {
   const today = new Date().getDay(); 
   // JS: 0 = Sunday, 1 = Monday...
@@ -989,6 +989,8 @@ function markTodayWorkout() {
     saveWeekData();
   }
 }
+</script>
+  
 <!-- ════════ SCHEDULE VIEW ════════ -->
 <div id="scheduleView" class="view">
 
