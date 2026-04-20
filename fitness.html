@@ -335,6 +335,16 @@
     letter-spacing: 3px; text-transform: uppercase; padding: 18px 40px; cursor: pointer;
   }
 
+.today-active {
+  border: 2px solid var(--pine);
+  background: #eef6f1; /* subtle highlight */
+}
+
+.today-active .day-status {
+  color: var(--pine);
+  font-weight: 600;
+}
+
   /* BOTTOM NAV */
 
   .day-row {
@@ -481,7 +491,7 @@
       <div class="nav-label">Today</div>
       <div class="nav-dot"></div>
     </div>
-    <div class="nav-item" onclick="showView('scheduleView')">
+    <div class="nav-item" onclick="showView('scheduleView'); highlightToday();">
       <svg class="nav-icon" viewBox="0 0 18 18"><rect x="2" y="3" width="14" height="13" rx="1" fill="none" stroke="#888880" stroke-width="1.5"/><path d="M6 1v4M12 1v4M2 8h14" stroke="#888880" stroke-width="1.5"/></svg>
       <div class="nav-label">Schedule</div>
     </div>
@@ -489,7 +499,7 @@
       <svg class="nav-icon" viewBox="0 0 18 18"><path d="M2 14h2V8H2zM7 14h2V4H7zM12 14h2v-6h-2z" fill="#888880"/></svg>
       <div class="nav-label">Progress</div>
     </div>
-    <div class="nav-item">
+    <div class="nav-item" onclick="showView('profileView'); updateProfileUI();">
       <svg class="nav-icon" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7" fill="none" stroke="#888880" stroke-width="1.5"/><circle cx="9" cy="7" r="2" fill="#888880"/><path d="M5 14c0-2.2 1.8-4 4-4s4 1.8 4 4" fill="#888880"/></svg>
       <div class="nav-label">Profile</div>
     </div>
@@ -562,8 +572,227 @@
   <button class="complete-back-btn" onclick="resetWorkout()">Return Home</button>
 </div>
 
+<!-- ════════ SCHEDULE VIEW ════════ -->
+<div id="scheduleView" class="view">
+
+  <div class="home-header">
+    <div class="header-eyebrow">Weekly Plan</div>
+    <div class="header-wordmark">7<span>Day</span></div>
+    <div class="header-tagline">Track Your Flow</div>
+  </div>
+
+  <div style="padding: 24px 20px 120px; display:flex; flex-direction:column; gap:12px;">
+
+    <div class="day-row" onclick="setDay(0)">
+      <div>Monday</div>
+      <div id="day-0" class="day-status">—</div>
+    </div>
+
+    <div class="day-row" onclick="setDay(1)">
+      <div>Tuesday</div>
+      <div id="day-1" class="day-status">—</div>
+    </div>
+
+    <div class="day-row" onclick="setDay(2)">
+      <div>Wednesday</div>
+      <div id="day-2" class="day-status">—</div>
+    </div>
+
+    <div class="day-row" onclick="setDay(3)">
+      <div>Thursday</div>
+      <div id="day-3" class="day-status">—</div>
+    </div>
+
+    <div class="day-row" onclick="setDay(4)">
+      <div>Friday</div>
+      <div id="day-4" class="day-status">—</div>
+    </div>
+
+    <div class="day-row" onclick="setDay(5)">
+      <div>Saturday</div>
+      <div id="day-5" class="day-status">—</div>
+    </div>
+
+    <div class="day-row" onclick="setDay(6)">
+      <div>Sunday</div>
+      <div id="day-6" class="day-status">—</div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ════════ PROGRESS VIEW ════════ -->
+<div id="progressView" class="view">
+
+  <div class="home-header">
+    <div class="header-eyebrow">Your Progress</div>
+    <div class="header-wordmark">Track<span>It</span></div>
+    <div class="header-tagline">Consistency Wins</div>
+  </div>
+
+  <div style="padding: 28px 20px 120px;">
+
+    <!-- Progress Bar -->
+    <div style="margin-bottom:30px;">
+      <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--text-light);margin-bottom:8px;">
+        Weekly Completion
+      </div>
+
+      <div style="height:8px;background:var(--border);border-radius:10px;overflow:hidden;">
+        <div id="progressBarFill" style="height:100%;width:0%;background:var(--pine);transition:width 0.4s;"></div>
+      </div>
+
+      <div id="progressPercent" style="margin-top:10px;font-size:14px;font-weight:600;">
+        0%
+      </div>
+    </div>
+
+    <!-- Streaks -->
+    <div style="display:flex;gap:20px;">
+
+      <div style="flex:1;background:var(--white);padding:20px;border:1px solid var(--border);">
+        <div style="font-size:10px;letter-spacing:2px;color:var(--text-light);text-transform:uppercase;">
+          Current Streak
+        </div>
+        <div id="currentStreak" style="font-size:28px;font-weight:600;margin-top:6px;">
+          0
+        </div>
+      </div>
+
+      <div style="flex:1;background:var(--white);padding:20px;border:1px solid var(--border);">
+        <div style="font-size:10px;letter-spacing:2px;color:var(--text-light);text-transform:uppercase;">
+          Best Streak
+        </div>
+        <div id="bestStreak" style="font-size:28px;font-weight:600;margin-top:6px;">
+          0
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ════════ PROFILE VIEW ════════ -->
+<div id="profileView" class="view">
+
+  <div class="home-header">
+    <div class="header-eyebrow">Your System</div>
+    <div class="header-wordmark">Dr<span>TMac</span></div>
+    <div class="header-tagline">Consistency. Identity. Discipline.</div>
+  </div>
+
+  <div style="padding:28px 20px 120px; display:flex; flex-direction:column; gap:20px;">
+
+    <!-- Goal -->
+    <div style="background:var(--white); padding:20px; border:1px solid var(--border);">
+      <div style="font-size:10px;letter-spacing:2px;color:var(--text-light);text-transform:uppercase;">
+        Weekly Goal
+      </div>
+      <div id="goalText" style="font-size:22px;font-weight:600;margin-top:6px;">
+        0 / 4 Workouts
+      </div>
+    </div>
+
+    <!-- Breakdown -->
+    <div style="display:flex; gap:12px;">
+
+      <div style="flex:1; background:var(--white); padding:16px; border:1px solid var(--border); text-align:center;">
+        <div style="font-size:10px;letter-spacing:2px;color:var(--text-light);text-transform:uppercase;">Workout</div>
+        <div id="profileWorkout" style="font-size:22px;font-weight:600;margin-top:6px;">0</div>
+      </div>
+
+      <div style="flex:1; background:var(--white); padding:16px; border:1px solid var(--border); text-align:center;">
+        <div style="font-size:10px;letter-spacing:2px;color:var(--text-light);text-transform:uppercase;">Golf</div>
+        <div id="profileGolf" style="font-size:22px;font-weight:600;margin-top:6px;">0</div>
+      </div>
+
+      <div style="flex:1; background:var(--white); padding:16px; border:1px solid var(--border); text-align:center;">
+        <div style="font-size:10px;letter-spacing:2px;color:var(--text-light);text-transform:uppercase;">Rest</div>
+        <div id="profileRest" style="font-size:22px;font-weight:600;margin-top:6px;">0</div>
+      </div>
+
+    </div>
+
+    <!-- Streak -->
+    <div style="background:var(--white); padding:20px; border:1px solid var(--border);">
+      <div style="font-size:10px;letter-spacing:2px;color:var(--text-light);text-transform:uppercase;">
+        Current Streak
+      </div>
+      <div id="profileStreak" style="font-size:28px;font-weight:600;margin-top:6px;">
+        0 days
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
 <script>
 
+function updateProfileUI() {
+  const workouts = weekData.filter(d => d === "Workout").length;
+  const golf = weekData.filter(d => d === "Golf").length;
+  const rest = weekData.filter(d => d === "Rest").length;
+
+  // Goal (4 workouts)
+  document.getElementById('goalText').textContent = `${workouts} / 4 Workouts`;
+
+  document.getElementById('profileWorkout').textContent = workouts;
+  document.getElementById('profileGolf').textContent = golf;
+  document.getElementById('profileRest').textContent = rest;
+
+  // Reuse streak logic
+  let current = 0;
+
+  for (let i = 0; i < weekData.length; i++) {
+    if (weekData[i] === "Workout") {
+      current++;
+    } else {
+      current = 0;
+    }
+  }
+
+  document.getElementById('profileStreak').textContent = current + " days";
+}
+function resetWeekIfNeeded() {
+  const today = new Date();
+
+  // Get Monday of current week
+  const day = today.getDay(); // 0 = Sun
+  const diff = today.getDate() - (day === 0 ? 6 : day - 1);
+  const monday = new Date(today.setDate(diff));
+
+  const currentWeekKey = monday.toDateString();
+
+  const savedWeekKey = localStorage.getItem('tmac_weekKey');
+
+  // If it's a new week → reset
+  if (savedWeekKey !== currentWeekKey) {
+    for (let i = 0; i < 7; i++) {
+      weekData[i] = null;
+    }
+
+    localStorage.setItem('tmac_weekKey', currentWeekKey);
+    saveWeekData();
+  }
+}
+function highlightToday() {
+  const todayIndex = getTodayIndex();
+
+  // remove existing highlights
+  document.querySelectorAll('.day-row').forEach(row => {
+    row.classList.remove('today-active');
+  });
+
+  // add highlight to today's row
+  const todayRow = document.querySelectorAll('.day-row')[todayIndex];
+  if (todayRow) {
+    todayRow.classList.add('today-active');
+  }
+}
 function updateProgressUI() {
   const workouts = weekData.filter(d => d === "Workout").length;
 
@@ -747,6 +976,7 @@ function setDay(index) {
   renderWeek();
   updateProgressUI();
   saveWeekData();
+  updateProfileUI();
 }
 
 function renderWeek() {
@@ -754,6 +984,9 @@ function renderWeek() {
     const el = document.getElementById(`day-${i}`);
     el.textContent = val ? val : "—";
   });
+
+  // ✅ highlight today every time schedule renders
+  highlightToday();
 }
 // ── NAVIGATION ───────────────────────────────────────────
 function showView(id) {
@@ -966,6 +1199,7 @@ function renderQueue() {
 // Load voices on mobile (async on iOS)
 window.speechSynthesis && window.speechSynthesis.getVoices();
 window.speechSynthesis && (window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices());
+resetWeekIfNeeded();
 loadWeekData();
 updateProgressUI();
 
@@ -990,108 +1224,5 @@ function markTodayWorkout() {
   }
 }
 </script>
-  
-<!-- ════════ SCHEDULE VIEW ════════ -->
-<div id="scheduleView" class="view">
-
-  <div class="home-header">
-    <div class="header-eyebrow">Weekly Plan</div>
-    <div class="header-wordmark">7<span>Day</span></div>
-    <div class="header-tagline">Track Your Flow</div>
-  </div>
-
-  <div style="padding: 24px 20px 120px; display:flex; flex-direction:column; gap:12px;">
-
-    <div class="day-row" onclick="setDay(0)">
-      <div>Monday</div>
-      <div id="day-0" class="day-status">—</div>
-    </div>
-
-    <div class="day-row" onclick="setDay(1)">
-      <div>Tuesday</div>
-      <div id="day-1" class="day-status">—</div>
-    </div>
-
-    <div class="day-row" onclick="setDay(2)">
-      <div>Wednesday</div>
-      <div id="day-2" class="day-status">—</div>
-    </div>
-
-    <div class="day-row" onclick="setDay(3)">
-      <div>Thursday</div>
-      <div id="day-3" class="day-status">—</div>
-    </div>
-
-    <div class="day-row" onclick="setDay(4)">
-      <div>Friday</div>
-      <div id="day-4" class="day-status">—</div>
-    </div>
-
-    <div class="day-row" onclick="setDay(5)">
-      <div>Saturday</div>
-      <div id="day-5" class="day-status">—</div>
-    </div>
-
-    <div class="day-row" onclick="setDay(6)">
-      <div>Sunday</div>
-      <div id="day-6" class="day-status">—</div>
-    </div>
-
-  </div>
-
-</div>
-
-<!-- ════════ PROGRESS VIEW ════════ -->
-<div id="progressView" class="view">
-
-  <div class="home-header">
-    <div class="header-eyebrow">Your Progress</div>
-    <div class="header-wordmark">Track<span>It</span></div>
-    <div class="header-tagline">Consistency Wins</div>
-  </div>
-
-  <div style="padding: 28px 20px 120px;">
-
-    <!-- Progress Bar -->
-    <div style="margin-bottom:30px;">
-      <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--text-light);margin-bottom:8px;">
-        Weekly Completion
-      </div>
-
-      <div style="height:8px;background:var(--border);border-radius:10px;overflow:hidden;">
-        <div id="progressBarFill" style="height:100%;width:0%;background:var(--pine);transition:width 0.4s;"></div>
-      </div>
-
-      <div id="progressPercent" style="margin-top:10px;font-size:14px;font-weight:600;">
-        0%
-      </div>
-    </div>
-
-    <!-- Streaks -->
-    <div style="display:flex;gap:20px;">
-
-      <div style="flex:1;background:var(--white);padding:20px;border:1px solid var(--border);">
-        <div style="font-size:10px;letter-spacing:2px;color:var(--text-light);text-transform:uppercase;">
-          Current Streak
-        </div>
-        <div id="currentStreak" style="font-size:28px;font-weight:600;margin-top:6px;">
-          0
-        </div>
-      </div>
-
-      <div style="flex:1;background:var(--white);padding:20px;border:1px solid var(--border);">
-        <div style="font-size:10px;letter-spacing:2px;color:var(--text-light);text-transform:uppercase;">
-          Best Streak
-        </div>
-        <div id="bestStreak" style="font-size:28px;font-weight:600;margin-top:6px;">
-          0
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
 </body>
 </html>
