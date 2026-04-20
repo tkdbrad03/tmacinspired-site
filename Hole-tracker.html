@@ -170,6 +170,7 @@ if (!room) {
 document.getElementById('roomLabel').textContent = room;
 
 const isViewer = params.get('view') === '1';
+const isDemo = params.get('demo') === '1';
 
 // --- URL persistence ---
 function saveToURL() {
@@ -373,6 +374,15 @@ function calculate() {
     const hdr = document.getElementById('h'+i);
     if (hdr) hdr.textContent = names[i] || 'P'+(i+1);
   }
+ // Demo mode — lock after 9 holes
+  if (isDemo) {
+    const holesEntered = scores.filter(row => row[0] !== '').length;
+    if (holesEntered >= 9) {
+      document.getElementById('tbody').style.pointerEvents = 'none';
+      document.getElementById('tbody').style.opacity = '0.4';
+      document.getElementById('demoWall').style.display = 'flex';
+    }
+  }
 }
 
 // --- Pusher real-time ---
@@ -498,5 +508,11 @@ buildAll();
 applyViewerMode();
 connectPusher();
 </script>
+ <div id="demoWall" style="display:none; position:fixed; inset:0; background:rgba(255,255,255,0.95); z-index:999; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:30px;">
+  <div style="font-size:2rem;">⛳</div>
+  <h2 style="font-family:'DM Sans',sans-serif; color:#c9a86c; margin:12px 0;">You played 9 holes free!</h2>
+  <p style="color:#5a7a5a; margin-bottom:24px; font-size:0.9rem;">Subscribe for $4.99/month for unlimited rounds, live leaderboards and more.</p>
+  <a href="https://tmacinspired.com/skins-landing.html" style="background:#1a2f1c; color:#c9a86c; padding:14px 28px; border-radius:10px; font-family:'DM Sans',sans-serif; font-weight:700; text-decoration:none; font-size:1rem;">Subscribe Now — $4.99/month</a>
+</div>
 </body>
 </html>
