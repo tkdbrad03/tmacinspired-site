@@ -436,7 +436,7 @@
 </head>
 <body>
 
-<div id="splashScreen" style="position:fixed;inset:0;background:#1a3a2a;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;cursor:pointer;" onclick="this.style.display='none'; playVoiceGreeting();">
+<div id="splashScreen" style="position:fixed;inset:0;background:#1a3a2a;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;cursor:pointer;" onclick="openLockScreen()">
   <img class="splash-bg" src="https://raw.githubusercontent.com/tkdbrad03/tmacinspired-site/main/tmac-workout-body.png" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;opacity:0.85;">
   <div style="position:relative;text-align:center;padding:48px 32px;background:linear-gradient(transparent,rgba(26,58,42,0.95));">
     <div id="greetingText" class="splash-greeting" style="font-size:9px;font-weight:600;letter-spacing:5px;color:var(--pine);text-transform:uppercase;margin-bottom:12px;">
@@ -451,7 +451,7 @@
   inset:0;
   background:var(--pine);
   z-index:1000;
-  display:flex;
+  display:none;
   flex-direction:column;
   align-items:center;
   justify-content:center;
@@ -829,6 +829,14 @@
 </div>
 
 <script>
+function openLockScreen() {
+  document.getElementById('splashScreen').style.display = 'none';
+  document.getElementById('lockScreen').style.display = 'flex';
+  playVoiceGreeting();
+
+  const input = document.getElementById('pinInput');
+  if (input) input.focus();
+}
 const APP_PIN = "1904"; // 🔑 change this to your PIN
 
 function unlockApp() {
