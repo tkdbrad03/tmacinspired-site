@@ -383,10 +383,12 @@
 </head>
 <body>
 
-<div id="splashScreen" style="position:fixed;inset:0;background:#1a3a2a;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;cursor:pointer;" onclick="this.style.display='none'">
+<div id="splashScreen" style="position:fixed;inset:0;background:#1a3a2a;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;cursor:pointer;" onclick="this.style.display='none'; playVoiceGreeting();">
   <img src="https://raw.githubusercontent.com/tkdbrad03/tmacinspired-site/main/tmac-workout-body.png" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;opacity:0.85;">
   <div style="position:relative;text-align:center;padding:48px 32px;background:linear-gradient(transparent,rgba(26,58,42,0.95));">
-    <div style="font-size:9px;font-weight:600;letter-spacing:5px;color:#1a3a2a;text-transform:uppercase;margin-bottom:12px;">Good Morning</div>
+    <div id="greetingText" style="font-size:9px;font-weight:600;letter-spacing:5px;color:var(--pine);text-transform:uppercase;margin-bottom:12px;">
+  Good Morning, Dr. TMac
+</div>
     <div style="font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:300;color:#fff;letter-spacing:6px;line-height:1;">TMAC</div>
     <div style="font-size:10px;letter-spacing:3px;color:rgba(255,255,255,0.45);margin-top:8px;text-transform:uppercase;">Tap to begin</div>
   </div>
@@ -735,6 +737,52 @@
 
 <script>
 
+function playVoiceGreeting() {
+  if (!window.speechSynthesis) return;
+
+  const hour = new Date().getHours();
+  let greeting = "Good morning, Dr. TMac";
+
+  if (hour >= 12 && hour < 17) {
+    greeting = "Good afternoon, Dr. TMac";
+  } else if (hour >= 17) {
+    greeting = "Good evening, Dr. TMac";
+  }
+
+  const u = new SpeechSynthesisUtterance(greeting);
+  u.rate = 0.92;
+  u.pitch = 0.95;
+  u.volume = 1;
+
+  const voices = window.speechSynthesis.getVoices();
+  const preferred = voices.find(v =>
+    v.name.includes('Samantha') ||
+    v.name.includes('Karen') ||
+    v.name.includes('Google US English')
+  );
+
+  if (preferred) u.voice = preferred;
+
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+}
+function setGreeting() {
+  const hour = new Date().getHours();
+  let greeting = "Good Morning, Dr. TMac";
+
+  if (hour >= 12 && hour < 17) {
+    greeting = "Good Afternoon, Dr. TMac";
+  } else if (hour >= 17) {
+    greeting = "Good Evening, Dr. TMac";
+  }
+
+  const el = document.getElementById('greetingText');
+  if (el) el.textContent = greeting.toUpperCase();
+}
+
+  const el = document.getElementById('greetingText');
+  if (el) el.textContent = greeting.toUpperCase();
+}
 function updateProfileUI() {
   const workouts = weekData.filter(d => d === "Workout").length;
   const golf = weekData.filter(d => d === "Golf").length;
@@ -1205,6 +1253,7 @@ window.speechSynthesis && (window.speechSynthesis.onvoiceschanged = () => window
 resetWeekIfNeeded();
 loadWeekData();
 updateProgressUI();
+setGreeting();
 
 function getTodayIndex() {
   const today = new Date().getDay(); 
