@@ -379,18 +379,71 @@
   .nav-label { font-size: 8px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-light); }
   .nav-item.active .nav-label { color: var(--pine); }
   .nav-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--gold); }
+
+@keyframes splashZoom {
+  from {
+    transform: scale(1.08);
+    opacity: 0.78;
+  }
+  to {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes softPulse {
+  0%, 100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+.splash-bg {
+  animation: splashZoom 1.4s ease-out forwards;
+  transform-origin: center center;
+}
+
+.splash-greeting {
+  opacity: 0;
+  animation: fadeUp 0.9s ease-out 0.2s forwards;
+}
+
+.splash-wordmark {
+  opacity: 0;
+  animation: fadeUp 1s ease-out 0.5s forwards;
+}
+
+.splash-tap {
+  opacity: 0;
+  animation:
+    fadeUp 0.8s ease-out 1s forwards,
+    softPulse 2.2s ease-in-out 1.8s infinite;
+}
 </style>
 </head>
 <body>
 
 <div id="splashScreen" style="position:fixed;inset:0;background:#1a3a2a;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;cursor:pointer;" onclick="this.style.display='none'; playVoiceGreeting();">
-  <img src="https://raw.githubusercontent.com/tkdbrad03/tmacinspired-site/main/tmac-workout-body.png" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;opacity:0.85;">
+  <img class="splash-bg" src="https://raw.githubusercontent.com/tkdbrad03/tmacinspired-site/main/tmac-workout-body.png" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;opacity:0.85;">
   <div style="position:relative;text-align:center;padding:48px 32px;background:linear-gradient(transparent,rgba(26,58,42,0.95));">
-    <div id="greetingText" style="font-size:9px;font-weight:600;letter-spacing:5px;color:var(--pine);text-transform:uppercase;margin-bottom:12px;">
+    <div id="greetingText" class="splash-greeting" style="font-size:9px;font-weight:600;letter-spacing:5px;color:var(--pine);text-transform:uppercase;margin-bottom:12px;">
   Good Morning, Dr. TMac
 </div>
-    <div style="font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:300;color:#fff;letter-spacing:6px;line-height:1;">TMAC</div>
-    <div style="font-size:10px;letter-spacing:3px;color:rgba(255,255,255,0.45);margin-top:8px;text-transform:uppercase;">Tap to begin</div>
+    <div class="splash-wordmark" style="font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:300;color:#fff;letter-spacing:6px;line-height:1;">TMAC</div>
+    <div class="splash-tap" style="font-size:10px;letter-spacing:3px;color:rgba(255,255,255,0.45);margin-top:8px;text-transform:uppercase;">Tap to begin</div>
   </div>
 </div>
 
