@@ -377,7 +377,7 @@ function calculate() {
  // Demo mode — lock after 9 holes
   if (isDemo) {
     const holesEntered = scores.filter(row => row[0] !== '').length;
-    if (holesEntered >= 9) {
+    if (holesEntered > 9) {
       document.getElementById('tbody').style.pointerEvents = 'none';
       document.getElementById('tbody').style.opacity = '0.4';
       document.getElementById('demoWall').style.display = 'flex';
