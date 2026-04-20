@@ -545,6 +545,14 @@
 </div>
 
 <script>
+
+document.addEventListener('click', () => {
+  if (window.speechSynthesis) {
+    const u = new SpeechSynthesisUtterance('');
+    window.speechSynthesis.speak(u);
+    window.speechSynthesis.cancel();
+  }
+}, { once: true });
 // ── WORKOUT DATA ──────────────────────────────────────────
 const workout = [
   // DYNAMIC WARM-UP
@@ -620,17 +628,33 @@ let elapsedTotal = 0;
 // ── VOICE (Web Speech API) ────────────────────────────────
 function speak(text) {
   if (!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.rate = 0.92;
-  u.pitch = 0.95;
-  u.volume = 1;
-  // Prefer a deeper voice if available
-  const voices = window.speechSynthesis.getVoices();
-  const preferred = voices.find(v => v.name.includes('Daniel') || v.name.includes('Alex') || v.name.includes('Google UK English Male'));
-  if (preferred) u.voice = preferred;
-  window.speechSynthesis.speak(u);
-  showVoiceIndicator(text);
+
+  const run = () => {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.rate = 0.92;
+    u.pitch = 0.95;
+    u.volume = 1;
+
+    const voices = window.speechSynthesis.getVoices();
+    const preferred = voices.find(v =>
+      v.name.includes('Daniel') ||
+      v.name.includes('Alex') ||
+      v.name.includes('Google')
+    );
+
+    if (preferred) u.voice = preferred;
+
+    window.speechSynthesis.speak(u);
+    showVoiceIndicator(text);
+  };
+
+  // 🔑 KEY FIX
+  if (window.speechSynthesis.getVoices().length === 0) {
+    window.speechSynthesis.onvoiceschanged = run;
+  } else {
+    run();
+  }
 }
 
 function showVoiceIndicator(text) {
@@ -653,6 +677,13 @@ function goHome() {
 }
 
 function startWorkout() {
+  // 🔊 FORCE speech engine to unlock on user interaction
+  if (window.speechSynthesis) {
+    const unlock = new SpeechSynthesisUtterance('');
+    window.speechSynthesis.speak(unlock);
+    window.speechSynthesis.cancel();
+  }
+
   currentIdx = 0;
   isResting = false;
   elapsedTotal = 0;
