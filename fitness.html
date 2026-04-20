@@ -779,10 +779,6 @@ function setGreeting() {
   const el = document.getElementById('greetingText');
   if (el) el.textContent = greeting.toUpperCase();
 }
-
-  const el = document.getElementById('greetingText');
-  if (el) el.textContent = greeting.toUpperCase();
-}
 function updateProfileUI() {
   const workouts = weekData.filter(d => d === "Workout").length;
   const golf = weekData.filter(d => d === "Golf").length;
@@ -1253,6 +1249,7 @@ window.speechSynthesis && (window.speechSynthesis.onvoiceschanged = () => window
 resetWeekIfNeeded();
 loadWeekData();
 updateProgressUI();
+updateProfileUI();
 setGreeting();
 
 function getTodayIndex() {
