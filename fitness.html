@@ -994,6 +994,7 @@ let secondsLeft = 0;
 let totalSecondsLeft = 0;
 let isPlaying = false;
 let isResting = false;
+let isTransitioning = false;
 let interval = null;
 const CIRCUMFERENCE = 565;
 const TOTAL_DURATION = workout.reduce((s, e) => s + e.duration + e.rest, 0);
@@ -1189,29 +1190,53 @@ function tick() {
   }
 
   if (secondsLeft < 0) {
-    if (!isResting && workout[currentIdx].rest > 0) {
-      speak('Rest');
-      loadRest(currentIdx);
-    } else {
-      const next = workout[currentIdx + 1];
-      if (next) {
-        speak('Next up — ' + next.name);
-        nextExercise();
-      } else {
-        speak('Workout complete. Well done.');
 
-       // ✅ AUTO MARK TODAY
-       markTodayWorkout();
-
-       pauseTimer();
-
-setTimeout(() => {
-  document.getElementById('completeScreen').classList.add('show');
-}, 1200);
-      }
-    }
+  // After WORK → go to REST
+  if (!isResting && !isTransitioning && workout[currentIdx].rest > 0) {
+    speak('Rest');
+    loadRest(currentIdx);
     return;
   }
+
+  // After REST → go to GET READY
+  if (isResting && !isTransitioning) {
+    isResting = false;
+    isTransitioning = true;
+
+    secondsLeft = 3;
+    totalSecondsLeft = 3;
+
+    document.getElementById('clockMode').textContent = 'Get Ready';
+    document.getElementById('clockMode').style.color = 'var(--gold)';
+    document.getElementById('clockMode').classList.remove('rest-mode');
+
+    speak('Get ready');
+
+    return;
+  }
+
+  // After GET READY → next exercise
+  if (isTransitioning) {
+    isTransitioning = false;
+
+    const next = workout[currentIdx + 1];
+    if (next) {
+      speak('Next up — ' + next.name);
+      nextExercise();
+    } else {
+      speak('Workout complete. Well done.');
+
+      markTodayWorkout();
+      pauseTimer();
+
+      setTimeout(() => {
+        document.getElementById('completeScreen').classList.add('show');
+      }, 1200);
+    }
+
+    return;
+  }
+}
 
   // "Go" cue at start of rest ending
   if (isResting && secondsLeft === 0) {
