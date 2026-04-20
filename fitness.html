@@ -1306,12 +1306,17 @@ function tick() {
       nextExercise();
     } else {
       speak('Workout complete. Well done.');
-      markTodayWorkout();
-      pauseTimer();
 
-      setTimeout(() => {
-        document.getElementById('completeScreen').classList.add('show');
-      }, 1200);
+// mark final item as done in queue
+currentIdx = workout.length;
+renderQueue();
+
+markTodayWorkout();
+pauseTimer();
+
+setTimeout(() => {
+  document.getElementById('completeScreen').classList.add('show');
+}, 1200);
     }
 
     return;
@@ -1349,11 +1354,20 @@ function updateRing(current, total, rest) {
 
 function nextExercise() {
   if (currentIdx >= workout.length - 1) {
-    speak('Workout complete. Well done.');
-    pauseTimer();
-    setTimeout(() => document.getElementById('completeScreen').classList.add('show'), 1200);
-    return;
-  }
+  speak('Workout complete. Well done.');
+
+  currentIdx = workout.length;
+  renderQueue();
+
+  markTodayWorkout();
+  pauseTimer();
+
+  setTimeout(() => {
+    document.getElementById('completeScreen').classList.add('show');
+  }, 1200);
+
+  return;
+}
   currentIdx++;
   isResting = false;
   loadExercise(currentIdx);
