@@ -1187,6 +1187,7 @@ function resetWorkout() {
 function loadExercise(idx) {
   const ex = workout[idx];
   isResting = false;
+  isTransitioning = false;
   secondsLeft = ex.duration;
   totalSecondsLeft = ex.duration;
 
@@ -1251,15 +1252,33 @@ function tick() {
 
   if (secondsLeft < 0) {
 
-  // After WORK → go to REST
+  // After WORK with built-in rest → go to REST
   if (!isResting && !isTransitioning && workout[currentIdx].rest > 0) {
     speak('Rest');
     loadRest(currentIdx);
     return;
   }
 
+  // After WORK with NO rest → go straight to GET READY
+  if (!isResting && !isTransitioning && workout[currentIdx].rest === 0) {
+    isTransitioning = true;
+
+    secondsLeft = 3;
+    totalSecondsLeft = 3;
+
+    document.getElementById('clockMode').textContent = 'Get Ready';
+    document.getElementById('clockMode').style.color = 'var(--gold)';
+    document.getElementById('clockMode').classList.remove('rest-mode');
+
+    updateClock();
+    updateRing(secondsLeft, totalSecondsLeft, false);
+
+    speak('Get ready');
+    return;
+  }
+
   // After REST → go to GET READY
-    if (isResting && !isTransitioning) {
+  if (isResting && !isTransitioning) {
     isResting = false;
     isTransitioning = true;
 
@@ -1274,7 +1293,6 @@ function tick() {
     updateRing(secondsLeft, totalSecondsLeft, false);
 
     speak('Get ready');
-
     return;
   }
 
@@ -1288,7 +1306,6 @@ function tick() {
       nextExercise();
     } else {
       speak('Workout complete. Well done.');
-
       markTodayWorkout();
       pauseTimer();
 
