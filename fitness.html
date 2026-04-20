@@ -1196,6 +1196,7 @@ function loadExercise(idx) {
   document.getElementById('nextExName').textContent = next ? next.name : 'All done — great work';
 
   document.getElementById('clockMode').textContent = 'Work';
+  document.getElementById('clockMode').style.color = '';
   document.getElementById('clockMode').classList.remove('rest-mode');
 
   updateClock();
@@ -1258,7 +1259,7 @@ function tick() {
   }
 
   // After REST → go to GET READY
-  if (isResting && !isTransitioning) {
+    if (isResting && !isTransitioning) {
     isResting = false;
     isTransitioning = true;
 
@@ -1268,6 +1269,9 @@ function tick() {
     document.getElementById('clockMode').textContent = 'Get Ready';
     document.getElementById('clockMode').style.color = 'var(--gold)';
     document.getElementById('clockMode').classList.remove('rest-mode');
+
+    updateClock();
+    updateRing(secondsLeft, totalSecondsLeft, false);
 
     speak('Get ready');
 
