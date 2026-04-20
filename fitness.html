@@ -446,7 +446,47 @@
     <div class="splash-tap" style="font-size:10px;letter-spacing:3px;color:rgba(255,255,255,0.45);margin-top:8px;text-transform:uppercase;">Tap to begin</div>
   </div>
 </div>
+<div id="lockScreen" style="
+  position:fixed;
+  inset:0;
+  background:var(--pine);
+  z-index:1000;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  color:white;
+">
 
+  <div style="font-size:10px;letter-spacing:4px;margin-bottom:20px;text-transform:uppercase;">
+    Enter PIN
+  </div>
+
+  <input id="pinInput" type="password" maxlength="4" style="
+    font-size:24px;
+    text-align:center;
+    padding:10px;
+    width:120px;
+    border:none;
+    outline:none;
+    border-radius:4px;
+  ">
+
+  <button onclick="unlockApp()" style="
+    margin-top:20px;
+    padding:12px 24px;
+    background:var(--gold);
+    border:none;
+    color:#000;
+    font-weight:600;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    cursor:pointer;
+  ">
+    Unlock
+  </button>
+
+</div>
 <div class="voice-indicator" id="voiceIndicator"></div>
 
 <!-- ════════ HOME ════════ -->
@@ -789,6 +829,17 @@
 </div>
 
 <script>
+const APP_PIN = "1904"; // 🔑 change this to your PIN
+
+function unlockApp() {
+  const input = document.getElementById('pinInput').value;
+
+  if (input === APP_PIN) {
+    document.getElementById('lockScreen').style.display = 'none';
+  } else {
+    alert("Incorrect PIN");
+  }
+}
 
 function playVoiceGreeting() {
   if (!window.speechSynthesis) return;
@@ -1350,6 +1401,10 @@ function markTodayWorkout() {
     saveWeekData();
   }
 }
+setTimeout(() => {
+  const input = document.getElementById('pinInput');
+  if (input) input.focus();
+}, 500);
 </script>
 </body>
 </html>
