@@ -640,7 +640,7 @@ body {
 
     <!-- SCHEDULE VIEW -->
     <div id="scheduleView" class="view">
-      <div class="home-header"><div class="header-eyebrow">Weekly Plan</div><div class="header-wordmark">7<span>Day</span></div><div class="header-tagline">Track Your Flow</div></div>
+      <div class="home-header"><button onclick="navTo('homeView','snav-home')" style="background:none;border:none;color:var(--gold);font-family:'Montserrat',sans-serif;font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;cursor:pointer;margin-bottom:16px;display:block;">Back to Home</button><div class="header-eyebrow">Weekly Plan</div>
       <div style="padding:24px 20px 120px;display:flex;flex-direction:column;gap:12px;">
         <div class="day-row" onclick="setDay(0)"><div>Monday</div><div id="day-0" class="day-status">—</div></div>
         <div class="day-row" onclick="setDay(1)"><div>Tuesday</div><div id="day-1" class="day-status">—</div></div>
@@ -654,7 +654,7 @@ body {
 
     <!-- PROGRESS VIEW -->
     <div id="progressView" class="view">
-      <div class="home-header"><div class="header-eyebrow">Your Progress</div><div class="header-wordmark">Track<span>It</span></div><div class="header-tagline">Consistency Wins</div></div>
+      <div class="home-header"><button onclick="navTo('homeView','snav-home')" style="background:none;border:none;color:var(--gold);font-family:'Montserrat',sans-serif;font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;cursor:pointer;margin-bottom:16px;display:block;">Back to Home</button><div class="header-eyebrow">Your Progress</div>
       <div style="padding:28px 20px 120px;">
         <div style="margin-bottom:30px;"><div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--text-light);margin-bottom:8px;">Weekly Completion</div><div style="height:8px;background:var(--border);border-radius:10px;overflow:hidden;"><div id="progressBarFill" style="height:100%;width:0%;background:var(--pine);transition:width 0.4s;"></div></div><div id="progressPercent" style="margin-top:10px;font-size:14px;font-weight:600;">0%</div></div>
         <div style="display:flex;gap:20px;"><div style="flex:1;background:var(--white);padding:20px;border:1px solid var(--border);"><div style="font-size:10px;letter-spacing:2px;color:var(--text-light);text-transform:uppercase;">Current Streak</div><div id="currentStreak" style="font-size:28px;font-weight:600;margin-top:6px;">0</div></div><div style="flex:1;background:var(--white);padding:20px;border:1px solid var(--border);"><div style="font-size:10px;letter-spacing:2px;color:var(--text-light);text-transform:uppercase;">Best Streak</div><div id="bestStreak" style="font-size:28px;font-weight:600;margin-top:6px;">0</div></div></div>
@@ -663,7 +663,7 @@ body {
 
     <!-- PROFILE VIEW -->
     <div id="profileView" class="view">
-      <div class="home-header"><div class="header-eyebrow">Your System</div><div class="header-wordmark">Dr<span>TMac</span></div><div class="header-tagline">Consistency. Identity. Discipline.</div></div>
+      <div class="home-header"><button onclick="navTo('homeView','snav-home')" style="background:none;border:none;color:var(--gold);font-family:'Montserrat',sans-serif;font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;cursor:pointer;margin-bottom:16px;display:block;">Back to Home</button><div class="header-eyebrow">Your System</div>
       <div style="padding:28px 20px 120px;display:flex;flex-direction:column;gap:20px;">
         <div style="background:var(--white);padding:20px;border:1px solid var(--border);"><div style="font-size:10px;letter-spacing:2px;color:var(--text-light);text-transform:uppercase;">Weekly Goal</div><div id="goalText" style="font-size:22px;font-weight:600;margin-top:6px;">0 / 4 Workouts</div></div>
         <div style="display:flex;gap:12px;">
@@ -789,7 +789,7 @@ function speak(text) {
     const u = new SpeechSynthesisUtterance(text);
     u.rate = 0.92; u.pitch = 0.95; u.volume = 1;
     const voices = window.speechSynthesis.getVoices();
-    const preferred = voices.find(v => v.name.includes('Daniel') || v.name.includes('Alex') || v.name.includes('Google'));
+    const preferred = voices.find(v => v.name.includes('Samantha') || v.name.includes('Karen') || v.name.includes('Google UK English Female') || v.name.includes('Google US English') || (v.gender === 'female'));
     if (preferred) u.voice = preferred;
     window.speechSynthesis.speak(u);
     showVoiceIndicator(text);
@@ -855,8 +855,11 @@ function resetWorkout() { document.getElementById('completeScreen').classList.re
 function startWorkout() {
   if (window.speechSynthesis) { const u = new SpeechSynthesisUtterance(''); window.speechSynthesis.speak(u); window.speechSynthesis.cancel(); }
   currentIdx = 0; isResting = false; isTransitioning = false;
+  if (isDesktop()) {
+  showDesktopTimer(true);
+} else {
   navTo('timerView', '');
-  if (isDesktop()) showDesktopTimer(true);
+}
   loadExercise(0);
   isPlaying = false;
   togglePlay();
