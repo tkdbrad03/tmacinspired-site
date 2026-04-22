@@ -836,18 +836,14 @@ function navTo(viewId, snavId) {
 }
 
 function showDesktopTimer(show) {
-  const left = document.getElementById('timerLeft');
-  const right = document.getElementById('timerRight');
+  const overlay = document.getElementById('desktopTimerOverlay');
   const tv = document.getElementById('timerView');
   if (show && isDesktop()) {
-    // Full-screen fixed overlay covering everything except sidebar
-    tv.style.cssText = 'display:grid !important; grid-template-columns:1fr 420px; position:fixed; top:0; bottom:0; left:280px; right:0; z-index:40; overflow:hidden;';
-    left.style.cssText = 'display:flex; flex-direction:column; justify-content:flex-end; padding:60px 56px; position:relative; overflow:hidden; background:var(--pine); height:100vh;';
-    right.style.cssText = 'display:flex; flex-direction:column; align-items:center; justify-content:center; padding:48px 40px; background:var(--cream); border-left:1px solid var(--border); overflow-y:auto; height:100vh;';
+    overlay.style.display = 'grid';
+    tv.style.display = 'none';
   } else {
-    tv.style.cssText = '';
-    left.style.display = 'none';
-    right.style.display = 'none';
+    overlay.style.display = 'none';
+    if (!isDesktop()) tv.style.display = '';
   }
 }
 
@@ -1107,5 +1103,50 @@ updateProfileUI();
 setGreeting();
 setupLayout();
 </script>
+
+<!-- DESKTOP TIMER OVERLAY — fixed, covers content area only -->
+<div id="desktopTimerOverlay" style="display:none; position:fixed; top:0; bottom:0; left:280px; right:0; z-index:60; grid-template-columns:1fr 420px;">
+  <!-- LEFT: cinematic panel -->
+  <div style="position:relative; display:flex; flex-direction:column; justify-content:flex-end; padding:60px 56px; overflow:hidden; background:var(--pine); height:100vh;">
+    <div style="position:absolute;inset:0;background:url('https://raw.githubusercontent.com/tkdbrad03/tmacinspired-site/main/tmac-workout-body.png') center top/cover no-repeat;opacity:0.12;"></div>
+    <button onclick="goHome()" style="position:absolute;top:40px;left:56px;font-size:9px;font-weight:600;letter-spacing:3px;color:rgba(255,255,255,0.4);text-transform:uppercase;cursor:pointer;background:none;border:none;font-family:Montserrat,sans-serif;">Back to Home</button>
+    <div id="dPhaseLabel" style="font-size:10px;font-weight:600;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:20px;position:relative;">Dynamic Stretch</div>
+    <div id="dExName" style="font-family:'Cormorant Garamond',serif;font-size:clamp(52px,5.5vw,84px);font-weight:300;color:var(--white);line-height:1.05;letter-spacing:1px;margin-bottom:28px;position:relative;">Standing Quad Stretch</div>
+    <div style="position:relative;margin-bottom:32px;">
+      <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:6px;">Up Next</div>
+      <div id="dNextName" style="font-size:16px;font-weight:300;color:rgba(255,255,255,0.45);">Trunk Twists</div>
+    </div>
+    <div id="dStepsList" style="position:relative;display:flex;flex-direction:column;gap:10px;max-width:520px;"></div>
+    <div style="position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(255,255,255,0.08);">
+      <div id="dProgressFill" style="height:100%;background:var(--gold);transition:width 0.8s ease;width:0%;"></div>
+    </div>
+  </div>
+  <!-- RIGHT: clock panel -->
+  <div style="background:var(--cream);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 40px;border-left:1px solid var(--border);overflow-y:auto;height:100vh;">
+    <div style="position:relative;width:260px;height:260px;margin-bottom:32px;">
+      <svg viewBox="0 0 260 260" style="width:260px;height:260px;transform:rotate(-90deg);">
+        <circle fill="none" stroke="var(--border)" stroke-width="4" cx="130" cy="130" r="118"/>
+        <circle id="dRestCircle" fill="none" stroke="var(--pine-light)" stroke-width="4" stroke-linecap="round" cx="130" cy="130" r="118" style="stroke-dasharray:741;stroke-dashoffset:741;transition:stroke-dashoffset 1s linear;"/>
+        <circle id="dProgressCircle" fill="none" stroke="var(--gold)" stroke-width="4" stroke-linecap="round" cx="130" cy="130" r="118" style="stroke-dasharray:741;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear;"/>
+      </svg>
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+        <div id="dClockDisplay" style="font-family:'Cormorant Garamond',serif;font-size:76px;font-weight:300;color:var(--text);line-height:1;letter-spacing:-3px;">0:30</div>
+        <div id="dClockMode" style="font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--text-light);margin-top:8px;">Work</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:16px;align-items:center;margin-bottom:36px;">
+      <button onclick="prevExercise()" style="width:56px;height:56px;border-radius:50%;background:var(--off-white);border:1px solid var(--border);font-size:9px;font-weight:700;letter-spacing:1px;color:var(--text-light);text-transform:uppercase;cursor:pointer;font-family:Montserrat,sans-serif;">Prev</button>
+      <button id="dPlayBtn" onclick="togglePlay()" style="width:84px;height:84px;border-radius:50%;background:var(--pine);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(26,58,42,0.25);">
+        <svg viewBox="0 0 24 24" fill="white" width="28" height="28"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <button onclick="nextExercise()" style="width:56px;height:56px;border-radius:50%;background:var(--off-white);border:1px solid var(--border);font-size:9px;font-weight:700;letter-spacing:1px;color:var(--text-light);text-transform:uppercase;cursor:pointer;font-family:Montserrat,sans-serif;">Skip</button>
+    </div>
+    <div style="width:100%;">
+      <div style="font-size:8px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--text-light);margin-bottom:12px;">Queue</div>
+      <div id="dQueueList"></div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
