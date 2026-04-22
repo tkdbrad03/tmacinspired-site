@@ -840,14 +840,14 @@ function showDesktopTimer(show) {
   const right = document.getElementById('timerRight');
   const tv = document.getElementById('timerView');
   if (show && isDesktop()) {
-    left.style.display = 'flex';
-    right.style.display = 'flex';
-    tv.style.display = 'grid';
-    tv.style.gridTemplateColumns = '1fr 400px';
+    // Full-screen fixed overlay covering everything except sidebar
+    tv.style.cssText = 'display:grid !important; grid-template-columns:1fr 420px; position:fixed; top:0; bottom:0; left:280px; right:0; z-index:40; overflow:hidden;';
+    left.style.cssText = 'display:flex; flex-direction:column; justify-content:flex-end; padding:60px 56px; position:relative; overflow:hidden; background:var(--pine); height:100vh;';
+    right.style.cssText = 'display:flex; flex-direction:column; align-items:center; justify-content:center; padding:48px 40px; background:var(--cream); border-left:1px solid var(--border); overflow-y:auto; height:100vh;';
   } else {
+    tv.style.cssText = '';
     left.style.display = 'none';
     right.style.display = 'none';
-    if (!isDesktop()) { tv.style.display = ''; }
   }
 }
 
