@@ -601,42 +601,7 @@ body {
       <div class="steps-card"><div class="steps-card-header">How To Do It</div><div class="steps-list" id="stepsList"></div></div>
       <div class="queue-card"><div class="queue-header">Workout Queue</div><div id="queueList"></div></div>
 
-      <!-- DESKTOP TIMER (cinematic) -->
-      <div class="timer-left" id="timerLeft" style="display:none;">
-        <div class="timer-left-bg"></div>
-        <button class="timer-back-btn" onclick="goHome()">Back to Home</button>
-        <div class="desktop-phase-label" id="dPhaseLabel">Dynamic Stretch</div>
-        <div class="desktop-ex-name" id="dExName">Standing Quad Stretch</div>
-        <div class="desktop-next">
-          <div class="desktop-next-label">Up Next</div>
-          <div class="desktop-next-name" id="dNextName">Trunk Twists</div>
-        </div>
-        <div class="desktop-steps" id="dStepsList"></div>
-        <div class="desktop-progress-bar"><div class="desktop-progress-fill" id="dProgressFill"></div></div>
-      </div>
-      <div class="timer-right" id="timerRight" style="display:none;">
-        <div class="desktop-clock-wrap">
-          <svg class="desktop-clock-svg" viewBox="0 0 260 260" style="width:260px;height:260px;transform:rotate(-90deg);">
-            <circle fill="none" stroke="var(--border)" stroke-width="3" cx="130" cy="130" r="118"/>
-            <circle id="dRestCircle" fill="none" stroke="var(--pine-light)" stroke-width="3" stroke-linecap="round" cx="130" cy="130" r="118" style="stroke-dasharray:741;stroke-dashoffset:741;transition:stroke-dashoffset 1s linear;"/>
-            <circle id="dProgressCircle" fill="none" stroke="var(--gold)" stroke-width="3" stroke-linecap="round" cx="130" cy="130" r="118" style="stroke-dasharray:741;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear;"/>
-          </svg>
-          <div class="clock-center">
-            <div class="desktop-clock-time" id="dClockDisplay">0:30</div>
-            <div class="desktop-clock-mode" id="dClockMode">Work</div>
-          </div>
-        </div>
-        <div class="desktop-controls">
-          <button class="desktop-skip" onclick="prevExercise()">Prev</button>
-          <button class="desktop-play" id="dPlayBtn" onclick="togglePlay()"><svg viewBox="0 0 24 24" fill="white" width="28" height="28"><path d="M8 5v14l11-7z"/></svg></button>
-          <button class="desktop-skip" onclick="nextExercise()">Skip</button>
-        </div>
-        <div class="desktop-queue">
-          <div class="desktop-queue-title">Queue</div>
-          <div id="dQueueList"></div>
-        </div>
-      </div>
-    </div>
+     
 
     <!-- SCHEDULE VIEW -->
     <div id="scheduleView" class="view">
