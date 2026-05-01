@@ -225,8 +225,13 @@
     <!-- Home Courses — always visible -->
     <div class="course-list">
       <div class="course-card has-playbook" onclick="selectCourse('summerfield',this)"><div><div class="course-card-name">Summerfield Crossing</div><div class="course-card-meta">Par 72 · HCP 15 · Home Course</div></div><div class="course-card-badge badge-loaded">✓</div></div>
-      <div class="course-card" onclick="selectCourse('cypress',this)"><div><div class="course-card-name">Cypress Creek GC</div><div class="course-card-meta">Home Course · FPG League</div></div><div class="course-card-badge badge-soon">Soon</div></div>
-      <div class="course-card has-playbook" onclick="selectCourse('forestlake',this)"><div><div class="course-card-name">Forest Lake Golf Club</div><div class="course-card-meta">Red · 5,065 yds · Par 72 · Slope 117</div></div><div class="course-card-badge badge-loaded">✓</div></div>
+<div class="course-card has-playbook" onclick="selectCourse('cypress',this)">
+  <div>
+    <div class="course-card-name">Cypress Creek GC</div>
+    <div class="course-card-meta">Par 72 · 4630 yds · Rating 68.1 · Slope 118</div>
+  </div>
+  <div class="course-card-badge badge-loaded">✓</div>
+</div>      <div class="course-card has-playbook" onclick="selectCourse('forestlake',this)"><div><div class="course-card-name">Forest Lake Golf Club</div><div class="course-card-meta">Red · 5,065 yds · Par 72 · Slope 117</div></div><div class="course-card-badge badge-loaded">✓</div></div>
     </div>
 
     <!-- FPG League — collapsible -->
@@ -527,6 +532,53 @@ const courseData = {
       {num:18,yds:434,par:5,hcp:10,tee:'Driver',approach:'3W layup → wedge in',key:'Finish strong. Driver → 3W → wedge. Execute the system one last time.',goal:'Par',type:'normal'}
     ]
   }
+  cypress: {
+  name:'Cypress Creek GC',
+  meta:'Green Tees · 4,630 yds · Par 72 · Rating 68.1 · Slope 118',
+  formula:'Fairway → middle green → 2 putt · Use wedges to score',
+  weapon:'Short course. Wedge precision and smart positioning.',
+  mindset:'Do not overpower this course. Play positional golf and score with wedges.',
+  scoring:[6,8,13,17],
+  danger:[4,7,14],
+  holes:[
+    holes:[
+  {num:1,yds:264,par:4,hcp:11,tee:'3W or controlled driver',approach:'Short iron to center green',key:'Stay controlled. No forcing early.',goal:'Par focus',type:'normal'},
+
+  {num:2,yds:296,par:4,hcp:9,tee:'Driver or 3W',approach:'Wedge in',key:'Good look at par. Stay aggressive to center.',goal:'Par focus',type:'normal'},
+
+  {num:3,yds:229,par:4,hcp:15,tee:'3W for position',approach:'Wedge in',key:'Scoring hole. Set up wedge and attack.',goal:'Par minimum · Birdie look',type:'score'},
+
+  {num:4,yds:408,par:5,hcp:1,tee:'Driver — stay in play',approach:'3W layup → wedge',key:'Hardest hole. No hero shots.',goal:'Bogey is fine',type:'danger'},
+
+  {num:5,yds:315,par:4,hcp:7,tee:'Driver',approach:'Short iron center green',key:'Commit to target. Trust the swing.',goal:'Par focus',type:'normal'},
+
+  {num:6,yds:93,par:3,hcp:17,tee:'Wedge',approach:'Attack pin',key:'GIFT hole. Full commit.',goal:'Par minimum · Birdie look',type:'score'},
+
+  {num:7,yds:359,par:5,hcp:5,tee:'Driver',approach:'Layup → wedge',key:'Stay disciplined. No risk shots.',goal:'Bogey is fine',type:'danger'},
+
+  {num:8,yds:107,par:3,hcp:13,tee:'Wedge',approach:'Attack pin',key:'Another scoring opportunity.',goal:'Par minimum · Birdie look',type:'score'},
+
+  {num:9,yds:263,par:4,hcp:3,tee:'3W or driver',approach:'Short iron',key:'Finish front steady. No mistakes.',goal:'Bogey is fine',type:'danger'},
+
+  {num:10,yds:263,par:4,hcp:12,tee:'3W',approach:'Wedge in',key:'Reset. Back 9 starts here.',goal:'Par focus',type:'normal'},
+
+  {num:11,yds:257,par:4,hcp:10,tee:'Driver or 3W',approach:'Wedge',key:'Stay consistent. Same system.',goal:'Par focus',type:'normal'},
+
+  {num:12,yds:299,par:4,hcp:6,tee:'Driver',approach:'Short iron',key:'Respect the hole. No forcing.',goal:'Bogey is fine',type:'danger'},
+
+  {num:13,yds:113,par:3,hcp:18,tee:'Wedge',approach:'Attack pin',key:'Easiest hole. Take it.',goal:'Par minimum · Birdie look',type:'score'},
+
+  {num:14,yds:396,par:5,hcp:2,tee:'Driver',approach:'Layup → wedge',key:'Stay patient. No hero swings.',goal:'Bogey is fine',type:'danger'},
+
+  {num:15,yds:271,par:4,hcp:8,tee:'3W',approach:'Short iron',key:'Simple golf. Stay locked in.',goal:'Par focus',type:'normal'},
+
+  {num:16,yds:255,par:4,hcp:14,tee:'3W',approach:'Wedge',key:'Position first. Then attack.',goal:'Par minimum · Birdie look',type:'score'},
+
+  {num:17,yds:110,par:3,hcp:16,tee:'Wedge',approach:'Attack pin',key:'Final scoring hole. Commit.',goal:'Par minimum · Birdie look',type:'score'},
+
+  {num:18,yds:332,par:5,hcp:4,tee:'Driver',approach:'Layup → wedge',key:'Finish smart. No hero shots.',goal:'Bogey is fine',type:'danger'}
+]
+},
 };
 
 // STATE
@@ -624,15 +676,140 @@ function updateHoleNav() {
   }
   document.getElementById('headerHole').textContent = 'H' + activeHole;
 }
+function getAdaptiveGoal(hole, courseId) {
+  const intel = JSON.parse(localStorage.getItem('tmac_intel') || '[]');
 
+  // pull only Cypress rounds
+  const rounds = intel.filter(r => r.course === 'Cypress Creek GC');
+
+  // if no data yet → fallback to default goal
+  if (rounds.length < 3) return hole.goal;
+
+  // simple pattern detection
+  const leakCounts = {};
+  rounds.forEach(r => {
+    if (r.leak) leakCounts[r.leak] = (leakCounts[r.leak] || 0) + 1;
+  });
+
+  const biggestLeak = Object.keys(leakCounts).sort((a,b)=>leakCounts[b]-leakCounts[a])[0];
+
+  // ADAPTATION RULES
+  if (biggestLeak === 'Off the tee') {
+    return 'Fairway first · No driver risk';
+  }
+
+  if (biggestLeak === 'Approach shots') {
+    return 'Middle of green only';
+  }
+
+  if (biggestLeak === 'Short game / chipping') {
+    return 'Hit center green · Avoid misses';
+  }
+
+  if (biggestLeak === 'Putting') {
+    return 'Lag putt focus · No 3-putts';
+  }
+
+  if (biggestLeak === 'Decision making') {
+    return 'Play safe side every time';
+  }
+
+  return hole.goal;
+}
+  function getAdaptiveTee(hole) {
+  const intel = JSON.parse(localStorage.getItem('tmac_intel') || '[]');
+  const rounds = intel.filter(r => r.course === 'Cypress Creek GC');
+
+  if (rounds.length < 3) return hole.tee;
+
+  const leakCounts = {};
+  rounds.forEach(r => {
+    if (r.leak) leakCounts[r.leak] = (leakCounts[r.leak] || 0) + 1;
+  });
+
+  const biggestLeak = Object.keys(leakCounts).sort((a,b)=>leakCounts[b]-leakCounts[a])[0];
+
+  // ADAPT TEE STRATEGY
+  if (biggestLeak === 'Off the tee') {
+    return '3W or hybrid · prioritize fairway';
+  }
+
+  if (biggestLeak === 'Decision making') {
+    return 'Club down · play position first';
+  }
+
+  if (biggestLeak === 'Approach shots') {
+    return 'Set up preferred yardage (100–120 yds)';
+  }
+
+  return hole.tee;
+}
+ function getAdaptiveApproach(hole) {
+  const intel = JSON.parse(localStorage.getItem('tmac_intel') || '[]');
+  const rounds = intel.filter(r => r.course === 'Cypress Creek GC');
+
+  if (rounds.length < 3) return hole.approach;
+
+  const leakCounts = {};
+  rounds.forEach(r => {
+    if (r.leak) leakCounts[r.leak] = (leakCounts[r.leak] || 0) + 1;
+  });
+
+  const biggestLeak = Object.keys(leakCounts).sort((a,b)=>leakCounts[b]-leakCounts[a])[0];
+
+  // ADAPT APPROACH STRATEGY
+  if (biggestLeak === 'Approach shots') {
+    return 'Middle of green only · no pin hunting';
+  }
+
+  if (biggestLeak === 'Short game / chipping') {
+    return 'Favor fat side · eliminate short-side misses';
+  }
+
+  if (biggestLeak === 'Putting') {
+    return 'Aim for center tiers · leave uphill putts';
+  }
+
+  if (biggestLeak === 'Decision making') {
+    return 'Safe side target every time';
+  }
+
+  return hole.approach;
+} 
+function getAdaptiveType(hole) {
+  const intel = JSON.parse(localStorage.getItem('tmac_intel') || '[]');
+  const rounds = intel.filter(r => r.course === 'Cypress Creek GC');
+
+  if (rounds.length < 3) return hole.type;
+
+  // collect scores for this specific hole
+  const holeIndex = hole.num - 1;
+
+  const scores = rounds
+    .map(r => r.holeScores ? r.holeScores[holeIndex] : null)
+    .filter(s => s !== null && s !== undefined);
+
+  if (scores.length < 3) return hole.type;
+
+  const avg = scores.reduce((a,b)=>a+b,0) / scores.length;
+
+  const diff = avg - hole.par;
+
+  // CLASSIFY BASED ON PERFORMANCE
+  if (diff <= -0.2) return 'score';     // you score here
+  if (diff >= 1.2) return 'danger';    // you struggle here
+
+  return 'normal';
+}
 function renderHolePlan() {
   const content = document.getElementById('holePlanContent');
   const logSection = document.getElementById('scoreLogSection');
   if (!activeCourse) { content.innerHTML = '<div class="empty-state">Select a course first on the Course tab.</div>'; logSection.style.display = 'none'; return; }
   const course = courseData[activeCourse];
   const h = course.holes[activeHole - 1];
-  const isScore = course.scoring.includes(h.num);
-  const isDanger = course.danger.includes(h.num);
+  const adaptiveType = getAdaptiveType(h);
+const isScore = adaptiveType === 'score';
+const isDanger = adaptiveType === 'danger';
   let flagHTML = isScore ? '<span class="hole-play-flag flag-score">⭐ Scoring Hole</span>' : isDanger ? '<span class="hole-play-flag flag-danger">⚠ Danger Hole</span>' : '<span class="hole-play-flag flag-normal">Steady Golf</span>';
   content.innerHTML = `
     <div class="hole-play-card">
@@ -641,12 +818,12 @@ function renderHolePlan() {
         <div class="hole-play-meta">
           <div class="hole-play-par">Par ${h.par} · HCP ${h.hcp}</div>
           <div class="hole-play-yds">${h.yds ? h.yds + ' yds' : '––'}</div>
-          <div class="hole-play-hcp">Goal: ${h.goal}</div>
+          <div class="hole-play-hcp">Goal: ${getAdaptiveGoal(h, activeCourse)}</div>
         </div>
       </div>
       <div class="hole-play-body">
-        <div class="play-row"><span class="play-row-label">Tee</span><span class="play-row-val">${h.tee}</span></div>
-        <div class="play-row"><span class="play-row-label">Approach</span><span class="play-row-val">${h.approach}</span></div>
+        <div class="play-row"><span class="play-row-label">Tee</span><span class="play-row-val">${getAdaptiveTee(h)}</span></div>
+        <div class="play-row"><span class="play-row-label">Approach</span><span class="play-row-val">${getAdaptiveApproach(h)}</span></div>
         <div class="play-row mantra-row"><span class="play-row-label">Key</span><span class="play-row-val">${h.key}</span></div>
       </div>
     </div>`;
@@ -750,14 +927,45 @@ function saveIntelEntry() {
   const score = document.getElementById('intelScore').value;
   const leak = document.getElementById('intelLeak').value;
   const note = document.getElementById('intelNote').value.trim();
+
   if (!course || !score) { showToast('Choose course and score'); return; }
+
+  // your existing structure
+  const entry = {
+    course,
+    score: parseInt(score) || score,
+    leak: leak || '––',
+    note: note || '––',
+    date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
+  };
+
+  // ===== EXISTING SYSTEM =====
   const entries = getEntries();
-  entries.unshift({ course, score: parseInt(score)||score, leak: leak||'––', note: note||'––', date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) });
-  saveEntries(entries); renderIntelStats(entries); renderIntelHistory(entries);
+  entries.unshift(entry);
+  saveEntries(entries);
+  renderIntelStats(entries);
+  renderIntelHistory(entries);
+
+  // ===== NEW: ADAPTIVE SYSTEM STORAGE =====
+  const adaptive = JSON.parse(localStorage.getItem('tmac_intel') || '[]');
+
+  adaptive.push({
+  course: course,
+  score: parseInt(score) || score,
+  leak: leak,
+  note: note,
+  holeScores: [...holeScores],
+  date: new Date().toISOString()
+});
+
+  localStorage.setItem('tmac_intel', JSON.stringify(adaptive));
+
+  // reset form
   document.getElementById('intelCourse').value = '';
   document.getElementById('intelScore').value = '';
   document.getElementById('intelLeak').value = '';
   document.getElementById('intelNote').value = '';
+
   showToast('Round saved');
 }
 
