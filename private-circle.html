@@ -6,7 +6,7 @@
   <title>Private Circle — TMac Inspired™</title>
   <link rel="icon" type="image/png" href="tmac-logo.png">
 
-  <!-- Open Graph — controls how the link previews in iMessage, Instagram, LinkedIn, etc. -->
+  <!-- Open Graph -->
   <meta property="og:title" content="Private Circle — TMac Inspired™">
   <meta property="og:description" content="A small, controlled circle for women who understand that access, proximity, and environment change how you move. Entry is not open.">
   <meta property="og:image" content="https://tmacinspired.com/tmac-logo.png">
@@ -29,9 +29,7 @@
       --max-w: 720px;
     }
 
-    *, *::before, *::after {
-      box-sizing: border-box;
-    }
+    *, *::before, *::after { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -52,15 +50,45 @@
       align-items: center;
     }
 
-    .header-banner img {
-      max-height: 70px;
-    }
+    .header-banner img { max-height: 70px; }
 
     /* ── LAYOUT ── */
     .container {
       max-width: var(--max-w);
       margin: 0 auto;
       padding: 4rem 2rem 5rem;
+    }
+
+    /* ── BIO ANCHOR ── */
+    .bio-anchor {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid rgba(31, 66, 54, 0.08);
+    }
+
+    .bio-anchor img {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--gold);
+      flex-shrink: 0;
+    }
+
+    .bio-anchor-text {
+      font-size: 0.88rem;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+
+    .bio-anchor-text strong {
+      display: block;
+      color: var(--pine);
+      font-size: 0.95rem;
+      margin-bottom: 0.1rem;
     }
 
     /* ── TYPOGRAPHY ── */
@@ -90,20 +118,51 @@
       margin: 3rem 0;
     }
 
+    /* ── SOCIAL PROOF ── */
+    .proof-block {
+      margin: 0 0 1.5rem;
+      padding: 1.75rem 2rem 1.75rem 2.5rem;
+      border-left: 2px solid var(--gold);
+      background: rgba(201, 169, 97, 0.04);
+    }
+
+    .proof-quote {
+      font-style: italic;
+      color: var(--pine);
+      font-size: 1.05rem;
+      line-height: 1.65;
+      margin: 0 0 0.75rem;
+    }
+
+    .proof-attr {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+    }
+
+    /* ── SCARCITY BAR ── */
+    .scarcity-bar {
+      margin: 3rem 0 0;
+      padding: 1.25rem 1.5rem;
+      border: 1px solid rgba(201, 169, 97, 0.4);
+      background: rgba(201, 169, 97, 0.05);
+      font-size: 0.9rem;
+      color: var(--pine);
+      letter-spacing: 0.02em;
+      text-align: center;
+    }
+
     /* ── FORM BLOCK ── */
     .form-block {
-      margin-top: 4rem;
+      margin-top: 3rem;
       border-top: 1px solid rgba(31, 66, 54, 0.08);
       padding-top: 3rem;
     }
 
-    .form-block > p {
-      margin-bottom: 2.5rem;
-    }
+    .form-block > p { margin-bottom: 2.5rem; }
 
-    .field {
-      margin-bottom: 1.75rem;
-    }
+    .field { margin-bottom: 1.75rem; }
 
     .field label {
       display: block;
@@ -112,6 +171,14 @@
       letter-spacing: 0.14em;
       color: var(--pine);
       margin-bottom: 0.5rem;
+    }
+
+    .field .optional {
+      font-size: 0.75rem;
+      text-transform: none;
+      letter-spacing: 0;
+      color: var(--text-light);
+      margin-left: 0.4rem;
     }
 
     .field input,
@@ -133,14 +200,10 @@
 
     .field input:focus,
     .field textarea:focus,
-    .field select:focus {
-      border-color: var(--pine);
-    }
+    .field select:focus { border-color: var(--pine); }
 
     .field input::placeholder,
-    .field textarea::placeholder {
-      color: rgba(92, 107, 100, 0.5);
-    }
+    .field textarea::placeholder { color: rgba(92, 107, 100, 0.45); }
 
     .field textarea {
       min-height: 110px;
@@ -148,10 +211,7 @@
       line-height: 1.6;
     }
 
-    /* custom select arrow */
-    .select-wrap {
-      position: relative;
-    }
+    .select-wrap { position: relative; }
 
     .select-wrap::after {
       content: '';
@@ -159,20 +219,16 @@
       right: 1rem;
       top: 50%;
       transform: translateY(-50%);
-      width: 0;
-      height: 0;
+      width: 0; height: 0;
       border-left: 5px solid transparent;
       border-right: 5px solid transparent;
       border-top: 6px solid var(--pine);
       pointer-events: none;
     }
 
-    .field select {
-      padding-right: 2.5rem;
-      cursor: pointer;
-    }
+    .field select { padding-right: 2.5rem; cursor: pointer; }
 
-    /* ── SUBMIT BUTTON ── */
+    /* ── SUBMIT ── */
     .submit-btn {
       display: inline-block;
       margin-top: 0.75rem;
@@ -188,24 +244,12 @@
       transition: opacity 0.2s;
     }
 
-    .submit-btn:hover {
-      opacity: 0.6;
-    }
+    .submit-btn:hover { opacity: 0.6; }
+    .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-    .submit-btn:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-
-    /* ── SUCCESS STATE ── */
-    #success-msg {
-      display: none;
-      padding: 2.5rem 0;
-    }
-
-    #success-msg .shift {
-      margin-top: 0;
-    }
+    /* ── SUCCESS ── */
+    #success-msg { display: none; padding: 2.5rem 0; }
+    #success-msg .shift { margin-top: 0; }
 
     /* ── NOTE ── */
     .note {
@@ -216,13 +260,9 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 600px) {
-      .container {
-        padding: 3rem 1.5rem 4rem;
-      }
-
-      .shift {
-        font-size: 1.3rem;
-      }
+      .container { padding: 3rem 1.5rem 4rem; }
+      .shift { font-size: 1.3rem; }
+      .bio-anchor img { width: 48px; height: 48px; }
     }
   </style>
 </head>
@@ -234,6 +274,15 @@
 </div>
 
 <div class="container">
+
+  <!-- ── BIO ANCHOR ── -->
+  <div class="bio-anchor">
+    <img src="tmac-headshot.jpg" alt="Dr. Tasha McCray">
+    <div class="bio-anchor-text">
+      <strong>Dr. Tasha McCray</strong>
+      2x Bestselling Author &nbsp;&middot;&nbsp; Entrepreneur &nbsp;&middot;&nbsp; Golf Influencer &nbsp;&middot;&nbsp; Founder, TMac Inspired&trade;
+    </div>
+  </div>
 
   <h1>Private</h1>
 
@@ -281,12 +330,42 @@
 
   <hr class="divider">
 
+  <!-- ── SOCIAL PROOF ── -->
+  <div class="proof-block">
+    <p class="proof-quote">Being in the right room changed the direction of my business. The conversations here do not happen anywhere else.</p>
+    <div class="proof-attr">Member &mdash; Atlanta, GA</div>
+  </div>
+
+  <div class="proof-block">
+    <p class="proof-quote">I stopped looking for more information and started paying attention to proximity. This circle is where that shift happened.</p>
+    <div class="proof-attr">Member &mdash; Houston, TX</div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── SCARCITY ── -->
+  <div class="scarcity-bar">
+    Currently reviewing inquiries for a limited number of women. Spots are not held.
+  </div>
+
   <!-- ── FORM ── -->
   <div class="form-block">
 
     <p>Complete the inquiry below. This is privately reviewed.</p>
 
     <form id="inquiryForm">
+
+      <!-- Qualifier moved first -->
+      <div class="field">
+        <label for="level">Are you currently operating at a level where proximity matters more than instruction?</label>
+        <div class="select-wrap">
+          <select id="level" name="level" required>
+            <option value="">Select one</option>
+            <option value="Yes">Yes</option>
+            <option value="Not yet">Not yet</option>
+          </select>
+        </div>
+      </div>
 
       <div class="field">
         <label for="name">Name</label>
@@ -296,6 +375,11 @@
       <div class="field">
         <label for="email">Email</label>
         <input type="email" id="email" name="email" required>
+      </div>
+
+      <div class="field">
+        <label for="phone">Phone <span class="optional">(optional)</span></label>
+        <input type="tel" id="phone" name="phone" placeholder="Best number to reach you">
       </div>
 
       <div class="field">
@@ -311,17 +395,6 @@
       <div class="field">
         <label for="why">Why did this stand out to you?</label>
         <textarea id="why" name="why" required></textarea>
-      </div>
-
-      <div class="field">
-        <label for="level">Are you currently operating at a level where proximity matters more than instruction?</label>
-        <div class="select-wrap">
-          <select id="level" name="level" required>
-            <option value="">Select one</option>
-            <option value="Yes">Yes</option>
-            <option value="Not yet">Not yet</option>
-          </select>
-        </div>
       </div>
 
       <button type="submit" class="submit-btn" id="submitBtn">Submit Inquiry</button>
@@ -360,11 +433,10 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: payload,
-        mode: 'no-cors'   // Apps Script requires no-cors for cross-origin POST
+        mode: 'no-cors'
       });
 
-      // no-cors means we can't read the response — assume success
-      form.style.display    = 'none';
+      form.style.display      = 'none';
       successEl.style.display = 'block';
 
     } catch (err) {
