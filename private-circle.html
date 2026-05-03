@@ -13,8 +13,13 @@
       --gold: #c9a961;
       --text-main: #1f4236;
       --text-light: #5c6b64;
+      --border: rgba(31, 66, 54, 0.15);
       --font-serif: Georgia, 'Times New Roman', Times, serif;
       --max-w: 720px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
     }
 
     body {
@@ -26,6 +31,7 @@
       font-size: 18px;
     }
 
+    /* ── HEADER ── */
     .header-banner {
       width: 100%;
       height: 100px;
@@ -39,18 +45,21 @@
       max-height: 70px;
     }
 
+    /* ── LAYOUT ── */
     .container {
       max-width: var(--max-w);
       margin: 0 auto;
       padding: 4rem 2rem 5rem;
     }
 
+    /* ── TYPOGRAPHY ── */
     h1 {
       font-size: 0.8rem;
       text-transform: uppercase;
       letter-spacing: 0.2em;
       color: var(--gold);
       margin-bottom: 2rem;
+      font-weight: normal;
     }
 
     p {
@@ -65,29 +74,136 @@
     }
 
     .divider {
+      border: none;
       border-top: 1px solid rgba(31, 66, 54, 0.08);
       margin: 3rem 0;
     }
 
-    .cta-block {
+    /* ── FORM BLOCK ── */
+    .form-block {
       margin-top: 4rem;
-      border-top: 1px solid rgba(31,66,54,0.08);
+      border-top: 1px solid rgba(31, 66, 54, 0.08);
       padding-top: 3rem;
     }
 
-    .cta-link {
-      text-decoration: none;
-      border-bottom: 1px solid #1f4236;
-      padding-bottom: 2px;
-      font-size: 16px;
+    .form-block > p {
+      margin-bottom: 2.5rem;
     }
 
+    .field {
+      margin-bottom: 1.75rem;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--pine);
+      margin-bottom: 0.5rem;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 0;
+      background: #fff;
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      color: var(--pine);
+      appearance: none;
+      -webkit-appearance: none;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: var(--pine);
+    }
+
+    .field input::placeholder,
+    .field textarea::placeholder {
+      color: rgba(92, 107, 100, 0.5);
+    }
+
+    .field textarea {
+      min-height: 110px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    /* custom select arrow */
+    .select-wrap {
+      position: relative;
+    }
+
+    .select-wrap::after {
+      content: '';
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid var(--pine);
+      pointer-events: none;
+    }
+
+    .field select {
+      padding-right: 2.5rem;
+      cursor: pointer;
+    }
+
+    /* ── SUBMIT BUTTON ── */
+    .submit-btn {
+      display: inline-block;
+      margin-top: 0.75rem;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--pine);
+      padding: 0 0 4px 0;
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      color: var(--pine);
+      cursor: pointer;
+      letter-spacing: 0.02em;
+      transition: opacity 0.2s;
+    }
+
+    .submit-btn:hover {
+      opacity: 0.6;
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* ── SUCCESS STATE ── */
+    #success-msg {
+      display: none;
+      padding: 2.5rem 0;
+    }
+
+    #success-msg .shift {
+      margin-top: 0;
+    }
+
+    /* ── NOTE ── */
     .note {
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: var(--text-light);
-      margin-top: 1rem;
+      margin-top: 1.5rem;
     }
 
+    /* ── RESPONSIVE ── */
     @media (max-width: 600px) {
       .container {
         padding: 3rem 1.5rem 4rem;
@@ -110,104 +226,143 @@
 
   <h1>Private</h1>
 
-  <p>
-    Some women read the book and move on.
-  </p>
+  <p>Some women read the book and move on.</p>
 
-  <p>
-    Others understand that the difference is not what you know.
-  </p>
+  <p>Others understand that the difference is not what you know.</p>
 
-  <p>
-    It is where you are.
-  </p>
+  <p>It is where you are.</p>
 
-  <div class="shift">
-    And who you are around when it matters.
-  </div>
+  <div class="shift">And who you are around when it matters.</div>
 
-  <div class="divider"></div>
+  <hr class="divider">
 
-  <p>
-    This is not for women looking for more information.
-  </p>
+  <p>This is not for women looking for more information.</p>
 
-  <p>
-    It is not for those building from the beginning.
-  </p>
+  <p>It is not for those building from the beginning.</p>
 
-  <p>
-    It is not a space where you come to be taught.
-  </p>
+  <p>It is not a space where you come to be taught.</p>
 
-  <div class="shift">
-    It is for women who already understand the environment.
-  </div>
+  <div class="shift">It is for women who already understand the environment.</div>
 
-  <p>
-    And are ready to move differently inside it.
-  </p>
+  <p>And are ready to move differently inside it.</p>
 
-  <div class="divider"></div>
+  <hr class="divider">
 
-  <p>
-    There are moments on the course that never make it online.
-  </p>
+  <p>There are moments on the course that never make it online.</p>
 
-  <p>
-    Conversations that shape outcomes.
-  </p>
+  <p>Conversations that shape outcomes.</p>
 
-  <p>
-    Decisions that are made quietly.
-  </p>
+  <p>Decisions that are made quietly.</p>
 
-  <p>
-    And access that is not extended publicly.
-  </p>
+  <p>And access that is not extended publicly.</p>
 
-  <div class="shift">
-    That is where this operates.
-  </div>
+  <div class="shift">That is where this operates.</div>
 
-  <div class="divider"></div>
+  <hr class="divider">
 
-  <p>
-    This is a small, controlled circle.
-  </p>
+  <p>This is a small, controlled circle.</p>
 
-  <p>
-    Entry is not open.
-  </p>
+  <p>Entry is not open.</p>
 
-  <p>
-    And participation is not assumed.
-  </p>
+  <p>And participation is not assumed.</p>
 
-  <div class="shift">
-    You will know if it is for you.
-  </div>
+  <div class="shift">You will know if it is for you.</div>
 
-  <div class="divider"></div>
+  <hr class="divider">
 
-  <div class="cta-block">
+  <!-- ── FORM ── -->
+  <div class="form-block">
 
-  <p style="margin-bottom:2rem;">
-    Complete the inquiry below. This is privately reviewed.
-  </p>
+    <p>Complete the inquiry below. This is privately reviewed.</p>
 
-  <iframe 
-  src="https://script.google.com/macros/s/AKfycbwHnsGn7A1TmpRJ8eaC6HEopLX9ZQ-4TjwDzvG52gZb-JrXeMHuYSdrrCGdxiQxTROX/exec"
-  style="width:100%; height:900px; border:none;">
-</iframe>
+    <form id="inquiryForm">
 
-  <div class="note">
-    Submissions are reviewed directly. Not all inquiries receive a response.
+      <div class="field">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+
+      <div class="field">
+        <label for="building">What are you currently building or managing?</label>
+        <textarea id="building" name="building" required></textarea>
+      </div>
+
+      <div class="field">
+        <label for="environments">What environments are you already in?</label>
+        <textarea id="environments" name="environments" placeholder="Business, golf, social, or otherwise" required></textarea>
+      </div>
+
+      <div class="field">
+        <label for="why">Why did this stand out to you?</label>
+        <textarea id="why" name="why" required></textarea>
+      </div>
+
+      <div class="field">
+        <label for="level">Are you currently operating at a level where proximity matters more than instruction?</label>
+        <div class="select-wrap">
+          <select id="level" name="level" required>
+            <option value="">Select one</option>
+            <option value="Yes">Yes</option>
+            <option value="Not yet">Not yet</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">Submit Inquiry</button>
+
+    </form>
+
+    <!-- Success -->
+    <div id="success-msg">
+      <div class="shift">Your inquiry has been received.</div>
+      <p>If there is alignment, you will hear back directly.</p>
+    </div>
+
+    <p class="note">Limited. Quietly managed.</p>
+
   </div>
 
 </div>
 
-</div>
+<script>
+  const form      = document.getElementById('inquiryForm');
+  const successEl = document.getElementById('success-msg');
+  const submitBtn = document.getElementById('submitBtn');
+
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwHnsGn7A1TmpRJ8eaC6HEopLX9ZQ-4TjwDzvG52gZb-JrXeMHuYSdrrCGdxiQxTROX/exec';
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    submitBtn.disabled    = true;
+    submitBtn.textContent = 'Submitting...';
+
+    const payload = new URLSearchParams(new FormData(form)).toString();
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: payload,
+        mode: 'no-cors'   // Apps Script requires no-cors for cross-origin POST
+      });
+
+      // no-cors means we can't read the response — assume success
+      form.style.display    = 'none';
+      successEl.style.display = 'block';
+
+    } catch (err) {
+      submitBtn.disabled    = false;
+      submitBtn.textContent = 'Submit Inquiry';
+      alert('Something went wrong. Please try again.');
+    }
+  });
+</script>
 
 </body>
 </html>
