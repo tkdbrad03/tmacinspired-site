@@ -283,7 +283,7 @@
       2x Bestselling Author &nbsp;&middot;&nbsp; Entrepreneur &nbsp;&middot;&nbsp; Golfer &nbsp;&middot;&nbsp; Founder, TMac Inspired&trade;
     </div>
   </div>
-
+<p style="font-size:0.9rem; color:var(--gold); text-transform:uppercase; letter-spacing:0.15em; margin-bottom:2rem;">If you found this through the newsletter, you already understand the environment.</p>
   <h1>Private</h1>
 
   <p>Some women read the book and move on.</p>
@@ -419,7 +419,15 @@
   const submitBtn = document.getElementById('submitBtn');
 
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwHnsGn7A1TmpRJ8eaC6HEopLX9ZQ-4TjwDzvG52gZb-JrXeMHuYSdrrCGdxiQxTROX/exec';
-
+  const urlParams = new URLSearchParams(window.location.search);
+  const source = urlParams.get('source');
+  if (source) {
+  const hiddenInput = document.createElement('input');
+  hiddenInput.type = 'hidden';
+  hiddenInput.name = 'source';
+  hiddenInput.value = source;
+  form.appendChild(hiddenInput);
+}
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
 
