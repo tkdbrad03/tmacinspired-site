@@ -794,10 +794,33 @@
 
     // Waitlist form -- swap in your actual form handler or email service endpoint
     document.getElementById("waitlist-form").addEventListener("submit", function(e) {
-      e.preventDefault();
-      this.style.display = "none";
-      document.getElementById("success-msg").style.display = "block";
-    });
+  e.preventDefault();
+
+  var form = this;
+  var button = form.querySelector("button");
+  button.textContent = "Submitting...";
+  button.disabled = true;
+
+  var data = {
+    name:  form.name.value,
+    email: form.email.value,
+    city:  form.city.value
+  };
+
+  fetch("https://script.google.com/macros/s/AKfycbwXPMRd9q4dvR0NR941TTlcEGR70_5N-LnlWq2thTrE7aUHXx3ORZ0UWmkXgn1PhNRn/exec", {
+    method: "POST",
+    body: JSON.stringify(data)
+  })
+  .then(function() {
+    form.style.display = "none";
+    document.getElementById("success-msg").style.display = "block";
+  })
+  .catch(function() {
+    button.textContent = "I Am Ready. Put Me On the List.";
+    button.disabled = false;
+    alert("Something went wrong. Please try again.");
+  });
+});
   </script>
 
 </body>
