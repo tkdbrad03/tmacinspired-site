@@ -1194,8 +1194,30 @@ function updatePatternInsight() {
   } else {
     el.textContent = 'Pattern forming...';
   }
+  // AUTO INTERVENTION
+if (carryCount >= 2 && flareCount >= 1) {
+  triggerResetIntervention();
 }
+}
+function triggerResetIntervention() {
 
+  // Prevent spam (only once every 2 hours)
+  const last = localStorage.getItem('lastResetTrigger');
+  const now = Date.now();
+
+  if (last && now - last < 2 * 60 * 60 * 1000) return;
+
+  localStorage.setItem('lastResetTrigger', now);
+
+  // Open your reset modal
+  if (typeof openResetModal === 'function') {
+    openResetModal();
+  }
+
+  // Voice prompt
+  speak("Your body is holding tension. Reset now.");
+
+}
 // ── INIT ──────────────────────────────────────────────────
 window.speechSynthesis && window.speechSynthesis.getVoices();
 window.speechSynthesis && (window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices());
