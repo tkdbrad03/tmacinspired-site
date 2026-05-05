@@ -564,6 +564,18 @@ body {
         <div class="block-card"><div class="block-header"><div class="block-name">Core · 45s on · 15s rest</div><div class="block-duration">7 min</div></div><div class="exercise-list"><div class="ex-row"><div class="ex-name">Plank Shoulder Taps</div><div class="ex-time">:45</div></div><div class="ex-row"><div class="ex-name">Bird Dog</div><div class="ex-time">:45</div></div><div class="ex-row"><div class="ex-name">Reverse Crunch</div><div class="ex-time">:45</div></div><div class="ex-row"><div class="ex-name">Band Dead Bug</div><div class="ex-time">:45</div></div></div></div>
         <div class="block-card"><div class="block-header"><div class="block-name">Arms · 45s on · 15s rest</div><div class="block-duration">5 min</div></div><div class="exercise-list"><div class="ex-row"><div class="ex-name">Band Bicep Curls</div><div class="ex-time">:45</div></div><div class="ex-row"><div class="ex-name">Overhead Tricep Extension</div><div class="ex-time">:45</div></div><div class="ex-row"><div class="ex-name">Band Lateral Raises</div><div class="ex-time">:45</div></div></div></div>
         <div class="block-card"><div class="block-header gold-bg"><div class="block-name">Golf Mobility · Cool Down</div><div class="block-duration">5 min</div></div><div class="exercise-list"><div class="ex-row"><div class="ex-name">Cat-Cow Stretch</div><div class="ex-time">1:00</div></div><div class="ex-row"><div class="ex-name">Seated Spine Rotation</div><div class="ex-time">1:00</div></div><div class="ex-row"><div class="ex-name">Child's Pose</div><div class="ex-time">1:00</div></div><div class="ex-row"><div class="ex-name">Kneeling Hip Flexor Stretch</div><div class="ex-time">1:00</div></div></div></div>
+        <div class="block-card" onclick="openResetModal()">
+  <div class="block-header gold-bg">
+    <div class="block-name">Daily Reset</div>
+    <div class="block-duration">5 min</div>
+  </div>
+  <div class="exercise-list">
+    <div class="ex-row">
+      <div class="ex-name">Release · Reset · Clear</div>
+      <div class="ex-time">AM / PM</div>
+    </div>
+  </div>
+</div>
         <button class="start-btn" onclick="startWorkout()">Begin Workout</button>
       </div>
 
@@ -1057,6 +1069,17 @@ function updateProfileUI() {
   weekData.forEach(d => { if (d === 'Workout') cur++; else cur = 0; });
   const ps = document.getElementById('profileStreak'); if (ps) ps.textContent = cur + ' days';
 }
+function openResetModal() {
+  document.getElementById('resetModal').style.display = 'flex';
+}
+
+function closeResetModal() {
+  document.getElementById('resetModal').style.display = 'none';
+}
+
+function startResetAudio() {
+  speak("I release what I’ve been carrying — fully and now. I do not store pressure — I move it. Nothing from today stays in my body. I reset completely.");
+}
 
 // ── INIT ──────────────────────────────────────────────────
 window.speechSynthesis && window.speechSynthesis.getVoices();
@@ -1112,6 +1135,33 @@ setupLayout();
     </div>
   </div>
 </div>
+<div id="resetModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center;">
+  <div style="background:white; padding:24px; max-width:420px; width:90%; border-radius:6px;">
+    
+    <div style="font-size:10px; letter-spacing:3px; text-transform:uppercase; color:#888; margin-bottom:10px;">
+      Daily Reset
+    </div>
 
+    <div style="font-size:14px; margin-bottom:16px;">
+      Speak this out loud:
+    </div>
+
+    <div style="font-size:13px; line-height:1.6; margin-bottom:20px;">
+      I release what I’ve been carrying — fully and now.<br>
+      I do not store pressure — I move it.<br>
+      Nothing from today stays in my body.<br>
+      I reset completely.
+    </div>
+
+    <button onclick="startResetAudio()" style="width:100%; padding:14px; background:#1a3a2a; color:white; border:none; letter-spacing:2px; text-transform:uppercase; margin-bottom:10px;">
+      Play Reset
+    </button>
+
+    <button onclick="closeResetModal()" style="width:100%; padding:12px; background:#eee; border:none;">
+      Close
+    </button>
+
+  </div>
+</div>
 </body>
 </html>
