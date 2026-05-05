@@ -677,6 +677,9 @@ body {
   <div id="skinStatus" style="font-size:14px; font-weight:600;">
     —
   </div>
+  <div id="patternInsight" style="margin-top:12px; font-size:12px; color:var(--text-light);">
+  —
+</div>
 
 </div>
     <!-- PROFILE VIEW -->
@@ -1129,13 +1132,23 @@ function updateResetUI() {
 function logReset() {
   resetState = 'Cleared';
   localStorage.setItem('resetState', resetState);
+
+  history.push({ reset: 'Cleared', skin: skinState, date: new Date() });
+  localStorage.setItem('resetHistory', JSON.stringify(history));
+
   updateResetUI();
+  updatePatternInsight();
 }
 
 function logCarry() {
   resetState = 'Carrying';
   localStorage.setItem('resetState', resetState);
+
+  history.push({ reset: 'Carrying', skin: skinState, date: new Date() });
+  localStorage.setItem('resetHistory', JSON.stringify(history));
+
   updateResetUI();
+  updatePatternInsight();
 }
 let skinState = localStorage.getItem('skinState') || null;
 
@@ -1158,6 +1171,30 @@ function updateSkinUI() {
     btn.classList.toggle('active', i === (skinState - 1));
   });
 }
+let history = JSON.parse(localStorage.getItem('resetHistory')) || [];
+
+function updatePatternInsight() {
+  const el = document.getElementById('patternInsight');
+  if (!el) return;
+
+  const last3 = history.slice(-3);
+
+  if (last3.length < 3) {
+    el.textContent = 'Building pattern...';
+    return;
+  }
+
+  const carryCount = last3.filter(d => d.reset === 'Carrying').length;
+  const flareCount = last3.filter(d => d.skin === 3).length;
+
+  if (carryCount >= 2 && flareCount >= 1) {
+    el.textContent = 'Pattern: carrying → flare';
+  } else if (carryCount === 0 && flareCount === 0) {
+    el.textContent = 'Pattern: stable + regulated';
+  } else {
+    el.textContent = 'Pattern forming...';
+  }
+}
 
 // ── INIT ──────────────────────────────────────────────────
 window.speechSynthesis && window.speechSynthesis.getVoices();
@@ -1170,6 +1207,7 @@ setGreeting();
 setupLayout();
 updateResetUI();
 updateSkinUI();
+updatePatternInsight();
 </script>
 
 <!-- DESKTOP TIMER OVERLAY — fixed, covers content area only -->
