@@ -456,6 +456,17 @@ body {
   .steps-card { display: none; }
   .queue-card { display: none; }
 }
+.skin-btn {
+  flex:1;
+  padding:12px;
+  border:none;
+  background:#eee;
+  font-size:11px;
+}
+.skin-btn.active {
+  background: var(--pine);
+  color: white;
+}
 
 /* ═══════════════════════════════════════
    ANIMATIONS
@@ -651,7 +662,23 @@ body {
   </div>
 
 </div>
+<div style="display:flex; flex-direction:column; gap:12px; margin-top:10px;">
 
+  <div style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--text-light);">
+    Skin Status
+  </div>
+
+  <div style="display:flex; gap:10px;">
+    <button onclick="logSkin(1)" class="skin-btn">Calm</button>
+    <button onclick="logSkin(2)" class="skin-btn">Mild</button>
+    <button onclick="logSkin(3)" class="skin-btn">Flare</button>
+  </div>
+
+  <div id="skinStatus" style="font-size:14px; font-weight:600;">
+    —
+  </div>
+
+</div>
     <!-- PROFILE VIEW -->
     <div id="profileView" class="view">
       <div class="home-header"><button onclick="navTo('homeView','snav-home')" style="background:none;border:none;color:var(--gold);font-family:'Montserrat',sans-serif;font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;cursor:pointer;margin-bottom:16px;display:block;">&#8592; Back</button><div class="header-eyebrow">Your System</div><div class="header-wordmark">Dr<span>TMac</span></div><div class="header-tagline">Consistency. Identity. Discipline.</div></div>
@@ -1110,6 +1137,27 @@ function logCarry() {
   localStorage.setItem('resetState', resetState);
   updateResetUI();
 }
+let skinState = localStorage.getItem('skinState') || null;
+
+function logSkin(level) {
+  skinState = level;
+  localStorage.setItem('skinState', level);
+  updateSkinUI();
+}
+
+function updateSkinUI() {
+  const map = {
+    1: 'Calm',
+    2: 'Mild',
+    3: 'Flare'
+  };
+
+  document.getElementById('skinStatus').textContent = map[skinState] || '—';
+
+  document.querySelectorAll('.skin-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', i === (skinState - 1));
+  });
+}
 
 // ── INIT ──────────────────────────────────────────────────
 window.speechSynthesis && window.speechSynthesis.getVoices();
@@ -1121,6 +1169,7 @@ updateProfileUI();
 setGreeting();
 setupLayout();
 updateResetUI();
+updateSkinUI();
 </script>
 
 <!-- DESKTOP TIMER OVERLAY — fixed, covers content area only -->
