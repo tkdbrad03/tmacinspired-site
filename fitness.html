@@ -632,12 +632,25 @@ body {
 
     <!-- PROGRESS VIEW -->
     <div id="progressView" class="view">
-      <div class="home-header"><button onclick="navTo('homeView','snav-home')" style="background:none;border:none;color:var(--gold);font-family:'Montserrat',sans-serif;font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;cursor:pointer;margin-bottom:16px;display:block;">&#8592; Back</button><div class="header-eyebrow">Your Progress</div><div class="header-wordmark">Track<span>It</span></div><div class="header-tagline">Consistency Wins</div></div>
+      <div class="home-header"><button onclick="navTo('homeView','snav-home')" style="background:none;border:none;color:var(--gold);font-family:'Montserrat',sans-serif;font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;cursor:pointer;margin-bottom:16px;display:block;">&#8592; Back</button><div class="header-eyebrow">Your Progress</div><div class="header-wordmark">Reset<span>Log</span></div><div class="header-tagline">Consistency Wins</div></div>
       <div style="padding:28px 20px 120px;">
-        <div style="margin-bottom:30px;"><div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--text-light);margin-bottom:8px;">Weekly Completion</div><div style="height:8px;background:var(--border);border-radius:10px;overflow:hidden;"><div id="progressBarFill" style="height:100%;width:0%;background:var(--pine);transition:width 0.4s;"></div></div><div id="progressPercent" style="margin-top:10px;font-size:14px;font-weight:600;">0%</div></div>
-        <div style="display:flex;gap:20px;"><div style="flex:1;background:var(--white);padding:20px;border:1px solid var(--border);"><div style="font-size:10px;letter-spacing:2px;color:var(--text-light);text-transform:uppercase;">Current Streak</div><div id="currentStreak" style="font-size:28px;font-weight:600;margin-top:6px;">0</div></div><div style="flex:1;background:var(--white);padding:20px;border:1px solid var(--border);"><div style="font-size:10px;letter-spacing:2px;color:var(--text-light);text-transform:uppercase;">Best Streak</div><div id="bestStreak" style="font-size:28px;font-weight:600;margin-top:6px;">0</div></div></div>
-      </div>
-    </div>
+        <div style="display:flex; flex-direction:column; gap:14px; margin-bottom:30px;">
+
+  <div style="background:white; padding:18px; border:1px solid var(--border);">
+    <div style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--text-light);">Today</div>
+    <div id="resetStatus" style="font-size:18px; font-weight:600; margin-top:6px;">Not Cleared</div>
+  </div>
+
+  <div style="display:flex; gap:12px;">
+    <button onclick="logReset()" style="flex:1; padding:14px; background:var(--pine); color:white; border:none; letter-spacing:2px; text-transform:uppercase;">
+      Cleared
+    </button>
+    <button onclick="logCarry()" style="flex:1; padding:14px; background:#eee; border:none;">
+      Carrying
+    </button>
+  </div>
+
+</div>
 
     <!-- PROFILE VIEW -->
     <div id="profileView" class="view">
@@ -1080,6 +1093,23 @@ function closeResetModal() {
 function startResetAudio() {
   speak("I release what I’ve been carrying — fully and now. I do not store pressure — I move it. Nothing from today stays in my body. I reset completely.");
 }
+let resetState = localStorage.getItem('resetState') || 'Not Cleared';
+
+function updateResetUI() {
+  document.getElementById('resetStatus').textContent = resetState;
+}
+
+function logReset() {
+  resetState = 'Cleared';
+  localStorage.setItem('resetState', resetState);
+  updateResetUI();
+}
+
+function logCarry() {
+  resetState = 'Carrying';
+  localStorage.setItem('resetState', resetState);
+  updateResetUI();
+}
 
 // ── INIT ──────────────────────────────────────────────────
 window.speechSynthesis && window.speechSynthesis.getVoices();
@@ -1090,6 +1120,7 @@ updateProgressUI();
 updateProfileUI();
 setGreeting();
 setupLayout();
+updateResetUI();
 </script>
 
 <!-- DESKTOP TIMER OVERLAY — fixed, covers content area only -->
