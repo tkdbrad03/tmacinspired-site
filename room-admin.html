@@ -135,7 +135,7 @@ if (password !== "1904") {
   throw new Error("Unauthorized");
 }
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, doc, setDoc, getDoc, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDoc, collection, getDocs, query, orderBy, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCRt8Z9sg5mx1oaltmxBRrsawJamYQmvCA",
@@ -179,11 +179,19 @@ const requestsRef = collection(db, "accessRequests");
 const requestsSnap = await getDocs(query(requestsRef, orderBy("requestedAt", "desc")));
 const list = document.getElementById("requestsList");
 
+// Load approved users first to filter them out
+const approvedSnap = await getDocs(collection(db, "approvedUsers"));
+const approvedEmails = new Set();
+approvedSnap.forEach((d) => approvedEmails.add(d.id));
+
 if (requestsSnap.empty) {
   list.innerHTML = `<p style="font-style:italic; color:#5c6b64; font-size:0.9rem;">No requests yet.</p>`;
 } else {
+  let pendingCount = 0;
   requestsSnap.forEach((docSnap) => {
     const r = docSnap.data();
+    if (approvedEmails.has(r.email)) return;
+    pendingCount++;
     const div = document.createElement("div");
     div.style.cssText = "padding:1rem 0; border-bottom:1px solid rgba(31,66,54,0.08); display:flex; justify-content:space-between; align-items:center;";
     div.innerHTML = `
@@ -191,12 +199,21 @@ if (requestsSnap.empty) {
         <div style="font-size:0.9rem; color:#1f4236;">${r.name}</div>
         <div style="font-size:0.75rem; color:#5c6b64; font-style:italic;">${r.email}</div>
       </div>
-      <button onclick="approveUser('${r.email}', '${r.name}')"
-        style="padding:0.5rem 1.25rem; background:#1f4236; color:white; border:none; font-family:Georgia,serif; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.15em; cursor:pointer;">
-        Let Her In
-      </button>`;
+      <div style="display:flex; gap:0.5rem;">
+        <button onclick="approveUser('${r.email}', '${r.name}')"
+          style="padding:0.5rem 1.25rem; background:#1f4236; color:white; border:none; font-family:Georgia,serif; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.15em; cursor:pointer;">
+          Let Her In
+        </button>
+        <button onclick="declineUser('${r.email}', '${r.name}')"
+          style="padding:0.5rem 1.25rem; background:transparent; color:#b76e79; border:1px solid #b76e79; font-family:Georgia,serif; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.15em; cursor:pointer;">
+          Decline
+        </button>
+      </div>`;
     list.appendChild(div);
   });
+  if (pendingCount === 0) {
+    list.innerHTML = `<p style="font-style:italic; color:#5c6b64; font-size:0.9rem;">No pending requests.</p>`;
+  }
 }
 
 window.approveUser = async (email, name) => {
@@ -214,6 +231,12 @@ window.approveUser = async (email, name) => {
   });
 
   alert(name + " has been welcomed into The Room.");
+  location.reload();
+};
+    window.declineUser = async (email, name) => {
+  if (!confirm("Decline " + name + "? This will remove their request.")) return;
+  await deleteDoc(doc(db, "accessRequests", email));
+  alert(name + " has been declined.");
   location.reload();
 };
   </script>
