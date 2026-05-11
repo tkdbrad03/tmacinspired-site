@@ -677,7 +677,7 @@ body.evening .thought-text {
   <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCRt8Z9sg5mx1oaltmxBRrsawJamYQmvCA",
@@ -733,14 +733,32 @@ if (thoughtSnap.exists() && thoughtSnap.data().text) {
   document.getElementById("currentThought").style.display = "block";
 }
       } else {
-        document.getElementById("loginSection").innerHTML = `
-          <p style="font-style:italic; color:var(--text-light); max-width:420px; margin:0 auto; line-height:1.85;">
-            This room is being built with intention. You will receive an invitation when your space is ready.
-          </p>`;
-        document.getElementById("prompt").style.display = "none";
-        document.getElementById("postsContainer").style.display = "none";
-      }
-    }
+  // Save access request to Firestore
+  await setDoc(doc(db, "accessRequests", user.email), {
+    name: user.displayName || "",
+    email: user.email,
+    requestedAt: serverTimestamp(),
+    approved: false
+  });
+
+  // Notify TMac
+  await addDoc(collection(db, "notifications"), {
+    type: "accessRequest",
+    name: user.displayName || "",
+    email: user.email,
+    requestedAt: serverTimestamp()
+  });
+
+  document.getElementById("loginSection").innerHTML = `
+    <p style="font-style:italic; color:var(--text-light); max-width:420px; margin:0 auto; line-height:1.85;">
+      This room is being built with intention. You will receive a personal invitation when your space is ready.
+    </p>`;
+  document.getElementById("prompt").style.display = "none";
+  document.getElementById("postsContainer").style.display = "none";
+
+  // Send notification to TMac via Apps Script
+  fetch("https://script.google.com/macros/s/AKfycbztgahI-wqrsb60am6DIIXf_9iVdx4nhN_t47cyiwmeBMhHeJ1K_8aUqa_tl33Oy1RiJA/exec?action=notify&name=" + encodeURIComponent(user.displayName || "") + "&email=" + encodeURIComponent(user.email));
+}
   });
 
   const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
