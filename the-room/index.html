@@ -638,8 +638,8 @@ body.evening .thought-text {
   <div class="container">
 
     <!-- LOGIN -->
-    <div id="loginSection">
-      <button class="btn btn-pine-fill" id="loginBtn">Step Into The Room</button>
+    <div id="loginSection" style="display:none;">
+      <button class="btn btn-pine-fill" id="loginBtn">Sign In to Request Access</button>
     </div>
 
     <!-- PROMPT -->
@@ -809,6 +809,7 @@ setTimeMode();
     // Splash screen
 document.getElementById("splashEnter").addEventListener("click", function() {
   document.getElementById("splash").classList.add("hidden");
+  document.getElementById("loginSection").style.display = "block";
   sessionStorage.setItem("roomEntered", "true");
 });
 
@@ -816,6 +817,7 @@ document.getElementById("splashEnter").addEventListener("click", function() {
 if (sessionStorage.getItem("roomEntered") === "true" && 
     document.referrer.includes("the-room.html")) {
   document.getElementById("splash").classList.add("hidden");
+  document.getElementById("loginSection").style.display = "block";
 }
 </script>
 
