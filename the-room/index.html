@@ -150,13 +150,7 @@
       margin: 0 auto;
       padding: 4rem 2rem 6rem;
     }
-    <div id="currentThought" style="display:none;">
-  <div class="thought-card">
-    <p class="thought-label">Currently Thinking About</p>
-    <div class="thought-rule"></div>
-    <p id="thoughtText" class="thought-text"></p>
-  </div>
-</div>
+
 
     /* ── LOGIN ── */
     #loginSection {
@@ -352,20 +346,7 @@
       background: rgba(201,169,97,0.3);
       margin: 1rem 0 0;
     }
-    .members-grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(auto-fill, minmax(260px, 260px));
-
-  gap: 1.75rem;
-
-  margin-top: 2rem;
-  margin-bottom: 6rem;
-
-  justify-content: start;
-}
-
+    
 .members-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -858,6 +839,13 @@ body.evening .thought-text {
 
   <!-- MAIN -->
   <div class="container">
+        <div id="currentThought" style="display:none;">
+  <div class="thought-card">
+    <p class="thought-label">Currently Thinking About</p>
+    <div class="thought-rule"></div>
+    <p id="thoughtText" class="thought-text"></p>
+  </div>
+</div>
 
     <!-- LOGIN -->
     <div id="loginSection" style="display:none;">
@@ -1069,13 +1057,45 @@ onSnapshot(usersQuery, (snapshot) => {
 
     card.className = "member-card";
 
-   card.innerHTML =
+card.innerHTML = `
 
-    membersGrid.appendChild(card);
+  <div class="member-photo">
+
+    ${
+      user.photoURL
+      ? `<img src="${user.photoURL}">`
+      : `<div class="member-initials">${initials}</div>`
+    }
+
+  </div>
+
+  <div class="member-name">
+    ${user.name || ""}
+  </div>
+
+  ${
+    user.city
+    ? `
+      <div class="member-city">
+        ${user.city}
+      </div>
+    `
+    : ``
+  }
+
+  <div class="member-spacer"></div>
+
+  <div class="member-joined">
+    Entered The Room
+  </div>
+
+`;
+
+membersGrid.appendChild(card);
 
   });
 
-});
+
     // Time-aware mode and greeting
 function setTimeMode() {
   const hour = new Date().getHours();
