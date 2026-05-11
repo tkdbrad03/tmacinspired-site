@@ -301,9 +301,6 @@ body.evening .main-nav {
 
 body.evening .main-nav a { color: #c9b99a; }
 
-body.evening .page-hero {
-  background: #0f0f0f;
-}
 
 body.evening .prompt {
   background: #222222;
@@ -384,6 +381,14 @@ body.evening .time-greeting {
   transform: translate(-50%, -50%);
   animation: candleGlow 6s ease-in-out infinite;
   pointer-events: none;
+}
+    .page-hero-eyebrow,
+.page-hero h1,
+.page-hero .hero-rule,
+.page-hero p,
+.page-hero .time-greeting {
+  position: relative;
+  z-index: 2;
 }
   </style>
 </head>
