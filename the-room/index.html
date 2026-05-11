@@ -1011,8 +1011,30 @@ body.evening .thought-text {
     <a href="circle.html">The Circle</a>
     <a href="the-room.html" class="active-link">The Room</a>
     <a href="https://tmacmastermind.com/tee-room.html">Tee Room</a>
-    <button id="openProfile" class="profile-trigger" style="display:none;">Your Profile</button>
+    
     <a href="mailto:support@tmacinspired.com">Contact</a>
+  <div id="avatarBtn" style="display:none; position:fixed; top:1.5rem; right:1.5rem; z-index:500; cursor:pointer;">
+    <div id="avatarCircle" style="
+      width:42px;
+      height:42px;
+      border-radius:50%;
+      overflow:hidden;
+      border:2px solid var(--gold);
+      background:var(--pine);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    ">
+      <img id="avatarImg" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
+      <span id="avatarInitials" style="
+        font-family:var(--font-serif);
+        font-size:0.85rem;
+        color:var(--gold);
+        font-style:italic;
+      "></span>
+    </div>
+  </div>
   </nav>
 
   <!-- HERO -->
@@ -1213,7 +1235,22 @@ if (userSnap.exists()) {
           `<p style="font-style:italic; color:var(--text-light);">The room is glad you are here, ${user.displayName.split(" ")[0]}.</p>`;
         document.getElementById("prompt").style.display = "block";
         document.getElementById("postsContainer").style.display = "flex";
-        document.getElementById("openProfile").style.display = "inline-block";
+        document.getElementById("avatarBtn").style.display = "block";
+
+// Set avatar image or initials
+const avatarImg = document.getElementById("avatarImg");
+const avatarInitials = document.getElementById("avatarInitials");
+if (user.photoURL) {
+  avatarImg.src = user.photoURL;
+  avatarImg.style.display = "block";
+  avatarInitials.style.display = "none";
+} else {
+  const initials = user.displayName
+    ? user.displayName.split(" ").map(n => n[0]).join("").slice(0,2).toUpperCase()
+    : "?";
+  avatarInitials.textContent = initials;
+  avatarInitials.style.display = "block";
+}
 
 // Load current thought
 const thoughtRef = doc(db, "settings", "currentThought");
@@ -1365,11 +1402,9 @@ function setTimeMode() {
 const profilePanel =
   document.getElementById("profilePanel");
 
-document.getElementById("openProfile")
+document.getElementById("avatarBtn")
 .addEventListener("click", () => {
-
   profilePanel.classList.add("open");
-
 });
 
 document.getElementById("closeProfile")
