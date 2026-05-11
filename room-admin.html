@@ -165,6 +165,48 @@
         document.getElementById("successMsg").style.display = "none";
       }, 3000);
     });
+    // Load access requests
+import { collection, getDocs, query, orderBy, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const requestsRef = collection(db, "accessRequests");
+const requestsSnap = await getDocs(query(requestsRef, orderBy("requestedAt", "desc")));
+const list = document.getElementById("requestsList");
+
+if (requestsSnap.empty) {
+  list.innerHTML = `<p style="font-style:italic; color:#5c6b64; font-size:0.9rem;">No requests yet.</p>`;
+} else {
+  requestsSnap.forEach((docSnap) => {
+    const r = docSnap.data();
+    const div = document.createElement("div");
+    div.style.cssText = "padding:1rem 0; border-bottom:1px solid rgba(31,66,54,0.08); display:flex; justify-content:space-between; align-items:center;";
+    div.innerHTML = `
+      <div>
+        <div style="font-size:0.9rem; color:#1f4236;">${r.name}</div>
+        <div style="font-size:0.75rem; color:#5c6b64; font-style:italic;">${r.email}</div>
+      </div>
+      <button onclick="approveUser('${r.email}', '${r.name}')"
+        style="padding:0.5rem 1.25rem; background:#1f4236; color:white; border:none; font-family:Georgia,serif; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.15em; cursor:pointer;">
+        Let Her In
+      </button>`;
+    list.appendChild(div);
+  });
+}
+
+window.approveUser = async (email, name) => {
+  await setDoc(doc(db, "approvedUsers", email), {
+    approved: true,
+    name: name,
+    approvedAt: new Date().toISOString()
+  });
+
+  // Send welcome email via approval script
+  const approvalUrl = "https://script.google.com/macros/s/AKfycbztgahI-wqrsb60am6DIIXf_9iVdx4nhN_t47cyiwmeBMhHeJ1K_8aUqa_tl33Oy1RiJA/exec?email=" +
+    encodeURIComponent(email) + "&name=" + encodeURIComponent(name);
+  await fetch(approvalUrl);
+
+  alert(name + " has been welcomed into The Room.");
+  location.reload();
+};
   </script>
 </body>
 </html>
