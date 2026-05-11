@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin-allow-popups">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Room | TMac Inspired™</title>
+  <title>The Room | A Place to Be | TMac Inspired™</title>
   <link rel="icon" type="image/png" href="tmac-logo.png">
   <style>
     :root {
@@ -333,7 +333,7 @@
     <p class="page-hero-eyebrow">TMac Inspired™ &nbsp; · &nbsp; Community</p>
     <h1>The Room.<br><em>You are not alone in here.</em></h1>
     <div class="hero-rule"></div>
-    <p>A quiet place for accomplished women to speak honestly, reflect deeply, and find their people.</p>
+    <p>For women rebuilding themselves quietly, intentionally, and unapologetically.</p>
   </div>
 
   <!-- MAIN -->
@@ -341,7 +341,7 @@
 
     <!-- LOGIN -->
     <div id="loginSection">
-      <button class="btn btn-pine-fill" id="loginBtn">Enter The Room With Google</button>
+      <button class="btn btn-pine-fill" id="loginBtn">Step Into The Room</button>
     </div>
 
     <!-- PROMPT -->
@@ -357,7 +357,7 @@
     <span class="section-label">From The Room</span>
     <div id="postsContainer" style="display:none;">
       <div class="empty-state">
-        <p>The room is quiet right now. Be the first to speak.</p>
+        <p>The room is quiet right now. When you are ready, share what is on your mind.</p>
       </div>
     </div>
 
@@ -423,14 +423,13 @@
       if (approvedSnap.exists() && approvedSnap.data().approved === true) {
         currentUser = user;
         document.getElementById("loginSection").innerHTML =
-          `<p>Welcome back, ${user.displayName}.</p>`;
+          `<p style="font-style:italic; color:var(--text-light);">The room is glad you are here, ${user.displayName.split(" ")[0]}.</p>`;
         document.getElementById("prompt").style.display = "block";
         document.getElementById("postsContainer").style.display = "flex";
       } else {
         document.getElementById("loginSection").innerHTML = `
           <p style="font-style:italic; color:var(--text-light); max-width:420px; margin:0 auto; line-height:1.85;">
-            This room is not yet open to you. If you are on the waitlist
-            you will receive access when your membership is confirmed.
+            This room is being built with intention. You will receive an invitation when your space is ready.
           </p>`;
         document.getElementById("prompt").style.display = "none";
         document.getElementById("postsContainer").style.display = "none";
@@ -446,7 +445,7 @@
     if (snapshot.empty) {
       container.innerHTML = `
         <div class="empty-state">
-          <p>The room is quiet right now. Be the first to speak.</p>
+          <p>The room is quiet right now. When you are ready, share what is on your mind.</p>
         </div>`;
       return;
     }
