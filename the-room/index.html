@@ -67,56 +67,37 @@
 
     /* ── PAGE HERO ── */
     .page-hero {
-      background: var(--pine);
-      padding: 5rem 2rem 4rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
+  background: var(--pine);
+  padding: 7rem 2rem 5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
-    .page-hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 70% 60% at 50% 30%, rgba(201,169,97,0.1) 0%, transparent 70%);
-      pointer-events: none;
-    }
+.page-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 40%,
+    rgba(201,169,97,0.15) 0%,
+    rgba(31,66,54,0.4) 40%,
+    transparent 70%);
+  animation: gradientDrift 12s ease-in-out infinite alternate;
+  pointer-events: none;
+}
 
-    .page-hero-eyebrow {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.35em;
-      color: var(--gold);
-      margin-bottom: 1.5rem;
-    }
-
-    .page-hero h1 {
-      font-size: clamp(2.2rem, 5vw, 3.5rem);
-      font-weight: 400;
-      color: var(--cream);
-      line-height: 1.2;
-      margin-bottom: 1.25rem;
-      letter-spacing: -0.01em;
-    }
-
-    .page-hero h1 em {
-      font-style: italic;
-      color: var(--gold);
-    }
-
-    .hero-rule {
-      width: 50px; height: 1px;
-      background: var(--gold);
-      margin: 1.5rem auto;
-    }
-
-    .page-hero p {
-      font-size: 1.05rem;
-      font-style: italic;
-      color: rgba(253,250,245,0.75);
-      max-width: 500px;
-      margin: 0 auto;
-      line-height: 1.85;
-    }
+.page-hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E");
+  opacity: 0.5;
+  pointer-events: none;
+  animation: grainShift 8s steps(2) infinite;
+}
 
     /* ── MAIN CONTAINER ── */
     .container {
@@ -346,6 +327,15 @@ body.evening .empty-state {
   background: #222222;
   border-color: rgba(201,169,97,0.1);
 }
+    body.evening .page-hero {
+  background: #0a0a0a;
+}
+
+body.evening .hero-glow {
+  background: radial-gradient(circle,
+    rgba(201,169,97,0.07) 0%,
+    transparent 70%);
+}
 
 body.evening footer {
   background: #111111;
@@ -363,6 +353,37 @@ body.evening footer {
 
 body.evening .time-greeting {
   color: #c9a961;
+}
+    @keyframes gradientDrift {
+  0%   { transform: scale(1) translate(0, 0); opacity: 0.8; }
+  50%  { transform: scale(1.1) translate(2%, 3%); opacity: 1; }
+  100% { transform: scale(1.05) translate(-2%, -2%); opacity: 0.9; }
+}
+
+@keyframes grainShift {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-2%, 2%); }
+  50%  { transform: translate(2%, -2%); }
+  75%  { transform: translate(-1%, 1%); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes candleGlow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%       { opacity: 0.9; transform: scale(1.02); }
+}
+    .hero-glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(201,169,97,0.12) 0%,
+    transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: candleGlow 6s ease-in-out infinite;
+  pointer-events: none;
 }
   </style>
 </head>
@@ -387,6 +408,7 @@ body.evening .time-greeting {
 
   <!-- HERO -->
   <div class="page-hero">
+    <div class="hero-glow"></div>
     <p class="page-hero-eyebrow">TMac Inspired™ &nbsp; · &nbsp; Community</p>
     <h1>The Room.<br><em>You are not alone in here.</em></h1>
     <div class="hero-rule"></div>
