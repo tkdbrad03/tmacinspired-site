@@ -340,7 +340,7 @@
 
     <!-- LOGIN -->
     <div id="loginSection">
-      <button class="btn btn-pine-fill" onclick="login()">Enter The Room With Google</button>
+      <button class="btn btn-pine-fill" id="loginBtn">Enter The Room With Google</button>
     </div>
 
     <!-- PROMPT -->
@@ -349,7 +349,7 @@
       <h2>What is something you no longer want to normalize in your life?</h2>
       <div class="prompt-rule"></div>
       <textarea id="postInput" placeholder="Share your reflection here. This is a safe room."></textarea>
-      <button class="btn btn-gold" onclick="submitPost()">Share My Reflection</button>
+      <button class="btn btn-gold" id="submitBtn">Share My Reflection</button>
     </div>
 
     <!-- POSTS -->
@@ -376,122 +376,93 @@
   </footer>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import {
-      getAuth,
-      GoogleAuthProvider,
-      signInWithPopup,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import {
-      getFirestore,
-      collection,
-      addDoc,
-      query,
-      orderBy,
-      onSnapshot,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCRt8Z9sg5mx1oaltmxBRrsawJamYQmvCA",
-      authDomain: "tmac-inspired-room.firebaseapp.com",
-      projectId: "tmac-inspired-room",
-      storageBucket: "tmac-inspired-room.firebasestorage.app",
-      messagingSenderId: "748020064263",
-      appId: "1:748020064263:web:ed15bf8c0ed761007e0aa2"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyCRt8Z9sg5mx1oaltmxBRrsawJamYQmvCA",
+    authDomain: "tmac-inspired-room.firebaseapp.com",
+    projectId: "tmac-inspired-room",
+    storageBucket: "tmac-inspired-room.firebasestorage.app",
+    messagingSenderId: "748020064263",
+    appId: "1:748020064263:web:ed15bf8c0ed761007e0aa2"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const provider = new GoogleAuthProvider();
-    let currentUser = null;
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const provider = new GoogleAuthProvider();
+  let currentUser = null;
 
-    window.login = async () => {
-      await signInWithPopup(auth, provider);
-    };
+  document.getElementById("loginBtn").addEventListener("click", async () => {
+    await signInWithPopup(auth, provider);
+  });
 
-    import {
-  getFirestore,
-  collection,
-  addDoc,
-  query,
-  orderBy,
-  onSnapshot,
-  serverTimestamp,
-  doc,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    const approvedRef = doc(db, "approvedUsers", user.email);
-    const approvedSnap = await getDoc(approvedRef);
-
-    if (approvedSnap.exists() && approvedSnap.data().approved === true) {
-      currentUser = user;
-      document.getElementById("loginSection").innerHTML =
-        `<p>Welcome back, ${user.displayName}.</p>`;
-      document.getElementById("prompt").style.display = "block";
-      document.getElementById("postsContainer").style.display = "flex";
-    } else {
-      document.getElementById("loginSection").innerHTML = `
-        <p style="font-style:italic; color:var(--text-light); max-width:420px; margin:0 auto; line-height:1.85;">
-          This room is not yet open to you. If you are on the waitlist
-          you will receive access when your membership is confirmed.
-        </p>`;
-      document.getElementById("prompt").style.display = "none";
-      document.getElementById("postsContainer").style.display = "none";
+  document.getElementById("submitBtn").addEventListener("click", async () => {
+    if (!currentUser) {
+      alert("Please sign in first.");
+      return;
     }
-  }
-});
-
-    window.submitPost = async () => {
-      if (!currentUser) {
-        alert("Please sign in first.");
-        return;
-      }
-      const text = document.getElementById("postInput").value;
-      if (!text.trim()) return;
-
-      await addDoc(collection(db, "posts"), {
-        text,
-        author: currentUser.displayName,
-        createdAt: serverTimestamp()
-      });
-
-      document.getElementById("postInput").value = "";
-    };
-
-    const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
-
-    onSnapshot(q, (snapshot) => {
-      const container = document.getElementById("postsContainer");
-      container.innerHTML = "";
-
-      if (snapshot.empty) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <p>The room is quiet right now. Be the first to speak.</p>
-          </div>`;
-        return;
-      }
-
-      snapshot.forEach((doc) => {
-        const post = doc.data();
-        const div = document.createElement("div");
-        div.className = "post";
-        div.innerHTML = `
-          <div class="post-author">${post.author}</div>
-          <div class="post-text">${post.text}</div>
-          <div class="post-rule"></div>
-          <div class="post-date">Shared in The Room</div>
-        `;
-        container.appendChild(div);
-      });
+    const text = document.getElementById("postInput").value;
+    if (!text.trim()) return;
+    await addDoc(collection(db, "posts"), {
+      text,
+      author: currentUser.displayName,
+      createdAt: serverTimestamp()
     });
-  </script>
+    document.getElementById("postInput").value = "";
+  });
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      const approvedRef = doc(db, "approvedUsers", user.email);
+      const approvedSnap = await getDoc(approvedRef);
+
+      if (approvedSnap.exists() && approvedSnap.data().approved === true) {
+        currentUser = user;
+        document.getElementById("loginSection").innerHTML =
+          `<p>Welcome back, ${user.displayName}.</p>`;
+        document.getElementById("prompt").style.display = "block";
+        document.getElementById("postsContainer").style.display = "flex";
+      } else {
+        document.getElementById("loginSection").innerHTML = `
+          <p style="font-style:italic; color:var(--text-light); max-width:420px; margin:0 auto; line-height:1.85;">
+            This room is not yet open to you. If you are on the waitlist
+            you will receive access when your membership is confirmed.
+          </p>`;
+        document.getElementById("prompt").style.display = "none";
+        document.getElementById("postsContainer").style.display = "none";
+      }
+    }
+  });
+
+  const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+
+  onSnapshot(q, (snapshot) => {
+    const container = document.getElementById("postsContainer");
+    container.innerHTML = "";
+    if (snapshot.empty) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <p>The room is quiet right now. Be the first to speak.</p>
+        </div>`;
+      return;
+    }
+    snapshot.forEach((doc) => {
+      const post = doc.data();
+      const div = document.createElement("div");
+      div.className = "post";
+      div.innerHTML = `
+        <div class="post-author">${post.author}</div>
+        <div class="post-text">${post.text}</div>
+        <div class="post-rule"></div>
+        <div class="post-date">Shared in The Room</div>
+      `;
+      container.appendChild(div);
+    });
+  });
+</script>
 
 </body>
 </html>
