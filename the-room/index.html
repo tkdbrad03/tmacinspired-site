@@ -435,10 +435,132 @@ body.evening .time-greeting {
   position: relative;
   z-index: 2;
 }
+    /* ── SPLASH ── */
+#splash {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--pine);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: opacity 1.2s ease, visibility 1.2s ease;
+}
+
+#splash.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.splash-glow {
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(201,169,97,0.13) 0%,
+    transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: candleGlow 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.splash-grain {
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E");
+  opacity: 0.5;
+  pointer-events: none;
+  animation: grainShift 8s steps(2) infinite;
+}
+
+.splash-content {
+  position: relative;
+  z-index: 2;
+  padding: 2rem;
+}
+
+.splash-eyebrow {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.35em;
+  color: var(--gold);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp 1s 0.3s forwards;
+}
+
+.splash-title {
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  font-weight: 400;
+  color: var(--cream);
+  line-height: 1;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+  opacity: 0;
+  animation: fadeUp 1s 0.6s forwards;
+}
+
+.splash-sub {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-style: italic;
+  color: rgba(253,250,245,0.65);
+  line-height: 1.85;
+  max-width: 480px;
+  margin: 0 auto;
+  opacity: 0;
+  animation: fadeUp 1s 0.9s forwards;
+}
+
+.splash-rule {
+  width: 40px;
+  height: 1px;
+  background: var(--gold);
+  margin: 2.5rem auto;
+  opacity: 0;
+  animation: fadeUp 0.8s 1.1s forwards;
+}
+
+.splash-btn {
+  font-family: var(--font-serif);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  background: transparent;
+  border: 1px solid rgba(201,169,97,0.4);
+  padding: 1rem 2.5rem;
+  cursor: pointer;
+  transition: var(--transition);
+  opacity: 0;
+  animation: fadeUp 0.8s 1.4s forwards;
+}
+
+.splash-btn:hover {
+  background: rgba(201,169,97,0.1);
+  border-color: var(--gold);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
   </style>
 </head>
 <body>
-
+<div id="splash">
+  <div class="splash-glow"></div>
+  <div class="splash-grain"></div>
+  <div class="splash-content">
+    <p class="splash-eyebrow">TMac Inspired™ &nbsp; · &nbsp; A Private Room</p>
+    <h1 class="splash-title">The Room.</h1>
+    <p class="splash-sub">For women rebuilding themselves quietly,<br>intentionally, and unapologetically.</p>
+    <div class="splash-rule"></div>
+    <button class="splash-btn" id="splashEnter">Enter Softly</button>
+  </div>
+</div>
   <!-- HEADER -->
   <div class="header-banner">
     <a href="index.html">
@@ -611,6 +733,16 @@ function setTimeMode() {
 }
 
 setTimeMode();
+    // Splash screen
+document.getElementById("splashEnter").addEventListener("click", function() {
+  document.getElementById("splash").classList.add("hidden");
+  sessionStorage.setItem("roomEntered", "true");
+});
+
+// Skip splash if already entered this session
+if (sessionStorage.getItem("roomEntered") === "true") {
+  document.getElementById("splash").classList.add("hidden");
+}
 </script>
 
 </body>
