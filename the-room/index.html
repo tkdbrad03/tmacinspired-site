@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>The Room | TMac Inspired</title>
+
+  <style>
+    body{
+      margin:0;
+      font-family: Georgia, serif;
+      background:#f7f2ee;
+      color:#2a2a2a;
+    }
+
+    .container{
+      width:90%;
+      max-width:700px;
+      margin:auto;
+      padding:40px 0;
+    }
+
+    h1{
+      font-size:42px;
+      margin-bottom:10px;
+    }
+
+    .subtitle{
+      font-size:18px;
+      line-height:1.7;
+      color:#666;
+      margin-bottom:40px;
+    }
+
+    .prompt{
+      background:white;
+      padding:30px;
+      border-radius:18px;
+      margin-bottom:30px;
+      box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    textarea{
+      width:100%;
+      min-height:120px;
+      border:none;
+      padding:15px;
+      border-radius:12px;
+      background:#f5f5f5;
+      font-size:16px;
+      resize:none;
+      box-sizing:border-box;
+    }
+
+    button{
+      background:black;
+      color:white;
+      border:none;
+      padding:14px 22px;
+      border-radius:30px;
+      margin-top:15px;
+      cursor:pointer;
+      font-size:15px;
+    }
+
+    .post{
+      background:white;
+      padding:25px;
+      border-radius:18px;
+      margin-bottom:20px;
+      box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .author{
+      font-weight:bold;
+      margin-bottom:10px;
+    }
+
+    .date{
+      font-size:13px;
+      color:#888;
+      margin-top:15px;
+    }
+
+    #loginSection{
+      margin-bottom:30px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>The Room</h1>
+
+  <p class="subtitle">
+    A quiet place for women rebuilding their lives, identity, wealth, confidence, and future.
+  </p>
+
+  <div id="loginSection">
+    <button onclick="login()">Enter The Room With Google</button>
+  </div>
+
+  <div class="prompt">
+    <h2>Tonight’s Question</h2>
+
+    <p>
+      What’s something you no longer want to normalize in your life?
+    </p>
+
+    <textarea id="postInput" placeholder="Share your thoughts..."></textarea>
+
+    <button onclick="submitPost()">Share Reflection</button>
+  </div>
+
+  <div id="postsContainer"></div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  query,
+  orderBy,
+  onSnapshot,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCRt8Z9sg5mx1oaltmxBRrsawJamYQmvCA",
+  authDomain: "tmac-inspired-room.firebaseapp.com",
+  projectId: "tmac-inspired-room",
+  storageBucket: "tmac-inspired-room.firebasestorage.app",
+  messagingSenderId: "748020064263",
+  appId: "1:748020064263:web:ed15bf8c0ed761007e0aa2"
+};
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+const provider = new GoogleAuthProvider();
+
+let currentUser = null;
+
+window.login = async () => {
+  await signInWithPopup(auth, provider);
+};
+
+onAuthStateChanged(auth, (user) => {
+
+  if(user){
+    currentUser = user;
+
+    document.getElementById("loginSection").innerHTML =
+      `<p>Welcome, ${user.displayName}</p>`;
+  }
+});
+
+window.submitPost = async () => {
+
+  if(!currentUser){
+    alert("Please sign in first.");
+    return;
+  }
+
+  const text = document.getElementById("postInput").value;
+
+  if(!text.trim()) return;
+
+  await addDoc(collection(db, "posts"), {
+    text,
+    author: currentUser.displayName,
+    createdAt: serverTimestamp()
+  });
+
+  document.getElementById("postInput").value = "";
+};
+
+const q = query(
+  collection(db, "posts"),
+  orderBy("createdAt", "desc")
+);
+
+onSnapshot(q, (snapshot) => {
+
+  const container = document.getElementById("postsContainer");
+
+  container.innerHTML = "";
+
+  snapshot.forEach((doc) => {
+
+    const post = doc.data();
+
+    const div = document.createElement("div");
+
+    div.className = "post";
+
+    div.innerHTML = `
+      <div class="author">${post.author}</div>
+      <div>${post.text}</div>
+      <div class="date">Shared in The Room</div>
+    `;
+
+    container.appendChild(div);
+  });
+});
+
+</script>
+
+</body>
+</html>
