@@ -169,9 +169,7 @@
         document.getElementById("successMsg").style.display = "none";
       }, 3000);
     });
-    // Load access requests
-import { collection, getDocs, query, orderBy, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
+   // Load access requests
 const requestsRef = collection(db, "accessRequests");
 const requestsSnap = await getDocs(query(requestsRef, orderBy("requestedAt", "desc")));
 const list = document.getElementById("requestsList");
