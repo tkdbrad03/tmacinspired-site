@@ -129,6 +129,11 @@
   </div>
 
   <script type="module">
+    const password = prompt("Enter admin password:");
+if (password !== "1904") {
+  document.body.innerHTML = "<p style='font-family:Georgia;text-align:center;margin-top:4rem;color:#5c6b64;font-style:italic;'>Access denied.</p>";
+  throw new Error("Unauthorized");
+}
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, doc, setDoc, getDoc, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
