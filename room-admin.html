@@ -206,10 +206,11 @@ window.approveUser = async (email, name) => {
     approvedAt: new Date().toISOString()
   });
 
-  // Send welcome email via approval script
-  const approvalUrl = "https://script.google.com/macros/s/AKfycbztgahI-wqrsb60am6DIIXf_9iVdx4nhN_t47cyiwmeBMhHeJ1K_8aUqa_tl33Oy1RiJA/exec?email=" +
-    encodeURIComponent(email) + "&name=" + encodeURIComponent(name);
-  await fetch(approvalUrl);
+  // Send welcome email via no-cors fetch
+  fetch("https://script.google.com/macros/s/AKfycbztgahI-wqrsb60am6DIIXf_9iVdx4nhN_t47cyiwmeBMhHeJ1K_8aUqa_tl33Oy1RiJA/exec?email=" +
+    encodeURIComponent(email) + "&name=" + encodeURIComponent(name), {
+    mode: "no-cors"
+  });
 
   alert(name + " has been welcomed into The Room.");
   location.reload();
