@@ -122,11 +122,15 @@
     <textarea id="thoughtInput" placeholder="Type your current thought here..."></textarea>
     <button id="saveBtn">Update The Room</button>
     <p class="success" id="successMsg">The Room has been updated.</p>
+    <div style="margin-top:3rem;">
+      <span class="label">Women Waiting at the Door</span>
+      <div id="requestsList" style="margin-top:1rem;"></div>
+    </div>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDoc, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCRt8Z9sg5mx1oaltmxBRrsawJamYQmvCA",
