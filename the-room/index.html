@@ -352,6 +352,115 @@
       background: rgba(201,169,97,0.3);
       margin: 1rem 0 0;
     }
+    .members-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+
+  margin-top: 2rem;
+  margin-bottom: 6rem;
+}
+
+.member-card {
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(12px);
+
+  border-radius: 22px;
+
+  padding: 2rem 1.75rem;
+
+  position: relative;
+  overflow: hidden;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.03),
+    0 2px 8px rgba(0,0,0,0.02);
+
+  transition: transform 0.3s ease;
+}
+
+.member-card:hover {
+  transform: translateY(-4px);
+}
+
+.member-card::before {
+  content:'';
+  position:absolute;
+  inset:0;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(201,169,97,0.06),
+      transparent 60%
+    );
+
+  pointer-events:none;
+}
+
+.member-photo {
+  width: 74px;
+  height: 74px;
+
+  border-radius: 50%;
+
+  overflow: hidden;
+
+  margin-bottom: 1.25rem;
+
+  background: rgba(201,169,97,0.08);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.member-photo img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.member-initials {
+  font-size: 1.4rem;
+  color: var(--gold);
+  font-style: italic;
+}
+
+.member-name {
+  font-size: 1.2rem;
+  color: var(--pine);
+
+  margin-bottom: 0.5rem;
+}
+
+.member-city {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  color: var(--gold);
+
+  margin-bottom: 1rem;
+}
+
+.member-thought {
+  font-size: 0.95rem;
+  line-height: 1.8;
+
+  color: var(--text-light);
+  font-style: italic;
+}
+
+.member-joined {
+  margin-top: 1.5rem;
+
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+
+  color: rgba(92,107,100,0.55);
+}
 
     /* ── EMPTY STATE ── */
     .empty-state {
@@ -734,6 +843,16 @@ body.evening .thought-text {
     </div>
 
   </div>
+  <div id="membersSection">
+
+  <span class="section-label">
+    Women In The Room
+  </span>
+
+  <div id="membersGrid" class="members-grid">
+  </div>
+
+</div>
 
   <!-- FOOTER -->
   <footer>
@@ -794,6 +913,29 @@ body.evening .thought-text {
 
       if (approvedSnap.exists() && approvedSnap.data().approved === true) {
         currentUser = user;
+        const userRef = doc(db, "users", user.email);
+
+const userSnap = await getDoc(userRef);
+
+if (!userSnap.exists()) {
+
+  await setDoc(userRef, {
+    name: user.displayName || "",
+    email: user.email,
+    photoURL: user.photoURL || "",
+    city: "",
+    thoughtLine: "",
+    joinedAt: serverTimestamp(),
+    lastActive: serverTimestamp()
+  });
+
+} else {
+
+  await setDoc(userRef, {
+    lastActive: serverTimestamp()
+  }, { merge: true });
+
+}
         document.getElementById("loginSection").innerHTML =
           `<p style="font-style:italic; color:var(--text-light);">The room is glad you are here, ${user.displayName.split(" ")[0]}.</p>`;
         document.getElementById("prompt").style.display = "block";
@@ -861,6 +1003,76 @@ if (thoughtSnap.exists() && thoughtSnap.data().text) {
       container.appendChild(div);
     });
   });
+    const membersGrid =
+  document.getElementById("membersGrid");
+
+const usersQuery =
+  query(collection(db, "users"));
+
+onSnapshot(usersQuery, (snapshot) => {
+
+  membersGrid.innerHTML = "";
+
+  snapshot.forEach((docSnap) => {
+
+    const user = docSnap.data();
+
+    const initials =
+      user.name
+        ?.split(" ")
+        .map(n => n[0])
+        .join("")
+        .slice(0,2)
+        .toUpperCase();
+
+    const card =
+      document.createElement("div");
+
+    card.className = "member-card";
+
+    card.innerHTML = `
+
+      <div class="member-photo">
+
+        ${
+          user.photoURL
+          ? `<img src="${user.photoURL}">`
+          : `<div class="member-initials">${initials}</div>`
+        }
+
+      </div>
+
+      <div class="member-name">
+        ${user.name?.split(" ")[0] || ""}
+      </div>
+
+      ${
+        user.city
+        ? `<div class="member-city">${user.city}</div>`
+        : ``
+      }
+
+      ${
+        user.thoughtLine
+        ? `
+        <div class="member-thought">
+          "${user.thoughtLine}"
+        </div>
+        `
+        : ``
+      }
+
+      <div class="member-joined">
+        Entered The Room
+      </div>
+
+    `;
+
+    membersGrid.appendChild(card);
+
+  });
+
+});
     // Time-aware mode and greeting
 function setTimeMode() {
   const hour = new Date().getHours();
