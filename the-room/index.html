@@ -796,27 +796,7 @@ body.evening .thought-card {
 body.evening .thought-text {
   color: #c9b99a;
 }
-    .profile-input{
-  width:100%;
-
-  margin-top:1rem;
-
-  padding:1rem 1.25rem;
-
-  border:1px solid rgba(31,66,54,0.12);
-
-  background:var(--cream);
-
-  font-family:var(--font-serif);
-
-  font-size:0.95rem;
-
-  color:var(--text-main);
-
-  outline:none;
-
-  transition:border-color .3s ease;
-}
+    
 
 .profile-input:focus{
   border-color:var(--gold);
@@ -826,9 +806,11 @@ body.evening .thought-text {
   color:var(--text-light);
   font-style:italic;
 }
-    .profile-trigger{
+   .profile-trigger{
   background:none;
   border:none;
+
+  margin:0 20px;
 
   font-size:.78rem;
   letter-spacing:.15em;
@@ -856,7 +838,11 @@ body.evening .thought-text {
 
   height:100vh;
 
-  background:#fff;
+  background:rgba(255,255,255,0.96);
+  backdrop-filter:blur(18px);
+
+  border-left:
+    1px solid rgba(201,169,97,0.12);
 
   z-index:2000;
 
@@ -1058,12 +1044,7 @@ body.evening .thought-text {
       <h2>What is something you no longer want to normalize in your life?</h2>
       <div class="prompt-rule"></div>
       <textarea id="postInput" placeholder="Share your reflection here. This is a safe room."></textarea>
-      <input
-  type="text"
-  id="cityInput"
-  class="profile-input"
-  placeholder="City"
-/>
+      
       <button class="btn btn-gold" id="submitBtn">Share My Reflection</button>
     </div>
 
@@ -1110,6 +1091,7 @@ body.evening .thought-text {
 
     <label class="upload-label">
       Change Photo
+
       <input
         type="file"
         id="photoUpload"
@@ -1189,12 +1171,9 @@ body.evening .thought-text {
       return;
     }
     const text = document.getElementById("postInput").value;
-    const city =
-  document.getElementById("cityInput").value;
+    
     if (!text.trim()) return;
-    await setDoc(doc(db, "users", currentUser.email), {
-  city
-}, { merge:true });
+    
     await addDoc(collection(db, "posts"), {
       text,
       author: currentUser.displayName,
@@ -1213,29 +1192,19 @@ body.evening .thought-text {
         document.getElementById("profilePreview")
   .src = user.photoURL || "";
 
-document.getElementById("profileCity")
-  .value = "";
-        const userRef = doc(db, "users", user.email);
+const userRef =
+  doc(db, "users", user.email);
 
-const userSnap = await getDoc(userRef);
+const userSnap =
+  await getDoc(userRef);
 
-if (!userSnap.exists()) {
+if (userSnap.exists()) {
 
-  await setDoc(userRef, {
-    name: user.displayName || "",
-    email: user.email,
-    photoURL: user.photoURL || "",
-    city: "",
-    thoughtLine: "",
-    joinedAt: serverTimestamp(),
-    lastActive: serverTimestamp()
-  });
+  const profile =
+    userSnap.data();
 
-} else {
-
-  await setDoc(userRef, {
-    lastActive: serverTimestamp()
-  }, { merge: true });
+  document.getElementById("profileCity")
+    .value = profile.city || "";
 
 }
         document.getElementById("loginSection").innerHTML =
@@ -1434,13 +1403,15 @@ document.getElementById("saveProfile")
   }
 
   await setDoc(
-    doc(db, "users", currentUser.email),
-    {
-      city,
-      photoURL
-    },
-    { merge:true }
-  );
+  doc(db, "users", user.email),
+  {
+    name: user.displayName || "",
+    email: user.email,
+    photoURL: user.photoURL || "",
+    lastActive: serverTimestamp()
+  },
+  { merge:true }
+);
 
   document.getElementById("profilePreview")
     .src = photoURL;
@@ -1457,8 +1428,7 @@ document.getElementById("splashEnter").addEventListener("click", function() {
 });
 
 // Skip splash if already entered this session
-if (sessionStorage.getItem("roomEntered") === "true" && 
-    document.referrer.includes("the-room.html")) {
+if (sessionStorage.getItem("roomEntered") === "true") {
   document.getElementById("splash").classList.add("hidden");
   document.getElementById("loginSection").style.display = "block";
 }
