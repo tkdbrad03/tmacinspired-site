@@ -307,6 +307,63 @@
       .prompt { padding: 1.75rem; }
       .post { padding: 1.5rem; }
     }
+    /* ── EVENING MODE ── */
+body.evening {
+  background: #1a1a1a;
+  color: #e8e0d5;
+}
+
+body.evening .main-nav {
+  background: #111111;
+  border-bottom-color: rgba(201,169,97,0.1);
+}
+
+body.evening .main-nav a { color: #c9b99a; }
+
+body.evening .page-hero {
+  background: #0f0f0f;
+}
+
+body.evening .prompt {
+  background: #222222;
+  border-color: rgba(201,169,97,0.12);
+}
+
+body.evening textarea {
+  background: #1a1a1a;
+  border-color: rgba(201,169,97,0.15);
+  color: #e8e0d5;
+}
+
+body.evening .post {
+  background: #222222;
+  border-color: rgba(201,169,97,0.1);
+}
+
+body.evening .post-text { color: #c9b99a; }
+
+body.evening .empty-state {
+  background: #222222;
+  border-color: rgba(201,169,97,0.1);
+}
+
+body.evening footer {
+  background: #111111;
+  border-top-color: rgba(201,169,97,0.08);
+}
+    .time-greeting {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--gold);
+  margin-top: 1rem;
+  letter-spacing: 0.05em;
+  opacity: 0;
+  animation: fadeUp 1s 1s forwards;
+}
+
+body.evening .time-greeting {
+  color: #c9a961;
+}
   </style>
 </head>
 <body>
@@ -333,6 +390,7 @@
     <p class="page-hero-eyebrow">TMac Inspired™ &nbsp; · &nbsp; Community</p>
     <h1>The Room.<br><em>You are not alone in here.</em></h1>
     <div class="hero-rule"></div>
+    <p id="timeGreeting" class="time-greeting"></p>
     <p>For women rebuilding themselves quietly, intentionally, and unapologetically.</p>
   </div>
 
@@ -346,7 +404,7 @@
 
     <!-- PROMPT -->
     <div class="prompt" id="prompt" style="display:none;">
-      <p class="prompt-label">Tonight's Question</p>
+      <p class="prompt-label">Today's Question</p>
       <h2>What is something you no longer want to normalize in your life?</h2>
       <div class="prompt-rule"></div>
       <textarea id="postInput" placeholder="Share your reflection here. This is a safe room."></textarea>
@@ -462,6 +520,25 @@
       container.appendChild(div);
     });
   });
+    // Time-aware mode and greeting
+function setTimeMode() {
+  const hour = new Date().getHours();
+  const body = document.body;
+  const greeting = document.getElementById("timeGreeting");
+
+  if (hour >= 5 && hour < 12) {
+    greeting.textContent = "Good morning. What are you rebuilding today?";
+  } else if (hour >= 12 && hour < 17) {
+    greeting.textContent = "Good afternoon. The room is here when you need it.";
+  } else if (hour >= 17 && hour < 20) {
+    greeting.textContent = "Good evening. Take a breath. You made it through the day.";
+  } else {
+    body.classList.add("evening");
+    greeting.textContent = "The room is quieter tonight. You are safe here.";
+  }
+}
+
+setTimeMode();
 </script>
 
 </body>
