@@ -1007,9 +1007,7 @@ body.evening .thought-text {
     <a href="circle.html">The Circle</a>
     <a href="the-room.html" class="active-link">The Room</a>
     <a href="https://tmacmastermind.com/tee-room.html">Tee Room</a>
-    <button id="openProfile" class="profile-trigger">
-  Your Profile
-</button>
+    <button id="openProfile" class="profile-trigger" style="display:none;">Your Profile</button>
     <a href="mailto:support@tmacinspired.com">Contact</a>
   </nav>
 
@@ -1210,7 +1208,8 @@ if (userSnap.exists()) {
         document.getElementById("loginSection").innerHTML =
           `<p style="font-style:italic; color:var(--text-light);">The room is glad you are here, ${user.displayName.split(" ")[0]}.</p>`;
         document.getElementById("prompt").style.display = "block";
-document.getElementById("postsContainer").style.display = "flex";
+        document.getElementById("postsContainer").style.display = "flex";
+        document.getElementById("openProfile").style.display = "inline-block";
 
 // Load current thought
 const thoughtRef = doc(db, "settings", "currentThought");
