@@ -150,6 +150,13 @@
       margin: 0 auto;
       padding: 4rem 2rem 6rem;
     }
+    <div id="currentThought" style="display:none;">
+  <div class="thought-card">
+    <p class="thought-label">Currently Thinking About</p>
+    <div class="thought-rule"></div>
+    <p id="thoughtText" class="thought-text"></p>
+  </div>
+</div>
 
     /* ── LOGIN ── */
     #loginSection {
@@ -547,6 +554,45 @@ body.evening .time-greeting {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+    /* ── CURRENT THOUGHT ── */
+.thought-card {
+  border-left: 2px solid var(--gold);
+  padding: 1.5rem 2rem;
+  margin-bottom: 3rem;
+  background: var(--bg);
+}
+
+.thought-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+}
+
+.thought-rule {
+  width: 24px;
+  height: 1px;
+  background: rgba(201,169,97,0.3);
+  margin-bottom: 1rem;
+}
+
+.thought-text {
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--text-light);
+  line-height: 1.85;
+  max-width: 100%;
+  margin: 0;
+}
+
+body.evening .thought-card {
+  background: #222222;
+}
+
+body.evening .thought-text {
+  color: #c9b99a;
+}
   </style>
 </head>
 <body>
@@ -558,7 +604,7 @@ body.evening .time-greeting {
     <h1 class="splash-title">The Room.</h1>
     <p class="splash-sub">For women rebuilding themselves quietly,<br>intentionally, and unapologetically.</p>
     <div class="splash-rule"></div>
-    <button class="splash-btn" id="splashEnter">Enter Softly</button>
+    <button class="splash-btn" id="splashEnter">Step Into The Room</button>
   </div>
 </div>
   <!-- HEADER -->
@@ -677,7 +723,15 @@ body.evening .time-greeting {
         document.getElementById("loginSection").innerHTML =
           `<p style="font-style:italic; color:var(--text-light);">The room is glad you are here, ${user.displayName.split(" ")[0]}.</p>`;
         document.getElementById("prompt").style.display = "block";
-        document.getElementById("postsContainer").style.display = "flex";
+document.getElementById("postsContainer").style.display = "flex";
+
+// Load current thought
+const thoughtRef = doc(db, "settings", "currentThought");
+const thoughtSnap = await getDoc(thoughtRef);
+if (thoughtSnap.exists() && thoughtSnap.data().text) {
+  document.getElementById("thoughtText").textContent = thoughtSnap.data().text;
+  document.getElementById("currentThought").style.display = "block";
+}
       } else {
         document.getElementById("loginSection").innerHTML = `
           <p style="font-style:italic; color:var(--text-light); max-width:420px; margin:0 auto; line-height:1.85;">
@@ -723,12 +777,12 @@ function setTimeMode() {
   if (hour >= 5 && hour < 12) {
     greeting.textContent = "Good morning. What are you rebuilding today?";
   } else if (hour >= 12 && hour < 17) {
-    greeting.textContent = "Good afternoon. The room is here when you need it.";
+    greeting.textContent = "Good afternoon.";
   } else if (hour >= 17 && hour < 20) {
     greeting.textContent = "Good evening. Take a breath. You made it through the day.";
   } else {
     body.classList.add("evening");
-    greeting.textContent = "The room is quieter tonight. You are safe here.";
+    greeting.textContent = "The room is quieter tonight.";
   }
 }
 
