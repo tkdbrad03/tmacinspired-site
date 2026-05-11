@@ -207,7 +207,7 @@ window.approveUser = async (email, name) => {
   });
 
   // Send welcome email via no-cors fetch
-  fetch("https://script.google.com/macros/s/AKfycbztgahI-wqrsb60am6DIIXf_9iVdx4nhN_t47cyiwmeBMhHeJ1K_8aUqa_tl33Oy1RiJA/exec?email=" +
+  fetch("https://script.google.com/macros/s/AKfycbztgahI-wqrsb60am6DIIXf_9iVdx4nhN_t47cyiwmeBMhHeJ1K_8aUqa_tl33Oy1RiJA/exec?action=welcome&email=" +
     encodeURIComponent(email) + "&name=" + encodeURIComponent(name), {
     mode: "no-cors",
     cache: "no-store"
