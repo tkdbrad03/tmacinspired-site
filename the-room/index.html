@@ -173,11 +173,17 @@
 
     /* ── PROMPT CARD ── */
     .prompt {
-      background: var(--bg);
-      padding: 2.5rem;
-      border: 1px solid rgba(31,66,54,0.1);
-      margin-bottom: 3rem;
-    }
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(12px);
+  padding: 3rem;
+  border: none;
+  border-radius: 18px;
+  margin-bottom: 5rem;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.03),
+    0 2px 8px rgba(0,0,0,0.02);
+}
 
     .prompt-label {
       font-size: 0.68rem;
@@ -267,12 +273,20 @@
     }
 
     .post {
-      background: var(--bg);
-      padding: 2rem 2.25rem;
-      border: 1px solid rgba(31,66,54,0.08);
-      transition: border-color 0.3s;
-      position: relative;
-    }
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(12px);
+
+  padding: 3rem;
+  border: none;
+  border-radius: 18px;
+
+  transition: all 0.4s ease;
+  position: relative;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.03),
+    0 2px 8px rgba(0,0,0,0.02);
+}
     .post:hover { border-color: rgba(201,169,97,0.3); }
 
     .post-author {
@@ -308,7 +322,7 @@
     .empty-state {
       text-align: center;
       padding: 4rem 2rem;
-      border: 1px solid rgba(31,66,54,0.08);
+      border: none;
       background: var(--bg);
     }
 
@@ -556,10 +570,18 @@ body.evening .time-greeting {
 }
     /* ── CURRENT THOUGHT ── */
 .thought-card {
-  border-left: 2px solid var(--gold);
-  padding: 1.5rem 2rem;
-  margin-bottom: 3rem;
-  background: var(--bg);
+  padding: 2.5rem 3rem;
+  margin-bottom: 5rem;
+
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(12px);
+
+  border-left: 2px solid rgba(201,169,97,0.5);
+  border-radius: 18px;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.03),
+    0 2px 8px rgba(0,0,0,0.02);
 }
 
 .thought-label {
