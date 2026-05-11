@@ -175,14 +175,33 @@
     .prompt {
   background: rgba(255,255,255,0.72);
   backdrop-filter: blur(12px);
+
   padding: 3rem;
   border: none;
   border-radius: 18px;
+
   margin-bottom: 5rem;
+
+  position: relative;
+  overflow: hidden;
 
   box-shadow:
     0 10px 30px rgba(0,0,0,0.03),
     0 2px 8px rgba(0,0,0,0.02);
+}
+    .prompt::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(201,169,97,0.05),
+      transparent 65%
+    );
+
+  pointer-events: none;
 }
 
     .prompt-label {
@@ -282,10 +301,26 @@
 
   transition: all 0.4s ease;
   position: relative;
+  overflow: hidden;
+
 
   box-shadow:
     0 10px 30px rgba(0,0,0,0.03),
     0 2px 8px rgba(0,0,0,0.02);
+}
+    .post::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(201,169,97,0.06),
+      transparent 60%
+    );
+
+  pointer-events: none;
 }
     .post:hover { border-color: rgba(201,169,97,0.3); }
 
@@ -579,9 +614,26 @@ body.evening .time-greeting {
   border-left: 2px solid rgba(201,169,97,0.5);
   border-radius: 18px;
 
+  position: relative;
+  overflow: hidden;
+
   box-shadow:
     0 10px 30px rgba(0,0,0,0.03),
     0 2px 8px rgba(0,0,0,0.02);
+}
+    .thought-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(201,169,97,0.07),
+      transparent 60%
+    );
+
+  pointer-events: none;
 }
 
 .thought-label {
