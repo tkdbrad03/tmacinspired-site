@@ -627,11 +627,11 @@ body.evening .thought-text {
   <!-- HERO -->
   <div class="page-hero">
     <div class="hero-glow"></div>
-    <p class="page-hero-eyebrow">TMac Inspired™ &nbsp; · &nbsp; Community</p>
-    <h1>The Room.<br><em>You are not alone in here.</em></h1>
-    <div class="hero-rule"></div>
-    <p id="timeGreeting" class="time-greeting"></p>
-    <p>For women rebuilding themselves quietly, intentionally, and unapologetically.</p>
+    <p class="page-hero-eyebrow">TMac Inspired™ &nbsp; · &nbsp; A Private Room</p>
+<h1>Welcome.<br><em>You made it inside.</em></h1>
+<div class="hero-rule"></div>
+<p id="timeGreeting" class="time-greeting"></p>
+<p>This room holds space for you. You are exactly where you belong.</p>
   </div>
 
   <!-- MAIN -->
@@ -813,7 +813,8 @@ document.getElementById("splashEnter").addEventListener("click", function() {
 });
 
 // Skip splash if already entered this session
-if (sessionStorage.getItem("roomEntered") === "true") {
+if (sessionStorage.getItem("roomEntered") === "true" && 
+    document.referrer.includes("the-room.html")) {
   document.getElementById("splash").classList.add("hidden");
 }
 </script>
