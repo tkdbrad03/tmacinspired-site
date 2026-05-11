@@ -758,7 +758,8 @@ if (thoughtSnap.exists() && thoughtSnap.data().text) {
 
   // Send notification to TMac via Apps Script
   fetch("https://script.google.com/macros/s/AKfycbztgahI-wqrsb60am6DIIXf_9iVdx4nhN_t47cyiwmeBMhHeJ1K_8aUqa_tl33Oy1RiJA/exec?action=notify&name=" + encodeURIComponent(user.displayName || "") + "&email=" + encodeURIComponent(user.email));
-}
+     }
+    }
   });
 
   const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
