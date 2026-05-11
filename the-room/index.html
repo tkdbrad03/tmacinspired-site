@@ -1403,11 +1403,12 @@ document.getElementById("saveProfile")
   }
 
   await setDoc(
-  doc(db, "users", user.email),
+  doc(db, "users", currentUser.email),
   {
-    name: user.displayName || "",
-    email: user.email,
-    photoURL: user.photoURL || "",
+    name: currentUser.displayName || "",
+    email: currentUser.email,
+    photoURL: photoURL,
+    city: city,
     lastActive: serverTimestamp()
   },
   { merge:true }
