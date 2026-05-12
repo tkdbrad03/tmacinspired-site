@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TMac Inspired™ | The Fairway Life</title>
-  <link rel="icon" type="image/png" href="tmac-logo.png">
-  <meta name="description" content="For the accomplished woman ready to design the life she actually wants to live.">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="description" content="Dr. Tasha TMac McCray shows aspiring healthcare entrepreneurs how to build the business that owns the adult day care, group home, or assisted living facility." />
+  <title>TMac Inspired | Build the Business That Owns the Facility</title>
+
+  <link rel="icon" type="image/png" href="tmac-logo.png" />
+
   <style>
     :root {
-      --bg:          #ffffff;
-      --pine:        #1f4236;
-      --gold:        #c9a961;
-      --rose:        #b76e79;
-      --text-main:   #1f4236;
-      --text-light:  #5c6b64;
-      --cream:       #fdfaf5;
-      --cream-dark:  #f4ede0;
-      --pine-deep:   #152e25;
-      --font-serif:  Georgia, 'Times New Roman', Times, serif;
-      --max-w:       1100px;
-      --transition:  all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      --bg:         #ffffff;
+      --pine:       #1f4236;
+      --pine-deep:  #152e25;
+      --gold:       #c9a961;
+      --rose:       #b76e79;
+      --text-main:  #1f4236;
+      --text-light: #5c6b64;
+      --cream:      #fdfaf5;
+      --cream-dark: #f4ede0;
+      --font-serif: Georgia, 'Times New Roman', Times, serif;
+      --max-w:      1100px;
+      --transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
 
     body {
@@ -47,6 +48,7 @@
       justify-content: center;
       align-items: center;
     }
+
     .header-banner img.logo { max-height: 80px; width: auto; }
 
     .main-nav {
@@ -55,6 +57,7 @@
       border-bottom: 1px solid rgba(31,66,54,0.08);
       background: var(--bg);
     }
+
     .main-nav a {
       margin: 0 20px;
       text-transform: uppercase;
@@ -62,11 +65,9 @@
       letter-spacing: 0.15em;
       color: var(--text-main);
     }
+
     .main-nav a:hover { color: var(--gold); }
-    .main-nav a.active-link {
-      color: var(--gold);
-      border-bottom: 1px solid var(--gold);
-    }
+    .main-nav a.active-link { color: var(--gold); border-bottom: 1px solid var(--gold); }
 
     /* ── BUTTONS ── */
     .btn {
@@ -82,11 +83,10 @@
       transition: var(--transition);
       font-family: var(--font-serif);
     }
-    .btn:hover { background: var(--pine); color: var(--bg); }
 
+    .btn:hover { background: var(--pine); color: var(--bg); }
     .btn-gold { border-color: var(--gold); color: var(--gold); }
     .btn-gold:hover { background: var(--gold); color: white; }
-
     .btn-pine-fill { background: var(--pine); color: var(--bg); border-color: var(--pine); }
     .btn-pine-fill:hover { background: var(--pine-deep); border-color: var(--pine-deep); }
 
@@ -94,7 +94,7 @@
     .hero {
       padding: 7rem 2rem 6rem;
       text-align: center;
-      background: var(--bg);
+      background: var(--pine);
       position: relative;
       overflow: hidden;
     }
@@ -103,7 +103,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(201,169,97,0.08) 0%, transparent 70%);
+      background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(201,169,97,0.1) 0%, transparent 70%);
       pointer-events: none;
     }
 
@@ -115,24 +115,25 @@
       margin-bottom: 2rem;
       opacity: 0;
       animation: fadeUp 0.9s 0.2s forwards;
+      position: relative;
+      z-index: 1;
     }
 
     .hero h1 {
       font-size: clamp(2.2rem, 5vw, 3.8rem);
       font-weight: 400;
-      color: var(--pine);
+      color: var(--cream);
       line-height: 1.25;
       max-width: 820px;
       margin: 0 auto 1.5rem;
       letter-spacing: -0.01em;
       opacity: 0;
       animation: fadeUp 1s 0.4s forwards;
+      position: relative;
+      z-index: 1;
     }
 
-    .hero h1 em {
-      font-style: italic;
-      color: var(--gold);
-    }
+    .hero h1 em { font-style: italic; color: var(--gold); }
 
     .hero-rule {
       width: 50px;
@@ -141,17 +142,21 @@
       margin: 2rem auto;
       opacity: 0;
       animation: fadeUp 0.8s 0.65s forwards;
+      position: relative;
+      z-index: 1;
     }
 
     .hero-sub {
       font-size: clamp(1rem, 2vw, 1.2rem);
-      color: var(--text-light);
-      max-width: 540px;
+      color: rgba(253,250,245,0.75);
+      max-width: 580px;
       margin: 0 auto 3rem;
       line-height: 1.85;
       font-style: italic;
       opacity: 0;
       animation: fadeUp 0.9s 0.8s forwards;
+      position: relative;
+      z-index: 1;
     }
 
     .hero-cta {
@@ -161,29 +166,34 @@
       gap: 1rem;
       justify-content: center;
       flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
     }
 
     /* ── PHILOSOPHY BAR ── */
     .philosophy-bar {
-      background: var(--pine);
+      background: var(--bg);
       padding: 3.5rem 2rem;
       text-align: center;
+      border-bottom: 1px solid rgba(31,66,54,0.08);
     }
+
     .philosophy-bar p {
       font-size: clamp(1.1rem, 2.2vw, 1.55rem);
       font-style: italic;
-      color: rgba(253,250,245,0.88);
+      color: var(--text-light);
       max-width: 860px;
       margin: 0 auto;
       line-height: 1.75;
     }
+
     .philosophy-bar strong {
       font-style: normal;
-      color: var(--gold);
+      color: var(--pine);
       font-weight: 400;
     }
 
-    /* ── SPLIT: WORLD ── */
+    /* ── WORLD SPLIT ── */
     .world-split {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -195,13 +205,16 @@
       overflow: hidden;
       background: var(--cream-dark);
     }
+
     .world-image img {
-      width: 100%; height: 100%;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       object-position: center top;
       display: block;
       transition: transform 1.2s ease;
     }
+
     .world-image:hover img { transform: scale(1.04); }
 
     .world-text {
@@ -218,6 +231,7 @@
       letter-spacing: 0.25em;
       color: var(--gold);
       margin-bottom: 1.25rem;
+      display: block;
     }
 
     .world-text h2 {
@@ -231,11 +245,7 @@
 
     .world-text h2 em { font-style: italic; color: var(--gold); }
 
-    .gold-rule {
-      width: 36px; height: 1px;
-      background: var(--gold);
-      margin: 1.5rem 0;
-    }
+    .gold-rule { width: 36px; height: 1px; background: var(--gold); margin: 1.5rem 0; }
 
     .world-text p {
       font-size: 1rem;
@@ -245,23 +255,25 @@
       max-width: 36em;
     }
 
-    /* ── THREE TYPES ── */
-    .three-types {
+    /* ── THREE WOMEN ── */
+    .three-women {
       padding: 8rem 2rem;
       text-align: center;
       background: var(--bg);
     }
 
-    .three-types h2 {
+    .three-women h2 {
       font-size: clamp(1.8rem, 3.5vw, 2.8rem);
       font-weight: 400;
       color: var(--pine);
       max-width: 640px;
-      margin: 0 auto 1rem;
+      margin: 1rem auto 1rem;
       line-height: 1.3;
     }
 
-    .three-types .intro-p {
+    .three-women h2 em { font-style: italic; color: var(--gold); }
+
+    .three-women .intro-p {
       font-size: 1.05rem;
       color: var(--text-light);
       font-style: italic;
@@ -270,7 +282,7 @@
       line-height: 1.8;
     }
 
-    .types-grid {
+    .women-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       max-width: var(--max-w);
@@ -278,16 +290,24 @@
       border: 1px solid rgba(31,66,54,0.1);
     }
 
-    .type-card {
+    .woman-card {
       padding: 3.5rem 2.5rem;
       border-right: 1px solid rgba(31,66,54,0.1);
       text-align: left;
       transition: background 0.4s ease;
     }
-    .type-card:last-child { border-right: none; }
-    .type-card:hover { background: var(--cream); }
 
-    .type-num {
+    .woman-card:last-child { border-right: none; }
+    .woman-card:hover { background: var(--cream); }
+
+    .woman-card.is-you {
+      background: var(--pine);
+      position: relative;
+    }
+
+    .woman-card.is-you:hover { background: var(--pine-deep); }
+
+    .woman-num {
       font-size: 3.5rem;
       color: rgba(201,169,97,0.2);
       line-height: 1;
@@ -295,34 +315,30 @@
       font-style: italic;
     }
 
-    .type-card h3 {
+    .woman-card.is-you .woman-num { color: rgba(201,169,97,0.15); }
+
+    .woman-card h3 {
       font-size: 1.15rem;
       font-weight: 400;
       color: var(--pine);
-      text-transform: none;
-      letter-spacing: 0;
       margin-bottom: 1rem;
     }
 
-    .type-card p {
+    .woman-card.is-you h3 { color: var(--gold); }
+
+    .woman-card p {
       font-size: 0.95rem;
       color: var(--text-light);
       line-height: 1.8;
-      max-width: 100%;
     }
 
-    .type-card.is-you {
-      background: var(--pine);
-      position: relative;
-    }
-    .type-card.is-you:hover { background: var(--pine-deep); }
-    .type-card.is-you .type-num { color: rgba(201,169,97,0.3); }
-    .type-card.is-you h3 { color: var(--gold); }
-    .type-card.is-you p { color: rgba(253,250,245,0.8); }
-    .type-card.is-you::after {
+    .woman-card.is-you p { color: rgba(253,250,245,0.75); }
+
+    .woman-card.is-you::after {
       content: 'This is you';
       position: absolute;
-      bottom: 2rem; right: 2rem;
+      bottom: 2rem;
+      right: 2rem;
       font-size: 0.65rem;
       text-transform: uppercase;
       letter-spacing: 0.25em;
@@ -331,33 +347,36 @@
       font-style: italic;
     }
 
-    .types-note {
-      font-size: 1rem;
+    .woman-tag {
+      display: inline-block;
+      margin-top: 1.5rem;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--gold);
       font-style: italic;
-      color: var(--text-light);
-      max-width: 440px;
-      margin: 0 auto;
-      line-height: 1.8;
     }
 
-    /* ── BOOK SECTION ── */
-    .book-section {
+    .woman-card.is-you .woman-tag { color: rgba(201,169,97,0.7); }
+
+    /* ── ECOSYSTEM ── */
+    .ecosystem {
       display: grid;
       grid-template-columns: 1fr 1fr;
       background: var(--pine);
       min-height: 580px;
     }
 
-    .book-text {
+    .ecosystem-text {
       padding: 7rem 5rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
 
-    .book-text .section-label { color: rgba(201,169,97,0.8); }
+    .ecosystem-text .section-label { color: rgba(201,169,97,0.8); }
 
-    .book-text h2 {
+    .ecosystem-text h2 {
       font-size: clamp(1.8rem, 3vw, 2.6rem);
       font-weight: 400;
       color: var(--cream);
@@ -365,120 +384,148 @@
       margin-bottom: 1.5rem;
     }
 
-    .book-text h2 em { color: var(--gold); font-style: italic; }
+    .ecosystem-text h2 em { color: var(--gold); font-style: italic; }
+    .ecosystem-text .gold-rule { background: rgba(201,169,97,0.4); }
 
-    .book-text .gold-rule { background: rgba(201,169,97,0.4); }
-
-    .book-text p {
+    .ecosystem-text p {
       font-size: 1rem;
-      color: rgba(253,250,245,0.75);
+      color: rgba(253,250,245,0.7);
+      line-height: 1.85;
+      margin-bottom: 0.75rem;
+      max-width: 36em;
+    }
+
+    .ecosystem-grid-panel {
+      background: var(--pine-deep);
+      padding: 5rem 3.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2rem;
+    }
+
+    .eco-item {
+      border-bottom: 1px solid rgba(201,169,97,0.1);
+      padding-bottom: 2rem;
+    }
+
+    .eco-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+    .eco-num {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: rgba(201,169,97,0.5);
+      margin-bottom: 0.5rem;
+    }
+
+    .eco-item h3 {
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+      font-style: italic;
+    }
+
+    .eco-item p {
+      font-size: 0.85rem;
+      color: rgba(253,250,245,0.55);
+      line-height: 1.7;
+    }
+
+    .eco-link {
+      display: inline-block;
+      margin-top: 0.75rem;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: rgba(201,169,97,0.6);
+      border-bottom: 1px solid rgba(201,169,97,0.2);
+      padding-bottom: 1px;
+      transition: color 0.3s, border-color 0.3s;
+    }
+
+    .eco-link:hover { color: var(--gold); border-color: var(--gold); }
+
+    /* ── DR TMAC SPLIT ── */
+    .dr-tmac {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 600px;
+    }
+
+    .tmac-image {
+      position: relative;
+      overflow: hidden;
+      background: var(--cream-dark);
+    }
+
+    .tmac-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+      transition: transform 1.2s ease;
+    }
+
+    .tmac-image:hover img { transform: scale(1.04); }
+
+    .tmac-text {
+      background: var(--cream);
+      padding: 6rem 4.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .tmac-text h2 {
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 400;
+      color: var(--pine);
+      line-height: 1.25;
+      margin-bottom: 1.5rem;
+    }
+
+    .tmac-text h2 em { font-style: italic; color: var(--gold); }
+
+    .tmac-text p {
+      font-size: 1rem;
+      color: var(--text-light);
       line-height: 1.85;
       margin-bottom: 1rem;
       max-width: 36em;
     }
 
-    .book-ascend {
-      margin-top: 1.5rem;
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      color: rgba(201,169,97,0.6);
-    }
-    .book-ascend span { color: var(--gold); }
+    .tmac-text p strong { font-weight: 400; color: var(--pine); }
 
-    .book-visual {
+    .cred-list {
+      list-style: none;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #152e25 0%, #1f4236 100%);
-      padding: 4rem;
+      flex-direction: column;
+      gap: 0.65rem;
+      margin: 1.5rem 0;
+    }
+
+    .cred-list li {
+      font-size: 0.88rem;
+      color: var(--text-light);
+      padding-left: 1.5rem;
       position: relative;
-      overflow: hidden;
+      line-height: 1.5;
     }
 
-    .book-visual::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(201,169,97,0.1) 0%, transparent 70%);
-    }
-
-    .book-cover {
-      position: relative;
-      z-index: 1;
-      width: 260px;
-      filter: drop-shadow(0 30px 50px rgba(0,0,0,0.45));
-      transition: transform 0.6s ease;
-      transform: perspective(900px) rotateY(-6deg);
-    }
-    .book-cover:hover { transform: perspective(900px) rotateY(0deg); }
-
-    /* ── CIRCLE SECTION ── */
-    .circle-section {
-      padding: 9rem 2rem;
-      text-align: center;
-      background: var(--cream);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .circle-section::before {
+    .cred-list li::before {
       content: '';
       position: absolute;
-      top: -250px; left: 50%; transform: translateX(-50%);
-      width: 700px; height: 700px;
-      border-radius: 50%;
-      border: 1px solid rgba(201,169,97,0.12);
-      pointer-events: none;
+      left: 0;
+      top: 0.65em;
+      width: 6px;
+      height: 1px;
+      background: var(--gold);
     }
 
-    .circle-section h2 {
-      font-size: clamp(2rem, 3.8vw, 3rem);
-      font-weight: 400;
-      color: var(--pine);
-      max-width: 620px;
-      margin: 1rem auto 1.5rem;
-      line-height: 1.25;
-    }
-    .circle-section h2 em { color: var(--gold); font-style: italic; }
-
-    .circle-section > p {
-      font-size: 1.05rem;
-      font-style: italic;
-      color: var(--text-light);
-      max-width: 500px;
-      margin: 0 auto 3rem;
-      line-height: 1.85;
-    }
-
-    .circle-qualities {
-      display: flex;
-      gap: 2.5rem;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 3.5rem;
-    }
-
-    .quality {
-      font-size: 0.68rem;
-      text-transform: uppercase;
-      letter-spacing: 0.25em;
-      color: var(--text-light);
-    }
-    .quality::before {
-      content: '~ ';
-      color: var(--gold);
-    }
-
-    .circle-note {
-      margin-top: 2rem;
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      color: var(--text-light);
-      font-style: italic;
-    }
-
-    /* ── QUOTE SECTION ── */
+    /* ── QUOTE ── */
     .quote-section {
       padding: 7rem 2rem;
       text-align: center;
@@ -510,6 +557,178 @@
       font-style: normal;
     }
 
+    /* ── CIRCLE ── */
+    .circle-section {
+      padding: 9rem 2rem;
+      text-align: center;
+      background: var(--cream);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .circle-section::before {
+      content: '';
+      position: absolute;
+      top: -250px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,169,97,0.12);
+      pointer-events: none;
+    }
+
+    .circle-section h2 {
+      font-size: clamp(2rem, 3.8vw, 3rem);
+      font-weight: 400;
+      color: var(--pine);
+      max-width: 620px;
+      margin: 1rem auto 1.5rem;
+      line-height: 1.25;
+    }
+
+    .circle-section h2 em { color: var(--gold); font-style: italic; }
+
+    .circle-section > p {
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--text-light);
+      max-width: 500px;
+      margin: 0 auto 3rem;
+      line-height: 1.85;
+    }
+
+    .circle-qualities {
+      display: flex;
+      gap: 2.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 3.5rem;
+    }
+
+    .quality {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      color: var(--text-light);
+    }
+
+    .quality::before { content: '~ '; color: var(--gold); }
+
+    .circle-note {
+      margin-top: 2rem;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    /* ── COMPLITRST BRIDGE ── */
+    .complitrst-bridge {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--pine-deep);
+      min-height: 420px;
+    }
+
+    .bridge-text {
+      padding: 6rem 5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .bridge-text .section-label { color: rgba(201,169,97,0.8); }
+
+    .bridge-text h2 {
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 400;
+      color: var(--cream);
+      line-height: 1.25;
+      margin-bottom: 1.5rem;
+    }
+
+    .bridge-text h2 em { color: var(--gold); font-style: italic; }
+
+    .bridge-text p {
+      font-size: 1rem;
+      color: rgba(253,250,245,0.65);
+      line-height: 1.85;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+
+    .bridge-visual {
+      background: var(--pine);
+      padding: 6rem 5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bridge-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(201,169,97,0.07) 0%, transparent 70%);
+    }
+
+    .bridge-stat {
+      margin-bottom: 2.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .bridge-stat:last-child { margin-bottom: 0; }
+
+    .bridge-stat-num {
+      font-size: 2.5rem;
+      font-weight: 400;
+      color: var(--gold);
+      font-style: italic;
+      line-height: 1;
+      margin-bottom: 0.35rem;
+    }
+
+    .bridge-stat-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: rgba(253,250,245,0.4);
+    }
+
+    /* ── SUBSTACK ── */
+    .substack-section {
+      padding: 6rem 2rem;
+      text-align: center;
+      background: var(--bg);
+      border-top: 1px solid rgba(31,66,54,0.08);
+    }
+
+    .substack-section h2 {
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 400;
+      color: var(--pine);
+      max-width: 540px;
+      margin: 1rem auto 1.5rem;
+      line-height: 1.3;
+    }
+
+    .substack-section h2 em { font-style: italic; color: var(--gold); }
+
+    .substack-section p {
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--text-light);
+      max-width: 480px;
+      margin: 0 auto 3rem;
+      line-height: 1.85;
+    }
+
     /* ── FOOTER ── */
     footer {
       padding: 5rem 2rem;
@@ -522,28 +741,21 @@
     footer .footer-tagline {
       font-style: italic;
       margin-bottom: 1.5rem;
-      color: var(--text-light);
       font-size: 1rem;
     }
 
-    footer .footer-copy {
-      margin-bottom: 1.5rem;
-      font-size: 0.82rem;
-    }
+    footer .footer-copy { margin-bottom: 1.5rem; font-size: 0.82rem; }
 
-    footer a {
-      margin: 0 15px;
-      color: var(--pine);
-      font-size: 0.78rem;
-    }
+    footer a { margin: 0 15px; color: var(--pine); font-size: 0.78rem; }
     footer a:hover { color: var(--gold); }
 
-    /* ── REVEAL ANIMATIONS ── */
+    /* ── ANIMATIONS ── */
     .reveal {
       opacity: 0;
       transform: translateY(28px);
       transition: opacity 0.85s ease-out, transform 0.85s ease-out;
     }
+
     .reveal.active { opacity: 1; transform: translateY(0); }
     .reveal-delay-1 { transition-delay: 0.12s; }
     .reveal-delay-2 { transition-delay: 0.24s; }
@@ -558,27 +770,33 @@
     @media (max-width: 768px) {
       .main-nav a { margin: 0 10px; font-size: 0.7rem; }
 
-      .world-split { grid-template-columns: 1fr; }
-      .world-image { min-height: 55vw; }
-      .world-text { padding: 4rem 1.75rem; }
+      .world-split,
+      .ecosystem,
+      .dr-tmac,
+      .complitrst-bridge { grid-template-columns: 1fr; }
 
-      .types-grid { grid-template-columns: 1fr; }
-      .type-card {
+      .world-image,
+      .tmac-image { min-height: 55vw; }
+
+      .world-text,
+      .tmac-text { padding: 4rem 1.75rem; }
+
+      .ecosystem-text { padding: 4rem 1.75rem; }
+      .ecosystem-grid-panel { padding: 4rem 1.75rem; }
+
+      .bridge-text,
+      .bridge-visual { padding: 4rem 1.75rem; }
+
+      .women-grid { grid-template-columns: 1fr; }
+      .woman-card {
         border-right: none;
         border-bottom: 1px solid rgba(31,66,54,0.1);
       }
-      .type-card:last-child { border-bottom: none; }
-
-      .book-section { grid-template-columns: 1fr; min-height: auto; }
-      .book-text { padding: 4rem 1.75rem; order: 2; }
-      .book-visual { order: 1; min-height: 280px; padding: 3rem; }
-      .book-cover { width: 200px; transform: none; }
+      .woman-card:last-child { border-bottom: none; }
 
       .circle-qualities { flex-direction: column; gap: 1.2rem; }
-
       .hero { padding: 5rem 1.5rem 4rem; }
-
-      .three-types { padding: 5rem 1.5rem; }
+      .three-women { padding: 5rem 1.5rem; }
       .circle-section { padding: 6rem 1.5rem; }
     }
   </style>
@@ -587,182 +805,248 @@
 
   <!-- HEADER -->
   <div class="header-banner">
-    <img src="tmac-logo.png" alt="TMac Inspired Logo" class="logo">
+    <img src="tmac-logo.png" alt="TMac Inspired Logo" class="logo" />
   </div>
 
   <nav class="main-nav">
     <a href="index.html" class="active-link">Home</a>
     <a href="about.html">About</a>
-    <a href="#book">The Book</a>
     <a href="circle.html">The Circle</a>
-    <a href="https://tmacmastermind.com/tee-room.html">Tee Room</a>
+    <a href="https://tmacmastermind.com/tee-room.html">The Room</a>
+    <a href="https://www.complitrst.com">CompliTrst</a>
     <a href="mailto:support@tmacinspired.com">Contact</a>
   </nav>
 
   <!-- HERO -->
   <section class="hero">
-    <p class="hero-eyebrow">TMac Inspired™ &nbsp; · &nbsp; The Fairway Life</p>
+    <p class="hero-eyebrow">TMac Inspired&trade; &nbsp; &middot; &nbsp; Dr. Tasha &ldquo;TMac&rdquo; McCray</p>
     <h1>
-      You built the career.<br>
-      Now design the life<br>
-      <em>you actually want to live.</em>
+      You do not want to work in a group home.<br>
+      You want to own <em>the business that runs one.</em>
     </h1>
     <div class="hero-rule"></div>
     <p class="hero-sub">
-      For the accomplished woman who has done the work and is finally
-      ready for the freedom, the joy, the legacy, and the fairway.
+      That is a completely different ambition. And it requires a completely different guide.
     </p>
     <div class="hero-cta">
-      <a href="https://www.tmacinspired.com/fairway-to-wealth" class="btn btn-pine-fill">Begin With the Book</a>
-      <a href="#world" class="btn btn-gold">Enter the World</a>
+      <a href="#ecosystem" class="btn btn-gold">See How I Can Help</a>
+      <a href="https://www.complitrst.com" class="btn" style="border-color:rgba(253,250,245,0.3); color:rgba(253,250,245,0.7);">Start with CompliTrst</a>
     </div>
   </section>
 
   <!-- PHILOSOPHY BAR -->
   <div class="philosophy-bar">
     <p>
-      "I don't teach balance. I teach <strong>integration.</strong>
-      Wealth, health, love, leisure, and purpose &mdash; not by negotiating between them,
-      but by <strong>refusing to accept the lie</strong> that you must choose."
+      She does not need someone who <strong>runs</strong> an adult day care.
+      She needs someone who has <strong>built the business that owns one.</strong>
+      That is a completely different thing.
     </p>
   </div>
 
   <!-- WORLD SPLIT -->
   <section class="world-split" id="world">
     <div class="world-image">
-      <img src="TMac-Benny-Golf.png" alt="TMac on the fairway" loading="lazy">
+      <img src="tmac_briefcase.png" alt="Dr. Tasha TMac McCray" loading="lazy" />
     </div>
     <div class="world-text">
-      <p class="section-label reveal">The Philosophy</p>
-      <h2 class="reveal reveal-delay-1">
-        The fairway is not just a game.<br>
-        <em>It is a posture.</em>
+      <span class="section-label reveal">The Positioning</span>
+      <h2 class="reveal">
+        Most people in this space teach operations.<br>
+        <em>Dr. TMac teaches ownership.</em>
       </h2>
-      <div class="gold-rule reveal reveal-delay-1"></div>
-      <p class="reveal reveal-delay-2">
-        Dr. Tasha "TMac" McCray spent 31 years in healthcare and 29 years building businesses.
-        Three years ago she walked onto a golf course for the first time and within that time,
-        achieved two holes-in-one and became an active competitor across Florida leagues.
+      <div class="gold-rule reveal"></div>
+      <p class="reveal">
+        There is a difference between knowing how to run a facility and knowing how to structure the business, navigate healthcare compliance, build the real estate underneath it, and create the systems that let it run without you.
       </p>
-      <p class="reveal reveal-delay-2">
-        But the game was never really about golf. It was about learning that mastery is built
-        through repetition, excellence needs no apology, and the next chapter of a woman's life
-        can be the most expansive one yet.
+      <p class="reveal">
+        Dr. Tasha &ldquo;TMac&rdquo; McCray has spent 32 years in healthcare, navigating compliance at every level. She has built and owned group homes. She holds her ALF certification and her PhD. She built software because the tool she needed did not exist.
       </p>
-      <p class="reveal reveal-delay-3">
-        This world was built for women who are done negotiating with the life they want.
+      <p class="reveal">
+        This world was built for the woman who is done negotiating with what she can have.
       </p>
     </div>
   </section>
 
-  <!-- THREE TYPES -->
-  <section class="three-types">
-    <p class="section-label reveal">Who Arrives Here</p>
-    <h2 class="reveal">Three kinds of women find this world.</h2>
-    <p class="intro-p reveal">Only one of them is ready to live inside it.</p>
+  <!-- THREE WOMEN -->
+  <section class="three-women">
+    <span class="section-label reveal">Who Arrives Here</span>
+    <h2 class="reveal">Three women find this world.<br><em>One of them is ready to build.</em></h2>
+    <p class="intro-p reveal">Only one of them is ready to own the business, not just run the facility.</p>
 
-    <div class="types-grid">
-      <div class="type-card reveal">
-        <div class="type-num">I</div>
-        <h3>She passes through.</h3>
-        <p>
-          She finds this world beautiful. She admires it, saves it, returns occasionally.
-          She is not yet ready, and that is honored.
-        </p>
+    <div class="women-grid">
+      <div class="woman-card reveal">
+        <div class="woman-num">I</div>
+        <h3>She knows she wants something in healthcare.</h3>
+        <p>She has seen the need. She has felt the pull. She has not yet decided between an adult day care, a group home, or an assisted living facility. She is in the right place. The roadmap starts here.</p>
+        <span class="woman-tag">Start with CompliTrst</span>
       </div>
-      <div class="type-card reveal reveal-delay-1">
-        <div class="type-num">II</div>
-        <h3>She admires from a distance.</h3>
-        <p>
-          She wants what she sees here. She is close. Something, timing, permission,
-          clarity, is still forming. She will return.
-        </p>
+      <div class="woman-card reveal reveal-delay-1">
+        <div class="woman-num">II</div>
+        <h3>She has picked her path. Now she needs to build it right.</h3>
+        <p>She knows what she wants to open. She is deep in research. She has questions about licensing, compliance, structure, and what it actually takes to get from here to open. She needs more than information. She needs guidance.</p>
+        <span class="woman-tag">Start with Coaching</span>
       </div>
-      <div class="type-card is-you reveal reveal-delay-2">
-        <div class="type-num">III</div>
-        <h3>She sees herself living here.</h3>
-        <p>
-          She has built something real. She is accomplished, capable, and ready
-          to stop negotiating with the life she wants. She is who this world was designed for.
-        </p>
+      <div class="woman-card is-you reveal reveal-delay-2">
+        <div class="woman-num">III</div>
+        <h3>She is ready to own the business, not just run the facility.</h3>
+        <p>She is not here to create a job for herself. She is here to build a business with real estate underneath it, systems that run without her, and a community of women doing the same. She is who this world was built for.</p>
+        <span class="woman-tag">This is your room</span>
       </div>
-    </div>
-
-    <p class="types-note reveal">
-      If you are the third woman, the door was designed for you.
-      It begins with one book.
-    </p>
-  </section>
-
-  <!-- BOOK SECTION -->
-  <section class="book-section" id="book">
-    <div class="book-text">
-      <p class="section-label">The Entry Point</p>
-      <h2>
-        This is not a book about golf.<br>
-        <em>It is a strategy</em> for entering rooms.
-      </h2>
-      <div class="gold-rule"></div>
-      <p>
-        The rooms where relationships, access, and opportunity are already in motion
-        have a game. The Fairway to Wealth shows you how to play it.
-      </p>
-      <p>
-        Read it. Use it. Move differently.
-      </p>
-      <div style="margin-top: 2rem;">
-        <a href="https://www.tmacinspired.com/fairway-to-wealth" class="btn btn-gold">Get the Book</a>
-      </div>
-      <p class="book-ascend">After the book &nbsp;→&nbsp; <span>The Tee Elite Circle</span></p>
-    </div>
-    <div class="book-visual">
-      <img src="fairway-cover.png" alt="The Fairway to Wealth by Dr. TMac" class="book-cover">
     </div>
   </section>
 
-  <!-- CIRCLE SECTION -->
+  <!-- ECOSYSTEM -->
+  <section class="ecosystem" id="ecosystem">
+    <div class="ecosystem-text">
+      <span class="section-label reveal">The Ecosystem</span>
+      <h2 class="reveal">Four ways Dr. TMac works with the woman <em>building a care business.</em></h2>
+      <div class="gold-rule reveal"></div>
+      <p class="reveal">Each piece of the ecosystem is designed to meet her where she is and take her further than she expected to go. They work individually. They work powerfully together.</p>
+      <div style="margin-top:2rem;" class="reveal">
+        <a href="mailto:support@tmacinspired.com" class="btn btn-gold">Inquire About Coaching</a>
+      </div>
+    </div>
+    <div class="ecosystem-grid-panel">
+      <div class="eco-item reveal">
+        <div class="eco-num">01</div>
+        <h3>CompliTrst</h3>
+        <p>The compliance system built for the woman opening a care facility. State-specific roadmaps, automated policies, audit readiness. All 50 states. Starting at $97/mo.</p>
+        <a href="https://www.complitrst.com" class="eco-link">Explore CompliTrst &rarr;</a>
+      </div>
+      <div class="eco-item reveal reveal-delay-1">
+        <div class="eco-num">02</div>
+        <h3>Coaching</h3>
+        <p>Direct access to Dr. TMac on your specific path. Business structure, licensing, operations, real estate, and the mindset required to build something that lasts.</p>
+        <a href="mailto:support@tmacinspired.com" class="eco-link">Inquire &rarr;</a>
+      </div>
+      <div class="eco-item reveal reveal-delay-2">
+        <div class="eco-num">03</div>
+        <h3>The Tee Elite Circle</h3>
+        <p>The community for accomplished women who are done being the most driven person in the room.</p>
+        <a href="circle.html" class="eco-link">Explore the Circle &rarr;</a>
+      </div>
+      <div class="eco-item reveal reveal-delay-3">
+        <div class="eco-num">04</div>
+        <h3>Real Estate Guidance</h3>
+        <p>The layer most healthcare coaches never touch. The business that owns the facility is only as strong as the real estate strategy underneath it.</p>
+        <a href="mailto:support@tmacinspired.com" class="eco-link">Learn More &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- DR TMAC -->
+  <section class="dr-tmac">
+    <div class="tmac-image">
+      <img src="TMac-Benny-Golf.png" alt="Dr. Tasha TMac McCray" loading="lazy" />
+    </div>
+    <div class="tmac-text">
+      <span class="section-label reveal">About Dr. TMac</span>
+      <h2 class="reveal">She is not teaching theory.<br><em>She is teaching what she built.</em></h2>
+      <div class="gold-rule reveal"></div>
+      <p class="reveal">
+        Dr. Tasha &ldquo;TMac&rdquo; McCray has spent 32 years in healthcare, navigating compliance at every level. She has built and owned group homes. She holds her ALF certification and a PhD. She built CompliTrst because the software she needed did not exist.
+      </p>
+      <p class="reveal">
+        <strong>She is also a real estate investor, a private money lender, a two-time bestselling author, and a competitive golfer with two holes-in-one.</strong>
+      </p>
+      <ul class="cred-list">
+        <li class="reveal">PhD, MSN-Ed, RN</li>
+        <li class="reveal reveal-delay-1">ALF Certified Administrator</li>
+        <li class="reveal reveal-delay-1">32 years in healthcare</li>
+        <li class="reveal reveal-delay-2">Group home owner and operator</li>
+        <li class="reveal reveal-delay-2">Founder of CompliTrst&trade;</li>
+        <li class="reveal reveal-delay-3">Real estate investor and private money lender</li>
+        <li class="reveal reveal-delay-3">2x bestselling author</li>
+      </ul>
+      <div style="margin-top:2rem;" class="reveal">
+        <a href="about.html" class="btn btn-pine-fill">Read the Full Story</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <section class="quote-section">
+    <div class="quote-mark reveal">&ldquo;</div>
+    <blockquote class="reveal">
+      I do not teach balance. I teach integration. You can have the compliant facility, the profitable business, the real estate underneath it, and the life you actually designed. Not by negotiating between them. By refusing to accept that you must choose.
+    </blockquote>
+    <cite class="reveal">Dr. Tasha &ldquo;TMac&rdquo; McCray</cite>
+  </section>
+
+  <!-- CIRCLE -->
   <section class="circle-section" id="circle">
-    <p class="section-label reveal">After the Book</p>
+    <span class="section-label reveal">The Tee Elite Circle</span>
     <h2 class="reveal">
-      The Tee Elite Circle.<br>
-      <em>Not a league. A lifestyle.</em>
+      She stopped being the most accomplished woman in the room.<br>
+      <em>She found her people.</em>
     </h2>
     <p class="reveal">
-      Among women who have already built. Who have stopped apologizing for wanting more.
-      Who understand that the next level requires a different room.
+      For the accomplished woman who has built something real and is tired of rooms that have not kept up. Golf trips. Real conversations. Women who are actually building.
     </p>
     <div class="circle-qualities reveal">
       <span class="quality">Annual Membership</span>
       <span class="quality">Accomplished Women Only</span>
       <span class="quality">Golf as the Vehicle</span>
-      <span class="quality">Freedom - Access - Elevation as the Outcome</span>
+      <span class="quality">Legacy as the Outcome</span>
     </div>
     <a href="circle.html" class="btn btn-pine-fill reveal">Explore the Circle</a>
-    <p class="circle-note reveal">Access begins with The Fairway to Wealth</p>
+    <p class="circle-note reveal">The door was designed for the woman who is ready.</p>
   </section>
 
-  <!-- QUOTE -->
-  <section class="quote-section">
-    <div class="quote-mark reveal">"</div>
-    <blockquote class="reveal">
-      The highest level of this journey is not the transaction.
-      It is residency. Belonging inside a world that continues
-      to shape you long after you arrive.
-    </blockquote>
-    <cite class="reveal">Dr. Tasha "TMac" McCray</cite>
+  <!-- COMPLITRST BRIDGE -->
+  <section class="complitrst-bridge">
+    <div class="bridge-text">
+      <span class="section-label reveal">The Entry Point</span>
+      <h2 class="reveal">
+        Start with compliance.<br>
+        <em>Build toward ownership.</em>
+      </h2>
+      <div class="gold-rule reveal"></div>
+      <p class="reveal">
+        CompliTrst is where most women begin. It solves the compliance wall that stops women from ever opening their facility. From there, the rest of the ecosystem is waiting.
+      </p>
+      <div style="margin-top:1rem;" class="reveal">
+        <a href="https://www.complitrst.com" class="btn btn-gold">Visit CompliTrst</a>
+      </div>
+    </div>
+    <div class="bridge-visual">
+      <div class="bridge-stat reveal">
+        <div class="bridge-stat-num">$97</div>
+        <div class="bridge-stat-label">Starting Per Month &nbsp;&middot;&nbsp; No Contract</div>
+      </div>
+      <div class="bridge-stat reveal reveal-delay-1">
+        <div class="bridge-stat-num">50</div>
+        <div class="bridge-stat-label">States Covered</div>
+      </div>
+      <div class="bridge-stat reveal reveal-delay-2">
+        <div class="bridge-stat-num">100%</div>
+        <div class="bridge-stat-label">Audit Pass Rate</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUBSTACK -->
+  <section class="substack-section">
+    <span class="section-label reveal">The Voice</span>
+    <h2 class="reveal">She writes about what it actually takes <em>to build this.</em></h2>
+    <p class="reveal">
+      Dr. TMac writes on Substack about healthcare entrepreneurship, compliance, real estate strategy, and the business of building a care facility the right way.
+    </p>
+    <a href="https://substack.com/@tmacinspired" class="btn btn-pine-fill reveal">Read on Substack</a>
   </section>
 
   <!-- FOOTER -->
   <footer class="reveal">
-    <div class="container" style="max-width: var(--max-w); margin: 0 auto;">
-      <p class="footer-tagline">"You can have it all."</p>
-      <p class="footer-copy">TMac Inspired™ &copy; 2026</p>
-      <div>
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="terms.html">Terms of Service</a>
-        <a href="https://www.tmacinspired.com/work">Build My System</a>
-        <a href="mailto:support@tmacinspired.com">Contact</a>
-      </div>
+    <p class="footer-tagline">&ldquo;You can have it all.&rdquo;</p>
+    <p class="footer-copy">TMac Inspired&trade; &copy; 2026 &nbsp;&middot;&nbsp; Dr. Tasha McCray, Ph.D.</p>
+    <div>
+      <a href="about.html">About</a>
+      <a href="circle.html">The Circle</a>
+      <a href="https://tmacmastermind.com/tee-room.html">The Room</a>
+      <a href="https://www.complitrst.com">CompliTrst</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="mailto:support@tmacinspired.com">Contact</a>
     </div>
   </footer>
 
