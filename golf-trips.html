@@ -51,8 +51,9 @@
     transition: all 0.2s;
     white-space: nowrap;
   }
-  .trip-btn.active-chicago { background: var(--navy); border-color: var(--sky); color: var(--white); }
+    
   .trip-btn.active-bmwga   { background: var(--purple); border-color: var(--purple); color: var(--white); }
+  .trip-btn.active-chicago { background: var(--navy); border-color: var(--sky); color: var(--white); }
   .trip-btn.active-cabot   { background: var(--gold); border-color: var(--gold); color: var(--dark); }
 
   /* HERO */
@@ -205,13 +206,13 @@
 
 <!-- TRIP SWITCHER -->
 <div class="trip-switcher">
-  <button class="trip-btn active-chicago" onclick="switchTrip('chicago', this)">Tapestry 360 · Chicago · Jun 17–21</button>
-  <button class="trip-btn" onclick="switchTrip('bmwga', this)">BMWGA · Hilton Head · Jun 9–14</button>
+  <button class="trip-btn" onclick="switchTrip('chicago', this)">Tapestry 360 · Chicago · Jun 17–21</button>
+  <button class="trip-btn active-bmwga" onclick="switchTrip('bmwga', this)">BMWGA · Hilton Head · Jun 9–14</button>
   <button class="trip-btn" onclick="switchTrip('cabot', this)">Cabot Cape Breton · Aug 26–30</button>
 </div>
 
 <!-- ===== CHICAGO HERO ===== -->
-<div class="hero hero-chicago active" id="hero-chicago">
+<div class="hero hero-chicago" id="hero-chicago">
   <div class="hero-flag">Tapestry 360 Health · Annual Golf Fundraiser</div>
   <h1>Chicago <em>Illinois</em></h1>
   <p class="hero-sub">Harborside International Golf Center · East Chicago, IL</p>
@@ -221,14 +222,14 @@
     <div class="hero-pill"><span>Tickets</span><strong>2 · $414 paid</strong></div>
   </div>
 </div>
-<nav class="tab-nav tab-nav-chicago active" id="tabnav-chicago">
+<nav class="tab-nav tab-nav-chicago" id="tabnav-chicago">
   <ul>
     <li><button class="active" onclick="showTab('chicago','chicago-overview',this)">Overview</button></li>
     <li><button onclick="showTab('chicago','chicago-itinerary',this)">Itinerary</button></li>
     <li><button onclick="showTab('chicago','chicago-checklist',this)">Checklist</button></li>
   </ul>
 </nav>
-<div class="trip-content active" id="content-chicago">
+<div class="trip-content" id="content-chicago">
 
   <!-- Overview -->
   <div id="chicago-overview" class="section active">
@@ -400,7 +401,7 @@
 </div>
 
 <!-- ===== BMWGA HERO ===== -->
-<div class="hero hero-bmwga" id="hero-bmwga">
+<div class="hero hero-bmwga active" id="hero-bmwga">
   <div class="hero-flag">BMWGA · 26th Annual Tournament</div>
   <h1>Hilton Head <em>Island</em></h1>
   <p class="hero-sub">Port Royal Golf &amp; Racquet Club · South Carolina</p>
@@ -410,14 +411,14 @@
     <div class="hero-pill"><span>Format</span><strong>36-Hole Stroke Play</strong></div>
   </div>
 </div>
-<nav class="tab-nav tab-nav-bmwga" id="tabnav-bmwga">
+<nav class="tab-nav tab-nav-bmwga active" id="tabnav-bmwga">
   <ul>
     <li><button class="active" onclick="showTab('bmwga','bmwga-overview',this)">Overview</button></li>
     <li><button onclick="showTab('bmwga','bmwga-itinerary',this)">Itinerary</button></li>
     <li><button onclick="showTab('bmwga','bmwga-checklist',this)">Checklist</button></li>
   </ul>
 </nav>
-<div class="trip-content" id="content-bmwga">
+<div class="trip-content active" id="content-bmwga">
 
   <div id="bmwga-overview" class="section active">
     <p class="section-title">Tournament at a Glance</p>
@@ -659,8 +660,8 @@
   </div>
 </div>
 
-<div class="footer active" id="footer-chicago">Tapestry 360 Health Golf Fundraiser · Harborside International Golf Center · Chicago, IL · June 17–21, 2026</div>
-<div class="footer" id="footer-bmwga">BMWGA 26th Annual Golf Tournament · Port Royal, Hilton Head Island, SC · June 9–14, 2026</div>
+<div class="footer" id="footer-chicago">Tapestry 360 Health Golf Fundraiser · Harborside International Golf Center · Chicago, IL · June 17–21, 2026</div>
+<div class="footer active" id="footer-bmwga">BMWGA 26th Annual Golf Tournament · Port Royal, Hilton Head Island, SC · June 9–14, 2026</div>
 <div class="footer" id="footer-cabot">2026 Real Women Golf Trip · Cabot Cape Breton · Nova Scotia, Canada · August 26–30</div>
 
 <script>
