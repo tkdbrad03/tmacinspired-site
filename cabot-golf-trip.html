@@ -667,9 +667,21 @@ function updateProgress() {
   const pct = Math.round((checked.length / all.length) * 100);
   document.getElementById('progress-bar').style.width = pct + '%';
   document.getElementById('progress-label').textContent = checked.length + ' of ' + all.length + ' items complete';
+  // Save state
+  const state = {};
+  all.forEach((cb, i) => state[i] = cb.checked);
+  localStorage.setItem('tripChecklist', JSON.stringify(state));
 }
 
-updateProgress();
+function loadChecks() {
+  const state = JSON.parse(localStorage.getItem('tripChecklist') || '{}');
+  const all = document.querySelectorAll('#checklist input[type="checkbox"]');
+  all.forEach((cb, i) => { if (state[i]) cb.checked = true; });
+  updateProgress();
+}
+
+loadChecks();
 </script>
+
 </body>
 </html>
