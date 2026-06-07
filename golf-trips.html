@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My 2026 Golf Trips</title>
+<title>Our 2026 Golf Trips</title>
+<link rel="icon" type="image/png" href="our-golf-trips-favicon.png">
+<link rel="apple-touch-icon" href="our-golf-trips-favicon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Our 2026 Golf Trips">
+<meta name="theme-color" content="#ffffff">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -22,36 +28,12 @@
     --muted: #7a7a6a;
     --white: #ffffff;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
 
   /* TRIP SWITCHER */
-  .trip-switcher {
-    background: var(--dark);
-    padding: 14px 16px;
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-    flex-wrap: wrap;
-    position: sticky;
-    top: 0;
-    z-index: 200;
-  }
-  .trip-btn {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.15);
-    color: rgba(255,255,255,0.55);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    padding: 9px 18px;
-    border-radius: 24px;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
-    
+  .trip-switcher { background: var(--dark); padding: 14px 16px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; position: sticky; top: 0; z-index: 200; }
+  .trip-btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.55); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; padding: 9px 18px; border-radius: 24px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
   .trip-btn.active-bmwga   { background: var(--purple); border-color: var(--purple); color: var(--white); }
   .trip-btn.active-chicago { background: var(--navy); border-color: var(--sky); color: var(--white); }
   .trip-btn.active-cabot   { background: var(--gold); border-color: var(--gold); color: var(--dark); }
@@ -62,17 +44,8 @@
   .hero-chicago { background: linear-gradient(160deg, #040d1a 0%, var(--navy) 55%, var(--navy-light) 100%); }
   .hero-bmwga   { background: linear-gradient(160deg, #1a1020 0%, var(--purple) 60%, var(--purple-light) 100%); }
   .hero-cabot   { background: linear-gradient(160deg, #1a0010 0%, #c0007a 60%, #d4409a 100%); }
-  .hero::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    pointer-events: none;
-  }
-  .hero-flag {
-    display: inline-block;
-    font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase;
-    padding: 6px 16px; border-radius: 20px; margin-bottom: 18px;
-  }
+  .hero::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); pointer-events: none; }
+  .hero-flag { display: inline-block; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; padding: 6px 16px; border-radius: 20px; margin-bottom: 18px; }
   .hero-chicago .hero-flag { background: rgba(74,144,196,0.3); border: 1px solid rgba(74,144,196,0.5); color: #a8d4f0; }
   .hero-bmwga .hero-flag   { background: rgba(255,255,255,0.15); color: var(--white); }
   .hero-cabot .hero-flag   { background: var(--gold); color: var(--dark); }
@@ -81,24 +54,35 @@
   .hero-chicago h1 em { color: #a8d4f0; }
   .hero-bmwga h1 em   { color: #d4b8ff; }
   .hero-cabot h1 em   { color: var(--gold-light); }
-  .hero-sub { font-size: 14px; opacity: 0.7; letter-spacing: 0.5px; margin-bottom: 22px; }
-  .hero-meta { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+  .hero-sub { font-size: 14px; opacity: 0.7; letter-spacing: 0.5px; margin-bottom: 16px; }
+  .hero-meta { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
   .hero-pill { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 8px 14px; font-size: 12px; backdrop-filter: blur(4px); }
   .hero-pill span { display: block; font-size: 10px; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
   .hero-chicago .hero-pill strong { color: #a8d4f0; font-size: 14px; }
   .hero-bmwga .hero-pill strong   { color: #d4b8ff; font-size: 14px; }
   .hero-cabot .hero-pill strong   { color: var(--gold-light); font-size: 14px; }
 
+  /* COUNTDOWN */
+  .countdown-bar { display: flex; justify-content: center; gap: 12px; margin-top: 4px; }
+  .countdown-unit { text-align: center; }
+  .countdown-num { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; line-height: 1; }
+  .countdown-lbl { font-size: 10px; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+  .countdown-sep { font-size: 24px; opacity: 0.4; align-self: flex-start; padding-top: 4px; }
+
+  /* WEATHER */
+  .weather-strip { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 16px 20px 0; }
+  .weather-card { background: var(--white); border-radius: 12px; padding: 10px 14px; text-align: center; min-width: 72px; }
+  .weather-day { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 4px; }
+  .weather-icon { font-size: 20px; margin-bottom: 2px; }
+  .weather-temp { font-size: 13px; font-weight: 600; color: var(--dark); }
+  .weather-desc { font-size: 10px; color: var(--muted); }
+  .weather-note { text-align: center; font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 8px; font-style: italic; }
+
   /* TAB NAV */
   .tab-nav { background: var(--white); border-bottom: 2px solid #e8e2d8; overflow-x: auto; -webkit-overflow-scrolling: touch; display: none; }
   .tab-nav.active { display: block; }
   .tab-nav ul { list-style: none; display: flex; min-width: max-content; padding: 0 16px; }
-  .tab-nav button {
-    background: none; border: none; cursor: pointer;
-    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; color: var(--muted);
-    padding: 14px 20px; border-bottom: 3px solid transparent; margin-bottom: -2px;
-    white-space: nowrap; transition: color 0.2s, border-color 0.2s;
-  }
+  .tab-nav button { background: none; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; color: var(--muted); padding: 14px 20px; border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }
   .tab-nav-chicago button.active { color: var(--navy); border-bottom-color: var(--sky); }
   .tab-nav-bmwga button.active   { color: var(--purple); border-bottom-color: var(--purple); }
   .tab-nav-cabot button.active   { color: var(--green); border-bottom-color: var(--green); }
@@ -109,22 +93,14 @@
   .section { display: none; padding: 28px 20px 60px; max-width: 680px; margin: 0 auto; }
   .section.active { display: block; animation: fadeUp 0.3s ease; }
   @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-
   .section-title { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--dark); margin-bottom: 4px; }
   .section-subtitle { font-size: 13px; color: var(--muted); margin-bottom: 24px; font-style: italic; }
 
   /* TIMELINE */
   .timeline { display: flex; flex-direction: column; }
   .timeline-item { display: flex; gap: 16px; position: relative; }
-  .timeline-item:not(:last-child)::after {
-    content: ''; position: absolute; left: 19px; top: 40px; bottom: -8px; width: 2px;
-    background: linear-gradient(to bottom, var(--tl-color, #ccc), transparent);
-  }
-  .timeline-dot {
-    width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 700; color: white; margin-top: 2px;
-  }
+  .timeline-item:not(:last-child)::after { content: ''; position: absolute; left: 19px; top: 40px; bottom: -8px; width: 2px; background: linear-gradient(to bottom, var(--tl-color, #ccc), transparent); }
+  .timeline-dot { width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: white; margin-top: 2px; }
   .chicago-dot { background: var(--navy); border: 3px solid var(--sky); --tl-color: var(--sky); }
   .bmwga-dot   { background: var(--purple); border: 3px solid #c4a0ff; --tl-color: #c4a0ff; }
   .cabot-dot   { background: var(--green); border: 3px solid var(--gold); --tl-color: var(--gold); }
@@ -135,21 +111,14 @@
   .cabot-time   { color: var(--gold); }
   .timeline-label { font-weight: 600; font-size: 15px; color: var(--dark); margin-bottom: 3px; }
   .timeline-note { font-size: 13px; color: var(--muted); line-height: 1.5; }
-
   .day-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; }
   .chicago-day { color: var(--sky); }
   .bmwga-day   { color: var(--purple-light); }
   .cabot-day   { color: var(--gold); }
   hr.divider { border: none; border-top: 1px solid #e0d8cc; margin: 28px 0; }
 
-  /* FLIGHT CARD */
-  .flight-card {
-    background: var(--white);
-    border: 1px solid #e8e2d8;
-    border-radius: 14px;
-    padding: 18px 20px;
-    margin-bottom: 16px;
-  }
+  /* CARDS */
+  .flight-card { background: var(--white); border: 1px solid #e8e2d8; border-radius: 14px; padding: 18px 20px; margin-bottom: 16px; }
   .flight-card-header { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--sky); margin-bottom: 12px; }
   .flight-route { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
   .flight-airport { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--dark); }
@@ -160,32 +129,36 @@
   .flight-seats { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
   .seat-badge { background: var(--navy); color: white; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 6px; }
 
-  /* OVERVIEW */
   .overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
   .overview-card { background: var(--white); border: 1px solid #e8e2d8; border-radius: 14px; padding: 16px; text-align: center; }
   .overview-card .oc-val { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 700; color: var(--dark); }
   .overview-card .oc-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 3px; }
+
   .info-card { background: var(--white); border: 1px solid #e8e2d8; border-radius: 14px; padding: 18px; margin-bottom: 14px; }
   .info-card h3 { font-size: 14px; font-weight: 600; color: var(--dark); margin-bottom: 8px; }
   .info-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* RESERVATION CARD */
+  .res-card { background: var(--white); border: 1px solid #e8e2d8; border-radius: 14px; padding: 18px; margin-bottom: 14px; border-left: 4px solid var(--purple); }
+  .res-card.chicago-accent { border-left-color: var(--sky); }
+  .res-card.cabot-accent { border-left-color: var(--gold); }
+  .res-card h3 { font-size: 14px; font-weight: 600; color: var(--dark); margin-bottom: 10px; }
+  .res-detail { display: flex; justify-content: space-between; font-size: 13px; padding: 5px 0; border-bottom: 1px solid #f0ebe2; }
+  .res-detail:last-child { border-bottom: none; }
+  .res-detail span { color: var(--muted); }
+  .res-detail strong { color: var(--dark); }
+  .res-placeholder { font-size: 13px; color: var(--muted); font-style: italic; }
 
   /* CHECKLIST */
   .checklist-group { margin-bottom: 28px; }
   .checklist-group h3 { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--dark); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #e0d8cc; }
   .check-item { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; border-radius: 8px; padding: 9px 8px; margin: 0 -8px; transition: background 0.15s; }
   .check-item:hover { background: rgba(0,0,0,0.03); }
-  .check-item input[type="checkbox"] {
-    appearance: none; -webkit-appearance: none;
-    width: 20px; height: 20px; border: 2px solid #c5bfb0; border-radius: 5px;
-    flex-shrink: 0; margin-top: 1px; cursor: pointer; transition: all 0.2s; position: relative;
-  }
+  .check-item input[type="checkbox"] { appearance: none; -webkit-appearance: none; width: 20px; height: 20px; border: 2px solid #c5bfb0; border-radius: 5px; flex-shrink: 0; margin-top: 1px; cursor: pointer; transition: all 0.2s; position: relative; }
   .chicago-check input[type="checkbox"]:checked { background: var(--navy); border-color: var(--navy); }
   .bmwga-check input[type="checkbox"]:checked   { background: var(--purple); border-color: var(--purple); }
   .cabot-check input[type="checkbox"]:checked   { background: var(--green); border-color: var(--green); }
-  .check-item input[type="checkbox"]:checked::after {
-    content: ''; position: absolute; left: 5px; top: 2px;
-    width: 5px; height: 9px; border: 2px solid white; border-top: none; border-left: none; transform: rotate(45deg);
-  }
+  .check-item input[type="checkbox"]:checked::after { content: ''; position: absolute; left: 5px; top: 2px; width: 5px; height: 9px; border: 2px solid white; border-top: none; border-left: none; transform: rotate(45deg); }
   .check-label { font-size: 14px; color: var(--text); line-height: 1.4; user-select: none; }
   .check-label small { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
   .check-item input:checked + .check-label { color: var(--muted); text-decoration: line-through; }
@@ -197,6 +170,8 @@
   .cabot-progress   { background: linear-gradient(90deg, var(--green), var(--gold)); }
 
   .motto-card { background: var(--white); border: 1px solid #e8e2d8; border-radius: 14px; padding: 18px 20px; margin-bottom: 20px; border-left: 4px solid var(--purple); font-family: 'Playfair Display', serif; font-style: italic; font-size: 15px; color: var(--dark); line-height: 1.6; }
+  .reset-btn { background: none; border: 1px solid #e0d8cc; color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 12px; padding: 6px 16px; border-radius: 20px; cursor: pointer; margin-bottom: 20px; transition: all 0.2s; }
+  .reset-btn:hover { border-color: #c5bfb0; color: var(--text); }
 
   .footer { text-align: center; padding: 24px 20px; font-size: 12px; color: #b0aa9a; display: none; }
   .footer.active { display: block; }
@@ -204,203 +179,13 @@
 </head>
 <body>
 
-<!-- TRIP SWITCHER -->
 <div class="trip-switcher">
   <button class="trip-btn active-bmwga" onclick="switchTrip('bmwga', this)">BMWGA · Hilton Head · Jun 9–14</button>
   <button class="trip-btn" onclick="switchTrip('chicago', this)">Tapestry 360 · Chicago · Jun 17–21</button>
   <button class="trip-btn" onclick="switchTrip('cabot', this)">Cabot Cape Breton · Aug 26–30</button>
 </div>
 
-<!-- ===== CHICAGO HERO ===== -->
-<div class="hero hero-chicago" id="hero-chicago">
-  <div class="hero-flag">Tapestry 360 Health · Annual Golf Fundraiser</div>
-  <h1>Chicago <em>Illinois</em></h1>
-  <p class="hero-sub">Harborside International Golf Center · East Chicago, IL</p>
-  <div class="hero-meta">
-    <div class="hero-pill"><span>Trip</span><strong>Jun 17–21, 2026</strong></div>
-    <div class="hero-pill"><span>Event</span><strong>Jun 18 · 7:00am CST</strong></div>
-    <div class="hero-pill"><span>Tickets</span><strong>2 · $414 paid</strong></div>
-  </div>
-</div>
-<nav class="tab-nav tab-nav-chicago" id="tabnav-chicago">
-  <ul>
-    <li><button class="active" onclick="showTab('chicago','chicago-overview',this)">Overview</button></li>
-    <li><button onclick="showTab('chicago','chicago-itinerary',this)">Itinerary</button></li>
-    <li><button onclick="showTab('chicago','chicago-checklist',this)">Checklist</button></li>
-  </ul>
-</nav>
-<div class="trip-content" id="content-chicago">
-
-  <!-- Overview -->
-  <div id="chicago-overview" class="section active">
-    <p class="section-title">Trip at a Glance</p>
-    <p class="section-subtitle">Tapestry 360 Health Annual Golf Fundraiser</p>
-    <div class="overview-grid">
-      <div class="overview-card"><div class="oc-val">5 Days</div><div class="oc-label">Jun 17–21</div></div>
-      <div class="overview-card"><div class="oc-val">$414</div><div class="oc-label">2 tickets + donation</div></div>
-      <div class="overview-card"><div class="oc-val">Jun 18</div><div class="oc-label">Event Day · 7:00am</div></div>
-      <div class="overview-card"><div class="oc-val">MDW</div><div class="oc-label">Chicago Midway</div></div>
-    </div>
-    <div class="info-card">
-      <h3>Event Details</h3>
-      <p><strong>Tapestry 360 Health Annual Golf Fundraiser</strong><br>Thursday, June 18, 2026 · 7:00am CST<br>Harborside International Golf Center<br>11001 South Doty Ave, East Chicago, IL 60628</p>
-    </div>
-    <div class="info-card">
-      <h3>Tickets</h3>
-      <p>2 Early Bird Individual Tickets for you and Benny McCray III. Paid $414.00 via AMEX 3000. This is a paperless event — check-in instructions will be sent a few days prior.</p>
-    </div>
-    <div class="info-card">
-      <h3>Flights</h3>
-      <p><strong>Outbound:</strong> Wed Jun 17 · SRQ → ATL → MDW · Departs 7:04am, arrives 12:05pm (Delta, 6h 1m)<br><br><strong>Return:</strong> Sun Jun 21 · MDW → ATL → SRQ · Departs 6:00am, arrives 11:45am (Delta, 4h 45m)</p>
-    </div>
-    <div class="info-card">
-      <h3>Contact</h3>
-      <p>Tapestry 360 Health Development Team<br>development@tap360health.org<br>773-296-7589</p>
-    </div>
-
-    <!-- Flight Cards -->
-    <div class="flight-card">
-      <div class="flight-card-header">Outbound · Wednesday, June 17</div>
-      <div class="flight-route">
-        <div class="flight-airport">SRQ</div>
-        <div class="flight-arrow">— ATL —</div>
-        <div class="flight-airport">MDW</div>
-      </div>
-      <div class="flight-times"><span>Departs <strong>7:04am</strong></span><span>2h 16m layover ATL</span><span>Arrives <strong>12:05pm</strong></span></div>
-      <div class="flight-detail">DL1445 Boeing 737-900 · DL2417 Boeing 717-200 · Duration 6h 1m · Delta Comfort (SU)</div>
-      <div class="flight-seats">
-        <span class="seat-badge">14B</span><span class="seat-badge">14E</span>
-        <span style="font-size:11px;color:var(--muted);align-self:center;">then</span>
-        <span class="seat-badge">10E</span><span class="seat-badge">10D</span>
-      </div>
-    </div>
-
-    <div class="flight-card">
-      <div class="flight-card-header">Return · Sunday, June 21</div>
-      <div class="flight-route">
-        <div class="flight-airport">MDW</div>
-        <div class="flight-arrow">— ATL —</div>
-        <div class="flight-airport">SRQ</div>
-      </div>
-      <div class="flight-times"><span>Departs <strong>6:00am</strong></span><span>1h 10m layover ATL</span><span>Arrives <strong>11:45am</strong></span></div>
-      <div class="flight-detail">DL1285 Airbus A319 · DL3104 Boeing 737-900 · Duration 4h 45m · Delta Comfort (SU)</div>
-      <div class="flight-seats">
-        <span class="seat-badge">11F</span><span class="seat-badge">11E</span>
-        <span style="font-size:11px;color:var(--muted);align-self:center;">then</span>
-        <span class="seat-badge">13F</span><span class="seat-badge">13E</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Itinerary -->
-  <div id="chicago-itinerary" class="section">
-    <p class="section-title">Trip Itinerary</p>
-    <p class="section-subtitle">June 17–21, 2026 · Chicago, Illinois</p>
-
-    <p class="day-label chicago-day">Wednesday, June 17 — Arrival</p>
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-dot chicago-dot"></div>
-        <div class="timeline-body"><div class="timeline-time chicago-time">7:04 AM</div><div class="timeline-label">Depart SRQ — DL1445</div><div class="timeline-note">Sarasota-Bradenton · Seats 14B &amp; 14E · Delta Comfort · Terminal TBD</div></div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-dot chicago-dot"></div>
-        <div class="timeline-body"><div class="timeline-time chicago-time">Layover · ATL</div><div class="timeline-label">Atlanta — 2h 16m layover</div><div class="timeline-note">Connect to DL2417 · Seats 10E &amp; 10D</div></div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-dot chicago-dot"></div>
-        <div class="timeline-body"><div class="timeline-time chicago-time">12:05 PM</div><div class="timeline-label">Arrive Chicago Midway (MDW)</div><div class="timeline-note">Terminal TBD · Check into hotel and settle in</div></div>
-      </div>
-    </div>
-
-    <hr class="divider">
-    <p class="day-label chicago-day">Thursday, June 18 — Event Day</p>
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-dot chicago-dot"></div>
-        <div class="timeline-body"><div class="timeline-time chicago-time">7:00 AM CST</div><div class="timeline-label">Tapestry 360 Health Golf Fundraiser</div><div class="timeline-note">Harborside International Golf Center · 11001 South Doty Ave, East Chicago, IL 60628 · Tickets for you &amp; Benny McCray III · Paperless check-in</div></div>
-      </div>
-    </div>
-
-    <hr class="divider">
-    <p class="day-label chicago-day">Friday–Saturday, June 19–20 — Free Days in Chicago</p>
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-dot chicago-dot"></div>
-        <div class="timeline-body"><div class="timeline-time chicago-time">Your Time</div><div class="timeline-label">Explore Chicago</div><div class="timeline-note">Add your plans here — dinners, sightseeing, anything extra you book</div></div>
-      </div>
-    </div>
-
-    <hr class="divider">
-    <p class="day-label chicago-day">Sunday, June 21 — Departure</p>
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-dot chicago-dot"></div>
-        <div class="timeline-body"><div class="timeline-time chicago-time">6:00 AM</div><div class="timeline-label">Depart Chicago Midway (MDW) — DL1285</div><div class="timeline-note">Seats 11F &amp; 11E · Delta Comfort · Terminal TBD · Early morning — set alarms!</div></div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-dot chicago-dot"></div>
-        <div class="timeline-body"><div class="timeline-time chicago-time">Layover · ATL</div><div class="timeline-label">Atlanta — 1h 10m layover</div><div class="timeline-note">Connect to DL3104 · Seats 13F &amp; 13E</div></div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-dot chicago-dot"></div>
-        <div class="timeline-body"><div class="timeline-time chicago-time">11:45 AM</div><div class="timeline-label">Arrive Sarasota-Bradenton (SRQ)</div><div class="timeline-note">Terminal TBD · Home!</div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Checklist -->
-  <div id="chicago-checklist" class="section">
-    <p class="section-title">Trip Checklist</p>
-    <p class="section-subtitle">Tap each item to check it off</p>
-    <div class="progress-label" id="chicago-progress-label">0 of 0 items complete</div>
-    <div class="progress-bar-wrap"><div class="progress-bar-fill chicago-progress" id="chicago-progress-bar" style="width:0%"></div></div>
-
-    <div class="checklist-group">
-      <h3>Booking &amp; Documents</h3>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Save Tapestry 360 event ticket confirmation<small>Paperless — check-in instructions sent a few days before</small></span></label>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Confirm Delta flights SRQ-MDW and MDW-SRQ</span></label>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Book hotel in Chicago<small>Near MDW or Harborside area recommended</small></span></label>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Book travel insurance</span></label>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Government ID / photo ID for airport</span></label>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Confirm Benny McCray III has his ticket details</span></label>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Save event contact: development@tap360health.org / 773-296-7589</span></label>
-    </div>
-    <div class="checklist-group">
-      <h3>Golf Gear</h3>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Golf clubs &amp; travel bag / hard case</span></label>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Golf shoes</span></label>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Golf gloves (bring a spare)</span></label>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Golf balls, tees, ball markers, divot tools</span></label>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Rangefinder or GPS watch</span></label>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Golf hat / visor and sunglasses</span></label>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Sunscreen</span></label>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Light rain jacket<small>Chicago weather is unpredictable in June</small></span></label>
-    </div>
-    <div class="checklist-group">
-      <h3>Clothing &amp; Packing</h3>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Golf outfit for event day (Thursday)</span></label>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Casual outfits for remaining days</span></label>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Comfortable walking shoes</span></label>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Light layers (Chicago lakefront can be breezy)</span></label>
-    </div>
-    <div class="checklist-group">
-      <h3>Day Before Departure</h3>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Delta check-in (opens 24hrs before · 7:04am Jun 16)</span></label>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Clubs checked in or at airport</span></label>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Charge all devices</span></label>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Set early alarm — 7:04am departure!</span></label>
-    </div>
-    <div class="checklist-group">
-      <h3>Return Day (Jun 21 — Early Start)</h3>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Delta check-in (opens 24hrs before · 6:00am Jun 20)</span></label>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Hotel checkout complete night before</span></label>
-      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Set very early alarm — 6:00am departure from MDW!</span></label>
-    </div>
-  </div>
-</div>
-
-<!-- ===== BMWGA HERO ===== -->
+<!-- ===== BMWGA ===== -->
 <div class="hero hero-bmwga active" id="hero-bmwga">
   <div class="hero-flag">BMWGA · 26th Annual Tournament</div>
   <h1>Hilton Head <em>Island</em></h1>
@@ -410,6 +195,9 @@
     <div class="hero-pill"><span>Tournament</span><strong>Jun 11–12</strong></div>
     <div class="hero-pill"><span>Format</span><strong>36-Hole Stroke Play</strong></div>
   </div>
+  <div class="countdown-bar" id="cd-bmwga"></div>
+  <div class="weather-note">Hilton Head forecast around Jun 9–14</div>
+  <div class="weather-strip" id="wx-bmwga"></div>
 </div>
 <nav class="tab-nav tab-nav-bmwga active" id="tabnav-bmwga">
   <ul>
@@ -430,6 +218,25 @@
       <div class="overview-card"><div class="oc-val">2 Courses</div><div class="oc-label">Barony &amp; Robber's Row</div></div>
       <div class="overview-card"><div class="oc-val">Savannah</div><div class="oc-label">Awards Cruise Dinner</div></div>
     </div>
+
+    <!-- Accommodations -->
+    <div class="res-card">
+      <h3>Accommodations — Airbnb</h3>
+      <div class="res-detail"><span>Address</span><strong>203 Beach City Rd, Hilton Head Island, SC 29926</strong></div>
+      <div class="res-detail"><span>Dates</span><strong>Jun 9–14, 2026</strong></div>
+    </div>
+
+    <!-- Dinner Reservation -->
+    <div class="res-card">
+      <h3>Dinner Reservation — Kind of Blue</h3>
+      <div class="res-detail"><span>Date</span><strong>Saturday, June 13, 2026 · 7:00 PM</strong></div>
+      <div class="res-detail"><span>Party</span><strong>Table for 8</strong></div>
+      <div class="res-detail"><span>Name</span><strong>Dana Davis</strong></div>
+      <div class="res-detail"><span>Confirmation</span><strong>#6006</strong></div>
+      <div class="res-detail"><span>Address</span><strong>19 Dunnagans Alley, Hilton Head Island, SC 29928</strong></div>
+      <div class="res-detail"><span>Phone</span><strong>(843) 686-2868</strong></div>
+    </div>
+
     <div class="info-card"><h3>Location</h3><p>Port Royal Golf &amp; Racquet Club, Hilton Head Island, SC<br>Check-in &amp; reception at Port Royal Robbers Row Grille</p></div>
     <div class="info-card"><h3>Tournament Format</h3><p>2-day, 36-hole stroke play per USGA Rules. All play from forward tees. Pairings Day 1 by handicap; Day 2 by Day 1 results. Max score per hole: double par + 1.</p></div>
     <div class="info-card"><h3>Awards Dinner</h3><p>Friday June 12 · 6:00–9:00pm aboard the Savannah Riverboat Georgia Queen. Buses depart SpringHill Suites (1 Marina Side Drive) at 4:00pm.<br><br>Attire: White casual or fancy with green accents.</p></div>
@@ -440,14 +247,12 @@
   <div id="bmwga-itinerary" class="section">
     <p class="section-title">Tournament Schedule</p>
     <p class="section-subtitle">June 9–14, 2026 · Hilton Head Island, SC</p>
-
     <p class="day-label bmwga-day">Wednesday, June 10 — Check-In &amp; Reception</p>
     <div class="timeline">
       <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">Optional</div><div class="timeline-label">Practice Rounds</div><div class="timeline-note">Call 843-681-1700 starting May 27 · $65 BMWGA rate</div></div></div>
-      <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">3:00 – 7:00 PM</div><div class="timeline-label">Tournament Check-In &amp; Reception</div><div class="timeline-note">Port Royal Robbers Row Grille · Attire: Come as you are · Appetizers, door prizes, 50-50 raffle</div></div></div>
+      <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">3:00 – 7:00 PM</div><div class="timeline-label">Tournament Check-In &amp; Reception</div><div class="timeline-note">Port Royal Robbers Row Grille · Come as you are · Appetizers, door prizes, 50-50 raffle</div></div></div>
       <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">4:30 &amp; 5:30 PM</div><div class="timeline-label">Rules Clinic</div><div class="timeline-note">Port Royal Golf Pro · Optional (state ambassadors should attend)</div></div></div>
     </div>
-
     <hr class="divider">
     <p class="day-label bmwga-day">Thursday, June 11 — Round 1</p>
     <p style="font-size:13px;font-style:italic;color:var(--muted);margin-bottom:16px;">Attire: State Team Colors</p>
@@ -455,9 +260,8 @@
       <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">7:00 AM</div><div class="timeline-label">Course Opens</div><div class="timeline-note"></div></div></div>
       <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">8:15 AM</div><div class="timeline-label">Cart Call</div><div class="timeline-note"></div></div></div>
       <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">8:30 AM</div><div class="timeline-label">Shotgun Start — Round 1</div><div class="timeline-note">Leave clubs in cart after play for storage at Port Royal</div></div></div>
-      <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">5:00 – 7:00 PM</div><div class="timeline-label">Shopping, Contests &amp; Prizes</div><div class="timeline-note">Golf Galaxy Performance Center · Sea Turtle Marketplace, 430 William Hilton Pkwy, Suite 109</div></div></div>
+      <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">5:00 – 7:00 PM</div><div class="timeline-label">Shopping, Contests &amp; Prizes</div><div class="timeline-note">Golf Galaxy · Sea Turtle Marketplace, 430 William Hilton Pkwy, Suite 109</div></div></div>
     </div>
-
     <hr class="divider">
     <p class="day-label bmwga-day">Friday, June 12 — Round 2 &amp; Awards Dinner</p>
     <p style="font-size:13px;font-style:italic;color:var(--muted);margin-bottom:16px;">Day: State Team Colors · Evening: White casual or fancy with green accents</p>
@@ -468,11 +272,17 @@
       <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">4:00 – 4:30 PM</div><div class="timeline-label">Bus Loading to Savannah</div><div class="timeline-note">SpringHill Suites · 1 Marina Side Drive, Hilton Head Island, SC 29928</div></div></div>
       <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">6:00 – 9:00 PM</div><div class="timeline-label">Awards Dinner &amp; Dancing Cruise</div><div class="timeline-note">Savannah Riverboat Georgia Queen · Winners announced &amp; prizes awarded</div></div></div>
     </div>
+    <hr class="divider">
+    <p class="day-label bmwga-day">Saturday, June 13 — Free Day</p>
+    <div class="timeline">
+      <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">7:00 PM</div><div class="timeline-label">Dinner — Kind of Blue</div><div class="timeline-note">Table for 8 · 19 Dunnagans Alley · Confirmation #6006 · (843) 686-2868</div></div></div>
+    </div>
   </div>
 
   <div id="bmwga-checklist" class="section">
     <p class="section-title">Tournament Checklist</p>
     <p class="section-subtitle">Tap each item to check it off</p>
+    <button class="reset-btn" onclick="resetChecklist('bmwga')">Reset checklist</button>
     <div class="progress-label" id="bmwga-progress-label">0 of 0 items complete</div>
     <div class="progress-bar-wrap"><div class="progress-bar-fill bmwga-progress" id="bmwga-progress-bar" style="width:0%"></div></div>
     <div class="checklist-group">
@@ -480,10 +290,11 @@
       <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Confirm tournament registration &amp; payment</span></label>
       <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Government ID</span></label>
       <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Book flights to/from Hilton Head (HHH) or Savannah (SAV)</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Book hotel (Hampton Inn, Home2Suites, or SpringHill Suites)</span></label>
+      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Airbnb confirmed — 203 Beach City Rd</span></label>
       <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Book travel insurance</span></label>
       <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Schedule practice round if desired (call 843-681-1700 from May 27 · $65)</span></label>
       <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Note handicap index as of May 15, 2026 (max 40)</span></label>
+      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Kind of Blue dinner confirmed · Sat Jun 13 · 7pm · Conf #6006</span></label>
     </div>
     <div class="checklist-group">
       <h3>Golf Gear</h3>
@@ -502,12 +313,12 @@
       <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">State team colors outfit — Round 2 (Friday)</span></label>
       <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">White casual or fancy outfit with green accents (awards cruise)</span></label>
       <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Come-as-you-are outfit (Wednesday reception)</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Comfortable shoes for the cruise evening</span></label>
+      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Nice outfit for Kind of Blue dinner (Saturday)</span></label>
     </div>
     <div class="checklist-group">
       <h3>Tournament Rules</h3>
       <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Review USGA Rules of Golf before the event</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Remember: max score per hole is double par + 1</span></label>
+      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Max score per hole: double par + 1</span></label>
       <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Know the alternate OB/lost ball local rule</span></label>
       <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Phone on silent during play</span></label>
       <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Exchange scorecards at the start of each round</span></label>
@@ -523,7 +334,148 @@
   </div>
 </div>
 
-<!-- ===== CABOT HERO ===== -->
+<!-- ===== CHICAGO ===== -->
+<div class="hero hero-chicago" id="hero-chicago">
+  <div class="hero-flag">Tapestry 360 Health · Annual Golf Fundraiser</div>
+  <h1>Chicago <em>Illinois</em></h1>
+  <p class="hero-sub">Harborside International Golf Center · East Chicago, IL</p>
+  <div class="hero-meta">
+    <div class="hero-pill"><span>Trip</span><strong>Jun 17–21, 2026</strong></div>
+    <div class="hero-pill"><span>Event</span><strong>Jun 18 · 7:00am CST</strong></div>
+    <div class="hero-pill"><span>Tickets</span><strong>2 · $414 paid</strong></div>
+  </div>
+  <div class="countdown-bar" id="cd-chicago"></div>
+  <div class="weather-note">Chicago forecast around Jun 17–21</div>
+  <div class="weather-strip" id="wx-chicago"></div>
+</div>
+<nav class="tab-nav tab-nav-chicago" id="tabnav-chicago">
+  <ul>
+    <li><button class="active" onclick="showTab('chicago','chicago-overview',this)">Overview</button></li>
+    <li><button onclick="showTab('chicago','chicago-itinerary',this)">Itinerary</button></li>
+    <li><button onclick="showTab('chicago','chicago-checklist',this)">Checklist</button></li>
+  </ul>
+</nav>
+<div class="trip-content" id="content-chicago">
+
+  <div id="chicago-overview" class="section active">
+    <p class="section-title">Trip at a Glance</p>
+    <p class="section-subtitle">Tapestry 360 Health Annual Golf Fundraiser</p>
+    <div class="overview-grid">
+      <div class="overview-card"><div class="oc-val">5 Days</div><div class="oc-label">Jun 17–21</div></div>
+      <div class="overview-card"><div class="oc-val">$414</div><div class="oc-label">2 tickets + donation</div></div>
+      <div class="overview-card"><div class="oc-val">Jun 18</div><div class="oc-label">Event Day · 7:00am</div></div>
+      <div class="overview-card"><div class="oc-val">MDW</div><div class="oc-label">Chicago Midway</div></div>
+    </div>
+
+    <!-- Hotel placeholder -->
+    <div class="res-card chicago-accent">
+      <h3>Accommodations</h3>
+      <p class="res-placeholder">Hotel not booked yet — add your confirmation details here once reserved. Recommended: near MDW or Harborside Golf Center area.</p>
+    </div>
+
+    <div class="info-card">
+      <h3>Event Details</h3>
+      <p><strong>Tapestry 360 Health Annual Golf Fundraiser</strong><br>Thursday, June 18, 2026 · 7:00am CST<br>Harborside International Golf Center<br>11001 South Doty Ave, East Chicago, IL 60628</p>
+    </div>
+    <div class="info-card">
+      <h3>Tickets</h3>
+      <p>2 Early Bird Individual Tickets for you and Benny McCray III. Paid $414.00 via AMEX 3000. Paperless event — check-in instructions sent a few days prior.</p>
+    </div>
+    <div class="info-card">
+      <h3>Contact</h3>
+      <p>Tapestry 360 Health Development Team<br>development@tap360health.org · 773-296-7589</p>
+    </div>
+    <div class="flight-card">
+      <div class="flight-card-header">Outbound · Wednesday, June 17</div>
+      <div class="flight-route"><div class="flight-airport">SRQ</div><div class="flight-arrow">— ATL —</div><div class="flight-airport">MDW</div></div>
+      <div class="flight-times"><span>Departs <strong>7:04am</strong></span><span>2h 16m layover ATL</span><span>Arrives <strong>12:05pm</strong></span></div>
+      <div class="flight-detail">DL1445 Boeing 737-900 · DL2417 Boeing 717-200 · Duration 6h 1m · Delta Comfort</div>
+      <div class="flight-seats"><span class="seat-badge">14B</span><span class="seat-badge">14E</span><span style="font-size:11px;color:var(--muted);align-self:center;">then</span><span class="seat-badge">10E</span><span class="seat-badge">10D</span></div>
+    </div>
+    <div class="flight-card">
+      <div class="flight-card-header">Return · Sunday, June 21</div>
+      <div class="flight-route"><div class="flight-airport">MDW</div><div class="flight-arrow">— ATL —</div><div class="flight-airport">SRQ</div></div>
+      <div class="flight-times"><span>Departs <strong>6:00am</strong></span><span>1h 10m layover ATL</span><span>Arrives <strong>11:45am</strong></span></div>
+      <div class="flight-detail">DL1285 Airbus A319 · DL3104 Boeing 737-900 · Duration 4h 45m · Delta Comfort</div>
+      <div class="flight-seats"><span class="seat-badge">11F</span><span class="seat-badge">11E</span><span style="font-size:11px;color:var(--muted);align-self:center;">then</span><span class="seat-badge">13F</span><span class="seat-badge">13E</span></div>
+    </div>
+  </div>
+
+  <div id="chicago-itinerary" class="section">
+    <p class="section-title">Trip Itinerary</p>
+    <p class="section-subtitle">June 17–21, 2026 · Chicago, Illinois</p>
+    <p class="day-label chicago-day">Wednesday, June 17 — Arrival</p>
+    <div class="timeline">
+      <div class="timeline-item"><div class="timeline-dot chicago-dot"></div><div class="timeline-body"><div class="timeline-time chicago-time">7:04 AM</div><div class="timeline-label">Depart SRQ — DL1445</div><div class="timeline-note">Seats 14B &amp; 14E · Delta Comfort</div></div></div>
+      <div class="timeline-item"><div class="timeline-dot chicago-dot"></div><div class="timeline-body"><div class="timeline-time chicago-time">Layover · ATL</div><div class="timeline-label">Atlanta — 2h 16m</div><div class="timeline-note">Connect to DL2417 · Seats 10E &amp; 10D</div></div></div>
+      <div class="timeline-item"><div class="timeline-dot chicago-dot"></div><div class="timeline-body"><div class="timeline-time chicago-time">12:05 PM</div><div class="timeline-label">Arrive Chicago Midway (MDW)</div><div class="timeline-note">Check into hotel and settle in</div></div></div>
+    </div>
+    <hr class="divider">
+    <p class="day-label chicago-day">Thursday, June 18 — Event Day</p>
+    <div class="timeline">
+      <div class="timeline-item"><div class="timeline-dot chicago-dot"></div><div class="timeline-body"><div class="timeline-time chicago-time">7:00 AM CST</div><div class="timeline-label">Tapestry 360 Health Golf Fundraiser</div><div class="timeline-note">Harborside International Golf Center · 11001 South Doty Ave, East Chicago, IL · You &amp; Benny McCray III · Paperless check-in</div></div></div>
+    </div>
+    <hr class="divider">
+    <p class="day-label chicago-day">Friday–Saturday, June 19–20 — Free Days</p>
+    <div class="timeline">
+      <div class="timeline-item"><div class="timeline-dot chicago-dot"></div><div class="timeline-body"><div class="timeline-time chicago-time">Your Time</div><div class="timeline-label">Explore Chicago</div><div class="timeline-note">Add plans here as you book them</div></div></div>
+    </div>
+    <hr class="divider">
+    <p class="day-label chicago-day">Sunday, June 21 — Departure</p>
+    <div class="timeline">
+      <div class="timeline-item"><div class="timeline-dot chicago-dot"></div><div class="timeline-body"><div class="timeline-time chicago-time">6:00 AM</div><div class="timeline-label">Depart MDW — DL1285</div><div class="timeline-note">Seats 11F &amp; 11E · Early morning — set alarms!</div></div></div>
+      <div class="timeline-item"><div class="timeline-dot chicago-dot"></div><div class="timeline-body"><div class="timeline-time chicago-time">Layover · ATL</div><div class="timeline-label">Atlanta — 1h 10m</div><div class="timeline-note">Connect to DL3104 · Seats 13F &amp; 13E</div></div></div>
+      <div class="timeline-item"><div class="timeline-dot chicago-dot"></div><div class="timeline-body"><div class="timeline-time chicago-time">11:45 AM</div><div class="timeline-label">Arrive Sarasota-Bradenton (SRQ)</div><div class="timeline-note">Home!</div></div></div>
+    </div>
+  </div>
+
+  <div id="chicago-checklist" class="section">
+    <p class="section-title">Trip Checklist</p>
+    <p class="section-subtitle">Tap each item to check it off</p>
+    <button class="reset-btn" onclick="resetChecklist('chicago')">Reset checklist</button>
+    <div class="progress-label" id="chicago-progress-label">0 of 0 items complete</div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill chicago-progress" id="chicago-progress-bar" style="width:0%"></div></div>
+    <div class="checklist-group">
+      <h3>Booking &amp; Documents</h3>
+      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Save Tapestry 360 ticket confirmation<small>Paperless — check-in instructions sent a few days before</small></span></label>
+      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Confirm Delta flights SRQ-MDW and MDW-SRQ</span></label>
+      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Book hotel in Chicago<small>Near MDW or Harborside area recommended</small></span></label>
+      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Book travel insurance</span></label>
+      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Government ID for airport</span></label>
+      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Confirm Benny McCray III has his ticket details</span></label>
+      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Save event contact: development@tap360health.org / 773-296-7589</span></label>
+    </div>
+    <div class="checklist-group">
+      <h3>Golf Gear</h3>
+      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Golf clubs &amp; travel bag / hard case</span></label>
+      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Golf shoes, gloves, balls, tees, divot tools</span></label>
+      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Rangefinder or GPS watch</span></label>
+      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Golf hat, sunglasses, sunscreen</span></label>
+      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Light rain jacket<small>Chicago weather is unpredictable in June</small></span></label>
+    </div>
+    <div class="checklist-group">
+      <h3>Clothing &amp; Packing</h3>
+      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Golf outfit for event day (Thursday)</span></label>
+      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Casual outfits for remaining days</span></label>
+      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Light layers (Chicago lakefront can be breezy)</span></label>
+    </div>
+    <div class="checklist-group">
+      <h3>Day Before Departure</h3>
+      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Delta check-in (opens 24hrs before · Jun 16 at 7:04am)</span></label>
+      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Clubs checked in or at airport</span></label>
+      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Charge all devices</span></label>
+      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Set early alarm — 7:04am departure!</span></label>
+    </div>
+    <div class="checklist-group">
+      <h3>Return Day — Early Start</h3>
+      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Delta check-in (opens 24hrs before · Jun 20 at 6:00am)</span></label>
+      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Hotel checkout complete night before</span></label>
+      <label class="check-item chicago-check"><input type="checkbox" onchange="updateProgress('chicago')"><span class="check-label">Set very early alarm — 6:00am departure from MDW!</span></label>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CABOT ===== -->
 <div class="hero hero-cabot" id="hero-cabot">
   <div class="hero-flag">Real Women Golf Trip 2026</div>
   <h1>Cabot <em>Cape Breton</em></h1>
@@ -533,6 +485,9 @@
     <div class="hero-pill"><span>Package</span><strong>Single · $3,875</strong></div>
     <div class="hero-pill"><span>Rounds</span><strong>3 Courses</strong></div>
   </div>
+  <div class="countdown-bar" id="cd-cabot"></div>
+  <div class="weather-note">Cape Breton forecast around Aug 26–30</div>
+  <div class="weather-strip" id="wx-cabot"></div>
 </div>
 <nav class="tab-nav tab-nav-cabot" id="tabnav-cabot">
   <ul>
@@ -554,21 +509,19 @@
     </div>
     <div class="info-card"><h3>Accommodations</h3><p><strong>Night 1:</strong> Hilton Garden Inn Halifax (airport shuttle provided)<br><strong>Nights 2–4:</strong> Cabot Cape Breton Resort</p></div>
     <div class="info-card"><h3>Courses Being Played</h3><p><strong>The Nest</strong> — Par 3, 11-hole at the highest point of Cabot Cliffs<br><br><strong>Cabot Links</strong> — Iconic oceanside links course<br><br><strong>Cabot Cliffs</strong> — Ranked among the world's best courses</p></div>
-    <div class="info-card"><h3>Caddies Included</h3><p>A-Level caddies for Cabot Links and Cabot Cliffs rounds. Fees and gratuity included in the package.</p></div>
+    <div class="info-card"><h3>Caddies Included</h3><p>A-Level caddies for Cabot Links and Cabot Cliffs. Fees and gratuity included in the package.</p></div>
     <div class="info-card"><h3>Transportation</h3><p>Airport shuttle from Halifax on arrival. Group shuttles throughout. Departure shuttle leaves resort 7:00am Aug 30 to Halifax Airport.</p></div>
   </div>
 
   <div id="cabot-itinerary" class="section">
     <p class="section-title">Trip Itinerary</p>
     <p class="section-subtitle">August 26–30, 2026 · Nova Scotia, Canada</p>
-
     <p class="day-label cabot-day">Day 1 · Wednesday, August 26</p>
     <div class="timeline">
       <div class="timeline-item"><div class="timeline-dot cabot-dot"></div><div class="timeline-body"><div class="timeline-time cabot-time">Arrival</div><div class="timeline-label">Arrive Halifax Airport (YHZ)</div><div class="timeline-note">Hotel shuttle to Hilton Garden Inn Halifax</div></div></div>
       <div class="timeline-item"><div class="timeline-dot cabot-dot"></div><div class="timeline-body"><div class="timeline-time cabot-time">4:00 PM</div><div class="timeline-label">Check In — Hilton Garden Inn Halifax</div><div class="timeline-note">One-night stay before heading to resort</div></div></div>
       <div class="timeline-item"><div class="timeline-dot cabot-dot"></div><div class="timeline-body"><div class="timeline-time cabot-time">7:00 PM</div><div class="timeline-label">Meet &amp; Greet</div><div class="timeline-note">Onsite location TBD</div></div></div>
     </div>
-
     <hr class="divider">
     <p class="day-label cabot-day">Day 2 · Thursday, August 27</p>
     <div class="timeline">
@@ -576,25 +529,22 @@
       <div class="timeline-item"><div class="timeline-dot cabot-dot"></div><div class="timeline-body"><div class="timeline-time cabot-time">11:00 AM – 1:00 PM</div><div class="timeline-label">Resort Arrival</div><div class="timeline-note">Store luggage and grab lunch</div></div></div>
       <div class="timeline-item"><div class="timeline-dot cabot-dot"></div><div class="timeline-body"><div class="timeline-time cabot-time">1:36 PM</div><div class="timeline-label">Golf — The Nest</div><div class="timeline-note">Par 3, 11-hole routing at the highest point of Cabot Cliffs</div></div></div>
       <div class="timeline-item"><div class="timeline-dot cabot-dot"></div><div class="timeline-body"><div class="timeline-time cabot-time">4:00 PM</div><div class="timeline-label">Final Check In</div><div class="timeline-note">Check in at resort if not already completed</div></div></div>
-      <div class="timeline-item"><div class="timeline-dot cabot-dot"></div><div class="timeline-body"><div class="timeline-time cabot-time">7:30 PM</div><div class="timeline-label">Group Photo &amp; Dinner</div><div class="timeline-note">Restaurant TBD · Free time between golf and dinner</div></div></div>
+      <div class="timeline-item"><div class="timeline-dot cabot-dot"></div><div class="timeline-body"><div class="timeline-time cabot-time">7:30 PM</div><div class="timeline-label">Group Photo &amp; Dinner</div><div class="timeline-note">Restaurant TBD</div></div></div>
     </div>
-
     <hr class="divider">
     <p class="day-label cabot-day">Day 3 · Friday, August 28</p>
     <div class="timeline">
       <div class="timeline-item"><div class="timeline-dot cabot-dot"></div><div class="timeline-body"><div class="timeline-time cabot-time">9:45 AM</div><div class="timeline-label">Putting Contest</div><div class="timeline-note">Meet at the putting green by the Links course</div></div></div>
       <div class="timeline-item"><div class="timeline-dot cabot-dot"></div><div class="timeline-body"><div class="timeline-time cabot-time">10:36 AM</div><div class="timeline-label">Golf — Cabot Links Course</div><div class="timeline-note">A-Level caddie reserved — fee and gratuity included</div></div></div>
-      <div class="timeline-item"><div class="timeline-dot cabot-dot"></div><div class="timeline-body"><div class="timeline-time cabot-time">7:30 PM</div><div class="timeline-label">Group Dinner / Activity</div><div class="timeline-note">Location TBD · Free time between golf and dinner</div></div></div>
+      <div class="timeline-item"><div class="timeline-dot cabot-dot"></div><div class="timeline-body"><div class="timeline-time cabot-time">7:30 PM</div><div class="timeline-label">Group Dinner / Activity</div><div class="timeline-note">Location TBD</div></div></div>
     </div>
-
     <hr class="divider">
     <p class="day-label cabot-day">Day 4 · Saturday, August 29</p>
     <div class="timeline">
       <div class="timeline-item"><div class="timeline-dot cabot-dot"></div><div class="timeline-body"><div class="timeline-time cabot-time">11:00 AM</div><div class="timeline-label">Group Photo</div><div class="timeline-note">Meet at the practice green at the Cliffs course</div></div></div>
       <div class="timeline-item"><div class="timeline-dot cabot-dot"></div><div class="timeline-body"><div class="timeline-time cabot-time">11:46 AM</div><div class="timeline-label">Golf — Cabot Cliffs</div><div class="timeline-note">A-Level caddie reserved — fee and gratuity included</div></div></div>
-      <div class="timeline-item"><div class="timeline-dot cabot-dot"></div><div class="timeline-body"><div class="timeline-time cabot-time">8:00 PM</div><div class="timeline-label">Group Dinner &amp; Awards</div><div class="timeline-note">Location TBD · Free time between golf and dinner</div></div></div>
+      <div class="timeline-item"><div class="timeline-dot cabot-dot"></div><div class="timeline-body"><div class="timeline-time cabot-time">8:00 PM</div><div class="timeline-label">Group Dinner &amp; Awards</div><div class="timeline-note">Location TBD</div></div></div>
     </div>
-
     <hr class="divider">
     <p class="day-label cabot-day">Day 5 · Sunday, August 30 — Departure</p>
     <p style="font-size:14px;font-style:italic;color:var(--muted);margin-bottom:20px;">Putts, prosecco, and packing up… until next time, ladies!!!!</p>
@@ -609,6 +559,7 @@
   <div id="cabot-checklist" class="section">
     <p class="section-title">Trip Checklist</p>
     <p class="section-subtitle">Tap each item to check it off</p>
+    <button class="reset-btn" onclick="resetChecklist('cabot')">Reset checklist</button>
     <div class="progress-label" id="cabot-progress-label">0 of 0 items complete</div>
     <div class="progress-bar-wrap"><div class="progress-bar-fill cabot-progress" id="cabot-progress-bar" style="width:0%"></div></div>
     <div class="checklist-group">
@@ -636,7 +587,6 @@
       <h3>Clothing &amp; Packing</h3>
       <label class="check-item cabot-check"><input type="checkbox" onchange="updateProgress('cabot')"><span class="check-label">4–5 golf outfits (one per day + spare)</span></label>
       <label class="check-item cabot-check"><input type="checkbox" onchange="updateProgress('cabot')"><span class="check-label">Evening dinner outfits (2–3 group dinners)</span></label>
-      <label class="check-item cabot-check"><input type="checkbox" onchange="updateProgress('cabot')"><span class="check-label">Comfortable casual wear for free time</span></label>
       <label class="check-item cabot-check"><input type="checkbox" onchange="updateProgress('cabot')"><span class="check-label">Warm layer / cardigan for evenings</span></label>
       <label class="check-item cabot-check"><input type="checkbox" onchange="updateProgress('cabot')"><span class="check-label">Swimsuit (resort amenities)</span></label>
     </div>
@@ -665,53 +615,140 @@
 <div class="footer" id="footer-cabot">2026 Real Women Golf Trip · Cabot Cape Breton · Nova Scotia, Canada · August 26–30</div>
 
 <script>
+  // ── TRIP SWITCHER ──
   function switchTrip(trip, btn) {
     ['chicago','bmwga','cabot'].forEach(t => {
-      document.getElementById('hero-' + t).classList.remove('active');
-      document.getElementById('tabnav-' + t).classList.remove('active');
-      document.getElementById('content-' + t).classList.remove('active');
-      document.getElementById('footer-' + t).classList.remove('active');
+      document.getElementById('hero-'+t).classList.remove('active');
+      document.getElementById('tabnav-'+t).classList.remove('active');
+      document.getElementById('content-'+t).classList.remove('active');
+      document.getElementById('footer-'+t).classList.remove('active');
     });
-    document.getElementById('hero-' + trip).classList.add('active');
-    document.getElementById('tabnav-' + trip).classList.add('active');
-    document.getElementById('content-' + trip).classList.add('active');
-    document.getElementById('footer-' + trip).classList.add('active');
+    document.getElementById('hero-'+trip).classList.add('active');
+    document.getElementById('tabnav-'+trip).classList.add('active');
+    document.getElementById('content-'+trip).classList.add('active');
+    document.getElementById('footer-'+trip).classList.add('active');
     document.querySelectorAll('.trip-btn').forEach(b => b.classList.remove('active-chicago','active-bmwga','active-cabot'));
-    btn.classList.add('active-' + trip);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    btn.classList.add('active-'+trip);
+    window.scrollTo({top:0,behavior:'smooth'});
     updateProgress(trip);
   }
 
+  // ── TAB ──
   function showTab(trip, sectionId, btn) {
-    document.getElementById('content-' + trip).querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById('content-'+trip).querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById(sectionId).classList.add('active');
-    document.querySelectorAll('#tabnav-' + trip + ' button').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#tabnav-'+trip+' button').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     if (sectionId.includes('checklist')) updateProgress(trip);
   }
 
+  // ── CHECKLIST ──
   function updateProgress(trip) {
-    const container = document.getElementById(trip + '-checklist');
-    if (!container) return;
-    const all = container.querySelectorAll('input[type="checkbox"]');
-    const checked = container.querySelectorAll('input[type="checkbox"]:checked');
-    const pct = all.length ? Math.round((checked.length / all.length) * 100) : 0;
-    document.getElementById(trip + '-progress-bar').style.width = pct + '%';
-    document.getElementById(trip + '-progress-label').textContent = checked.length + ' of ' + all.length + ' items complete';
+    const c = document.getElementById(trip+'-checklist');
+    if (!c) return;
+    const all = c.querySelectorAll('input[type="checkbox"]');
+    const checked = c.querySelectorAll('input[type="checkbox"]:checked');
+    const pct = all.length ? Math.round((checked.length/all.length)*100) : 0;
+    document.getElementById(trip+'-progress-bar').style.width = pct+'%';
+    document.getElementById(trip+'-progress-label').textContent = checked.length+' of '+all.length+' items complete';
     const state = {};
-    all.forEach((cb, i) => state[i] = cb.checked);
-    localStorage.setItem('checklist-' + trip, JSON.stringify(state));
+    all.forEach((cb,i) => state[i] = cb.checked);
+    localStorage.setItem('checklist-'+trip, JSON.stringify(state));
   }
 
   function loadChecks(trip) {
-    const state = JSON.parse(localStorage.getItem('checklist-' + trip) || '{}');
-    const container = document.getElementById(trip + '-checklist');
-    if (!container) return;
-    container.querySelectorAll('input[type="checkbox"]').forEach((cb, i) => { if (state[i]) cb.checked = true; });
+    const state = JSON.parse(localStorage.getItem('checklist-'+trip)||'{}');
+    const c = document.getElementById(trip+'-checklist');
+    if (!c) return;
+    c.querySelectorAll('input[type="checkbox"]').forEach((cb,i) => { if(state[i]) cb.checked=true; });
     updateProgress(trip);
   }
 
+  function resetChecklist(trip) {
+    if (!confirm('Reset all '+trip+' checklist items?')) return;
+    const c = document.getElementById(trip+'-checklist');
+    c.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked=false);
+    localStorage.removeItem('checklist-'+trip);
+    updateProgress(trip);
+  }
+
+  // ── COUNTDOWN ──
+  function renderCountdown(targetDate, elId) {
+    const el = document.getElementById(elId);
+    if (!el) return;
+    function tick() {
+      const now = new Date();
+      const diff = new Date(targetDate) - now;
+      if (diff <= 0) { el.innerHTML = '<div class="countdown-unit"><div class="countdown-num" style="font-size:18px">You\'re there!</div></div>'; return; }
+      const d = Math.floor(diff/86400000);
+      const h = Math.floor((diff%86400000)/3600000);
+      const m = Math.floor((diff%3600000)/60000);
+      const s = Math.floor((diff%60000)/1000);
+      el.innerHTML = `
+        <div class="countdown-unit"><div class="countdown-num">${d}</div><div class="countdown-lbl">Days</div></div>
+        <div class="countdown-sep">:</div>
+        <div class="countdown-unit"><div class="countdown-num">${String(h).padStart(2,'0')}</div><div class="countdown-lbl">Hrs</div></div>
+        <div class="countdown-sep">:</div>
+        <div class="countdown-unit"><div class="countdown-num">${String(m).padStart(2,'0')}</div><div class="countdown-lbl">Min</div></div>
+        <div class="countdown-sep">:</div>
+        <div class="countdown-unit"><div class="countdown-num">${String(s).padStart(2,'0')}</div><div class="countdown-lbl">Sec</div></div>`;
+    }
+    tick();
+    setInterval(tick, 1000);
+  }
+
+  // ── WEATHER (Open-Meteo, no key required) ──
+  async function loadWeather(lat, lon, startDate, elId) {
+    const el = document.getElementById(elId);
+    if (!el) return;
+    const dayLabels = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const wmoIcon = code => {
+      if (code===0) return {i:'☀️',d:'Clear'};
+      if (code<=2)  return {i:'⛅',d:'Partly cloudy'};
+      if (code<=3)  return {i:'☁️',d:'Overcast'};
+      if (code<=49) return {i:'🌫️',d:'Fog'};
+      if (code<=59) return {i:'🌦️',d:'Drizzle'};
+      if (code<=69) return {i:'🌧️',d:'Rain'};
+      if (code<=79) return {i:'🌨️',d:'Snow'};
+      if (code<=82) return {i:'🌦️',d:'Showers'};
+      if (code<=99) return {i:'⛈️',d:'Storms'};
+      return {i:'🌡️',d:'Unknown'};
+    };
+    try {
+      const end = new Date(startDate);
+      end.setDate(end.getDate()+4);
+      const endDate = end.toISOString().split('T')[0];
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weathercode,temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&timezone=auto&start_date=${startDate}&end_date=${endDate}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      const days = data.daily.time;
+      el.innerHTML = days.map((d,i) => {
+        const w = wmoIcon(data.daily.weathercode[i]);
+        const hi = Math.round(data.daily.temperature_2m_max[i]);
+        const lo = Math.round(data.daily.temperature_2m_min[i]);
+        const label = dayLabels[new Date(d+'T12:00:00').getDay()];
+        return `<div class="weather-card"><div class="weather-day">${label}</div><div class="weather-icon">${w.i}</div><div class="weather-temp">${hi}° / ${lo}°</div><div class="weather-desc">${w.d}</div></div>`;
+      }).join('');
+    } catch(e) {
+      el.innerHTML = '<div style="font-size:12px;color:rgba(255,255,255,0.4);text-align:center;width:100%">Weather unavailable right now</div>';
+    }
+  }
+
+  // ── INIT ──
   ['chicago','bmwga','cabot'].forEach(loadChecks);
+
+  // Countdowns
+  renderCountdown('2026-06-09T00:00:00', 'cd-bmwga');
+  renderCountdown('2026-06-17T07:04:00', 'cd-chicago');
+  renderCountdown('2026-08-26T00:00:00', 'cd-cabot');
+
+  // Weather — loads live from Open-Meteo (no API key needed)
+  // Hilton Head Island, SC
+  loadWeather(32.1163, -80.7526, '2026-06-09', 'wx-bmwga');
+  // Chicago, IL
+  loadWeather(41.8781, -87.6298, '2026-06-17', 'wx-chicago');
+  // Cape Breton, NS
+  loadWeather(46.6181, -60.9968, '2026-08-26', 'wx-cabot');
 </script>
 </body>
 </html>
