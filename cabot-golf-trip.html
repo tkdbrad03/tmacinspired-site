@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 Real Women Golf Trip · Cabot Cape Breton</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #2d5a27;
+    --green-light: #4a7c42;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --cream: #f8f4ed;
+    --dark: #1a2018;
+    --text: #3a3a3a;
+    --muted: #7a7a6a;
+    --white: #ffffff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(160deg, var(--dark) 0%, var(--green) 60%, var(--green-light) 100%);
+    color: var(--white);
+    padding: 60px 24px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+  .hero-flag {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--dark);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 6vw, 52px);
+    line-height: 1.15;
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+  .hero-sub {
+    font-size: 15px;
+    opacity: 0.75;
+    letter-spacing: 0.5px;
+    margin-bottom: 28px;
+  }
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .hero-pill {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-size: 13px;
+    backdrop-filter: blur(4px);
+  }
+  .hero-pill span { display: block; font-size: 10px; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+  .hero-pill strong { color: var(--gold-light); font-size: 15px; }
+
+  /* NAV TABS */
+  .tab-nav {
+    background: var(--white);
+    border-bottom: 2px solid #e8e2d8;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tab-nav ul {
+    list-style: none;
+    display: flex;
+    min-width: max-content;
+    padding: 0 16px;
+  }
+  .tab-nav button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    padding: 16px 20px;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .tab-nav button.active {
+    color: var(--green);
+    border-bottom-color: var(--green);
+  }
+
+  /* CONTENT SECTIONS */
+  .section { display: none; padding: 28px 20px 60px; max-width: 680px; margin: 0 auto; }
+  .section.active { display: block; animation: fadeUp 0.3s ease; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    color: var(--dark);
+    margin-bottom: 4px;
+  }
+  .section-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 24px;
+    font-style: italic;
+  }
+
+  /* TIMELINE */
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+  .timeline-item {
+    display: flex;
+    gap: 16px;
+    position: relative;
+  }
+  .timeline-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 40px;
+    bottom: -8px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+  }
+  .timeline-dot {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--green);
+    border: 3px solid var(--gold);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    margin-top: 2px;
+  }
+  .timeline-body {
+    padding-bottom: 24px;
+    flex: 1;
+  }
+  .timeline-time {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 2px;
+  }
+  .timeline-label {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--dark);
+    margin-bottom: 3px;
+  }
+  .timeline-note {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* CHECKLIST */
+  .checklist-group { margin-bottom: 32px; }
+  .checklist-group h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--dark);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e0d8cc;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .checklist-group h3 span { font-size: 20px; }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0ebe2;
+    cursor: pointer;
+    transition: background 0.15s;
+    border-radius: 8px;
+    padding: 10px 8px;
+    margin: 0 -8px;
+  }
+  .check-item:hover { background: rgba(45,90,39,0.04); }
+  .check-item input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #c5bfb0;
+    border-radius: 5px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .check-item input[type="checkbox"]:checked {
+    background: var(--green);
+    border-color: var(--green);
+  }
+  .check-item input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    color: white;
+    font-size: 13px;
+    top: -1px;
+    left: 2px;
+    font-weight: 700;
+  }
+  .check-label { font-size: 14px; color: var(--text); line-height: 1.4; user-select: none; }
+  .check-label small { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .check-item input:checked + .check-label { color: var(--muted); text-decoration: line-through; }
+
+  .progress-bar-wrap {
+    background: #e8e2d8;
+    border-radius: 20px;
+    height: 8px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(90deg, var(--green), var(--gold));
+    transition: width 0.4s ease;
+  }
+  .progress-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+
+  /* CLUBS */
+  .clubs-grid { display: flex; flex-direction: column; gap: 6px; }
+  .club-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--white);
+    border: 1px solid #e8e2d8;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+  .club-icon { font-size: 18px; }
+  .club-name { font-weight: 600; color: var(--dark); flex: 1; }
+  .club-brand { font-size: 12px; color: var(--muted); }
+
+  /* OVERVIEW CARDS */
+  .overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+  .overview-card {
+    background: var(--white);
+    border: 1px solid #e8e2d8;
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+  }
+  .overview-card .oc-icon { font-size: 26px; margin-bottom: 6px; }
+  .overview-card .oc-val { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--dark); }
+  .overview-card .oc-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+
+  .info-card {
+    background: var(--white);
+    border: 1px solid #e8e2d8;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .info-card h3 { font-size: 14px; font-weight: 600; color: var(--dark); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .info-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* Footer */
+  .footer { text-align: center; padding: 28px 20px; font-size: 12px; color: #b0aa9a; }
+  .footer strong { color: var(--gold); font-family: 'Playfair Display', serif; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-flag">🏌️‍♀️ Real Women Golf Trip 2026</div>
+  <h1>Cabot <em>Cape Breton</em></h1>
+  <p class="hero-sub">Nova Scotia, Canada</p>
+  <div class="hero-meta">
+    <div class="hero-pill"><span>Dates</span><strong>Aug 26 – 30, 2026</strong></div>
+    <div class="hero-pill"><span>Package</span><strong>Single · $3,875</strong></div>
+    <div class="hero-pill"><span>Rounds</span><strong>3 Courses</strong></div>
+  </div>
+</div>
+
+<nav class="tab-nav">
+  <ul>
+    <li><button class="active" onclick="showTab('overview')">Overview</button></li>
+    <li><button onclick="showTab('itinerary')">Itinerary</button></li>
+    <li><button onclick="showTab('checklist')">Checklist</button></li>
+    <li><button onclick="showTab('clubs')">My Clubs</button></li>
+  </ul>
+</nav>
+
+<!-- OVERVIEW -->
+<div id="overview" class="section active">
+  <p class="section-title">Trip at a Glance</p>
+  <p class="section-subtitle">Everything you need to know</p>
+
+  <div class="overview-grid">
+    <div class="overview-card">
+      <div class="oc-icon">📅</div>
+      <div class="oc-val">5 Days</div>
+      <div class="oc-label">Aug 26–30</div>
+    </div>
+    <div class="overview-card">
+      <div class="oc-icon">💰</div>
+      <div class="oc-val">$3,875</div>
+      <div class="oc-label">Total · Single</div>
+    </div>
+    <div class="overview-card">
+      <div class="oc-icon">⛳</div>
+      <div class="oc-val">3 Rounds</div>
+      <div class="oc-label">World-class courses</div>
+    </div>
+    <div class="overview-card">
+      <div class="oc-icon">✈️</div>
+      <div class="oc-val">Halifax</div>
+      <div class="oc-label">Arrival airport</div>
+    </div>
+  </div>
+
+  <div class="info-card">
+    <h3>🏨 Accommodations</h3>
+    <p><strong>Night 1:</strong> Hilton Garden Inn Halifax (airport shuttle provided)<br>
+    <strong>Nights 2–4:</strong> Cabot Cape Breton Resort</p>
+  </div>
+
+  <div class="info-card">
+    <h3>⛳ Courses Being Played</h3>
+    <p>
+      <strong>The Nest</strong> — Par 3, 11-hole routing perched at the highest point of Cabot Cliffs with panoramic views<br><br>
+      <strong>Cabot Links</strong> — Iconic oceanside links course<br><br>
+      <strong>Cabot Cliffs</strong> — Ranked among the world's best golf courses
+    </p>
+  </div>
+
+  <div class="info-card">
+    <h3>🎒 Caddies Included</h3>
+    <p>A-Level caddies reserved for both Cabot Links and Cabot Cliffs rounds. Caddie fees and gratuity are included in your package.</p>
+  </div>
+
+  <div class="info-card">
+    <h3>🚌 Transportation</h3>
+    <p>Hotel shuttle from Halifax Airport on arrival day. Group shuttles provided for all travel to/from resort. Departure shuttle leaves resort at 7:00am on Aug 30 to Halifax Airport.</p>
+  </div>
+</div>
+
+<!-- ITINERARY -->
+<div id="itinerary" class="section">
+  <p class="section-title">Trip Itinerary</p>
+  <p class="section-subtitle">Day-by-day schedule</p>
+
+  <!-- Day 1 -->
+  <p style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:16px;">Day 1 · Wednesday, August 26</p>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot">✈️</div>
+      <div class="timeline-body">
+        <div class="timeline-time">Arrival</div>
+        <div class="timeline-label">Arrive Halifax Airport</div>
+        <div class="timeline-note">Hotel shuttle from airport to Hilton Garden Inn Halifax</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">🛏️</div>
+      <div class="timeline-body">
+        <div class="timeline-time">4:00 PM</div>
+        <div class="timeline-label">Check In — Hilton Garden Inn Halifax</div>
+        <div class="timeline-note">One-night stay before heading to resort</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">🥂</div>
+      <div class="timeline-body">
+        <div class="timeline-time">7:00 PM</div>
+        <div class="timeline-label">Meet & Greet</div>
+        <div class="timeline-note">Onsite location TBD</div>
+      </div>
+    </div>
+  </div>
+
+  <hr style="border:none;border-top:1px solid #e0d8cc;margin:28px 0;">
+
+  <!-- Day 2 -->
+  <p style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:16px;">Day 2 · Thursday, August 27</p>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot">🚌</div>
+      <div class="timeline-body">
+        <div class="timeline-time">7:30 AM</div>
+        <div class="timeline-label">Depart Hilton Garden Inn</div>
+        <div class="timeline-note">Scenic ride to Cabot Cape Breton Resort — anticipated 11:00am arrival</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">🧳</div>
+      <div class="timeline-body">
+        <div class="timeline-time">11:00 AM – 1:00 PM</div>
+        <div class="timeline-label">Resort Arrival</div>
+        <div class="timeline-note">Store luggage and grab lunch</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">⛳</div>
+      <div class="timeline-body">
+        <div class="timeline-time">1:36 PM</div>
+        <div class="timeline-label">Golf — The Nest</div>
+        <div class="timeline-note">Par 3, 11-hole routing at the highest point of Cabot Cliffs. Some of the best views on the property!</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">🏨</div>
+      <div class="timeline-body">
+        <div class="timeline-time">4:00 PM</div>
+        <div class="timeline-label">Final Check In</div>
+        <div class="timeline-note">Check in at resort, if not already completed</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">📸</div>
+      <div class="timeline-body">
+        <div class="timeline-time">7:30 PM</div>
+        <div class="timeline-label">Group Photo & Dinner</div>
+        <div class="timeline-note">Restaurant TBD · Free time between golf and dinner</div>
+      </div>
+    </div>
+  </div>
+
+  <hr style="border:none;border-top:1px solid #e0d8cc;margin:28px 0;">
+
+  <!-- Day 3 -->
+  <p style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:16px;">Day 3 · Friday, August 28</p>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot">🎯</div>
+      <div class="timeline-body">
+        <div class="timeline-time">9:45 AM</div>
+        <div class="timeline-label">Putting Contest</div>
+        <div class="timeline-note">Meet at the putting green by the Links course</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">⛳</div>
+      <div class="timeline-body">
+        <div class="timeline-time">10:36 AM</div>
+        <div class="timeline-label">Golf — Cabot Links Course</div>
+        <div class="timeline-note">A-Level caddie reserved — fee and gratuity included</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">🍽️</div>
+      <div class="timeline-body">
+        <div class="timeline-time">7:30 PM</div>
+        <div class="timeline-label">Group Dinner / Activity</div>
+        <div class="timeline-note">Location TBD · Free time between golf and dinner</div>
+      </div>
+    </div>
+  </div>
+
+  <hr style="border:none;border-top:1px solid #e0d8cc;margin:28px 0;">
+
+  <!-- Day 4 -->
+  <p style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:16px;">Day 4 · Saturday, August 29</p>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot">📸</div>
+      <div class="timeline-body">
+        <div class="timeline-time">11:00 AM</div>
+        <div class="timeline-label">Group Photo</div>
+        <div class="timeline-note">Meet at the practice green at the Cliffs course</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">⛳</div>
+      <div class="timeline-body">
+        <div class="timeline-time">11:46 AM</div>
+        <div class="timeline-label">Golf — Cabot Cliffs</div>
+        <div class="timeline-note">A-Level caddie reserved — fee and gratuity included</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">🏆</div>
+      <div class="timeline-body">
+        <div class="timeline-time">8:00 PM</div>
+        <div class="timeline-label">Group Dinner & Awards</div>
+        <div class="timeline-note">Location TBD · Free time between golf and dinner</div>
+      </div>
+    </div>
+  </div>
+
+  <hr style="border:none;border-top:1px solid #e0d8cc;margin:28px 0;">
+
+  <!-- Day 5 -->
+  <p style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:16px;">Day 5 · Sunday, August 30 — Departure</p>
+  <p style="font-size:14px;font-style:italic;color:var(--muted);margin-bottom:20px;">Putts, prosecco, and packing up… until next time, ladies!!!!</p>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot">🛎️</div>
+      <div class="timeline-body">
+        <div class="timeline-time">6:00 AM</div>
+        <div class="timeline-label">Check Out</div>
+        <div class="timeline-note">Check out from resort</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">🧳</div>
+      <div class="timeline-body">
+        <div class="timeline-time">6:30 AM</div>
+        <div class="timeline-label">Load Shuttles</div>
+        <div class="timeline-note">Bring luggage down, board shuttles and final head count</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">🚌</div>
+      <div class="timeline-body">
+        <div class="timeline-time">7:00 AM</div>
+        <div class="timeline-label">Promptly Depart Resort</div>
+        <div class="timeline-note">Sit back, relax, and reminisce on another fabulous golf adventure</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">✈️</div>
+      <div class="timeline-body">
+        <div class="timeline-time">11:30 AM</div>
+        <div class="timeline-label">Arrive at Halifax Airport</div>
+        <div class="timeline-note">Hugs, kisses, and farewells 💛</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKLIST -->
+<div id="checklist" class="section">
+  <p class="section-title">Trip Checklist</p>
+  <p class="section-subtitle">Tap each item to check it off</p>
+
+  <div class="progress-label" id="progress-label">0 of 0 items complete</div>
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-bar" style="width:0%"></div></div>
+
+  <div class="checklist-group">
+    <h3><span>📋</span> Booking & Documents</h3>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Confirm trip registration & payment ($3,875)<small>Check your confirmation email</small></span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Valid passport (if required) or government ID</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Book flights to/from Halifax (YHZ)<small>Arrive Aug 26, depart Aug 30 after ~11:30am</small></span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Book travel insurance</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Save emergency contact numbers & trip organizer info</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Download/print trip itinerary</span></label>
+  </div>
+
+  <div class="checklist-group">
+    <h3><span>⛳</span> Golf Gear</h3>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Golf clubs & travel bag / hard case<small>TaylorMade Qi 10 set ready to pack</small></span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Golf shoes (pack in carry-on or easy-access bag)</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Golf gloves (bring a spare!)</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Golf balls — stock up before trip<small>Cape Breton wind can claim a few!</small></span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Golf tees, ball markers, divot tools</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Rangefinder or GPS watch</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Rain gear / waterproof jacket<small>Links golf = unpredictable weather</small></span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Layered clothing (it can be cool near the water)</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Golf hat / visor and sunglasses</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Sunscreen (high SPF — lots of open exposure!)</span></label>
+  </div>
+
+  <div class="checklist-group">
+    <h3><span>👗</span> Clothing & Packing</h3>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">4–5 golf outfits (one per day + spare)</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Evening dinner outfits (2–3 nights of group dinners)</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Comfortable casual wear for free time</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Comfortable walking shoes</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Warm layer / cardigan for evenings</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Swimsuit (resort amenities)</span></label>
+  </div>
+
+  <div class="checklist-group">
+    <h3><span>💊</span> Health & Toiletries</h3>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Prescription medications (enough + extra days)</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Ibuprofen / pain reliever (lots of walking!)</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Blister pads / foot care</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Toiletries & skincare</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Insect repellent</span></label>
+  </div>
+
+  <div class="checklist-group">
+    <h3><span>📱</span> Electronics & Misc</h3>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Phone charger & portable battery pack</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Camera or extra phone storage cleared</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Canadian currency / notify bank of international travel</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Check international phone plan / data</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Caddie tip cash (gratuity included but extra is always kind!)</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Small backpack / day bag for the course</span></label>
+  </div>
+
+  <div class="checklist-group">
+    <h3><span>🧳</span> Day Before Departure</h3>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Clubs checked in / shipped to airport</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Confirm flight check-in (24hrs before)</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Charge all devices</span></label>
+    <label class="check-item"><input type="checkbox" onchange="updateProgress()"><span class="check-label">Set early alarm — ready to celebrate!</span></label>
+  </div>
+</div>
+
+<!-- CLUBS -->
+<div id="clubs" class="section">
+  <p class="section-title">My Clubs</p>
+  <p class="section-subtitle">TaylorMade Qi 10 — full set</p>
+
+  <div class="clubs-grid">
+    <div class="club-row"><span class="club-icon">🏌️‍♀️</span><span class="club-name">Driver</span><span class="club-brand">TaylorMade Qi 10</span></div>
+    <div class="club-row"><span class="club-icon">🌲</span><span class="club-name">3 Wood</span><span class="club-brand">TaylorMade Qi 10</span></div>
+    <div class="club-row"><span class="club-icon">🌲</span><span class="club-name">5 Wood</span><span class="club-brand">TaylorMade Qi 10</span></div>
+    <div class="club-row"><span class="club-icon">🔵</span><span class="club-name">5 Iron</span><span class="club-brand">TaylorMade Qi 10</span></div>
+    <div class="club-row"><span class="club-icon">🔵</span><span class="club-name">6 Iron</span><span class="club-brand">TaylorMade Qi 10</span></div>
+    <div class="club-row"><span class="club-icon">🔵</span><span class="club-name">7 Iron</span><span class="club-brand">TaylorMade Qi 10</span></div>
+    <div class="club-row"><span class="club-icon">🔵</span><span class="club-name">8 Iron</span><span class="club-brand">TaylorMade Qi 10</span></div>
+    <div class="club-row"><span class="club-icon">🔵</span><span class="club-name">9 Iron</span><span class="club-brand">TaylorMade Qi 10</span></div>
+    <div class="club-row"><span class="club-icon">🔶</span><span class="club-name">Pitching Wedge</span><span class="club-brand">TaylorMade Qi 10</span></div>
+    <div class="club-row"><span class="club-icon">🔶</span><span class="club-name">Sand Wedge</span><span class="club-brand">TaylorMade Qi 10</span></div>
+    <div class="club-row"><span class="club-icon">🎯</span><span class="club-name">Putter</span><span class="club-brand"></span></div>
+  </div>
+
+  <div class="info-card" style="margin-top:24px;">
+    <h3>📦 Packing Your Clubs</h3>
+    <p>Make sure all 11 clubs are accounted for when packing. Use a hard travel case or club travel bag. Label your bag clearly with your name and Halifax, NS as the destination. Consider shipping ahead to the resort if flying with equipment is complex.</p>
+  </div>
+</div>
+
+<div class="footer">
+  <strong>2026 Real Women Golf Trip</strong><br>
+  Cabot Cape Breton · Nova Scotia, Canada · August 26–30
+</div>
+
+<script>
+function showTab(tab) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(tab).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function updateProgress() {
+  const all = document.querySelectorAll('#checklist input[type="checkbox"]');
+  const checked = document.querySelectorAll('#checklist input[type="checkbox"]:checked');
+  const pct = Math.round((checked.length / all.length) * 100);
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = checked.length + ' of ' + all.length + ' items complete';
+}
+
+updateProgress();
+</script>
+</body>
+</html>
