@@ -757,6 +757,11 @@
   if (tripParam && ['chicago','bmwga','cabot'].includes(tripParam)) {
     const btn = document.querySelector(`.trip-btn[onclick*="'${tripParam}'"]`);
     if (btn) switchTrip(tripParam, btn);
+    document.querySelectorAll('.trip-btn').forEach(b => {
+      if (!b.getAttribute('onclick').includes(`'${tripParam}'`)) {
+        b.style.display = 'none';
+      }
+    });
   }
 
   // Countdowns
