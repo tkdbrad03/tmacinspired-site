@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMWGA 2026 Keepsakes</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #5b3a8c;
+    --purple-light: #7b5aac;
+    --cream: #f8f4ed;
+    --dark: #1a2018;
+    --text: #3a3a3a;
+    --muted: #7a7a6a;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+
+  .header { background: linear-gradient(160deg, #1a1020 0%, var(--purple) 60%, var(--purple-light) 100%); color: white; padding: 32px 20px 28px; text-align: center; }
+  .header-flag { display: inline-block; background: rgba(255,255,255,0.15); font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: 28px; margin-bottom: 4px; }
+  .header h1 em { font-style: italic; color: #d4b8ff; }
+  .header p { font-size: 13px; opacity: 0.7; }
+  .sync-status { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 11px; opacity: 0.7; }
+  .sync-dot { width: 7px; height: 7px; border-radius: 50%; background: #4caf50; animation: pulse 2s infinite; }
+  .sync-dot.error { background: #ef5350; animation: none; }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+
+  .tab-nav { background: var(--white); border-bottom: 2px solid #e8e2d8; display: flex; overflow-x: auto; padding: 0 16px; -webkit-overflow-scrolling: touch; position: sticky; top: 0; z-index: 100; }
+  .tab-nav button { background: none; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; color: var(--muted); padding: 14px 16px; border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: all 0.2s; }
+  .tab-nav button.active { color: var(--purple); border-bottom-color: var(--purple); }
+
+  .content { max-width: 600px; margin: 0 auto; padding: 24px 20px 60px; }
+  .section { display: none; }
+  .section.active { display: block; animation: fadeUp 0.3s ease; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);} }
+
+  .section-title { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--dark); margin-bottom: 4px; }
+  .section-sub { font-size: 13px; color: var(--muted); font-style: italic; margin-bottom: 24px; }
+
+  .card { background: var(--white); border: 1px solid #e8e2d8; border-radius: 14px; padding: 18px; margin-bottom: 14px; }
+  .card h3 { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: var(--purple-light); margin-bottom: 10px; }
+  .field { width: 100%; border: 1px solid #e0d8cc; border-radius: 10px; padding: 10px 14px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); background: #faf7f2; resize: none; outline: none; transition: border 0.2s; }
+  .field:focus { border-color: var(--purple-light); }
+  .field::placeholder { color: #c5bfb0; }
+
+  .save-btn { background: var(--purple); color: white; border: none; border-radius: 10px; padding: 10px 22px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; margin-top: 12px; transition: background 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+  .save-btn:hover { background: var(--purple-light); }
+  .save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .saved-badge { background: #e8f5e9; color: #2e7d32; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; opacity: 0; transition: opacity 0.3s; }
+  .saved-badge.show { opacity: 1; }
+
+  .who-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .who-chip { border: 1px solid #e0d8cc; border-radius: 20px; padding: 6px 14px; font-size: 13px; cursor: pointer; transition: all 0.2s; background: #faf7f2; color: var(--muted); }
+  .who-chip.selected { background: var(--purple); border-color: var(--purple); color: white; }
+
+  /* PREDICTIONS */
+  .pred-card { background: var(--white); border: 1px solid #e8e2d8; border-radius: 14px; padding: 16px; margin-bottom: 12px; }
+  .pred-card h3 { font-size: 14px; font-weight: 600; color: var(--dark); margin-bottom: 4px; }
+  .pred-card p { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+  .pred-select { width: 100%; border: 1px solid #e0d8cc; border-radius: 10px; padding: 10px 14px; font-family: 'DM Sans', sans-serif; font-size: 14px; background: #faf7f2; outline: none; color: var(--text); }
+  .pred-select:focus { border-color: var(--purple-light); }
+
+  .reveal-section { margin-top: 24px; }
+  .reveal-card { background: linear-gradient(135deg, #f3eeff, #ede0ff); border: 1px solid #d4b8ff; border-radius: 14px; padding: 18px; }
+  .reveal-card h3 { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--purple); margin-bottom: 14px; }
+  .reveal-row { display: flex; justify-content: space-between; font-size: 13px; padding: 8px 0; border-bottom: 1px solid #e0d0ff; }
+  .reveal-row:last-child { border-bottom: none; }
+  .reveal-row span { color: var(--muted); }
+  .reveal-row strong { color: var(--purple); }
+  .reveal-btn { background: none; border: 1px solid var(--purple); color: var(--purple); border-radius: 10px; padding: 10px 22px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; margin-top: 12px; transition: all 0.2s; }
+  .reveal-btn:hover { background: var(--purple); color: white; }
+
+  /* SUPERLATIVES */
+  .super-card { background: var(--white); border: 1px solid #e8e2d8; border-radius: 14px; padding: 16px; margin-bottom: 12px; }
+  .super-title { font-size: 15px; font-weight: 600; color: var(--dark); margin-bottom: 3px; }
+  .super-sub { font-size: 12px; color: var(--muted); margin-bottom: 12px; font-style: italic; }
+  .super-options { display: flex; flex-direction: column; gap: 6px; }
+  .super-option { display: flex; align-items: center; gap: 10px; padding: 9px 14px; border: 1px solid #e0d8cc; border-radius: 10px; cursor: pointer; transition: all 0.2s; background: #faf7f2; }
+  .super-option:hover { border-color: var(--purple-light); background: #f3eeff; }
+  .super-option.selected { border-color: var(--purple); background: #f3eeff; }
+  .super-option input[type="radio"] { accent-color: var(--purple); width: 16px; height: 16px; flex-shrink: 0; }
+  .super-option label { font-size: 14px; color: var(--text); cursor: pointer; flex: 1; }
+  .vote-bar-wrap { margin-top: 10px; display: none; }
+  .vote-bar-wrap.show { display: block; }
+  .vote-bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 12px; }
+  .vote-bar-name { width: 65px; flex-shrink: 0; color: var(--muted); }
+  .vote-bar-track { flex: 1; background: #e8e2d8; border-radius: 20px; height: 8px; overflow: hidden; }
+  .vote-bar-fill { height: 100%; background: var(--purple); border-radius: 20px; transition: width 0.4s ease; }
+  .vote-bar-count { width: 20px; text-align: right; color: var(--purple); font-weight: 600; }
+
+  /* SCORES */
+  .score-table { width: 100%; border-collapse: collapse; }
+  .score-table th { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); padding: 10px 12px; text-align: left; border-bottom: 2px solid #e0d8cc; }
+  .score-table td { padding: 10px 12px; border-bottom: 1px solid #f0ebe2; font-size: 14px; }
+  .score-table tr:last-child td { border-bottom: none; }
+  .score-input { width: 60px; border: 1px solid #e0d8cc; border-radius: 8px; padding: 6px 8px; font-family: 'DM Sans', sans-serif; font-size: 14px; text-align: center; background: #faf7f2; outline: none; }
+  .score-input:focus { border-color: var(--purple-light); }
+  .best-score { color: var(--purple); font-weight: 700; }
+
+  /* PHOTOS */
+  .drive-card { background: var(--white); border: 1px solid #e8e2d8; border-radius: 14px; padding: 28px 20px; text-align: center; margin-bottom: 14px; }
+  .drive-icon { width: 52px; height: 52px; margin: 0 auto 16px; }
+  .drive-card h3 { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--dark); margin-bottom: 8px; }
+  .drive-card p { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
+  .drive-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--purple); color: white; border: none; border-radius: 10px; padding: 12px 24px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; text-decoration: none; transition: background 0.2s; }
+  .drive-btn:hover { background: var(--purple-light); }
+  .instr-card { background: #f3eeff; border: 1px solid #d4b8ff; border-radius: 14px; padding: 18px; }
+  .instr-card h3 { font-size: 12px; font-weight: 600; color: var(--purple); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+  .instr-card ol { padding-left: 18px; }
+  .instr-card li { font-size: 13px; color: var(--text); line-height: 1.9; }
+
+  .loading { text-align: center; padding: 20px; font-size: 13px; color: var(--muted); }
+  .error-msg { background: #fff3f3; border: 1px solid #ffcdd2; border-radius: 10px; padding: 12px 16px; font-size: 13px; color: #c62828; margin-bottom: 14px; display: none; }
+  .error-msg.show { display: block; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-flag">BMWGA · Hilton Head · Jun 2026</div>
+  <h1>Trip <em>Keepsakes</em></h1>
+  <p>Tasha · Susan · Dana · Kelleye · Tabitha</p>
+  <div class="sync-status"><div class="sync-dot" id="sync-dot"></div><span id="sync-label">Live sync on</span></div>
+</div>
+
+<div class="tab-nav">
+  <button class="active" onclick="showSection('highlights',this)">Highlights</button>
+  <button onclick="showSection('predictions',this)">Predictions</button>
+  <button onclick="showSection('superlatives',this)">Superlatives</button>
+  <button onclick="showSection('scores',this)">Scores</button>
+  <button onclick="showSection('photos',this)">Photos</button>
+</div>
+
+<div class="content">
+
+  <!-- HIGHLIGHTS -->
+  <div id="highlights" class="section active">
+    <p class="section-title">Trip Highlights</p>
+    <p class="section-sub">Fill these in together on the last night</p>
+    <div class="error-msg" id="hl-error">Could not save. Check your connection and try again.</div>
+
+    <div class="card"><h3>Best Meal of the Trip</h3><textarea class="field" rows="2" placeholder="e.g. Kind of Blue on Saturday night..." id="hl-meal"></textarea></div>
+    <div class="card"><h3>Funniest Moment</h3><textarea class="field" rows="2" placeholder="What had everyone crying laughing..." id="hl-funny"></textarea></div>
+    <div class="card"><h3>Best Shot of the Tournament</h3><textarea class="field" rows="2" placeholder="Who hit it and where..." id="hl-shot"></textarea></div>
+    <div class="card"><h3>Most Surprising Moment</h3><textarea class="field" rows="2" placeholder="Nobody saw that coming..." id="hl-surprise"></textarea></div>
+    <div class="card"><h3>Best Thing About the Airbnb</h3><textarea class="field" rows="2" placeholder="What made 203 Beach City Rd feel like home..." id="hl-airbnb"></textarea></div>
+    <div class="card"><h3>Most Memorable Moment</h3><textarea class="field" rows="3" placeholder="The moment you'll all be talking about next year..." id="hl-moment"></textarea></div>
+    <div class="card"><h3>Can't Wait to Do Again</h3><textarea class="field" rows="2" placeholder="What's on the list for 2027..." id="hl-again"></textarea></div>
+    <button class="save-btn" id="hl-btn" onclick="saveHighlights()">Save Highlights <span class="saved-badge" id="hl-saved">Saved!</span></button>
+  </div>
+
+  <!-- PREDICTIONS -->
+  <div id="predictions" class="section">
+    <p class="section-title">Predictions</p>
+    <p class="section-sub">Fill out before Round 1 · Reveal Friday night after the cruise</p>
+    <div class="error-msg" id="pred-error">Could not save. Check your connection and try again.</div>
+
+    <div class="card" style="margin-bottom:16px;">
+      <h3>Who's predicting?</h3>
+      <div class="who-row" id="pred-who">
+        <div class="who-chip" onclick="selectWho('pred',this)">Tasha</div>
+        <div class="who-chip" onclick="selectWho('pred',this)">Susan</div>
+        <div class="who-chip" onclick="selectWho('pred',this)">Dana</div>
+        <div class="who-chip" onclick="selectWho('pred',this)">Kelleye</div>
+        <div class="who-chip" onclick="selectWho('pred',this)">Tabitha</div>
+      </div>
+    </div>
+
+    <div class="pred-card"><h3>Lowest Score — Round 1</h3><p>Who's coming out hot on Thursday?</p><select class="pred-select" id="pred-r1"><option value="">Pick a roommate...</option><option>Tasha</option><option>Susan</option><option>Dana</option><option>Kelleye</option><option>Tabitha</option></select></div>
+    <div class="pred-card"><h3>Lowest Score — Round 2</h3><p>Who saves their best for last?</p><select class="pred-select" id="pred-r2"><option value="">Pick a roommate...</option><option>Tasha</option><option>Susan</option><option>Dana</option><option>Kelleye</option><option>Tabitha</option></select></div>
+    <div class="pred-card"><h3>Best Dressed on the Course</h3><p>Who's going to show up and show OUT?</p><select class="pred-select" id="pred-dressed"><option value="">Pick a roommate...</option><option>Tasha</option><option>Susan</option><option>Dana</option><option>Kelleye</option><option>Tabitha</option></select></div>
+    <div class="pred-card"><h3>First One Ready Every Morning</h3><p>Who's already downstairs with coffee?</p><select class="pred-select" id="pred-ready"><option value="">Pick a roommate...</option><option>Tasha</option><option>Susan</option><option>Dana</option><option>Kelleye</option><option>Tabitha</option></select></div>
+    <div class="pred-card"><h3>Last One Out the Door</h3><p>We'll be waiting on her...</p><select class="pred-select" id="pred-last"><option value="">Pick a roommate...</option><option>Tasha</option><option>Susan</option><option>Dana</option><option>Kelleye</option><option>Tabitha</option></select></div>
+    <div class="pred-card"><h3>Most Likely to Win a Prize</h3><p>Closest to the pin, longest drive, door prize — who's walking away with something?</p><select class="pred-select" id="pred-prize"><option value="">Pick a roommate...</option><option>Tasha</option><option>Susan</option><option>Dana</option><option>Kelleye</option><option>Tabitha</option></select></div>
+
+    <button class="save-btn" id="pred-btn" onclick="savePredictions()">Lock In My Predictions <span class="saved-badge" id="pred-saved">Saved!</span></button>
+
+    <div class="reveal-section">
+      <button class="reveal-btn" onclick="loadAndReveal()">Reveal All Predictions</button>
+      <div class="reveal-card" id="reveal-card" style="margin-top:14px;display:none;">
+        <h3>Everyone's Predictions</h3>
+        <div id="reveal-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUPERLATIVES -->
+  <div id="superlatives" class="section">
+    <p class="section-title">Roommate Superlatives</p>
+    <p class="section-sub">Everyone votes from their own phone · Results update live</p>
+    <div class="error-msg" id="super-error">Could not save. Check your connection and try again.</div>
+
+    <div class="card" style="margin-bottom:16px;">
+      <h3>Who's voting?</h3>
+      <div class="who-row" id="super-who">
+        <div class="who-chip" onclick="selectWho('super',this)">Tasha</div>
+        <div class="who-chip" onclick="selectWho('super',this)">Susan</div>
+        <div class="who-chip" onclick="selectWho('super',this)">Dana</div>
+        <div class="who-chip" onclick="selectWho('super',this)">Kelleye</div>
+        <div class="who-chip" onclick="selectWho('super',this)">Tabitha</div>
+      </div>
+    </div>
+
+    <div class="super-card" data-key="snack">
+      <div class="super-title">Snack Queen of the Trip</div>
+      <div class="super-sub">Who kept everyone fed and happy?</div>
+      <div class="super-options">
+        <label class="super-option"><input type="radio" name="snack" value="Tasha"><label>Tasha</label></label>
+        <label class="super-option"><input type="radio" name="snack" value="Susan"><label>Susan</label></label>
+        <label class="super-option"><input type="radio" name="snack" value="Dana"><label>Dana</label></label>
+        <label class="super-option"><input type="radio" name="snack" value="Kelleye"><label>Kelleye</label></label>
+        <label class="super-option"><input type="radio" name="snack" value="Tabitha"><label>Tabitha</label></label>
+      </div>
+      <div class="vote-bar-wrap" id="bars-snack"></div>
+    </div>
+
+    <div class="super-card" data-key="dressed">
+      <div class="super-title">Best Dressed Every Single Day</div>
+      <div class="super-sub">Coordinated from head to toe, every round</div>
+      <div class="super-options">
+        <label class="super-option"><input type="radio" name="dressed" value="Tasha"><label>Tasha</label></label>
+        <label class="super-option"><input type="radio" name="dressed" value="Susan"><label>Susan</label></label>
+        <label class="super-option"><input type="radio" name="dressed" value="Dana"><label>Dana</label></label>
+        <label class="super-option"><input type="radio" name="dressed" value="Kelleye"><label>Kelleye</label></label>
+        <label class="super-option"><input type="radio" name="dressed" value="Tabitha"><label>Tabitha</label></label>
+      </div>
+      <div class="vote-bar-wrap" id="bars-dressed"></div>
+    </div>
+
+    <div class="super-card" data-key="sleep">
+      <div class="super-title">First One Asleep Every Night</div>
+      <div class="super-sub">Lights out before the rest of us even sit down</div>
+      <div class="super-options">
+        <label class="super-option"><input type="radio" name="sleep" value="Tasha"><label>Tasha</label></label>
+        <label class="super-option"><input type="radio" name="sleep" value="Susan"><label>Susan</label></label>
+        <label class="super-option"><input type="radio" name="sleep" value="Dana"><label>Dana</label></label>
+        <label class="super-option"><input type="radio" name="sleep" value="Kelleye"><label>Kelleye</label></label>
+        <label class="super-option"><input type="radio" name="sleep" value="Tabitha"><label>Tabitha</label></label>
+      </div>
+      <div class="vote-bar-wrap" id="bars-sleep"></div>
+    </div>
+
+    <div class="super-card" data-key="schedule">
+      <div class="super-title">The One Who Kept Us on Schedule</div>
+      <div class="super-sub">Without her we would have missed the shotgun start</div>
+      <div class="super-options">
+        <label class="super-option"><input type="radio" name="schedule" value="Tasha"><label>Tasha</label></label>
+        <label class="super-option"><input type="radio" name="schedule" value="Susan"><label>Susan</label></label>
+        <label class="super-option"><input type="radio" name="schedule" value="Dana"><label>Dana</label></label>
+        <label class="super-option"><input type="radio" name="schedule" value="Kelleye"><label>Kelleye</label></label>
+        <label class="super-option"><input type="radio" name="schedule" value="Tabitha"><label>Tabitha</label></label>
+      </div>
+      <div class="vote-bar-wrap" id="bars-schedule"></div>
+    </div>
+
+    <div class="super-card" data-key="improved">
+      <div class="super-title">Most Improved Player</div>
+      <div class="super-sub">Round 2 was a completely different person</div>
+      <div class="super-options">
+        <label class="super-option"><input type="radio" name="improved" value="Tasha"><label>Tasha</label></label>
+        <label class="super-option"><input type="radio" name="improved" value="Susan"><label>Susan</label></label>
+        <label class="super-option"><input type="radio" name="improved" value="Dana"><label>Dana</label></label>
+        <label class="super-option"><input type="radio" name="improved" value="Kelleye"><label>Kelleye</label></label>
+        <label class="super-option"><input type="radio" name="improved" value="Tabitha"><label>Tabitha</label></label>
+      </div>
+      <div class="vote-bar-wrap" id="bars-improved"></div>
+    </div>
+
+    <button class="save-btn" id="super-btn" onclick="saveSuperlatives()">Submit My Votes <span class="saved-badge" id="super-saved">Submitted!</span></button>
+  </div>
+
+  <!-- SCORES -->
+  <div id="scores" class="section">
+    <p class="section-title">Group Scorecard</p>
+    <p class="section-sub">BMWGA 2026 · 36-Hole Stroke Play · Hilton Head</p>
+    <div class="error-msg" id="scores-error">Could not save. Check your connection and try again.</div>
+
+    <div class="card" style="padding:0;overflow:hidden;">
+      <table class="score-table">
+        <thead><tr><th>Player</th><th>Round 1</th><th>Round 2</th><th>Total</th></tr></thead>
+        <tbody id="score-body">
+          <tr><td>Tasha</td><td><input class="score-input" type="number" placeholder="--" oninput="calcTotal(this)"></td><td><input class="score-input" type="number" placeholder="--" oninput="calcTotal(this)"></td><td class="total-cell">--</td></tr>
+          <tr><td>Susan</td><td><input class="score-input" type="number" placeholder="--" oninput="calcTotal(this)"></td><td><input class="score-input" type="number" placeholder="--" oninput="calcTotal(this)"></td><td class="total-cell">--</td></tr>
+          <tr><td>Dana</td><td><input class="score-input" type="number" placeholder="--" oninput="calcTotal(this)"></td><td><input class="score-input" type="number" placeholder="--" oninput="calcTotal(this)"></td><td class="total-cell">--</td></tr>
+          <tr><td>Kelleye</td><td><input class="score-input" type="number" placeholder="--" oninput="calcTotal(this)"></td><td><input class="score-input" type="number" placeholder="--" oninput="calcTotal(this)"></td><td class="total-cell">--</td></tr>
+          <tr><td>Tabitha</td><td><input class="score-input" type="number" placeholder="--" oninput="calcTotal(this)"></td><td><input class="score-input" type="number" placeholder="--" oninput="calcTotal(this)"></td><td class="total-cell">--</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <button class="save-btn" id="scores-btn" onclick="saveScores()">Save Scores <span class="saved-badge" id="scores-saved">Saved!</span></button>
+  </div>
+
+  <!-- PHOTOS -->
+  <div id="photos" class="section">
+    <p class="section-title">Trip Photos</p>
+    <p class="section-sub">Our shared album — everyone can add their favorites</p>
+    <div class="drive-card">
+      <svg class="drive-icon" viewBox="0 0 87.3 78" xmlns="http://www.w3.org/2000/svg">
+        <path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8h-27.5c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/>
+        <path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-25.4 44a9.06 9.06 0 0 0 -1.2 4.5h27.5z" fill="#00ac47"/>
+        <path d="m73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5h-27.502l5.852 11.5z" fill="#ea4335"/>
+        <path d="m43.65 25 13.75-23.8c-1.35-.8-2.9-1.2-4.5-1.2h-18.5c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d"/>
+        <path d="m59.8 53h-32.3l-13.75 23.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc"/>
+        <path d="m73.4 26.5-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3l-13.75 23.8 16.15 27h27.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/>
+      </svg>
+      <h3>BMWGA 2026 Hilton Head</h3>
+      <p>Tap below to open the shared Google Drive folder. Upload your favorite photos — everyone in the group can see and add to the album.</p>
+      <a class="drive-btn" href="https://drive.google.com/drive/folders/17na4ZHK35JP-sSTa7L2dboBjYcRalODv?usp=sharing" target="_blank">Open Photo Album</a>
+    </div>
+    <div class="instr-card">
+      <h3>How to Add Your Photos</h3>
+      <ol>
+        <li>Tap "Open Photo Album" above</li>
+        <li>Sign in to Google if prompted</li>
+        <li>Tap the + button to upload from your camera roll</li>
+        <li>Everyone in the group can see all photos instantly</li>
+      </ol>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const API = 'https://script.google.com/macros/s/AKfycbyX17biC7695htIIg5AwKQ-jHgAXkYXZLBCBkDa9CUQtT19jJWLq8ANneNtUZ7IL2yV/exec';
+  const NAMES = ['Tasha','Susan','Dana','Kelleye','Tabitha'];
+  const SUPER_KEYS = ['snack','dressed','sleep','schedule','improved'];
+  let superVotes = {}; // live vote tallies
+  let pollTimer = null;
+  let selectedWho = { pred: null, super: null };
+
+  // ── UTILS ──
+  function showSection(id, btn) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab-nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+    if (id === 'superlatives') startPolling();
+    else stopPolling();
+  }
+
+  function flash(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 2500);
+  }
+
+  function setBtn(id, loading) {
+    const btn = document.getElementById(id);
+    if (!btn) return;
+    btn.disabled = loading;
+    if (loading) btn.style.opacity = '0.6';
+    else btn.style.opacity = '1';
+  }
+
+  function setSyncStatus(ok) {
+    document.getElementById('sync-dot').className = 'sync-dot' + (ok ? '' : ' error');
+    document.getElementById('sync-label').textContent = ok ? 'Live sync on' : 'Sync error';
+  }
+
+  function selectWho(prefix, chip) {
+    document.querySelectorAll(`#${prefix}-who .who-chip`).forEach(c => c.classList.remove('selected'));
+    chip.classList.add('selected');
+    selectedWho[prefix] = chip.textContent;
+  }
+
+  // ── API CALLS ──
+  async function post(tab, action, payload) {
+    const res = await fetch(API, {
+      method: 'POST',
+      body: JSON.stringify({ tab, action, payload }),
+      headers: { 'Content-Type': 'text/plain' }
+    });
+    return res.json();
+  }
+
+  async function get(tab) {
+    const res = await fetch(`${API}?tab=${tab}`);
+    return res.json();
+  }
+
+  // ── HIGHLIGHTS ──
+  async function saveHighlights() {
+    setBtn('hl-btn', true);
+    document.getElementById('hl-error').classList.remove('show');
+    const payload = {
+      meal: document.getElementById('hl-meal').value,
+      funny: document.getElementById('hl-funny').value,
+      shot: document.getElementById('hl-shot').value,
+      surprise: document.getElementById('hl-surprise').value,
+      airbnb: document.getElementById('hl-airbnb').value,
+      moment: document.getElementById('hl-moment').value,
+      again: document.getElementById('hl-again').value
+    };
+    try {
+      await post('Highlights', 'overwrite', payload);
+      flash('hl-saved');
+      setSyncStatus(true);
+    } catch(e) {
+      document.getElementById('hl-error').classList.add('show');
+      setSyncStatus(false);
+    }
+    setBtn('hl-btn', false);
+  }
+
+  async function loadHighlights() {
+    try {
+      const res = await get('Highlights');
+      if (res.data && res.data.length) {
+        const d = res.data[res.data.length - 1];
+        ['meal','funny','shot','surprise','airbnb','moment','again'].forEach(f => {
+          const el = document.getElementById('hl-'+f);
+          if (el && d[f]) el.value = d[f];
+        });
+      }
+    } catch(e) {}
+  }
+
+  // ── PREDICTIONS ──
+  async function savePredictions() {
+    if (!selectedWho.pred) { alert('Please select who is predicting first.'); return; }
+    setBtn('pred-btn', true);
+    document.getElementById('pred-error').classList.remove('show');
+    const payload = {
+      who: selectedWho.pred,
+      r1: document.getElementById('pred-r1').value,
+      r2: document.getElementById('pred-r2').value,
+      dressed: document.getElementById('pred-dressed').value,
+      ready: document.getElementById('pred-ready').value,
+      last: document.getElementById('pred-last').value,
+      prize: document.getElementById('pred-prize').value
+    };
+    try {
+      await post('Predictions', 'write', payload);
+      flash('pred-saved');
+      setSyncStatus(true);
+    } catch(e) {
+      document.getElementById('pred-error').classList.add('show');
+      setSyncStatus(false);
+    }
+    setBtn('pred-btn', false);
+  }
+
+  async function loadAndReveal() {
+    const card = document.getElementById('reveal-card');
+    const content = document.getElementById('reveal-content');
+    card.style.display = 'block';
+    content.innerHTML = '<div class="loading">Loading predictions...</div>';
+    try {
+      const res = await get('Predictions');
+      if (!res.data || !res.data.length) { content.innerHTML = '<p style="font-size:13px;color:var(--muted)">No predictions saved yet.</p>'; return; }
+      const labels = { r1:'Lowest Score R1', r2:'Lowest Score R2', dressed:'Best Dressed', ready:'First Ready', last:'Last Out the Door', prize:'Most Likely to Win a Prize' };
+      let html = '';
+      res.data.forEach(row => {
+        html += `<div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #e0d0ff;"><div style="font-weight:600;color:var(--purple);margin-bottom:8px;">${row.who}</div>`;
+        Object.keys(labels).forEach(k => {
+          html += `<div class="reveal-row"><span>${labels[k]}</span><strong>${row[k]||'—'}</strong></div>`;
+        });
+        html += '</div>';
+      });
+      content.innerHTML = html;
+    } catch(e) {
+      content.innerHTML = '<p style="font-size:13px;color:#c62828;">Could not load predictions.</p>';
+    }
+  }
+
+  // ── SUPERLATIVES ──
+  document.querySelectorAll('.super-option input[type="radio"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+      this.closest('.super-options').querySelectorAll('.super-option').forEach(o => o.classList.remove('selected'));
+      this.closest('.super-option').classList.add('selected');
+    });
+  });
+
+  async function saveSuperlatives() {
+    if (!selectedWho.super) { alert('Please select who is voting first.'); return; }
+    setBtn('super-btn', true);
+    document.getElementById('super-error').classList.remove('show');
+    const payload = { who: selectedWho.super };
+    SUPER_KEYS.forEach(k => {
+      const checked = document.querySelector(`input[name="${k}"]:checked`);
+      payload[k] = checked ? checked.value : '';
+    });
+    try {
+      await post('Superlatives', 'write', payload);
+      flash('super-saved');
+      setSyncStatus(true);
+      await refreshSuperlatives();
+    } catch(e) {
+      document.getElementById('super-error').classList.add('show');
+      setSyncStatus(false);
+    }
+    setBtn('super-btn', false);
+  }
+
+  async function refreshSuperlatives() {
+    try {
+      const res = await get('Superlatives');
+      if (!res.data || !res.data.length) return;
+      // tally votes
+      const tallies = {};
+      SUPER_KEYS.forEach(k => { tallies[k] = {}; NAMES.forEach(n => tallies[k][n] = 0); });
+      res.data.forEach(row => {
+        SUPER_KEYS.forEach(k => { if (row[k] && tallies[k][row[k]] !== undefined) tallies[k][row[k]]++; });
+      });
+      const totalVoters = res.data.length;
+      // render bars
+      SUPER_KEYS.forEach(k => {
+        const wrap = document.getElementById('bars-'+k);
+        if (!wrap) return;
+        wrap.classList.add('show');
+        const max = Math.max(...Object.values(tallies[k]), 1);
+        wrap.innerHTML = NAMES.map(n => `
+          <div class="vote-bar-row">
+            <div class="vote-bar-name">${n}</div>
+            <div class="vote-bar-track"><div class="vote-bar-fill" style="width:${(tallies[k][n]/max)*100}%"></div></div>
+            <div class="vote-bar-count">${tallies[k][n]}</div>
+          </div>`).join('');
+      });
+      setSyncStatus(true);
+    } catch(e) { setSyncStatus(false); }
+  }
+
+  function startPolling() {
+    refreshSuperlatives();
+    pollTimer = setInterval(refreshSuperlatives, 10000);
+  }
+  function stopPolling() {
+    clearInterval(pollTimer);
+    pollTimer = null;
+  }
+
+  // ── SCORES ──
+  function calcTotal(input) {
+    const row = input.closest('tr');
+    const inputs = row.querySelectorAll('input');
+    const v1 = parseFloat(inputs[0].value)||0;
+    const v2 = parseFloat(inputs[1].value)||0;
+    row.querySelector('.total-cell').textContent = (inputs[0].value||inputs[1].value) ? v1+v2 : '--';
+    highlightBest();
+  }
+  function highlightBest() {
+    const rows = document.querySelectorAll('#score-body tr');
+    let best = Infinity, bestRow = null;
+    rows.forEach(r => { const t = r.querySelector('.total-cell').textContent; if(t!=='--'&&parseFloat(t)<best){best=parseFloat(t);bestRow=r;} });
+    rows.forEach(r => r.querySelector('.total-cell').classList.remove('best-score'));
+    if(bestRow) bestRow.querySelector('.total-cell').classList.add('best-score');
+  }
+  async function saveScores() {
+    setBtn('scores-btn', true);
+    document.getElementById('scores-error').classList.remove('show');
+    const payload = {};
+    const rows = document.querySelectorAll('#score-body tr');
+    rows.forEach(r => {
+      const name = r.querySelector('td').textContent;
+      const inputs = r.querySelectorAll('input');
+      payload[name+'_R1'] = inputs[0].value;
+      payload[name+'_R2'] = inputs[1].value;
+      payload[name+'_Total'] = r.querySelector('.total-cell').textContent;
+    });
+    try {
+      await post('Scores', 'overwrite', payload);
+      flash('scores-saved');
+      setSyncStatus(true);
+    } catch(e) {
+      document.getElementById('scores-error').classList.add('show');
+      setSyncStatus(false);
+    }
+    setBtn('scores-btn', false);
+  }
+  async function loadScores() {
+    try {
+      const res = await get('Scores');
+      if (!res.data || !res.data.length) return;
+      const d = res.data[res.data.length-1];
+      const rows = document.querySelectorAll('#score-body tr');
+      rows.forEach(r => {
+        const name = r.querySelector('td').textContent;
+        const inputs = r.querySelectorAll('input');
+        if (d[name+'_R1']) { inputs[0].value = d[name+'_R1']; calcTotal(inputs[0]); }
+        if (d[name+'_R2']) { inputs[1].value = d[name+'_R2']; calcTotal(inputs[1]); }
+      });
+    } catch(e) {}
+  }
+
+  // ── INIT ──
+  loadHighlights();
+  loadScores();
+</script>
+</body>
+</html>
