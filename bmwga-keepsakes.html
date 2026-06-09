@@ -139,6 +139,29 @@
   .loading { text-align: center; padding: 20px; font-size: 13px; color: var(--muted); }
   .divider { border: none; border-top: 1px solid #e8e2d8; margin: 24px 0; }
 
+  /* PHOTOS */
+  .photo-upload-area { border: 2px dashed #d4b8ff; border-radius: 14px; padding: 28px 20px; text-align: center; background: #f9f6ff; cursor: pointer; transition: all 0.2s; margin-bottom: 14px; }
+  .photo-upload-area:hover { border-color: var(--purple); background: #f3eeff; }
+  .photo-upload-area p { font-size: 14px; color: var(--muted); margin-bottom: 10px; }
+  .photo-upload-area input[type="file"] { display: none; }
+  .upload-label { display: inline-flex; align-items: center; gap: 8px; background: var(--purple); color: white; border: none; border-radius: 10px; padding: 10px 20px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; }
+  .photo-preview { display: none; margin-top: 14px; }
+  .photo-preview img { width: 100%; max-height: 220px; object-fit: cover; border-radius: 10px; }
+  .preview-caption { width: 100%; border: 1px solid #e0d8cc; border-radius: 10px; padding: 10px 14px; font-family: 'DM Sans', sans-serif; font-size: 14px; background: #faf7f2; outline: none; margin-top: 10px; }
+  .preview-caption:focus { border-color: var(--purple-light); }
+  .photo-gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+  .photo-gallery-item { background: var(--white); border: 1px solid #e8e2d8; border-radius: 12px; overflow: hidden; }
+  .photo-gallery-item img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; cursor: pointer; }
+  .photo-gallery-meta { padding: 8px 10px; }
+  .photo-gallery-who { font-size: 11px; font-weight: 600; color: var(--purple); text-transform: uppercase; letter-spacing: 1px; }
+  .photo-gallery-caption { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+  .photo-lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 999; align-items: center; justify-content: center; flex-direction: column; padding: 20px; }
+  .photo-lightbox.open { display: flex; }
+  .photo-lightbox img { max-width: 100%; max-height: 75vh; object-fit: contain; border-radius: 10px; }
+  .lightbox-caption { color: white; font-size: 14px; margin-top: 12px; text-align: center; opacity: 0.85; }
+  .lightbox-who { color: #d4b8ff; font-size: 12px; margin-top: 4px; text-align: center; }
+  .lightbox-close { position: absolute; top: 20px; right: 20px; color: white; font-size: 28px; cursor: pointer; opacity: 0.8; background: none; border: none; }
+
   /* PRINT STYLES */
   @media print {
     .tab-nav, .header, .btn-row, .download-section, .save-btn, .outline-btn, .ghost-btn, .who-row, .field, .pred-select, .super-options, .vote-bar-wrap { display: none !important; }
@@ -366,29 +389,52 @@
   <!-- PHOTOS -->
   <div id="photos" class="section">
     <p class="section-title">Trip Photos</p>
-    <p class="section-sub">Our shared album — everyone can add their favorites</p>
-    <div class="drive-card">
-      <svg class="drive-icon" viewBox="0 0 87.3 78" xmlns="http://www.w3.org/2000/svg">
-        <path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8h-27.5c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/>
-        <path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-25.4 44a9.06 9.06 0 0 0 -1.2 4.5h27.5z" fill="#00ac47"/>
-        <path d="m73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5h-27.502l5.852 11.5z" fill="#ea4335"/>
-        <path d="m43.65 25 13.75-23.8c-1.35-.8-2.9-1.2-4.5-1.2h-18.5c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d"/>
-        <path d="m59.8 53h-32.3l-13.75 23.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc"/>
-        <path d="m73.4 26.5-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3l-13.75 23.8 16.15 27h27.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/>
-      </svg>
-      <h3>BMWGA 2026 Hilton Head</h3>
-      <p>Tap below to open the shared Google Drive folder. Upload your favorite photos — everyone in the group can see and add to the album.</p>
-      <a class="drive-btn" href="https://drive.google.com/drive/folders/17na4ZHK35JP-sSTa7L2dboBjYcRalODv?usp=sharing" target="_blank">Open Photo Album</a>
+    <p class="section-sub">Upload from your camera roll · Everyone sees the same gallery</p>
+    <div class="error-msg" id="photo-error">Could not upload. Check your connection and try again.</div>
+
+    <!-- WHO -->
+    <div class="card">
+      <h3>Who's uploading?</h3>
+      <div class="who-row" id="photo-who">
+        <div class="who-chip" onclick="selectWho('photo',this)">Tasha</div>
+        <div class="who-chip" onclick="selectWho('photo',this)">Susan</div>
+        <div class="who-chip" onclick="selectWho('photo',this)">Dana</div>
+        <div class="who-chip" onclick="selectWho('photo',this)">Kelleye</div>
+        <div class="who-chip" onclick="selectWho('photo',this)">Tabitha</div>
+      </div>
     </div>
-    <div class="instr-card">
-      <h3>How to Add Your Photos</h3>
-      <ol>
-        <li>Tap "Open Photo Album" above</li>
-        <li>Sign in to Google if prompted</li>
-        <li>Tap the + button to upload from your camera roll</li>
-        <li>Everyone in the group can see all photos instantly</li>
-      </ol>
+
+    <!-- UPLOAD -->
+    <div class="photo-upload-area" onclick="document.getElementById('photoFile').click()">
+      <p>Tap to choose a photo from your camera roll</p>
+      <label class="upload-label">Choose Photo</label>
+      <input type="file" id="photoFile" accept="image/*" onchange="previewPhoto(event)">
     </div>
+
+    <div class="photo-preview" id="photo-preview">
+      <img id="preview-img" src="" alt="Preview">
+      <input class="preview-caption field" type="text" id="photo-caption" placeholder="Add a caption (optional)...">
+      <div class="btn-row" style="margin-top:10px;">
+        <button class="save-btn" id="photo-upload-btn" onclick="uploadPhoto()">Upload Photo <span class="saved-badge" id="photo-saved">Uploaded!</span></button>
+        <button class="ghost-btn" onclick="cancelPhotoPreview()">Cancel</button>
+      </div>
+    </div>
+
+    <!-- GALLERY -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px;margin-bottom:4px;">
+      <p class="section-title" style="font-size:18px;">Gallery</p>
+      <button class="ghost-btn" style="padding:6px 14px;font-size:12px;" onclick="loadPhotos()">Refresh</button>
+    </div>
+    <p class="section-sub" style="margin-bottom:12px;">Tap any photo to view full size</p>
+    <div class="photo-gallery-grid" id="photo-gallery"><div class="loading">Loading photos...</div></div>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div class="photo-lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">&#x2715;</button>
+    <img id="lightbox-img" src="" alt="">
+    <div class="lightbox-caption" id="lightbox-caption"></div>
+    <div class="lightbox-who" id="lightbox-who"></div>
   </div>
 
 </div><!-- end content -->
@@ -412,7 +458,7 @@
     last:'Last Out the Door', prize:'Most Likely to Win a Prize'
   };
 
-  let selectedWho = { hl: null, pred: null, super: null };
+  let selectedWho = { hl: null, pred: null, super: null, photo: null };
   let pollTimer = null;
 
   // ── UTILS ──
@@ -425,6 +471,7 @@
     else stopPolling();
     if (id === 'highlights') loadHighlightResults();
     if (id === 'scores') loadScores();
+    if (id === 'photos') loadPhotos();
   }
 
   function flash(id) { const el = document.getElementById(id); if(!el) return; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2500); }
@@ -638,88 +685,237 @@
   }
 
   // ── DOWNLOADS ──
-  function printHighlightsPDF() {
+  const PDF_CSS = `
+    body{font-family:'DM Sans',sans-serif;max-width:700px;margin:0 auto;padding:40px 24px;color:#3a3a3a;}
+    h1{font-family:'Playfair Display',serif;font-size:30px;color:#1a2018;margin-bottom:4px;}
+    h2{font-family:'Playfair Display',serif;font-size:20px;color:#5b3a8c;margin:32px 0 12px;padding-bottom:8px;border-bottom:2px solid #e8e2d8;}
+    .sub{font-size:13px;color:#7a7a6a;margin-bottom:36px;font-style:italic;}
+    .hl-result-card{border:1px solid #e8e2d8;border-radius:10px;overflow:hidden;margin-bottom:16px;page-break-inside:avoid;}
+    .hl-result-header{padding:12px 18px;background:#5b3a8c;color:white;}
+    .hl-result-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;}
+    .hl-result-body{padding:14px 18px;}
+    .hl-qa{margin-bottom:11px;padding-bottom:11px;border-bottom:1px solid #f0ebe2;}
+    .hl-qa:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+    .hl-q{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:#7b5aac;margin-bottom:3px;}
+    .hl-a{font-size:13px;line-height:1.6;color:#3a3a3a;}
+    .hl-a.empty{color:#9a9a8a;font-style:italic;}
+    table{width:100%;border-collapse:collapse;margin-bottom:8px;}
+    th{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#7a7a6a;padding:9px 12px;border-bottom:2px solid #e0d8cc;text-align:left;}
+    td{padding:9px 12px;border-bottom:1px solid #f0ebe2;font-size:13px;}
+    .pred-block{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #e8e2d8;page-break-inside:avoid;}
+    .pred-block:last-child{border-bottom:none;}
+    .pred-name{font-weight:600;color:#5b3a8c;margin-bottom:6px;font-size:14px;}
+    .pred-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;}
+    .pred-row span{color:#7a7a6a;}
+    .pred-row strong{color:#3a3a3a;}
+    .super-block{display:flex;justify-content:space-between;padding:9px 12px;border-bottom:1px solid #f0ebe2;font-size:13px;}
+    .super-block:last-child{border-bottom:none;}
+    .super-q{color:#7a7a6a;flex:1;}
+    .super-a{font-weight:600;color:#5b3a8c;}
+    .winner-badge{display:inline-block;background:#f3eeff;border:1px solid #d4b8ff;border-radius:20px;padding:2px 10px;font-size:12px;color:#5b3a8c;font-weight:600;}
+    .none{color:#9a9a8a;font-style:italic;font-size:12px;}
+    .footer{text-align:center;font-size:11px;color:#b0aa9a;margin-top:40px;padding-top:20px;border-top:1px solid #e8e2d8;}
+  `;
+
+  async function fetchAllData() {
+    const [hlRes, predRes, superRes, scoresRes] = await Promise.all([
+      get('Highlights'), get('Predictions'), get('Superlatives'), get('Scores')
+    ]);
+    return {
+      highlights: hlRes.data || [],
+      predictions: predRes.data || [],
+      superlatives: superRes.data || [],
+      scores: scoresRes.data || []
+    };
+  }
+
+  function buildHighlightsHTML(highlights) {
+    if (!highlights.length) return '<p class="none">No highlights submitted yet.</p>';
+    const byPerson = {};
+    highlights.forEach(r => { if(r.who) byPerson[r.who] = r; });
+    return Object.values(byPerson).map(row => `
+      <div class="hl-result-card">
+        <div class="hl-result-header"><div class="hl-result-name">${row.who}</div></div>
+        <div class="hl-result-body">
+          ${Object.keys(HL_QUESTIONS).map(k => `
+            <div class="hl-qa">
+              <div class="hl-q">${HL_QUESTIONS[k]}</div>
+              <div class="hl-a ${row[k]?'':'empty'}">${row[k]||'Not answered'}</div>
+            </div>`).join('')}
+        </div>
+      </div>`).join('');
+  }
+
+  function buildPredictionsHTML(predictions) {
+    if (!predictions.length) return '<p class="none">No predictions submitted yet.</p>';
+    const byPerson = {};
+    predictions.forEach(r => { if(r.who) byPerson[r.who] = r; });
+    return Object.values(byPerson).map(row => `
+      <div class="pred-block">
+        <div class="pred-name">${row.who}</div>
+        ${Object.keys(PRED_LABELS).map(k => `
+          <div class="pred-row"><span>${PRED_LABELS[k]}</span><strong>${row[k]||'—'}</strong></div>`).join('')}
+      </div>`).join('');
+  }
+
+  function buildSuperlativesHTML(superlatives) {
+    const SUPER_LABELS = {
+      snack:'Snack Queen of the Trip',
+      dressed:'Best Dressed Every Day',
+      sleep:'First One Asleep Every Night',
+      schedule:'Kept Us on Schedule',
+      improved:'Most Improved Player'
+    };
+    if (!superlatives.length) return '<p class="none">No votes submitted yet.</p>';
+    // tally
+    const tallies = {};
+    SUPER_KEYS.forEach(k => { tallies[k] = {}; NAMES.forEach(n => tallies[k][n]=0); });
+    superlatives.forEach(row => SUPER_KEYS.forEach(k => { if(row[k]&&tallies[k][row[k]]!==undefined) tallies[k][row[k]]++; }));
+    return `<table><thead><tr><th>Category</th><th>Winner</th><th>Votes</th></tr></thead><tbody>` +
+      SUPER_KEYS.map(k => {
+        const sorted = Object.entries(tallies[k]).sort((a,b)=>b[1]-a[1]);
+        const winner = sorted[0][1] > 0 ? sorted[0] : null;
+        return `<tr>
+          <td>${SUPER_LABELS[k]}</td>
+          <td>${winner ? `<span class="winner-badge">${winner[0]}</span>` : '<span class="none">No votes</span>'}</td>
+          <td>${winner ? winner[1] : 0}</td>
+        </tr>`;
+      }).join('') + `</tbody></table>`;
+  }
+
+  function buildScoresHTML(scores) {
+    if (!scores.length) return '<p class="none">No scores saved yet.</p>';
+    const d = scores[scores.length-1];
+    return `<table><thead><tr><th>Player</th><th>Round 1</th><th>Round 2</th><th>Total</th></tr></thead><tbody>` +
+      NAMES.map(n => `<tr><td>${n}</td><td>${d[n+'_R1']||'--'}</td><td>${d[n+'_R2']||'--'}</td><td><strong>${d[n+'_Total']||'--'}</strong></td></tr>`).join('') +
+      `</tbody></table>`;
+  }
+
+  async function printHighlightsPDF() {
     const printWin = window.open('','_blank');
-    const results = document.getElementById('hl-results').innerHTML;
-    printWin.document.write(`<!DOCTYPE html><html><head>
-      <meta charset="UTF-8">
-      <title>BMWGA 2026 Highlights</title>
+    printWin.document.write(`<html><head><meta charset="UTF-8"><title>BMWGA 2026 Highlights</title>
       <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-      <style>
-        body{font-family:'DM Sans',sans-serif;max-width:680px;margin:0 auto;padding:40px 24px;color:#3a3a3a;}
-        h1{font-family:'Playfair Display',serif;font-size:28px;margin-bottom:6px;color:#1a2018;}
-        .sub{font-size:13px;color:#7a7a6a;margin-bottom:32px;font-style:italic;}
-        .hl-result-card{border:1px solid #e8e2d8;border-radius:12px;overflow:hidden;margin-bottom:20px;page-break-inside:avoid;}
-        .hl-result-header{padding:12px 18px;background:#5b3a8c;color:white;}
-        .hl-result-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;}
-        .hl-result-body{padding:16px 18px;}
-        .hl-qa{margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #f0ebe2;}
-        .hl-qa:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
-        .hl-q{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:#7b5aac;margin-bottom:4px;}
-        .hl-a{font-size:13px;line-height:1.6;}
-        .hl-a.empty{color:#7a7a6a;font-style:italic;}
-        .footer{text-align:center;font-size:11px;color:#b0aa9a;margin-top:40px;padding-top:20px;border-top:1px solid #e8e2d8;}
-      </style>
-    </head><body>
+      <style>${PDF_CSS}</style></head><body>
       <h1>BMWGA 2026 Trip Highlights</h1>
       <p class="sub">Hilton Head Island · June 9–14, 2026 · Tasha · Susan · Dana · Kelleye · Tabitha</p>
-      ${results}
+      <div id="content">Loading...</div>
       <div class="footer">BMWGA 26th Annual Golf Tournament · Port Royal Golf & Racquet Club</div>
-    </body></html>`);
+      </body></html>`);
     printWin.document.close();
-    printWin.focus();
-    setTimeout(() => printWin.print(), 800);
+    try {
+      const data = await fetchAllData();
+      printWin.document.getElementById('content').innerHTML = buildHighlightsHTML(data.highlights);
+    } catch(e) {
+      printWin.document.getElementById('content').innerHTML = '<p>Could not load data. Check your connection.</p>';
+    }
+    setTimeout(() => printWin.print(), 1000);
   }
 
   async function printFullPDF() {
     const printWin = window.open('','_blank');
-    // gather all data
-    let hlHTML = document.getElementById('hl-results').innerHTML;
-    let scoresHTML = '';
-    document.querySelectorAll('#score-body tr').forEach(r => {
-      const cells = r.querySelectorAll('td');
-      const inputs = r.querySelectorAll('input');
-      scoresHTML += `<tr><td>${cells[0].textContent}</td><td>${inputs[0].value||'--'}</td><td>${inputs[1].value||'--'}</td><td>${cells[3].textContent}</td></tr>`;
-    });
-    printWin.document.write(`<!DOCTYPE html><html><head>
-      <meta charset="UTF-8">
-      <title>BMWGA 2026 Full Trip Keepsake</title>
+    printWin.document.write(`<html><head><meta charset="UTF-8"><title>BMWGA 2026 Full Trip Keepsake</title>
       <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-      <style>
-        body{font-family:'DM Sans',sans-serif;max-width:680px;margin:0 auto;padding:40px 24px;color:#3a3a3a;}
-        h1{font-family:'Playfair Display',serif;font-size:32px;color:#1a2018;margin-bottom:4px;}
-        h2{font-family:'Playfair Display',serif;font-size:22px;color:#5b3a8c;margin:32px 0 12px;padding-bottom:8px;border-bottom:2px solid #e8e2d8;}
-        .sub{font-size:13px;color:#7a7a6a;margin-bottom:40px;font-style:italic;}
-        .hl-result-card{border:1px solid #e8e2d8;border-radius:12px;overflow:hidden;margin-bottom:16px;page-break-inside:avoid;}
-        .hl-result-header{padding:12px 18px;background:#5b3a8c;color:white;}
-        .hl-result-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;}
-        .hl-result-body{padding:16px 18px;}
-        .hl-qa{margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #f0ebe2;}
-        .hl-qa:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
-        .hl-q{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:#7b5aac;margin-bottom:4px;}
-        .hl-a{font-size:13px;line-height:1.6;}
-        .hl-a.empty{color:#7a7a6a;font-style:italic;}
-        table{width:100%;border-collapse:collapse;}
-        th{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#7a7a6a;padding:10px 12px;border-bottom:2px solid #e0d8cc;text-align:left;}
-        td{padding:10px 12px;border-bottom:1px solid #f0ebe2;font-size:14px;}
-        .footer{text-align:center;font-size:11px;color:#b0aa9a;margin-top:40px;padding-top:20px;border-top:1px solid #e8e2d8;}
-      </style>
-    </head><body>
+      <style>${PDF_CSS}</style></head><body>
       <h1>BMWGA 2026 Trip Keepsake</h1>
       <p class="sub">Hilton Head Island · June 9–14, 2026 · Tasha · Susan · Dana · Kelleye · Tabitha</p>
-      <h2>Trip Highlights</h2>
-      ${hlHTML}
-      <h2>Group Scorecard</h2>
-      <table><thead><tr><th>Player</th><th>Round 1</th><th>Round 2</th><th>Total</th></tr></thead><tbody>${scoresHTML}</tbody></table>
+      <div id="content">Loading all data from the sheet...</div>
       <div class="footer">BMWGA 26th Annual Golf Tournament · Port Royal Golf & Racquet Club · Hilton Head Island, SC</div>
-    </body></html>`);
+      </body></html>`);
     printWin.document.close();
-    printWin.focus();
-    setTimeout(() => printWin.print(), 800);
+    try {
+      const data = await fetchAllData();
+      printWin.document.getElementById('content').innerHTML = `
+        <h2>Trip Highlights</h2>${buildHighlightsHTML(data.highlights)}
+        <h2>Predictions</h2>${buildPredictionsHTML(data.predictions)}
+        <h2>Superlatives</h2>${buildSuperlativesHTML(data.superlatives)}
+        <h2>Group Scorecard</h2>${buildScoresHTML(data.scores)}
+      `;
+    } catch(e) {
+      printWin.document.getElementById('content').innerHTML = '<p>Could not load data. Check your connection.</p>';
+    }
+    setTimeout(() => printWin.print(), 1200);
   }
 
-  function downloadHTML() {
-    const html = document.documentElement.outerHTML;
+  async function downloadHTML() {
+    // Fetch all data and bake it into a standalone offline HTML file
+    let allData = { highlights:[], predictions:[], superlatives:[], scores:[] };
+    try { allData = await fetchAllData(); } catch(e) {}
+
+    const hlHTML = buildHighlightsHTML(allData.highlights);
+    const predHTML = buildPredictionsHTML(allData.predictions);
+    const superHTML = buildSuperlativesHTML(allData.superlatives);
+    const scoresHTML = buildScoresHTML(allData.scores);
+
+    const html = `<!DOCTYPE html><html lang="en"><head>
+      <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+      <title>BMWGA 2026 Keepsakes</title>
+      <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+      <style>
+        body{font-family:'DM Sans',sans-serif;background:#f8f4ed;color:#3a3a3a;min-height:100vh;}
+        .header{background:linear-gradient(160deg,#1a1020 0%,#5b3a8c 60%,#7b5aac 100%);color:white;padding:32px 20px 28px;text-align:center;}
+        .header h1{font-family:'Playfair Display',serif;font-size:28px;margin-bottom:4px;}
+        .header h1 em{font-style:italic;color:#d4b8ff;}
+        .header p{font-size:13px;opacity:0.7;}
+        .header-flag{display:inline-block;background:rgba(255,255,255,0.15);font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-radius:20px;margin-bottom:14px;}
+        .tab-nav{background:white;border-bottom:2px solid #e8e2d8;display:flex;overflow-x:auto;padding:0 16px;}
+        .tab-btn{background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:#7a7a6a;padding:14px 16px;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;}
+        .tab-btn.active{color:#5b3a8c;border-bottom-color:#5b3a8c;}
+        .content{max-width:680px;margin:0 auto;padding:24px 20px 60px;}
+        .section{display:none;}.section.active{display:block;}
+        .section-title{font-family:'Playfair Display',serif;font-size:22px;color:#1a2018;margin-bottom:4px;}
+        .section-sub{font-size:13px;color:#7a7a6a;font-style:italic;margin-bottom:24px;}
+        ${PDF_CSS.replace(/body\{[^}]+\}/,'')}
+        .hl-result-card,.pred-block{margin-bottom:16px;}
+        .saved-note{background:#f3eeff;border:1px solid #d4b8ff;border-radius:12px;padding:14px 18px;font-size:13px;color:#5b3a8c;margin-bottom:20px;}
+        .footer-bar{text-align:center;padding:24px 20px;font-size:12px;color:#b0aa9a;}
+      </style>
+    </head><body>
+      <div class="header">
+        <div class="header-flag">BMWGA · Hilton Head · Jun 2026</div>
+        <h1>Trip <em>Keepsakes</em></h1>
+        <p>Tasha · Susan · Dana · Kelleye · Tabitha</p>
+        <p style="font-size:11px;opacity:0.5;margin-top:8px;">Saved ${new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}</p>
+      </div>
+      <div class="tab-nav">
+        <button class="tab-btn active" onclick="showTab('hl',this)">Highlights</button>
+        <button class="tab-btn" onclick="showTab('pred',this)">Predictions</button>
+        <button class="tab-btn" onclick="showTab('super',this)">Superlatives</button>
+        <button class="tab-btn" onclick="showTab('scores',this)">Scores</button>
+      </div>
+      <div class="content">
+        <div id="hl" class="section active">
+          <p class="section-title">Trip Highlights</p>
+          <p class="section-sub">Hilton Head Island · June 9–14, 2026</p>
+          <div class="saved-note">This is a saved offline copy as of ${new Date().toLocaleDateString()}.</div>
+          ${hlHTML}
+        </div>
+        <div id="pred" class="section">
+          <p class="section-title">Predictions</p>
+          <p class="section-sub">Locked in before Round 1</p>
+          ${predHTML}
+        </div>
+        <div id="super" class="section">
+          <p class="section-title">Superlatives</p>
+          <p class="section-sub">Final vote results</p>
+          ${superHTML}
+        </div>
+        <div id="scores" class="section">
+          <p class="section-title">Group Scorecard</p>
+          <p class="section-sub">BMWGA 2026 · 36-Hole Stroke Play</p>
+          ${scoresHTML}
+        </div>
+      </div>
+      <div class="footer-bar">BMWGA 26th Annual Golf Tournament · Port Royal Golf & Racquet Club · Hilton Head Island, SC</div>
+      <script>
+        function showTab(id, btn) {
+          document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+          document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+          document.getElementById(id).classList.add('active');
+          btn.classList.add('active');
+        }
+      <\/script>
+    </body></html>`;
+
     const blob = new Blob([html], {type:'text/html'});
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -727,9 +923,110 @@
     a.click();
   }
 
+  // ── PHOTOS ──
+  let pendingImageData = null;
+
+  function previewPhoto(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      // Compress
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const MAX = 1200;
+        let w = img.width, h = img.height;
+        if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        pendingImageData = canvas.toDataURL('image/jpeg', 0.75);
+        document.getElementById('preview-img').src = pendingImageData;
+        document.getElementById('photo-preview').style.display = 'block';
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function cancelPhotoPreview() {
+    pendingImageData = null;
+    document.getElementById('photo-preview').style.display = 'none';
+    document.getElementById('photo-caption').value = '';
+    document.getElementById('photoFile').value = '';
+  }
+
+  async function uploadPhoto() {
+    if (!selectedWho.photo) { alert('Please select your name first.'); return; }
+    if (!pendingImageData) { alert('Please choose a photo first.'); return; }
+    setBtn('photo-upload-btn', true);
+    document.getElementById('photo-error').classList.remove('show');
+    const caption = document.getElementById('photo-caption').value;
+    try {
+      const res = await fetch(API, {
+        method: 'POST',
+        body: JSON.stringify({
+          action: 'uploadPhoto',
+          who: selectedWho.photo,
+          caption: caption,
+          imageData: pendingImageData,
+          filename: selectedWho.photo + '-' + Date.now() + '.jpg'
+        }),
+        headers: { 'Content-Type': 'text/plain' }
+      });
+      const data = await res.json();
+      if (data.status === 'ok') {
+        flash('photo-saved');
+        cancelPhotoPreview();
+        setSyncStatus(true);
+        await loadPhotos();
+      } else {
+        throw new Error(data.message || 'Upload failed');
+      }
+    } catch(e) {
+      document.getElementById('photo-error').classList.add('show');
+      setSyncStatus(false);
+    }
+    setBtn('photo-upload-btn', false);
+  }
+
+  async function loadPhotos() {
+    const grid = document.getElementById('photo-gallery');
+    try {
+      const res = await fetch(`${API}?tab=Photos`);
+      const data = await res.json();
+      if (!data.data || !data.data.length) {
+        grid.innerHTML = '<p style="font-size:13px;color:var(--muted);font-style:italic;grid-column:1/-1;text-align:center;padding:20px;">No photos yet — be the first to upload!</p>';
+        return;
+      }
+      grid.innerHTML = data.data.slice().reverse().map((p, i) => `
+        <div class="photo-gallery-item">
+          <img src="${p.thumbUrl}" alt="Photo by ${p.who}"
+            onclick="openLightbox('${p.thumbUrl}','${(p.caption||'').replace(/'/g,'&apos;')}','${p.who}')">
+          <div class="photo-gallery-meta">
+            <div class="photo-gallery-who">${p.who}</div>
+            ${p.caption ? `<div class="photo-gallery-caption">${p.caption}</div>` : ''}
+          </div>
+        </div>`).join('');
+      setSyncStatus(true);
+    } catch(e) {
+      grid.innerHTML = '<p style="font-size:13px;color:#c62828;grid-column:1/-1;text-align:center;padding:20px;">Could not load photos. Check your connection.</p>';
+      setSyncStatus(false);
+    }
+  }
+
+  function openLightbox(src, caption, who) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox-caption').textContent = caption || '';
+    document.getElementById('lightbox-who').textContent = who ? 'Uploaded by ' + who : '';
+    document.getElementById('lightbox').classList.add('open');
+  }
+  function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+
   // ── INIT ──
   loadHighlightResults();
   loadScores();
+  loadPhotos();
 </script>
 </body>
 </html>
