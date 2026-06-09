@@ -225,13 +225,10 @@
     <!-- Home Courses — always visible -->
     <div class="course-list">
       <div class="course-card has-playbook" onclick="selectCourse('summerfield',this)"><div><div class="course-card-name">Summerfield Crossing</div><div class="course-card-meta">Par 72 · HCP 15 · Home Course</div></div><div class="course-card-badge badge-loaded">✓</div></div>
-<div class="course-card has-playbook" onclick="selectCourse('cypress',this)">
-  <div>
-    <div class="course-card-name">Cypress Creek GC</div>
-    <div class="course-card-meta">Par 72 · 4630 yds · Rating 68.1 · Slope 118</div>
-  </div>
-  <div class="course-card-badge badge-loaded">✓</div>
-</div>      <div class="course-card has-playbook" onclick="selectCourse('forestlake',this)"><div><div class="course-card-name">Forest Lake Golf Club</div><div class="course-card-meta">Red · 5,065 yds · Par 72 · Slope 117</div></div><div class="course-card-badge badge-loaded">✓</div></div>
+      <div class="course-card" onclick="selectCourse('cypress',this)"><div><div class="course-card-name">Cypress Creek GC</div><div class="course-card-meta">Home Course · FPG League</div></div><div class="course-card-badge badge-soon">Soon</div></div>
+      <div class="course-card has-playbook" onclick="selectCourse('forestlake',this)"><div><div class="course-card-name">Forest Lake Golf Club</div><div class="course-card-meta">Red · 5,065 yds · Par 72 · Slope 117</div></div><div class="course-card-badge badge-loaded">✓</div></div>
+      <div class="course-card has-playbook" onclick="selectCourse('barony',this)"><div><div class="course-card-name">Barony GC</div><div class="course-card-meta">Gold · 6,478 yds · Par 72 · Slope 135 · Hilton Head</div></div><div class="course-card-badge badge-loaded">✓</div></div>
+      <div class="course-card has-playbook" onclick="selectCourse('robbersrow',this)"><div><div class="course-card-name">Robber's Row GC</div><div class="course-card-meta">Green · 4,887 yds · Par 72 · Slope 121 · Hilton Head</div></div><div class="course-card-badge badge-loaded">✓</div></div>
     </div>
 
     <!-- FPG League — collapsible -->
@@ -369,6 +366,8 @@
           <option value="">Select course</option>
           <option value="Summerfield Crossing">Summerfield Crossing</option>
           <option value="Forest Lake Golf Club">Forest Lake Golf Club</option>
+          <option value="Barony GC">Barony GC</option>
+          <option value="Robber's Row GC">Robber's Row GC</option>
           <option value="OC National · Crooked Cat">OC National · Crooked Cat</option>
           <option value="OC National · Panther Lake">OC National · Panther Lake</option>
           <option value="Cypress Creek GC">Cypress Creek GC</option>
@@ -532,53 +531,62 @@ const courseData = {
       {num:18,yds:434,par:5,hcp:10,tee:'Driver',approach:'3W layup → wedge in',key:'Finish strong. Driver → 3W → wedge. Execute the system one last time.',goal:'Par',type:'normal'}
     ]
   },
-  cypress: {
-  name:'Cypress Creek GC',
-  meta:'Green Tees · 4,630 yds · Par 72 · Rating 68.1 · Slope 118',
-  formula:'Fairway → middle green → 2 putt · Use wedges to score',
-  weapon:'Short course. Wedge precision and smart positioning.',
-  mindset:'Do not overpower this course. Play positional golf and score with wedges.',
-  scoring:[6,8,13,17],
-  danger:[4,7,14],
-  holes:[
-    
-  {num:1,yds:264,par:4,hcp:11,tee:'3W or controlled driver',approach:'Short iron to center green',key:'Stay controlled. No forcing early.',goal:'Par focus',type:'normal'},
 
-  {num:2,yds:296,par:4,hcp:9,tee:'Driver or 3W',approach:'Wedge in',key:'Good look at par. Stay aggressive to center.',goal:'Par focus',type:'normal'},
+  barony: {
+    name:"Barony GC", meta:'Gold Tees · 6,478 yds · Par 72 · Rating 71.8 · Slope 135 · Pete Dye',
+    formula:'Survive the par 3s · 3-shot every par 5 · Middle green on every approach',
+    weapon:'Pete Dye demands patience. Your wedge and your head win this round.',
+    mindset:'Slope 135 is real. Bogey golf is winning golf today. No doubles.',
+    scoring:[2,6,14,16], danger:[3,9,11,15],
+    holes:[
+      {num:1, yds:359,par:4,hcp:9, tee:'Driver — controlled start',approach:'Middle green only',key:'Pete Dye course. Start disciplined. Driver + short iron. Middle green. No heroics on hole 1.',goal:'Par or bogey',type:'normal'},
+      {num:2, yds:182,par:3,hcp:17,tee:'5 or 6 iron — enough club',approach:'Center green — never short',key:'182 yds — take enough club. Center green only. Pete Dye punishes misses. Clean par.',goal:'Par',type:'score'},
+      {num:3, yds:523,par:5,hcp:7, tee:'Driver',approach:'3W layup → wedge in',key:'Par 5 but HCP 7 — plays tough. Three shots only. Driver → 3W → wedge. Patient.',goal:'Par or bogey',type:'danger'},
+      {num:4, yds:372,par:4,hcp:3, tee:'Driver — fairway first',approach:'Short iron → middle green',key:'HCP 3. Fairway first. Don\'t try to overpower it. Smart second shot wins.',goal:'Par or bogey',type:'normal'},
+      {num:5, yds:359,par:4,hcp:11,tee:'Driver',approach:'Short iron → middle green',key:'Manageable par 4. Driver + short iron. Middle green. Stay in your system.',goal:'Par',type:'normal'},
+      {num:6, yds:172,par:3,hcp:15,tee:'5 or 6 iron',approach:'Center green — one-putt zone',key:'172 yds — SCORING HOLE. HCP 15. Enough club. Center green. Make your par here.',goal:'Par',type:'score'},
+      {num:7, yds:368,par:4,hcp:5, tee:'Driver — careful',approach:'Middle green only',key:'HCP 5 — plays tough. Fairway first. Don\'t force the approach. Middle green.',goal:'Par or bogey',type:'normal'},
+      {num:8, yds:362,par:4,hcp:13,tee:'Driver',approach:'Middle green',key:'Straightforward par 4. Driver + short iron. Stay disciplined. Routine golf.',goal:'Par',type:'normal'},
+      {num:9, yds:535,par:5,hcp:1, tee:'Driver',approach:'3W layup → wedge in',key:'HCP 1 — hardest hole. 535 yds. Three shots only. Never going for it in 2. Bogey = win.',goal:'Bogey max',type:'danger'},
+      {num:10,yds:345,par:4,hcp:12,tee:'Driver',approach:'Short iron → middle green',key:'Back 9 start. Reset. Driver + short iron. Middle green. Build momentum.',goal:'Par',type:'normal'},
+      {num:11,yds:534,par:5,hcp:2, tee:'Driver',approach:'3W layup → wedge in',key:'HCP 2 — second hardest. 534 yds. Three shots. Patient formula. Bogey is fine.',goal:'Bogey max',type:'danger'},
+      {num:12,yds:417,par:4,hcp:8, tee:'Driver — stay in play',approach:'Middle green — no short side',key:'417 yds par 4 is long. Driver must stay in play. Middle green. Don\'t be greedy.',goal:'Par or bogey',type:'normal'},
+      {num:13,yds:354,par:4,hcp:4, tee:'Driver',approach:'Short iron → middle green',key:'HCP 4. Commit to target. Middle green. Don\'t guide the swing.',goal:'Par or bogey',type:'normal'},
+      {num:14,yds:154,par:3,hcp:18,tee:'7 or 8 iron',approach:'Center green — attack',key:'154 yds — HCP 18 — SCORING HOLE. 8 iron. Attack. Make your birdie or easy par here.',goal:'Par',type:'score'},
+      {num:15,yds:481,par:5,hcp:10,tee:'Driver',approach:'3W layup → wedge in',key:'481 yds. Don\'t be tempted to go for it in 2. Driver → 3W → wedge. Trust the formula.',goal:'Par',type:'danger'},
+      {num:16,yds:195,par:3,hcp:16,tee:'4 or 5 iron',approach:'Center green',key:'195 yds — HCP 16 — SCORING HOLE. Take enough club. Center green. Clean par.',goal:'Par',type:'score'},
+      {num:17,yds:361,par:4,hcp:14,tee:'Driver',approach:'Short iron → middle green',key:'Stay disciplined. Driver + short iron. No late-round hero shots. Almost done.',goal:'Par',type:'normal'},
+      {num:18,yds:405,par:4,hcp:6, tee:'Driver — controlled finish',approach:'Middle green — finish strong',key:'405 yds to close. Driver + short iron. Middle green. Execute clean. Finish strong.',goal:'Par or bogey',type:'normal'}
+    ]
+  },
 
-  {num:3,yds:229,par:4,hcp:15,tee:'3W for position',approach:'Wedge in',key:'Scoring hole. Set up wedge and attack.',goal:'Par minimum · Birdie look',type:'score'},
-
-  {num:4,yds:408,par:5,hcp:1,tee:'Driver — stay in play',approach:'3W layup → wedge',key:'Hardest hole. No hero shots.',goal:'Bogey is fine',type:'danger'},
-
-  {num:5,yds:315,par:4,hcp:7,tee:'Driver',approach:'Short iron center green',key:'Commit to target. Trust the swing.',goal:'Par focus',type:'normal'},
-
-  {num:6,yds:93,par:3,hcp:17,tee:'Wedge',approach:'Attack pin',key:'GIFT hole. Full commit.',goal:'Par minimum · Birdie look',type:'score'},
-
-  {num:7,yds:359,par:5,hcp:5,tee:'Driver',approach:'Layup → wedge',key:'Stay disciplined. No risk shots.',goal:'Bogey is fine',type:'danger'},
-
-  {num:8,yds:107,par:3,hcp:13,tee:'Wedge',approach:'Attack pin',key:'Another scoring opportunity.',goal:'Par minimum · Birdie look',type:'score'},
-
-  {num:9,yds:263,par:4,hcp:3,tee:'3W or driver',approach:'Short iron',key:'Finish front steady. No mistakes.',goal:'Bogey is fine',type:'danger'},
-
-  {num:10,yds:263,par:4,hcp:12,tee:'3W',approach:'Wedge in',key:'Reset. Back 9 starts here.',goal:'Par focus',type:'normal'},
-
-  {num:11,yds:257,par:4,hcp:10,tee:'Driver or 3W',approach:'Wedge',key:'Stay consistent. Same system.',goal:'Par focus',type:'normal'},
-
-  {num:12,yds:299,par:4,hcp:6,tee:'Driver',approach:'Short iron',key:'Respect the hole. No forcing.',goal:'Bogey is fine',type:'danger'},
-
-  {num:13,yds:113,par:3,hcp:18,tee:'Wedge',approach:'Attack pin',key:'Easiest hole. Take it.',goal:'Par minimum · Birdie look',type:'score'},
-
-  {num:14,yds:396,par:5,hcp:2,tee:'Driver',approach:'Layup → wedge',key:'Stay patient. No hero swings.',goal:'Bogey is fine',type:'danger'},
-
-  {num:15,yds:271,par:4,hcp:8,tee:'3W',approach:'Short iron',key:'Simple golf. Stay locked in.',goal:'Par focus',type:'normal'},
-
-  {num:16,yds:255,par:4,hcp:14,tee:'3W',approach:'Wedge',key:'Position first. Then attack.',goal:'Par minimum · Birdie look',type:'score'},
-
-  {num:17,yds:110,par:3,hcp:16,tee:'Wedge',approach:'Attack pin',key:'Final scoring hole. Commit.',goal:'Par minimum · Birdie look',type:'score'},
-
-  {num:18,yds:332,par:5,hcp:4,tee:'Driver',approach:'Layup → wedge',key:'Finish smart. No hero shots.',goal:'Bogey is fine',type:'danger'}
-]
- }
+  robbersrow: {
+    name:"Robber's Row GC", meta:"Green Tees · 4,887 yds · Par 72 · Rating 69.7 · Slope 121 · Hilton Head",
+    formula:'Score on the short par 3s · Attack the short par 4s · 3-shot every par 5',
+    weapon:'H8 (129 yds), H12 (104 yds), H15 (84 yds) — wedge holes · Must score all three',
+    mindset:'Short course. Low slope. This is a scoring round. Attack smart.',
+    scoring:[8,12,15], danger:[6,9,18],
+    holes:[
+      {num:1, yds:208,par:4,hcp:17,tee:'3W or 5W — don\'t overpower',approach:'Wedge in close',key:'208 yds par 4. 3W leaves a short wedge. Don\'t force driver. Simple scoring start.',goal:'Par',type:'normal'},
+      {num:2, yds:355,par:5,hcp:15,tee:'Driver',approach:'3W layup → wedge in',key:'Short par 5. 3-shot formula. Driver → layup → wedge. Birdie opportunity here.',goal:'Par or birdie',type:'normal'},
+      {num:3, yds:329,par:4,hcp:5, tee:'Driver',approach:'Short iron → middle green',key:'HCP 5 — plays tougher than it looks. Stay in play. Middle green only.',goal:'Par or bogey',type:'normal'},
+      {num:4, yds:143,par:3,hcp:7, tee:'8 or 9 iron',approach:'Attack the pin',key:'143 yds — attack this pin. 8 or 9 iron. Your range. Make your par or birdie.',goal:'Par',type:'normal'},
+      {num:5, yds:264,par:4,hcp:9, tee:'Driver or 3W',approach:'Wedge in',key:'Short par 4. Driver or 3W leaves a short wedge. Attack center green.',goal:'Par',type:'normal'},
+      {num:6, yds:460,par:5,hcp:3, tee:'Driver',approach:'3W layup → wedge in',key:'HCP 3 — longest and hardest. 460 yds. Three shots only. Patient. Bogey is fine.',goal:'Bogey max',type:'danger'},
+      {num:7, yds:280,par:4,hcp:11,tee:'Driver or 3W',approach:'Wedge in',key:'Short par 4. Driver or 3W. Short wedge in. Scoring opportunity. Attack.',goal:'Par',type:'normal'},
+      {num:8, yds:129,par:3,hcp:13,tee:'PW or gap wedge',approach:'Attack the pin',key:'129 yds — MUST SCORE. PW or gap wedge. Attack this flag. Birdie or tap-in par.',goal:'Birdie / par',type:'score'},
+      {num:9, yds:296,par:4,hcp:1, tee:'Driver — careful',approach:'Middle green only',key:'HCP 1 — hardest hole. Looks short but plays tough. Stay in play. Middle green.',goal:'Bogey max',type:'danger'},
+      {num:10,yds:282,par:4,hcp:12,tee:'Driver or 3W',approach:'Wedge in',key:'Short par 4. Driver or 3W. Wedge it close. Keep the momentum going.',goal:'Par',type:'normal'},
+      {num:11,yds:303,par:4,hcp:6, tee:'Driver',approach:'Short iron → middle green',key:'HCP 6 — respect it. Driver + short iron. Middle green. Steady golf.',goal:'Par or bogey',type:'normal'},
+      {num:12,yds:104,par:3,hcp:16,tee:'50–60° wedge',approach:'Attack the pin',key:'104 yds — GIFT HOLE. Smooth 60° wedge. Attack. Birdie expected here. Take it.',goal:'Birdie / par',type:'score'},
+      {num:13,yds:324,par:4,hcp:4, tee:'Driver',approach:'Short iron → middle green',key:'HCP 4. Commit to target. Middle green. Don\'t guide the swing.',goal:'Par or bogey',type:'normal'},
+      {num:14,yds:384,par:5,hcp:10,tee:'Driver',approach:'3W layup → wedge in',key:'Par 5. 3-shot formula. Driver → 3W → wedge. Scoring hole — make your par.',goal:'Par or birdie',type:'normal'},
+      {num:15,yds:84, par:3,hcp:18,tee:'50–60° wedge — smooth',approach:'Attack the pin',key:'84 yds — MUST SCORE. HCP 18 easiest hole. Smooth 60°. Birdie or tap-in par. No excuses.',goal:'Birdie / par',type:'score'},
+      {num:16,yds:217,par:4,hcp:14,tee:'3W or 5W',approach:'Short iron → middle green',key:'Short par 4. 3W leaves a short iron in. Stay disciplined. Don\'t get sloppy.',goal:'Par',type:'normal'},
+      {num:17,yds:293,par:4,hcp:8, tee:'Driver or 3W',approach:'Wedge in',key:'Driver or 3W. Short wedge in. Stay in your system. Almost home.',goal:'Par',type:'normal'},
+      {num:18,yds:432,par:5,hcp:2, tee:'Driver',approach:'3W layup → wedge in',key:'HCP 2 — finish strong but smart. Driver → 3W → wedge. Execute the system to close.',goal:'Par',type:'danger'}
+    ]
+  }
 };
 
 // STATE
@@ -676,140 +684,15 @@ function updateHoleNav() {
   }
   document.getElementById('headerHole').textContent = 'H' + activeHole;
 }
-function getAdaptiveGoal(hole, courseId) {
-  const intel = JSON.parse(localStorage.getItem('tmac_intel') || '[]');
 
-  // pull only Cypress rounds
-  const rounds = intel.filter(r => r.course === 'Cypress Creek GC');
-
-  // if no data yet → fallback to default goal
-  if (rounds.length < 3) return hole.goal;
-
-  // simple pattern detection
-  const leakCounts = {};
-  rounds.forEach(r => {
-    if (r.leak) leakCounts[r.leak] = (leakCounts[r.leak] || 0) + 1;
-  });
-
-  const biggestLeak = Object.keys(leakCounts).sort((a,b)=>leakCounts[b]-leakCounts[a])[0];
-
-  // ADAPTATION RULES
-  if (biggestLeak === 'Off the tee') {
-    return 'Fairway first · No driver risk';
-  }
-
-  if (biggestLeak === 'Approach shots') {
-    return 'Middle of green only';
-  }
-
-  if (biggestLeak === 'Short game / chipping') {
-    return 'Hit center green · Avoid misses';
-  }
-
-  if (biggestLeak === 'Putting') {
-    return 'Lag putt focus · No 3-putts';
-  }
-
-  if (biggestLeak === 'Decision making') {
-    return 'Play safe side every time';
-  }
-
-  return hole.goal;
-}
-  function getAdaptiveTee(hole) {
-  const intel = JSON.parse(localStorage.getItem('tmac_intel') || '[]');
-  const rounds = intel.filter(r => r.course === 'Cypress Creek GC');
-
-  if (rounds.length < 3) return hole.tee;
-
-  const leakCounts = {};
-  rounds.forEach(r => {
-    if (r.leak) leakCounts[r.leak] = (leakCounts[r.leak] || 0) + 1;
-  });
-
-  const biggestLeak = Object.keys(leakCounts).sort((a,b)=>leakCounts[b]-leakCounts[a])[0];
-
-  // ADAPT TEE STRATEGY
-  if (biggestLeak === 'Off the tee') {
-    return '3W or hybrid · prioritize fairway';
-  }
-
-  if (biggestLeak === 'Decision making') {
-    return 'Club down · play position first';
-  }
-
-  if (biggestLeak === 'Approach shots') {
-    return 'Set up preferred yardage (100–120 yds)';
-  }
-
-  return hole.tee;
-}
- function getAdaptiveApproach(hole) {
-  const intel = JSON.parse(localStorage.getItem('tmac_intel') || '[]');
-  const rounds = intel.filter(r => r.course === 'Cypress Creek GC');
-
-  if (rounds.length < 3) return hole.approach;
-
-  const leakCounts = {};
-  rounds.forEach(r => {
-    if (r.leak) leakCounts[r.leak] = (leakCounts[r.leak] || 0) + 1;
-  });
-
-  const biggestLeak = Object.keys(leakCounts).sort((a,b)=>leakCounts[b]-leakCounts[a])[0];
-
-  // ADAPT APPROACH STRATEGY
-  if (biggestLeak === 'Approach shots') {
-    return 'Middle of green only · no pin hunting';
-  }
-
-  if (biggestLeak === 'Short game / chipping') {
-    return 'Favor fat side · eliminate short-side misses';
-  }
-
-  if (biggestLeak === 'Putting') {
-    return 'Aim for center tiers · leave uphill putts';
-  }
-
-  if (biggestLeak === 'Decision making') {
-    return 'Safe side target every time';
-  }
-
-  return hole.approach;
-} 
-function getAdaptiveType(hole) {
-  const intel = JSON.parse(localStorage.getItem('tmac_intel') || '[]');
-  const rounds = intel.filter(r => r.course === 'Cypress Creek GC');
-
-  if (rounds.length < 3) return hole.type;
-
-  // collect scores for this specific hole
-  const holeIndex = hole.num - 1;
-
-  const scores = rounds
-    .map(r => r.holeScores ? r.holeScores[holeIndex] : null)
-    .filter(s => s !== null && s !== undefined);
-
-  if (scores.length < 3) return hole.type;
-
-  const avg = scores.reduce((a,b)=>a+b,0) / scores.length;
-
-  const diff = avg - hole.par;
-
-  // CLASSIFY BASED ON PERFORMANCE
-  if (diff <= -0.2) return 'score';     // you score here
-  if (diff >= 1.2) return 'danger';    // you struggle here
-
-  return 'normal';
-}
 function renderHolePlan() {
   const content = document.getElementById('holePlanContent');
   const logSection = document.getElementById('scoreLogSection');
   if (!activeCourse) { content.innerHTML = '<div class="empty-state">Select a course first on the Course tab.</div>'; logSection.style.display = 'none'; return; }
   const course = courseData[activeCourse];
   const h = course.holes[activeHole - 1];
-  const adaptiveType = getAdaptiveType(h);
-const isScore = adaptiveType === 'score';
-const isDanger = adaptiveType === 'danger';
+  const isScore = course.scoring.includes(h.num);
+  const isDanger = course.danger.includes(h.num);
   let flagHTML = isScore ? '<span class="hole-play-flag flag-score">⭐ Scoring Hole</span>' : isDanger ? '<span class="hole-play-flag flag-danger">⚠ Danger Hole</span>' : '<span class="hole-play-flag flag-normal">Steady Golf</span>';
   content.innerHTML = `
     <div class="hole-play-card">
@@ -818,12 +701,12 @@ const isDanger = adaptiveType === 'danger';
         <div class="hole-play-meta">
           <div class="hole-play-par">Par ${h.par} · HCP ${h.hcp}</div>
           <div class="hole-play-yds">${h.yds ? h.yds + ' yds' : '––'}</div>
-          <div class="hole-play-hcp">Goal: ${getAdaptiveGoal(h, activeCourse)}</div>
+          <div class="hole-play-hcp">Goal: ${h.goal}</div>
         </div>
       </div>
       <div class="hole-play-body">
-        <div class="play-row"><span class="play-row-label">Tee</span><span class="play-row-val">${getAdaptiveTee(h)}</span></div>
-        <div class="play-row"><span class="play-row-label">Approach</span><span class="play-row-val">${getAdaptiveApproach(h)}</span></div>
+        <div class="play-row"><span class="play-row-label">Tee</span><span class="play-row-val">${h.tee}</span></div>
+        <div class="play-row"><span class="play-row-label">Approach</span><span class="play-row-val">${h.approach}</span></div>
         <div class="play-row mantra-row"><span class="play-row-label">Key</span><span class="play-row-val">${h.key}</span></div>
       </div>
     </div>`;
@@ -927,45 +810,14 @@ function saveIntelEntry() {
   const score = document.getElementById('intelScore').value;
   const leak = document.getElementById('intelLeak').value;
   const note = document.getElementById('intelNote').value.trim();
-
   if (!course || !score) { showToast('Choose course and score'); return; }
-
-  // your existing structure
-  const entry = {
-    course,
-    score: parseInt(score) || score,
-    leak: leak || '––',
-    note: note || '––',
-    date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
-  };
-
-  // ===== EXISTING SYSTEM =====
   const entries = getEntries();
-  entries.unshift(entry);
-  saveEntries(entries);
-  renderIntelStats(entries);
-  renderIntelHistory(entries);
-
-  // ===== NEW: ADAPTIVE SYSTEM STORAGE =====
-  const adaptive = JSON.parse(localStorage.getItem('tmac_intel') || '[]');
-
-  adaptive.push({
-  course: course,
-  score: parseInt(score) || score,
-  leak: leak,
-  note: note,
-  holeScores: [...holeScores],
-  date: new Date().toISOString()
-});
-
-  localStorage.setItem('tmac_intel', JSON.stringify(adaptive));
-
-  // reset form
+  entries.unshift({ course, score: parseInt(score)||score, leak: leak||'––', note: note||'––', date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) });
+  saveEntries(entries); renderIntelStats(entries); renderIntelHistory(entries);
   document.getElementById('intelCourse').value = '';
   document.getElementById('intelScore').value = '';
   document.getElementById('intelLeak').value = '';
   document.getElementById('intelNote').value = '';
-
   showToast('Round saved');
 }
 
@@ -1004,4 +856,5 @@ if (activeCourse && courseData[activeCourse]) {
 }
 </script>
 </body>
+</html>
 </html>
