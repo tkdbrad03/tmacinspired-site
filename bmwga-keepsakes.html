@@ -18,6 +18,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
 
+  /* HEADER */
   .header { background: linear-gradient(160deg, #1a1020 0%, var(--purple) 60%, var(--purple-light) 100%); color: white; padding: 32px 20px 28px; text-align: center; }
   .header-flag { display: inline-block; background: rgba(255,255,255,0.15); font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
   .header h1 { font-family: 'Playfair Display', serif; font-size: 28px; margin-bottom: 4px; }
@@ -26,8 +27,9 @@
   .sync-status { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 11px; opacity: 0.7; }
   .sync-dot { width: 7px; height: 7px; border-radius: 50%; background: #4caf50; animation: pulse 2s infinite; }
   .sync-dot.error { background: #ef5350; animation: none; }
-  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+  @keyframes pulse { 0%,100%{opacity:1;}50%{opacity:0.4;} }
 
+  /* TAB NAV */
   .tab-nav { background: var(--white); border-bottom: 2px solid #e8e2d8; display: flex; overflow-x: auto; padding: 0 16px; -webkit-overflow-scrolling: touch; position: sticky; top: 0; z-index: 100; }
   .tab-nav button { background: none; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; color: var(--muted); padding: 14px 16px; border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: all 0.2s; }
   .tab-nav button.active { color: var(--purple); border-bottom-color: var(--purple); }
@@ -46,15 +48,31 @@
   .field:focus { border-color: var(--purple-light); }
   .field::placeholder { color: #c5bfb0; }
 
-  .save-btn { background: var(--purple); color: white; border: none; border-radius: 10px; padding: 10px 22px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; margin-top: 12px; transition: background 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .save-btn { background: var(--purple); color: white; border: none; border-radius: 10px; padding: 10px 20px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.2s; display: inline-flex; align-items: center; gap: 8px; }
   .save-btn:hover { background: var(--purple-light); }
   .save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .outline-btn { background: none; border: 1px solid var(--purple); color: var(--purple); border-radius: 10px; padding: 10px 20px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+  .outline-btn:hover { background: var(--purple); color: white; }
+  .ghost-btn { background: none; border: 1px solid #e0d8cc; color: var(--muted); border-radius: 10px; padding: 10px 20px; font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+  .ghost-btn:hover { border-color: var(--purple-light); color: var(--purple); }
   .saved-badge { background: #e8f5e9; color: #2e7d32; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; opacity: 0; transition: opacity 0.3s; }
   .saved-badge.show { opacity: 1; }
 
-  .who-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
-  .who-chip { border: 1px solid #e0d8cc; border-radius: 20px; padding: 6px 14px; font-size: 13px; cursor: pointer; transition: all 0.2s; background: #faf7f2; color: var(--muted); }
-  .who-chip.selected { background: var(--purple); border-color: var(--purple); color: white; }
+  .who-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .who-chip { border: 1px solid #e0d8cc; border-radius: 20px; padding: 7px 16px; font-size: 13px; cursor: pointer; transition: all 0.2s; background: #faf7f2; color: var(--muted); }
+  .who-chip.selected { background: var(--purple); border-color: var(--purple); color: white; font-weight: 500; }
+
+  /* HIGHLIGHT RESULT CARDS */
+  .hl-result-card { background: var(--white); border: 1px solid #e8e2d8; border-radius: 14px; overflow: hidden; margin-bottom: 16px; }
+  .hl-result-header { padding: 14px 18px; background: linear-gradient(135deg, var(--purple), var(--purple-light)); color: white; }
+  .hl-result-name { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; }
+  .hl-result-body { padding: 16px 18px; }
+  .hl-qa { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid #f0ebe2; }
+  .hl-qa:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .hl-q { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.2px; color: var(--purple-light); margin-bottom: 5px; }
+  .hl-a { font-size: 14px; color: var(--text); line-height: 1.6; }
+  .hl-a.empty { color: var(--muted); font-style: italic; }
 
   /* PREDICTIONS */
   .pred-card { background: var(--white); border: 1px solid #e8e2d8; border-radius: 14px; padding: 16px; margin-bottom: 12px; }
@@ -62,16 +80,14 @@
   .pred-card p { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
   .pred-select { width: 100%; border: 1px solid #e0d8cc; border-radius: 10px; padding: 10px 14px; font-family: 'DM Sans', sans-serif; font-size: 14px; background: #faf7f2; outline: none; color: var(--text); }
   .pred-select:focus { border-color: var(--purple-light); }
-
-  .reveal-section { margin-top: 24px; }
-  .reveal-card { background: linear-gradient(135deg, #f3eeff, #ede0ff); border: 1px solid #d4b8ff; border-radius: 14px; padding: 18px; }
+  .reveal-card { background: linear-gradient(135deg, #f3eeff, #ede0ff); border: 1px solid #d4b8ff; border-radius: 14px; padding: 18px; margin-top: 16px; display: none; }
   .reveal-card h3 { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--purple); margin-bottom: 14px; }
-  .reveal-row { display: flex; justify-content: space-between; font-size: 13px; padding: 8px 0; border-bottom: 1px solid #e0d0ff; }
-  .reveal-row:last-child { border-bottom: none; }
+  .pred-person-block { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid #e0d0ff; }
+  .pred-person-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .pred-person-name { font-weight: 600; color: var(--purple); margin-bottom: 8px; font-size: 14px; }
+  .reveal-row { display: flex; justify-content: space-between; font-size: 13px; padding: 5px 0; }
   .reveal-row span { color: var(--muted); }
-  .reveal-row strong { color: var(--purple); }
-  .reveal-btn { background: none; border: 1px solid var(--purple); color: var(--purple); border-radius: 10px; padding: 10px 22px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; margin-top: 12px; transition: all 0.2s; }
-  .reveal-btn:hover { background: var(--purple); color: white; }
+  .reveal-row strong { color: var(--dark); }
 
   /* SUPERLATIVES */
   .super-card { background: var(--white); border: 1px solid #e8e2d8; border-radius: 14px; padding: 16px; margin-bottom: 12px; }
@@ -83,7 +99,7 @@
   .super-option.selected { border-color: var(--purple); background: #f3eeff; }
   .super-option input[type="radio"] { accent-color: var(--purple); width: 16px; height: 16px; flex-shrink: 0; }
   .super-option label { font-size: 14px; color: var(--text); cursor: pointer; flex: 1; }
-  .vote-bar-wrap { margin-top: 10px; display: none; }
+  .vote-bar-wrap { margin-top: 12px; display: none; }
   .vote-bar-wrap.show { display: block; }
   .vote-bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 12px; }
   .vote-bar-name { width: 65px; flex-shrink: 0; color: var(--muted); }
@@ -112,9 +128,25 @@
   .instr-card ol { padding-left: 18px; }
   .instr-card li { font-size: 13px; color: var(--text); line-height: 1.9; }
 
-  .loading { text-align: center; padding: 20px; font-size: 13px; color: var(--muted); }
+  /* DOWNLOAD SECTION */
+  .download-section { background: var(--white); border: 1px solid #e8e2d8; border-radius: 14px; padding: 20px; margin-top: 28px; }
+  .download-section h3 { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--dark); margin-bottom: 6px; }
+  .download-section p { font-size: 13px; color: var(--muted); margin-bottom: 16px; line-height: 1.5; }
+  .download-row { display: flex; gap: 10px; flex-wrap: wrap; }
+
   .error-msg { background: #fff3f3; border: 1px solid #ffcdd2; border-radius: 10px; padding: 12px 16px; font-size: 13px; color: #c62828; margin-bottom: 14px; display: none; }
   .error-msg.show { display: block; }
+  .loading { text-align: center; padding: 20px; font-size: 13px; color: var(--muted); }
+  .divider { border: none; border-top: 1px solid #e8e2d8; margin: 24px 0; }
+
+  /* PRINT STYLES */
+  @media print {
+    .tab-nav, .header, .btn-row, .download-section, .save-btn, .outline-btn, .ghost-btn, .who-row, .field, .pred-select, .super-options, .vote-bar-wrap { display: none !important; }
+    .section { display: block !important; page-break-after: always; }
+    body { background: white; }
+    .content { padding: 0; }
+    .hl-result-card, .super-card, .pred-card, .score-table { break-inside: avoid; }
+  }
 </style>
 </head>
 <body>
@@ -139,17 +171,52 @@
   <!-- HIGHLIGHTS -->
   <div id="highlights" class="section active">
     <p class="section-title">Trip Highlights</p>
-    <p class="section-sub">Fill these in together on the last night</p>
+    <p class="section-sub">Each person answers from their own phone</p>
     <div class="error-msg" id="hl-error">Could not save. Check your connection and try again.</div>
 
-    <div class="card"><h3>Best Meal of the Trip</h3><textarea class="field" rows="2" placeholder="e.g. Kind of Blue on Saturday night..." id="hl-meal"></textarea></div>
-    <div class="card"><h3>Funniest Moment</h3><textarea class="field" rows="2" placeholder="What had everyone crying laughing..." id="hl-funny"></textarea></div>
-    <div class="card"><h3>Best Shot of the Tournament</h3><textarea class="field" rows="2" placeholder="Who hit it and where..." id="hl-shot"></textarea></div>
-    <div class="card"><h3>Most Surprising Moment</h3><textarea class="field" rows="2" placeholder="Nobody saw that coming..." id="hl-surprise"></textarea></div>
-    <div class="card"><h3>Best Thing About the Airbnb</h3><textarea class="field" rows="2" placeholder="What made 203 Beach City Rd feel like home..." id="hl-airbnb"></textarea></div>
-    <div class="card"><h3>Most Memorable Moment</h3><textarea class="field" rows="3" placeholder="The moment you'll all be talking about next year..." id="hl-moment"></textarea></div>
-    <div class="card"><h3>Can't Wait to Do Again</h3><textarea class="field" rows="2" placeholder="What's on the list for 2027..." id="hl-again"></textarea></div>
-    <button class="save-btn" id="hl-btn" onclick="saveHighlights()">Save Highlights <span class="saved-badge" id="hl-saved">Saved!</span></button>
+    <!-- WHO -->
+    <div class="card">
+      <h3>Who's filling this in?</h3>
+      <div class="who-row" id="hl-who">
+        <div class="who-chip" onclick="selectWho('hl',this)">Tasha</div>
+        <div class="who-chip" onclick="selectWho('hl',this)">Susan</div>
+        <div class="who-chip" onclick="selectWho('hl',this)">Dana</div>
+        <div class="who-chip" onclick="selectWho('hl',this)">Kelleye</div>
+        <div class="who-chip" onclick="selectWho('hl',this)">Tabitha</div>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <div id="hl-form">
+      <div class="card"><h3>Best Meal of the Trip</h3><textarea class="field" rows="2" placeholder="e.g. Kind of Blue on Saturday night..." id="hl-meal"></textarea></div>
+      <div class="card"><h3>Funniest Moment</h3><textarea class="field" rows="2" placeholder="What had everyone crying laughing..." id="hl-funny"></textarea></div>
+      <div class="card"><h3>Best Shot of the Tournament</h3><textarea class="field" rows="2" placeholder="Who hit it and where..." id="hl-shot"></textarea></div>
+      <div class="card"><h3>Most Surprising Moment</h3><textarea class="field" rows="2" placeholder="Nobody saw that coming..." id="hl-surprise"></textarea></div>
+      <div class="card"><h3>Best Thing About the Airbnb</h3><textarea class="field" rows="2" placeholder="What made 203 Beach City Rd feel like home..." id="hl-airbnb"></textarea></div>
+      <div class="card"><h3>Most Memorable Moment</h3><textarea class="field" rows="3" placeholder="The moment you'll all be talking about next year..." id="hl-moment"></textarea></div>
+      <div class="card"><h3>Can't Wait to Do Again</h3><textarea class="field" rows="2" placeholder="What's on the list for 2027..." id="hl-again"></textarea></div>
+      <div class="btn-row">
+        <button class="save-btn" id="hl-btn" onclick="saveHighlights()">Save My Highlights <span class="saved-badge" id="hl-saved">Saved!</span></button>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- RESULTS -->
+    <p class="section-title" style="font-size:18px;">Everyone's Highlights</p>
+    <p class="section-sub" style="margin-bottom:16px;">Updates as each person submits</p>
+    <div id="hl-results"><div class="loading">Loading...</div></div>
+
+    <!-- DOWNLOADS -->
+    <div class="download-section">
+      <h3>Save as Keepsake</h3>
+      <p>Download a copy so you always have it — even if the link goes away someday.</p>
+      <div class="download-row">
+        <button class="outline-btn" onclick="printHighlightsPDF()">Highlights PDF</button>
+        <button class="outline-btn" onclick="printFullPDF()">Full Trip PDF</button>
+        <button class="ghost-btn" onclick="downloadHTML()">Download HTML</button>
+      </div>
+    </div>
   </div>
 
   <!-- PREDICTIONS -->
@@ -158,7 +225,7 @@
     <p class="section-sub">Fill out before Round 1 · Reveal Friday night after the cruise</p>
     <div class="error-msg" id="pred-error">Could not save. Check your connection and try again.</div>
 
-    <div class="card" style="margin-bottom:16px;">
+    <div class="card">
       <h3>Who's predicting?</h3>
       <div class="who-row" id="pred-who">
         <div class="who-chip" onclick="selectWho('pred',this)">Tasha</div>
@@ -174,26 +241,26 @@
     <div class="pred-card"><h3>Best Dressed on the Course</h3><p>Who's going to show up and show OUT?</p><select class="pred-select" id="pred-dressed"><option value="">Pick a roommate...</option><option>Tasha</option><option>Susan</option><option>Dana</option><option>Kelleye</option><option>Tabitha</option></select></div>
     <div class="pred-card"><h3>First One Ready Every Morning</h3><p>Who's already downstairs with coffee?</p><select class="pred-select" id="pred-ready"><option value="">Pick a roommate...</option><option>Tasha</option><option>Susan</option><option>Dana</option><option>Kelleye</option><option>Tabitha</option></select></div>
     <div class="pred-card"><h3>Last One Out the Door</h3><p>We'll be waiting on her...</p><select class="pred-select" id="pred-last"><option value="">Pick a roommate...</option><option>Tasha</option><option>Susan</option><option>Dana</option><option>Kelleye</option><option>Tabitha</option></select></div>
-    <div class="pred-card"><h3>Most Likely to Win a Prize</h3><p>Closest to the pin, longest drive, door prize — who's walking away with something?</p><select class="pred-select" id="pred-prize"><option value="">Pick a roommate...</option><option>Tasha</option><option>Susan</option><option>Dana</option><option>Kelleye</option><option>Tabitha</option></select></div>
+    <div class="pred-card"><h3>Most Likely to Win a Prize</h3><p>Closest to pin, longest drive, door prize — who's walking away with something?</p><select class="pred-select" id="pred-prize"><option value="">Pick a roommate...</option><option>Tasha</option><option>Susan</option><option>Dana</option><option>Kelleye</option><option>Tabitha</option></select></div>
 
-    <button class="save-btn" id="pred-btn" onclick="savePredictions()">Lock In My Predictions <span class="saved-badge" id="pred-saved">Saved!</span></button>
+    <div class="btn-row">
+      <button class="save-btn" id="pred-btn" onclick="savePredictions()">Lock In My Predictions <span class="saved-badge" id="pred-saved">Saved!</span></button>
+      <button class="outline-btn" onclick="loadAndReveal()">Reveal All Predictions</button>
+    </div>
 
-    <div class="reveal-section">
-      <button class="reveal-btn" onclick="loadAndReveal()">Reveal All Predictions</button>
-      <div class="reveal-card" id="reveal-card" style="margin-top:14px;display:none;">
-        <h3>Everyone's Predictions</h3>
-        <div id="reveal-content"></div>
-      </div>
+    <div class="reveal-card" id="reveal-card">
+      <h3>Everyone's Predictions</h3>
+      <div id="reveal-content"></div>
     </div>
   </div>
 
   <!-- SUPERLATIVES -->
   <div id="superlatives" class="section">
     <p class="section-title">Roommate Superlatives</p>
-    <p class="section-sub">Everyone votes from their own phone · Results update live</p>
+    <p class="section-sub">Everyone votes from their own phone · Results update live every 10 seconds</p>
     <div class="error-msg" id="super-error">Could not save. Check your connection and try again.</div>
 
-    <div class="card" style="margin-bottom:16px;">
+    <div class="card">
       <h3>Who's voting?</h3>
       <div class="who-row" id="super-who">
         <div class="who-chip" onclick="selectWho('super',this)">Tasha</div>
@@ -269,7 +336,9 @@
       <div class="vote-bar-wrap" id="bars-improved"></div>
     </div>
 
-    <button class="save-btn" id="super-btn" onclick="saveSuperlatives()">Submit My Votes <span class="saved-badge" id="super-saved">Submitted!</span></button>
+    <div class="btn-row">
+      <button class="save-btn" id="super-btn" onclick="saveSuperlatives()">Submit My Votes <span class="saved-badge" id="super-saved">Submitted!</span></button>
+    </div>
   </div>
 
   <!-- SCORES -->
@@ -277,7 +346,6 @@
     <p class="section-title">Group Scorecard</p>
     <p class="section-sub">BMWGA 2026 · 36-Hole Stroke Play · Hilton Head</p>
     <div class="error-msg" id="scores-error">Could not save. Check your connection and try again.</div>
-
     <div class="card" style="padding:0;overflow:hidden;">
       <table class="score-table">
         <thead><tr><th>Player</th><th>Round 1</th><th>Round 2</th><th>Total</th></tr></thead>
@@ -290,7 +358,9 @@
         </tbody>
       </table>
     </div>
-    <button class="save-btn" id="scores-btn" onclick="saveScores()">Save Scores <span class="saved-badge" id="scores-saved">Saved!</span></button>
+    <div class="btn-row" style="margin-top:14px;">
+      <button class="save-btn" id="scores-btn" onclick="saveScores()">Save Scores <span class="saved-badge" id="scores-saved">Saved!</span></button>
+    </div>
   </div>
 
   <!-- PHOTOS -->
@@ -321,15 +391,29 @@
     </div>
   </div>
 
-</div>
+</div><!-- end content -->
 
 <script>
   const API = 'https://script.google.com/macros/s/AKfycbyX17biC7695htIIg5AwKQ-jHgAXkYXZLBCBkDa9CUQtT19jJWLq8ANneNtUZ7IL2yV/exec';
   const NAMES = ['Tasha','Susan','Dana','Kelleye','Tabitha'];
   const SUPER_KEYS = ['snack','dressed','sleep','schedule','improved'];
-  let superVotes = {}; // live vote tallies
+  const HL_QUESTIONS = {
+    meal: 'Best Meal of the Trip',
+    funny: 'Funniest Moment',
+    shot: 'Best Shot of the Tournament',
+    surprise: 'Most Surprising Moment',
+    airbnb: 'Best Thing About the Airbnb',
+    moment: 'Most Memorable Moment',
+    again: "Can't Wait to Do Again"
+  };
+  const PRED_LABELS = {
+    r1:'Lowest Score R1', r2:'Lowest Score R2',
+    dressed:'Best Dressed', ready:'First Ready',
+    last:'Last Out the Door', prize:'Most Likely to Win a Prize'
+  };
+
+  let selectedWho = { hl: null, pred: null, super: null };
   let pollTimer = null;
-  let selectedWho = { pred: null, super: null };
 
   // ── UTILS ──
   function showSection(id, btn) {
@@ -339,66 +423,44 @@
     btn.classList.add('active');
     if (id === 'superlatives') startPolling();
     else stopPolling();
+    if (id === 'highlights') loadHighlightResults();
+    if (id === 'scores') loadScores();
   }
 
-  function flash(id) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.classList.add('show');
-    setTimeout(() => el.classList.remove('show'), 2500);
-  }
-
-  function setBtn(id, loading) {
-    const btn = document.getElementById(id);
-    if (!btn) return;
-    btn.disabled = loading;
-    if (loading) btn.style.opacity = '0.6';
-    else btn.style.opacity = '1';
-  }
-
+  function flash(id) { const el = document.getElementById(id); if(!el) return; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2500); }
+  function setBtn(id, loading) { const b = document.getElementById(id); if(!b) return; b.disabled = loading; }
   function setSyncStatus(ok) {
-    document.getElementById('sync-dot').className = 'sync-dot' + (ok ? '' : ' error');
+    document.getElementById('sync-dot').className = 'sync-dot'+(ok?'':' error');
     document.getElementById('sync-label').textContent = ok ? 'Live sync on' : 'Sync error';
   }
-
   function selectWho(prefix, chip) {
     document.querySelectorAll(`#${prefix}-who .who-chip`).forEach(c => c.classList.remove('selected'));
     chip.classList.add('selected');
     selectedWho[prefix] = chip.textContent;
   }
 
-  // ── API CALLS ──
+  // ── API ──
   async function post(tab, action, payload) {
-    const res = await fetch(API, {
-      method: 'POST',
-      body: JSON.stringify({ tab, action, payload }),
-      headers: { 'Content-Type': 'text/plain' }
-    });
+    const res = await fetch(API, { method:'POST', body: JSON.stringify({tab, action, payload}), headers:{'Content-Type':'text/plain'} });
     return res.json();
   }
-
   async function get(tab) {
-    const res = await fetch(`${API}?tab=${tab}`);
+    const res = await fetch(`${API}?tab=${encodeURIComponent(tab)}`);
     return res.json();
   }
 
   // ── HIGHLIGHTS ──
   async function saveHighlights() {
+    if (!selectedWho.hl) { alert('Please select your name first.'); return; }
     setBtn('hl-btn', true);
     document.getElementById('hl-error').classList.remove('show');
-    const payload = {
-      meal: document.getElementById('hl-meal').value,
-      funny: document.getElementById('hl-funny').value,
-      shot: document.getElementById('hl-shot').value,
-      surprise: document.getElementById('hl-surprise').value,
-      airbnb: document.getElementById('hl-airbnb').value,
-      moment: document.getElementById('hl-moment').value,
-      again: document.getElementById('hl-again').value
-    };
+    const payload = { who: selectedWho.hl };
+    Object.keys(HL_QUESTIONS).forEach(k => payload[k] = document.getElementById('hl-'+k).value);
     try {
-      await post('Highlights', 'overwrite', payload);
+      await post('Highlights', 'write', payload);
       flash('hl-saved');
       setSyncStatus(true);
+      await loadHighlightResults();
     } catch(e) {
       document.getElementById('hl-error').classList.add('show');
       setSyncStatus(false);
@@ -406,33 +468,42 @@
     setBtn('hl-btn', false);
   }
 
-  async function loadHighlights() {
+  async function loadHighlightResults() {
+    const container = document.getElementById('hl-results');
     try {
       const res = await get('Highlights');
-      if (res.data && res.data.length) {
-        const d = res.data[res.data.length - 1];
-        ['meal','funny','shot','surprise','airbnb','moment','again'].forEach(f => {
-          const el = document.getElementById('hl-'+f);
-          if (el && d[f]) el.value = d[f];
-        });
+      if (!res.data || !res.data.length) {
+        container.innerHTML = '<p style="font-size:13px;color:var(--muted);font-style:italic;">No highlights submitted yet — be the first!</p>';
+        return;
       }
-    } catch(e) {}
+      // dedupe — keep last entry per person
+      const byPerson = {};
+      res.data.forEach(row => { if(row.who) byPerson[row.who] = row; });
+      container.innerHTML = Object.values(byPerson).map(row => `
+        <div class="hl-result-card">
+          <div class="hl-result-header"><div class="hl-result-name">${row.who}</div></div>
+          <div class="hl-result-body">
+            ${Object.keys(HL_QUESTIONS).map(k => `
+              <div class="hl-qa">
+                <div class="hl-q">${HL_QUESTIONS[k]}</div>
+                <div class="hl-a ${row[k]?'':'empty'}">${row[k]||'Not answered yet'}</div>
+              </div>`).join('')}
+          </div>
+        </div>`).join('');
+      setSyncStatus(true);
+    } catch(e) {
+      container.innerHTML = '<p style="font-size:13px;color:#c62828;">Could not load highlights. Check your connection.</p>';
+      setSyncStatus(false);
+    }
   }
 
   // ── PREDICTIONS ──
   async function savePredictions() {
-    if (!selectedWho.pred) { alert('Please select who is predicting first.'); return; }
+    if (!selectedWho.pred) { alert('Please select your name first.'); return; }
     setBtn('pred-btn', true);
     document.getElementById('pred-error').classList.remove('show');
-    const payload = {
-      who: selectedWho.pred,
-      r1: document.getElementById('pred-r1').value,
-      r2: document.getElementById('pred-r2').value,
-      dressed: document.getElementById('pred-dressed').value,
-      ready: document.getElementById('pred-ready').value,
-      last: document.getElementById('pred-last').value,
-      prize: document.getElementById('pred-prize').value
-    };
+    const payload = { who: selectedWho.pred };
+    Object.keys(PRED_LABELS).forEach(k => payload[k] = document.getElementById('pred-'+k).value);
     try {
       await post('Predictions', 'write', payload);
       flash('pred-saved');
@@ -448,20 +519,17 @@
     const card = document.getElementById('reveal-card');
     const content = document.getElementById('reveal-content');
     card.style.display = 'block';
-    content.innerHTML = '<div class="loading">Loading predictions...</div>';
+    content.innerHTML = '<div class="loading">Loading...</div>';
     try {
       const res = await get('Predictions');
       if (!res.data || !res.data.length) { content.innerHTML = '<p style="font-size:13px;color:var(--muted)">No predictions saved yet.</p>'; return; }
-      const labels = { r1:'Lowest Score R1', r2:'Lowest Score R2', dressed:'Best Dressed', ready:'First Ready', last:'Last Out the Door', prize:'Most Likely to Win a Prize' };
-      let html = '';
-      res.data.forEach(row => {
-        html += `<div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #e0d0ff;"><div style="font-weight:600;color:var(--purple);margin-bottom:8px;">${row.who}</div>`;
-        Object.keys(labels).forEach(k => {
-          html += `<div class="reveal-row"><span>${labels[k]}</span><strong>${row[k]||'—'}</strong></div>`;
-        });
-        html += '</div>';
-      });
-      content.innerHTML = html;
+      const byPerson = {};
+      res.data.forEach(row => { if(row.who) byPerson[row.who] = row; });
+      content.innerHTML = Object.values(byPerson).map(row => `
+        <div class="pred-person-block">
+          <div class="pred-person-name">${row.who}</div>
+          ${Object.keys(PRED_LABELS).map(k=>`<div class="reveal-row"><span>${PRED_LABELS[k]}</span><strong>${row[k]||'—'}</strong></div>`).join('')}
+        </div>`).join('');
     } catch(e) {
       content.innerHTML = '<p style="font-size:13px;color:#c62828;">Could not load predictions.</p>';
     }
@@ -470,20 +538,17 @@
   // ── SUPERLATIVES ──
   document.querySelectorAll('.super-option input[type="radio"]').forEach(radio => {
     radio.addEventListener('change', function() {
-      this.closest('.super-options').querySelectorAll('.super-option').forEach(o => o.classList.remove('selected'));
+      this.closest('.super-options').querySelectorAll('.super-option').forEach(o=>o.classList.remove('selected'));
       this.closest('.super-option').classList.add('selected');
     });
   });
 
   async function saveSuperlatives() {
-    if (!selectedWho.super) { alert('Please select who is voting first.'); return; }
+    if (!selectedWho.super) { alert('Please select your name first.'); return; }
     setBtn('super-btn', true);
     document.getElementById('super-error').classList.remove('show');
     const payload = { who: selectedWho.super };
-    SUPER_KEYS.forEach(k => {
-      const checked = document.querySelector(`input[name="${k}"]:checked`);
-      payload[k] = checked ? checked.value : '';
-    });
+    SUPER_KEYS.forEach(k => { const c = document.querySelector(`input[name="${k}"]:checked`); payload[k] = c ? c.value : ''; });
     try {
       await post('Superlatives', 'write', payload);
       flash('super-saved');
@@ -500,20 +565,15 @@
     try {
       const res = await get('Superlatives');
       if (!res.data || !res.data.length) return;
-      // tally votes
       const tallies = {};
-      SUPER_KEYS.forEach(k => { tallies[k] = {}; NAMES.forEach(n => tallies[k][n] = 0); });
-      res.data.forEach(row => {
-        SUPER_KEYS.forEach(k => { if (row[k] && tallies[k][row[k]] !== undefined) tallies[k][row[k]]++; });
-      });
-      const totalVoters = res.data.length;
-      // render bars
+      SUPER_KEYS.forEach(k => { tallies[k] = {}; NAMES.forEach(n => tallies[k][n]=0); });
+      res.data.forEach(row => SUPER_KEYS.forEach(k => { if(row[k]&&tallies[k][row[k]]!==undefined) tallies[k][row[k]]++; }));
       SUPER_KEYS.forEach(k => {
         const wrap = document.getElementById('bars-'+k);
         if (!wrap) return;
         wrap.classList.add('show');
-        const max = Math.max(...Object.values(tallies[k]), 1);
-        wrap.innerHTML = NAMES.map(n => `
+        const max = Math.max(...Object.values(tallies[k]),1);
+        wrap.innerHTML = NAMES.map(n=>`
           <div class="vote-bar-row">
             <div class="vote-bar-name">${n}</div>
             <div class="vote-bar-track"><div class="vote-bar-fill" style="width:${(tallies[k][n]/max)*100}%"></div></div>
@@ -524,21 +584,14 @@
     } catch(e) { setSyncStatus(false); }
   }
 
-  function startPolling() {
-    refreshSuperlatives();
-    pollTimer = setInterval(refreshSuperlatives, 10000);
-  }
-  function stopPolling() {
-    clearInterval(pollTimer);
-    pollTimer = null;
-  }
+  function startPolling() { refreshSuperlatives(); pollTimer = setInterval(refreshSuperlatives, 10000); }
+  function stopPolling() { clearInterval(pollTimer); pollTimer = null; }
 
   // ── SCORES ──
   function calcTotal(input) {
     const row = input.closest('tr');
     const inputs = row.querySelectorAll('input');
-    const v1 = parseFloat(inputs[0].value)||0;
-    const v2 = parseFloat(inputs[1].value)||0;
+    const v1 = parseFloat(inputs[0].value)||0, v2 = parseFloat(inputs[1].value)||0;
     row.querySelector('.total-cell').textContent = (inputs[0].value||inputs[1].value) ? v1+v2 : '--';
     highlightBest();
   }
@@ -553,8 +606,7 @@
     setBtn('scores-btn', true);
     document.getElementById('scores-error').classList.remove('show');
     const payload = {};
-    const rows = document.querySelectorAll('#score-body tr');
-    rows.forEach(r => {
+    document.querySelectorAll('#score-body tr').forEach(r => {
       const name = r.querySelector('td').textContent;
       const inputs = r.querySelectorAll('input');
       payload[name+'_R1'] = inputs[0].value;
@@ -562,7 +614,7 @@
       payload[name+'_Total'] = r.querySelector('.total-cell').textContent;
     });
     try {
-      await post('Scores', 'overwrite', payload);
+      await post('Scores','overwrite',payload);
       flash('scores-saved');
       setSyncStatus(true);
     } catch(e) {
@@ -574,20 +626,109 @@
   async function loadScores() {
     try {
       const res = await get('Scores');
-      if (!res.data || !res.data.length) return;
+      if (!res.data||!res.data.length) return;
       const d = res.data[res.data.length-1];
-      const rows = document.querySelectorAll('#score-body tr');
-      rows.forEach(r => {
+      document.querySelectorAll('#score-body tr').forEach(r => {
         const name = r.querySelector('td').textContent;
         const inputs = r.querySelectorAll('input');
-        if (d[name+'_R1']) { inputs[0].value = d[name+'_R1']; calcTotal(inputs[0]); }
-        if (d[name+'_R2']) { inputs[1].value = d[name+'_R2']; calcTotal(inputs[1]); }
+        if(d[name+'_R1']){inputs[0].value=d[name+'_R1'];calcTotal(inputs[0]);}
+        if(d[name+'_R2']){inputs[1].value=d[name+'_R2'];calcTotal(inputs[1]);}
       });
     } catch(e) {}
   }
 
+  // ── DOWNLOADS ──
+  function printHighlightsPDF() {
+    const printWin = window.open('','_blank');
+    const results = document.getElementById('hl-results').innerHTML;
+    printWin.document.write(`<!DOCTYPE html><html><head>
+      <meta charset="UTF-8">
+      <title>BMWGA 2026 Highlights</title>
+      <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+      <style>
+        body{font-family:'DM Sans',sans-serif;max-width:680px;margin:0 auto;padding:40px 24px;color:#3a3a3a;}
+        h1{font-family:'Playfair Display',serif;font-size:28px;margin-bottom:6px;color:#1a2018;}
+        .sub{font-size:13px;color:#7a7a6a;margin-bottom:32px;font-style:italic;}
+        .hl-result-card{border:1px solid #e8e2d8;border-radius:12px;overflow:hidden;margin-bottom:20px;page-break-inside:avoid;}
+        .hl-result-header{padding:12px 18px;background:#5b3a8c;color:white;}
+        .hl-result-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;}
+        .hl-result-body{padding:16px 18px;}
+        .hl-qa{margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #f0ebe2;}
+        .hl-qa:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+        .hl-q{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:#7b5aac;margin-bottom:4px;}
+        .hl-a{font-size:13px;line-height:1.6;}
+        .hl-a.empty{color:#7a7a6a;font-style:italic;}
+        .footer{text-align:center;font-size:11px;color:#b0aa9a;margin-top:40px;padding-top:20px;border-top:1px solid #e8e2d8;}
+      </style>
+    </head><body>
+      <h1>BMWGA 2026 Trip Highlights</h1>
+      <p class="sub">Hilton Head Island · June 9–14, 2026 · Tasha · Susan · Dana · Kelleye · Tabitha</p>
+      ${results}
+      <div class="footer">BMWGA 26th Annual Golf Tournament · Port Royal Golf & Racquet Club</div>
+    </body></html>`);
+    printWin.document.close();
+    printWin.focus();
+    setTimeout(() => printWin.print(), 800);
+  }
+
+  async function printFullPDF() {
+    const printWin = window.open('','_blank');
+    // gather all data
+    let hlHTML = document.getElementById('hl-results').innerHTML;
+    let scoresHTML = '';
+    document.querySelectorAll('#score-body tr').forEach(r => {
+      const cells = r.querySelectorAll('td');
+      const inputs = r.querySelectorAll('input');
+      scoresHTML += `<tr><td>${cells[0].textContent}</td><td>${inputs[0].value||'--'}</td><td>${inputs[1].value||'--'}</td><td>${cells[3].textContent}</td></tr>`;
+    });
+    printWin.document.write(`<!DOCTYPE html><html><head>
+      <meta charset="UTF-8">
+      <title>BMWGA 2026 Full Trip Keepsake</title>
+      <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+      <style>
+        body{font-family:'DM Sans',sans-serif;max-width:680px;margin:0 auto;padding:40px 24px;color:#3a3a3a;}
+        h1{font-family:'Playfair Display',serif;font-size:32px;color:#1a2018;margin-bottom:4px;}
+        h2{font-family:'Playfair Display',serif;font-size:22px;color:#5b3a8c;margin:32px 0 12px;padding-bottom:8px;border-bottom:2px solid #e8e2d8;}
+        .sub{font-size:13px;color:#7a7a6a;margin-bottom:40px;font-style:italic;}
+        .hl-result-card{border:1px solid #e8e2d8;border-radius:12px;overflow:hidden;margin-bottom:16px;page-break-inside:avoid;}
+        .hl-result-header{padding:12px 18px;background:#5b3a8c;color:white;}
+        .hl-result-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;}
+        .hl-result-body{padding:16px 18px;}
+        .hl-qa{margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #f0ebe2;}
+        .hl-qa:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+        .hl-q{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:#7b5aac;margin-bottom:4px;}
+        .hl-a{font-size:13px;line-height:1.6;}
+        .hl-a.empty{color:#7a7a6a;font-style:italic;}
+        table{width:100%;border-collapse:collapse;}
+        th{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#7a7a6a;padding:10px 12px;border-bottom:2px solid #e0d8cc;text-align:left;}
+        td{padding:10px 12px;border-bottom:1px solid #f0ebe2;font-size:14px;}
+        .footer{text-align:center;font-size:11px;color:#b0aa9a;margin-top:40px;padding-top:20px;border-top:1px solid #e8e2d8;}
+      </style>
+    </head><body>
+      <h1>BMWGA 2026 Trip Keepsake</h1>
+      <p class="sub">Hilton Head Island · June 9–14, 2026 · Tasha · Susan · Dana · Kelleye · Tabitha</p>
+      <h2>Trip Highlights</h2>
+      ${hlHTML}
+      <h2>Group Scorecard</h2>
+      <table><thead><tr><th>Player</th><th>Round 1</th><th>Round 2</th><th>Total</th></tr></thead><tbody>${scoresHTML}</tbody></table>
+      <div class="footer">BMWGA 26th Annual Golf Tournament · Port Royal Golf & Racquet Club · Hilton Head Island, SC</div>
+    </body></html>`);
+    printWin.document.close();
+    printWin.focus();
+    setTimeout(() => printWin.print(), 800);
+  }
+
+  function downloadHTML() {
+    const html = document.documentElement.outerHTML;
+    const blob = new Blob([html], {type:'text/html'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'BMWGA-2026-Keepsakes.html';
+    a.click();
+  }
+
   // ── INIT ──
-  loadHighlights();
+  loadHighlightResults();
   loadScores();
 </script>
 </body>
