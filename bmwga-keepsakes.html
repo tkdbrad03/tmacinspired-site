@@ -186,7 +186,7 @@
   <button onclick="showSection('predictions',this)">Predictions</button>
   <button onclick="showSection('superlatives',this)">Superlatives</button>
   <button onclick="showSection('scores',this)">Scores</button>
-  <button onclick="showSection('photos',this)">Photos</button>
+  
 </div>
 
 <div class="content">
@@ -386,56 +386,6 @@
     </div>
   </div>
 
-  <!-- PHOTOS -->
-  <div id="photos" class="section">
-    <p class="section-title">Trip Photos</p>
-    <p class="section-sub">Upload from your camera roll · Everyone sees the same gallery</p>
-    <div class="error-msg" id="photo-error">Could not upload. Check your connection and try again.</div>
-
-    <!-- WHO -->
-    <div class="card">
-      <h3>Who's uploading?</h3>
-      <div class="who-row" id="photo-who">
-        <div class="who-chip" onclick="selectWho('photo',this)">Tasha</div>
-        <div class="who-chip" onclick="selectWho('photo',this)">Susan</div>
-        <div class="who-chip" onclick="selectWho('photo',this)">Dana</div>
-        <div class="who-chip" onclick="selectWho('photo',this)">Kelleye</div>
-        <div class="who-chip" onclick="selectWho('photo',this)">Tabitha</div>
-      </div>
-    </div>
-
-    <!-- UPLOAD -->
-    <div class="photo-upload-area" onclick="document.getElementById('photoFile').click()">
-      <p>Tap to choose a photo from your camera roll</p>
-      <label class="upload-label">Choose Photo</label>
-      <input type="file" id="photoFile" accept="image/*" onchange="previewPhoto(event)">
-    </div>
-
-    <div class="photo-preview" id="photo-preview">
-      <img id="preview-img" src="" alt="Preview">
-      <input class="preview-caption field" type="text" id="photo-caption" placeholder="Add a caption (optional)...">
-      <div class="btn-row" style="margin-top:10px;">
-        <button class="save-btn" id="photo-upload-btn" onclick="uploadPhoto()">Upload Photo <span class="saved-badge" id="photo-saved">Uploaded!</span></button>
-        <button class="ghost-btn" onclick="cancelPhotoPreview()">Cancel</button>
-      </div>
-    </div>
-
-    <!-- GALLERY -->
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px;margin-bottom:4px;">
-      <p class="section-title" style="font-size:18px;">Gallery</p>
-      <button class="ghost-btn" style="padding:6px 14px;font-size:12px;" onclick="loadPhotos()">Refresh</button>
-    </div>
-    <p class="section-sub" style="margin-bottom:12px;">Tap any photo to view full size</p>
-    <div class="photo-gallery-grid" id="photo-gallery"><div class="loading">Loading photos...</div></div>
-  </div>
-
-  <!-- LIGHTBOX -->
-  <div class="photo-lightbox" id="lightbox" onclick="closeLightbox()">
-    <button class="lightbox-close" onclick="closeLightbox()">&#x2715;</button>
-    <img id="lightbox-img" src="" alt="">
-    <div class="lightbox-caption" id="lightbox-caption"></div>
-    <div class="lightbox-who" id="lightbox-who"></div>
-  </div>
 
 </div><!-- end content -->
 
@@ -471,7 +421,6 @@
     else stopPolling();
     if (id === 'highlights') loadHighlightResults();
     if (id === 'scores') loadScores();
-    if (id === 'photos') loadPhotos();
   }
 
   function flash(id) { const el = document.getElementById(id); if(!el) return; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2500); }
@@ -922,119 +871,6 @@
     a.download = 'BMWGA-2026-Keepsakes.html';
     a.click();
   }
-
-  // ── PHOTOS ──
-  let pendingImageData = null;
-
-  function previewPhoto(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(ev) {
-      // Compress
-      const img = new Image();
-      img.onload = function() {
-        const canvas = document.createElement('canvas');
-        const MAX = 800; 
-        let w = img.width, h = img.height;
-        if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
-        canvas.width = w; canvas.height = h;
-        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-        pendingImageData = canvas.toDataURL('image/jpeg', 0.5); 
-        document.getElementById('preview-img').src = pendingImageData;
-        document.getElementById('photo-preview').style.display = 'block';
-      };
-      img.src = ev.target.result;
-    };
-    reader.readAsDataURL(file);
-  }
-
-  function cancelPhotoPreview() {
-    pendingImageData = null;
-    document.getElementById('photo-preview').style.display = 'none';
-    document.getElementById('photo-caption').value = '';
-    document.getElementById('photoFile').value = '';
-  }
-
-  async function uploadPhoto() {
-    if (!selectedWho.photo) { alert('Please select your name first.'); return; }
-    if (!pendingImageData) { alert('Please choose a photo first.'); return; }
-    setBtn('photo-upload-btn', true);
-    document.getElementById('photo-error').classList.remove('show');
-    const caption = document.getElementById('photo-caption').value;
-    try {
-      // Strip smaller — go aggressive on compression
-      const img = new Image();
-      await new Promise(r => { img.onload = r; img.src = pendingImageData; });
-      const canvas = document.createElement('canvas');
-      const MAX = 600;
-      let w = img.width, h = img.height;
-      if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
-      if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; }
-      canvas.width = w; canvas.height = h;
-      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-      const smallData = canvas.toDataURL('image/jpeg', 0.4);
-
-      const res = await fetch(API, {
-        method: 'POST',
-        body: JSON.stringify({
-          action: 'uploadPhoto',
-          who: selectedWho.photo,
-          caption: caption,
-          imageData: smallData,
-          filename: selectedWho.photo + '-' + Date.now() + '.jpg'
-        }),
-        headers: { 'Content-Type': 'text/plain' }
-      });
-      const data = await res.json();
-      if (data.status === 'ok') {
-        flash('photo-saved');
-        cancelPhotoPreview();
-        setSyncStatus(true);
-        await loadPhotos();
-      } else {
-        throw new Error(data.message || 'Upload failed');
-      }
-    } catch(e) {
-      console.error('Upload error:', e);
-      document.getElementById('photo-error').classList.add('show');
-      setSyncStatus(false);
-    }
-    setBtn('photo-upload-btn', false);
-  }
-
-  async function loadPhotos() {
-    const grid = document.getElementById('photo-gallery');
-    try {
-      const res = await fetch(`${API}?tab=Photos`);
-      const data = await res.json();
-      if (!data.data || !data.data.length) {
-        grid.innerHTML = '<p style="font-size:13px;color:var(--muted);font-style:italic;grid-column:1/-1;text-align:center;padding:20px;">No photos yet — be the first to upload!</p>';
-        return;
-      }
-      grid.innerHTML = data.data.slice().reverse().map((p, i) => `
-        <div class="photo-gallery-item">
-          <img src="${p.thumbUrl}" alt="Photo by ${p.who}"
-            onclick="openLightbox('${p.thumbUrl}','${(p.caption||'').replace(/'/g,'&apos;')}','${p.who}')">
-          <div class="photo-gallery-meta">
-            <div class="photo-gallery-who">${p.who}</div>
-            ${p.caption ? `<div class="photo-gallery-caption">${p.caption}</div>` : ''}
-          </div>
-        </div>`).join('');
-      setSyncStatus(true);
-    } catch(e) {
-      grid.innerHTML = '<p style="font-size:13px;color:#c62828;grid-column:1/-1;text-align:center;padding:20px;">Could not load photos. Check your connection.</p>';
-      setSyncStatus(false);
-    }
-  }
-
-  function openLightbox(src, caption, who) {
-    document.getElementById('lightbox-img').src = src;
-    document.getElementById('lightbox-caption').textContent = caption || '';
-    document.getElementById('lightbox-who').textContent = who ? 'Uploaded by ' + who : '';
-    document.getElementById('lightbox').classList.add('open');
-  }
-  function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
 
   // ── INIT ──
   loadHighlightResults();
