@@ -174,162 +174,12 @@
 <body>
 
 <div class="trip-switcher">
-  <button class="trip-btn active-bmwga" onclick="switchTrip('bmwga', this)">BMWGA · Hilton Head · Jun 9–14</button>
-  <button class="trip-btn" onclick="switchTrip('chicago', this)">Tapestry 360 · Chicago · Jun 17–21</button>
+  <button class="trip-btn active-chicago" onclick="switchTrip('chicago', this)">Tapestry 360 · Chicago · Jun 17–21</button>
   <button class="trip-btn" onclick="switchTrip('cabot', this)">Cabot Cape Breton · Aug 26–30</button>
 </div>
 
-<!-- ===== BMWGA ===== -->
-<div class="hero hero-bmwga active" id="hero-bmwga">
-  <div class="hero-flag">BMWGA · 26th Annual Tournament</div>
-  <h1>Hilton Head <em>Island</em></h1>
-  <p class="hero-sub">Port Royal Golf &amp; Racquet Club · South Carolina</p>
-  <div class="hero-meta">
-    <div class="hero-pill"><span>Dates</span><strong>Jun 9–14, 2026</strong></div>
-    <div class="hero-pill"><span>Tournament</span><strong>Jun 11–12</strong></div>
-    <div class="hero-pill"><span>Format</span><strong>36-Hole Stroke Play</strong></div>
-  </div>
-  <div class="countdown-bar" id="cd-bmwga"></div>
-  <div class="weather-note">Hilton Head forecast around Jun 9–14</div>
-  <div class="weather-strip" id="wx-bmwga"></div>
-</div>
-<nav class="tab-nav tab-nav-bmwga active" id="tabnav-bmwga">
-  <ul>
-    <li><button class="active" onclick="showTab('bmwga','bmwga-overview',this)">Overview</button></li>
-    <li><button onclick="showTab('bmwga','bmwga-itinerary',this)">Itinerary</button></li>
-    <li><button onclick="showTab('bmwga','bmwga-checklist',this)">Checklist</button></li>
-  </ul>
-</nav>
-<div class="trip-content active" id="content-bmwga">
-
-  <div id="bmwga-overview" class="section active">
-    <p class="section-title">Tournament at a Glance</p>
-    <p class="section-subtitle">Browns Mill Women's Golf Association</p>
-    <div class="motto-card">"Fun, Fellowship, Friendly &amp; Fair Competition"</div>
-    <div class="overview-grid">
-      <div class="overview-card"><div class="oc-val">6 Days</div><div class="oc-label">Jun 9–14</div></div>
-      <div class="overview-card"><div class="oc-val">36 Holes</div><div class="oc-label">2-Day Stroke Play</div></div>
-      <div class="overview-card"><div class="oc-val">2 Courses</div><div class="oc-label">Barony &amp; Robber's Row</div></div>
-      <div class="overview-card"><div class="oc-val">Savannah</div><div class="oc-label">Awards Cruise Dinner</div></div>
-    </div>
-
-    <!-- Accommodations -->
-    <div class="res-card">
-      <h3>Accommodations — Airbnb</h3>
-      <div class="res-detail"><span>Address</span><strong>203 Beach City Rd, Hilton Head Island, SC 29926</strong></div>
-      <div class="res-detail"><span>Dates</span><strong>Jun 9–14, 2026</strong></div>
-    </div>
-
-    <!-- Dinner Reservation -->
-    <div class="res-card">
-      <h3>Dinner Reservation — Kind of Blue</h3>
-      <div class="res-detail"><span>Date</span><strong>Saturday, June 13, 2026 · 7:00 PM</strong></div>
-      <div class="res-detail"><span>Party</span><strong>Table for 8</strong></div>
-      <div class="res-detail"><span>Name</span><strong>Dana Davis</strong></div>
-      <div class="res-detail"><span>Confirmation</span><strong>#6006</strong></div>
-      <div class="res-detail"><span>Address</span><strong>19 Dunnagans Alley, Hilton Head Island, SC 29928</strong></div>
-      <div class="res-detail"><span>Phone</span><strong>(843) 686-2868</strong></div>
-    </div>
-
-    <div class="info-card"><h3>Location</h3><p>Port Royal Golf &amp; Racquet Club, Hilton Head Island, SC<br>Check-in &amp; reception at Port Royal Robbers Row Grille</p></div>
-    <div class="info-card"><h3>Tournament Format</h3><p>2-day, 36-hole stroke play per USGA Rules. All play from forward tees. Pairings Day 1 by handicap; Day 2 by Day 1 results. Max score per hole: double par + 1.</p></div>
-    <div class="info-card"><h3>Awards Dinner</h3><p>Friday June 12 · 6:00–9:00pm aboard the Savannah Riverboat Georgia Queen. Buses depart SpringHill Suites (1 Marina Side Drive) at 4:00pm.<br><br>Attire: White casual or fancy with green accents.</p></div>
-    <div class="info-card"><h3>Practice Round Info</h3><p>Optional rounds starting May 27. Call Port Royal 843-681-1700 or 843-681-1750. BMWGA rate: $65.</p></div>
-    <div class="info-card"><h3>Contact</h3><p>brownsmill.com · bmwga1996@gmail.com</p></div>
-  </div>
-
-  <div id="bmwga-itinerary" class="section">
-    <p class="section-title">Tournament Schedule</p>
-    <p class="section-subtitle">June 9–14, 2026 · Hilton Head Island, SC</p>
-    <p class="day-label bmwga-day">Wednesday, June 10 — Check-In &amp; Reception</p>
-    <div class="timeline">
-      <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">Optional</div><div class="timeline-label">Practice Rounds</div><div class="timeline-note">Call 843-681-1700 starting May 27 · $65 BMWGA rate</div></div></div>
-      <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">3:00 – 7:00 PM</div><div class="timeline-label">Tournament Check-In &amp; Reception</div><div class="timeline-note">Port Royal Robbers Row Grille · Come as you are · Appetizers, door prizes, 50-50 raffle</div></div></div>
-      <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">4:30 &amp; 5:30 PM</div><div class="timeline-label">Rules Clinic</div><div class="timeline-note">Port Royal Golf Pro · Optional (state ambassadors should attend)</div></div></div>
-    </div>
-    <hr class="divider">
-    <p class="day-label bmwga-day">Thursday, June 11 — Round 1</p>
-    <p style="font-size:13px;font-style:italic;color:var(--muted);margin-bottom:16px;">Attire: State Team Colors</p>
-    <div class="timeline">
-      <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">7:00 AM</div><div class="timeline-label">Course Opens</div><div class="timeline-note"></div></div></div>
-      <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">8:15 AM</div><div class="timeline-label">Cart Call</div><div class="timeline-note"></div></div></div>
-      <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">8:30 AM</div><div class="timeline-label">Shotgun Start — Round 1</div><div class="timeline-note">Leave clubs in cart after play for storage at Port Royal</div></div></div>
-      <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">5:00 – 7:00 PM</div><div class="timeline-label">Shopping, Contests &amp; Prizes</div><div class="timeline-note">Golf Galaxy · Sea Turtle Marketplace, 430 William Hilton Pkwy, Suite 109</div></div></div>
-    </div>
-    <hr class="divider">
-    <p class="day-label bmwga-day">Friday, June 12 — Round 2 &amp; Awards Dinner</p>
-    <p style="font-size:13px;font-style:italic;color:var(--muted);margin-bottom:16px;">Day: State Team Colors · Evening: White casual or fancy with green accents</p>
-    <div class="timeline">
-      <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">7:00 AM</div><div class="timeline-label">Course Opens</div><div class="timeline-note"></div></div></div>
-      <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">7:45 AM</div><div class="timeline-label">Cart Call</div><div class="timeline-note"></div></div></div>
-      <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">8:00 AM</div><div class="timeline-label">Shotgun Start — Round 2</div><div class="timeline-note"></div></div></div>
-      <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">4:00 – 4:30 PM</div><div class="timeline-label">Bus Loading to Savannah</div><div class="timeline-note">SpringHill Suites · 1 Marina Side Drive, Hilton Head Island, SC 29928</div></div></div>
-      <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">6:00 – 9:00 PM</div><div class="timeline-label">Awards Dinner &amp; Dancing Cruise</div><div class="timeline-note">Savannah Riverboat Georgia Queen · Winners announced &amp; prizes awarded</div></div></div>
-    </div>
-    <hr class="divider">
-    <p class="day-label bmwga-day">Saturday, June 13 — Free Day</p>
-    <div class="timeline">
-      <div class="timeline-item"><div class="timeline-dot bmwga-dot"></div><div class="timeline-body"><div class="timeline-time bmwga-time">7:00 PM</div><div class="timeline-label">Dinner — Kind of Blue</div><div class="timeline-note">Table for 8 · 19 Dunnagans Alley · Confirmation #6006 · (843) 686-2868</div></div></div>
-    </div>
-  </div>
-
-  <div id="bmwga-checklist" class="section">
-    <p class="section-title">Tournament Checklist</p>
-    <p class="section-subtitle">Tap each item to check it off</p>
-    <button class="reset-btn" onclick="resetChecklist('bmwga')">Reset checklist</button>
-    <div class="progress-label" id="bmwga-progress-label">0 of 0 items complete</div>
-    <div class="progress-bar-wrap"><div class="progress-bar-fill bmwga-progress" id="bmwga-progress-bar" style="width:0%"></div></div>
-    <div class="checklist-group">
-      <h3>Registration &amp; Documents</h3>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Confirm tournament registration &amp; payment</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Government ID</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Book flights to/from Hilton Head (HHH) or Savannah (SAV)</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Airbnb confirmed — 203 Beach City Rd</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Book travel insurance</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Schedule practice round if desired (call 843-681-1700 from May 27 · $65)</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Note handicap index as of May 15, 2026 (max 40)</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Kind of Blue dinner confirmed · Sat Jun 13 · 7pm · Conf #6006</span></label>
-    </div>
-    <div class="checklist-group">
-      <h3>Golf Gear</h3>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Golf clubs &amp; travel bag / hard case</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Golf shoes</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Golf gloves (bring a spare)</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Golf balls — enough for 36 holes + practice</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Tees, ball markers, divot tools</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Rangefinder or GPS watch</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Golf hat / visor and sunglasses</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Sunscreen (high SPF — South Carolina June heat)</span></label>
-    </div>
-    <div class="checklist-group">
-      <h3>Attire</h3>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">State team colors outfit — Round 1 (Thursday)</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">State team colors outfit — Round 2 (Friday)</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">White casual or fancy outfit with green accents (awards cruise)</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Come-as-you-are outfit (Wednesday reception)</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Nice outfit for Kind of Blue dinner (Saturday)</span></label>
-    </div>
-    <div class="checklist-group">
-      <h3>Tournament Rules</h3>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Review USGA Rules of Golf before the event</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Max score per hole: double par + 1</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Know the alternate OB/lost ball local rule</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Phone on silent during play</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Exchange scorecards at the start of each round</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Sign &amp; verify scorecard before turning in</span></label>
-    </div>
-    <div class="checklist-group">
-      <h3>Misc</h3>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Prescription medications &amp; pain reliever</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Blister pads / foot care</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Phone charger &amp; portable battery pack</span></label>
-      <label class="check-item bmwga-check"><input type="checkbox" onchange="updateProgress('bmwga')"><span class="check-label">Cash for 50-50 raffle &amp; vendor shopping</span></label>
-    </div>
-  </div>
-</div>
-
 <!-- ===== CHICAGO ===== -->
-<div class="hero hero-chicago" id="hero-chicago">
+<div class="hero hero-chicago active" id="hero-chicago">
   <div class="hero-flag">Tapestry 360 Health · Annual Golf Fundraiser</div>
   <h1>Chicago <em>Illinois</em></h1>
   <p class="hero-sub">Harborside International Golf Center · East Chicago, IL</p>
@@ -342,14 +192,14 @@
   <div class="weather-note">Chicago forecast around Jun 17–21</div>
   <div class="weather-strip" id="wx-chicago"></div>
 </div>
-<nav class="tab-nav tab-nav-chicago" id="tabnav-chicago">
+<nav class="tab-nav tab-nav-chicago active" id="tabnav-chicago">
   <ul>
     <li><button class="active" onclick="showTab('chicago','chicago-overview',this)">Overview</button></li>
     <li><button onclick="showTab('chicago','chicago-itinerary',this)">Itinerary</button></li>
     <li><button onclick="showTab('chicago','chicago-checklist',this)">Checklist</button></li>
   </ul>
 </nav>
-<div class="trip-content" id="content-chicago">
+<div class="trip-content active" id="content-chicago">
 
   <div id="chicago-overview" class="section active">
     <p class="section-title">Trip at a Glance</p>
@@ -412,9 +262,18 @@
       <div class="timeline-item"><div class="timeline-dot chicago-dot"></div><div class="timeline-body"><div class="timeline-time chicago-time">After Golf</div><div class="timeline-label">Gwen's House — Kick Back</div><div class="timeline-note">601 E. 164th Place, South Holland, IL</div></div></div>
     </div>
     <hr class="divider">
-    <p class="day-label chicago-day">Friday–Saturday, June 19–20 — Free Days</p>
+    <p class="day-label chicago-day">Friday, June 19 — Bennie's Birthday</p>
     <div class="timeline">
-      <div class="timeline-item"><div class="timeline-dot chicago-dot"></div><div class="timeline-body"><div class="timeline-time chicago-time">Your Time</div><div class="timeline-label">Explore Chicago</div><div class="timeline-note">Add plans here as you book them</div></div></div>
+      <div class="timeline-item"><div class="timeline-dot chicago-dot"></div><div class="timeline-body"><div class="timeline-time chicago-time">10:30 AM</div><div class="timeline-label">Brunch — Casa de Willis</div><div class="timeline-note">1235 S Prairie Ave #901</div></div></div>
+      <div class="timeline-item"><div class="timeline-dot chicago-dot"></div><div class="timeline-body"><div class="timeline-time chicago-time">2:00 PM</div><div class="timeline-label">Architectural Boat Cruise</div><div class="timeline-note">90 minutes</div></div></div>
+      <div class="timeline-item"><div class="timeline-dot chicago-dot"></div><div class="timeline-body"><div class="timeline-time chicago-time">7:00 PM</div><div class="timeline-label">Dinner — Southern Chicago</div><div class="timeline-note"></div></div></div>
+      <div class="timeline-item"><div class="timeline-dot chicago-dot"></div><div class="timeline-body"><div class="timeline-time chicago-time">Evening</div><div class="timeline-label">The Bassment</div><div class="timeline-note">Live music, drinks</div></div></div>
+    </div>
+    <hr class="divider">
+    <p class="day-label chicago-day">Saturday, June 20</p>
+    <div class="timeline">
+      <div class="timeline-item"><div class="timeline-dot chicago-dot"></div><div class="timeline-body"><div class="timeline-time chicago-time">9:00 AM</div><div class="timeline-label">Golf — ThunderHawk</div><div class="timeline-note">Beach Park, IL</div></div></div>
+      <div class="timeline-item"><div class="timeline-dot chicago-dot"></div><div class="timeline-body"><div class="timeline-time chicago-time">9:30 PM</div><div class="timeline-label">Rahsaan Patterson — City Winery</div><div class="timeline-note"></div></div></div>
     </div>
     <hr class="divider">
     <p class="day-label chicago-day">Sunday, June 21 — Departure</p>
@@ -606,14 +465,14 @@
   </div>
 </div>
 
-<div class="footer" id="footer-chicago">Tapestry 360 Health Golf Fundraiser · Harborside International Golf Center · Chicago, IL · June 17–21, 2026</div>
+<div class="footer active" id="footer-chicago">Tapestry 360 Health Golf Fundraiser · Harborside International Golf Center · Chicago, IL · June 17–21, 2026</div>
 <div class="footer active" id="footer-bmwga">BMWGA 26th Annual Golf Tournament · Port Royal, Hilton Head Island, SC · June 9–14, 2026</div>
 <div class="footer" id="footer-cabot">2026 Real Women Golf Trip · Cabot Cape Breton · Nova Scotia, Canada · August 26–30</div>
 
 <script>
   // ── TRIP SWITCHER ──
   function switchTrip(trip, btn) {
-    ['chicago','bmwga','cabot'].forEach(t => {
+    ['chicago','cabot'].forEach(t => {
       document.getElementById('hero-'+t).classList.remove('active');
       document.getElementById('tabnav-'+t).classList.remove('active');
       document.getElementById('content-'+t).classList.remove('active');
@@ -731,16 +590,13 @@
   }
 
   // ── INIT ──
-  ['chicago','bmwga','cabot'].forEach(loadChecks);
+  ['chicago','cabot'].forEach(loadChecks);
 
   // Countdowns
-  renderCountdown('2026-06-09T00:00:00', 'cd-bmwga');
   renderCountdown('2026-06-17T07:04:00', 'cd-chicago');
   renderCountdown('2026-08-26T00:00:00', 'cd-cabot');
 
   // Weather — loads live from Open-Meteo (no API key needed)
-  // Hilton Head Island, SC
-  loadWeather(32.1163, -80.7526, '2026-06-09', 'wx-bmwga');
   // Chicago, IL
   loadWeather(41.8781, -87.6298, '2026-06-17', 'wx-chicago');
   // Cape Breton, NS
