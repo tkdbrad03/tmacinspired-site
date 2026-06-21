@@ -82,7 +82,7 @@
 <body>
 
 <h1>Golf Skins</h1>
-<p class="subtitle">Outright win = skin · Tie = no one gets it</p>
+<p class="subtitle">Par or better required · Ties or bogeys+ = no skin</p>
 <div class="room-bar">Room: <span id="roomLabel">—</span></div>
 <div class="status-line"><span class="status-dot" id="dot"></span><span id="statusText">Connecting…</span></div>
 
@@ -105,7 +105,12 @@
 
 <div class="par3-setup" id="par3Setup">
   <label>Select Par 3 Holes (CTP Bonus Skin)</label>
-  <div class="par3-holes" id="par3Holes"></div>
+  <div class="par3-holes" id="par3HoleButtons"></div>
+</div>
+
+<div class="par3-setup" id="par5Setup">
+  <label>Select Par 5 Holes (everything else defaults to Par 4)</label>
+  <div class="par3-holes" id="par5HoleButtons"></div>
 </div>
 
 <div class="players p3" id="playerCards"></div>
@@ -129,7 +134,7 @@
 <div class="viewer-wrap" id="viewerBadge" style="display:none">
   <span class="viewer-badge">Leaderboard View — Live Updates</span>
 </div>
-<p class="note" id="adminNote">Ties are a push — no skin awarded.</p>
+<p class="note" id="adminNote">Lowest score wins the hole, but only if it's par or better. Ties or scores over par are a push — no skin awarded.</p>
 
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script>
@@ -145,6 +150,7 @@ let betAmount = 20;
 let scores = Array.from({length: 18}, () => Array(4).fill(''));
 let names = ['Me', 'Player 2', 'Player 3', 'Player 4'];
 let par3Holes = [];
+let par5Holes = [];
 let ctpWinners = Array(18).fill(null);
 let pusher, channel;
 let isApplyingState = false;
@@ -174,7 +180,7 @@ const isDemo = params.get('demo') === '1';
 
 // --- URL persistence ---
 function saveToURL() {
-  const state = { n: names.slice(0, numPlayers), s: scores.map(r => r.slice(0, numPlayers)), p: numPlayers, b: betAmount, h: holeMode, par3: par3Holes, ctp: ctpWinners };
+  const state = { n: names.slice(0, numPlayers), s: scores.map(r => r.slice(0, numPlayers)), p: numPlayers, b: betAmount, h: holeMode, par3: par3Holes, par5: par5Holes, ctp: ctpWinners };
   params.set('data', btoa(JSON.stringify(state)));
   history.replaceState({}, '', '?' + params.toString());
   localStorage.setItem('golf-state-' + room, btoa(JSON.stringify(state))); // ADD THIS LINE
@@ -204,6 +210,7 @@ function loadFromURL() {
       state.s.forEach((row,h) => row.forEach((v,p) => { if (scores[h]) scores[h][p] = v; }));
     }
     if (state.par3) par3Holes = state.par3;
+    if (state.par5) par5Holes = state.par5;
     if (state.ctp) ctpWinners = state.ctp;
   } catch(e) { console.log(e); }
 }
@@ -225,6 +232,7 @@ function changeSetup() {
     holeNumbers = Array.from({length: count}, (_,i) => i + start);
     scores = Array.from({length: HOLES}, () => Array(4).fill(''));
     par3Holes = [];
+    par5Holes = [];
     ctpWinners = Array(18).fill(null);
   }
   numPlayers = newPlayers;
@@ -237,6 +245,7 @@ function buildAll() {
   buildPlayerCards();
   buildTable();
   buildPar3Selector();
+  buildPar5Selector();
   renderHeaders();
   calculate();
 }
@@ -258,7 +267,7 @@ function buildPlayerCards() {
 }
 
 function buildPar3Selector() {
-  const container = document.getElementById('par3Holes');
+  const container = document.getElementById('par3HoleButtons');
   container.innerHTML = '';
   for (let h = 0; h < HOLES; h++) {
     const btn = document.createElement('button');
@@ -270,14 +279,49 @@ function buildPar3Selector() {
         ctpWinners[h] = null;
       } else {
         par3Holes.push(h);
+        par5Holes = par5Holes.filter(x => x !== h);
       }
       buildPar3Selector();
+      buildPar5Selector();
       buildTable();
       calculate();
       broadcastState();
     };
     container.appendChild(btn);
   }
+}
+
+function buildPar5Selector() {
+  const container = document.getElementById('par5HoleButtons');
+  container.innerHTML = '';
+  for (let h = 0; h < HOLES; h++) {
+    const btn = document.createElement('button');
+    btn.className = 'par3-btn' + (par5Holes.includes(h) ? ' selected' : '');
+    btn.textContent = holeNumbers[h];
+    btn.onclick = () => {
+      if (par5Holes.includes(h)) {
+        par5Holes = par5Holes.filter(x => x !== h);
+      } else {
+        par5Holes.push(h);
+        if (par3Holes.includes(h)) {
+          par3Holes = par3Holes.filter(x => x !== h);
+          ctpWinners[h] = null;
+        }
+      }
+      buildPar3Selector();
+      buildPar5Selector();
+      buildTable();
+      calculate();
+      broadcastState();
+    };
+    container.appendChild(btn);
+  }
+}
+
+function getPar(h) {
+  if (par3Holes.includes(h)) return 3;
+  if (par5Holes.includes(h)) return 5;
+  return 4;
 }
 
 function ctpTap(h) {
@@ -306,7 +350,7 @@ function buildTable() {
   tbody.innerHTML = '';
   for (let h = 0; h < HOLES; h++) {
     const tr = document.createElement('tr');
-    let cells = `<td>Hole ${holeNumbers[h]}</td>`;
+    let cells = `<td>Hole ${holeNumbers[h]}<br><span style="font-size:0.65rem;color:#5a7a5a;font-weight:400;">Par ${getPar(h)}</span></td>`;
     for (let p = 0; p < numPlayers; p++) {
       cells += `<td><input class="score-input" type="number" min="1" max="15" placeholder="—"
         value="${scores[h] ? scores[h][p] : ''}"
@@ -339,9 +383,13 @@ function calculate() {
 
     vals.forEach((v,i) => strokeTotals[i] += v);
     const min = Math.min(...vals);
+    const par = getPar(h);
     const winners = vals.map((v,i) => v === min ? i : -1).filter(i => i >= 0);
 
-    if (winners.length === 1) {
+    if (min > par) {
+      cell.innerHTML = 'No Skin<br><span style="font-size:0.6rem;font-weight:400;">(over par)</span>';
+      cell.className = 'result-cell push-cell';
+    } else if (winners.length === 1) {
       skinCounts[winners[0]]++;
       cell.innerHTML = '🏆 ' + (names[winners[0]] || 'P'+(winners[0]+1));
       cell.className = 'result-cell win-cell';
@@ -425,7 +473,7 @@ async function triggerEvent(eventName, data) {
 function broadcastState() {
   saveToURL();
   calculate();
-  const state = { scores, names: names.slice(0, numPlayers), numPlayers, betAmount, holeMode, par3Holes, ctpWinners };
+  const state = { scores, names: names.slice(0, numPlayers), numPlayers, betAmount, holeMode, par3Holes, par5Holes, ctpWinners };
   triggerEvent('game-state', state);
 }
 
@@ -451,6 +499,7 @@ function applyState(msg) {
   if (msg.names) msg.names.forEach((n,i) => { names[i] = n; });
   if (msg.scores) msg.scores.forEach((row,h) => row.forEach((v,p) => { if (scores[h]) scores[h][p] = v; }));
   if (msg.par3Holes) { par3Holes = msg.par3Holes; rebuild = true; }
+  if (msg.par5Holes) { par5Holes = msg.par5Holes; rebuild = true; }
   if (msg.ctpWinners) ctpWinners = msg.ctpWinners;
 
   if (rebuild) buildAll();
@@ -471,6 +520,7 @@ function applyState(msg) {
 function resetAll() {
   scores = Array.from({length: HOLES}, () => Array(4).fill(''));
   par3Holes = [];
+  par5Holes = [];
   ctpWinners = Array(18).fill(null);
   params.delete('data');
   history.replaceState({}, '', '?' + params.toString());
@@ -484,6 +534,7 @@ function applyViewerMode() {
   document.getElementById('adminNote').style.display = 'none';
   document.querySelector('.setup-bar').style.display = 'none';
   document.getElementById('par3Setup').style.display = 'none';
+  document.getElementById('par5Setup').style.display = 'none';
   document.getElementById('viewerBadge').style.display = 'block';
   document.querySelectorAll('input').forEach(inp => {
     inp.setAttribute('readonly', true);
