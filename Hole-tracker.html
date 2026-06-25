@@ -386,10 +386,13 @@ function calculate() {
     const par = getPar(h);
     const winners = vals.map((v,i) => v === min ? i : -1).filter(i => i >= 0);
 
-    if (min > par) {
-      cell.innerHTML = 'No Skin<br><span style="font-size:0.6rem;font-weight:400;">(over par)</span>';
-      cell.className = 'result-cell push-cell';
-    } else if (winners.length === 1) {
+    if (par3Holes.includes(h) && ctpWinners[h] !== null) {
+  // CTP wins regardless of score
+} else if (min > par) {
+  cell.innerHTML = 'No Skin<br><span style="font-size:0.6rem;font-weight:400;">(over par)</span>';
+  cell.className = 'result-cell push-cell';
+} else if (winners.length === 1) {
+
       skinCounts[winners[0]]++;
       cell.innerHTML = '🏆 ' + (names[winners[0]] || 'P'+(winners[0]+1));
       cell.className = 'result-cell win-cell';
