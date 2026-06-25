@@ -399,7 +399,7 @@ function calculate() {
     }
 
     if (par3Holes.includes(h) && ctpWinners[h] !== null) {
-      skinCounts[ctpWinners[h]]++;
+      skinCounts[ctpWinners[h]]+= 2;
       const ctpEl = document.getElementById('ctp'+h);
       if (ctpEl) { ctpEl.textContent = '📍 ' + (names[ctpWinners[h]] || 'P'+(ctpWinners[h]+1)); ctpEl.className = 'ctp-cell ctp-winner'; }
     } else if (par3Holes.includes(h)) {
