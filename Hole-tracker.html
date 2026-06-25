@@ -442,7 +442,7 @@ function connectPusher() {
     document.getElementById('dot').className = 'status-dot connected';
     document.getElementById('statusText').textContent = 'Live — all phones synced';
     // Request current state from others
-    triggerEvent('request-state', { from: 'new-joiner' });
+    triggerEvent('state-request', { from: 'new-joiner' });
   });
 
   pusher.connection.bind('disconnected', () => {
