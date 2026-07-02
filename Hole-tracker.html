@@ -354,7 +354,7 @@ function buildTable() {
     for (let p = 0; p < numPlayers; p++) {
       cells += `<td><input class="score-input" type="number" min="1" max="15" placeholder="—"
         value="${scores[h] ? scores[h][p] : ''}"
-        oninput="scores[${h}][${p}]=this.value; calculate(); broadcastState();"> </td>`;
+        oninput="scores[${h}][${p}]=this.value; calculate(); saveToURL(); broadcastState();"> </td>`;
     }
     const ctpLabel = par3Holes.includes(h) ? `<div class="ctp-cell" onclick="ctpTap(${h})" id="ctp${h}">📍 Tap CTP</div>` : '';
     cells += `<td class="result-cell" id="res${h}">${ctpLabel}</td>`;
@@ -525,11 +525,14 @@ function resetAll() {
   par3Holes = [];
   par5Holes = [];
   ctpWinners = Array(18).fill(null);
+  names = ['Me', 'Player 2', 'Player 3', 'Player 4'];
   params.delete('data');
   history.replaceState({}, '', '?' + params.toString());
+  localStorage.removeItem('golf-state-' + room);
   buildAll();
   broadcastState();
 }
+
 
 function applyViewerMode() {
   if (!isViewer) return;
