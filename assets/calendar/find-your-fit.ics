@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Care CEO Collective//Find Your Fit Workshop//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:find-your-fit-2026-07-12@tmacinspired.com
+DTSTAMP:20260707T000000Z
+DTSTART;TZID=America/New_York:20260712T200000
+DTEND;TZID=America/New_York:20260712T210000
+SUMMARY:Find Your Fit Workshop
+DESCRIPTION:With Dr. TMac and Dr. Catrina Smith. Your join link will be sent by email before the event.
+LOCATION:Online
+END:VEVENT
+END:VCALENDAR
