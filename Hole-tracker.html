@@ -167,12 +167,18 @@ if (params.get('paid') === '1') {
 
 let room = params.get('room');
 if (!room) {
-  room = 'golf-' + Math.random().toString(36).slice(2, 7);
+  // Fall back to the last room this device was in, before generating a new one
+  room = localStorage.getItem('golf-last-room');
+  if (!room) {
+    room = 'golf-' + Math.random().toString(36).slice(2, 7);
+  }
   params.set('room', room);
   history.replaceState({}, '', '?' + params.toString());
 } else {
   room = params.get('room');
 }
+localStorage.setItem('golf-last-room', room);
+
 document.getElementById('roomLabel').textContent = room;
 
 const isViewer = params.get('view') === '1';
