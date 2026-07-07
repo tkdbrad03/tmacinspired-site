@@ -9,7 +9,7 @@ DTSTAMP:20260707T000000Z
 DTSTART;TZID=America/New_York:20260712T200000
 DTEND;TZID=America/New_York:20260712T210000
 SUMMARY:Find Your Fit Workshop
-DESCRIPTION:With Dr. TMac and Dr. Catrina Smith. Your join link will be sent by email before the event.
-LOCATION:Online
+LOCATION:https://us02web.zoom.us/j/86353133962
+DESCRIPTION:With Dr. TMac and Dr. Catrina Smith. Join here: https://us02web.zoom.us/j/86353133962
 END:VEVENT
 END:VCALENDAR
