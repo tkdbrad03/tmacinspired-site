@@ -520,7 +520,7 @@ function applyState(msg) {
   }
   if (msg.betAmount) { betAmount = msg.betAmount; document.getElementById('betAmount').value = betAmount; }
   if (msg.names) msg.names.forEach((n,i) => { names[i] = n; });
-  if (msg.scores) msg.scores.forEach((row,h) => row.forEach((v,p) => { if (scores[h]) scores[h][p] = v; }));
+  if (msg.scores) msg.scores.forEach((row,h) => row.forEach((v,p) => { if (scores[h] && v !== '') scores[h][p] = v; }));
   if (msg.par3Holes) { par3Holes = msg.par3Holes; rebuild = true; }
   if (msg.par5Holes) { par5Holes = msg.par5Holes; rebuild = true; }
   if (msg.ctpWinners) ctpWinners = msg.ctpWinners;
