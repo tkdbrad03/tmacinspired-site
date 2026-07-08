@@ -154,6 +154,15 @@ let par5Holes = [];
 let ctpWinners = Array(18).fill(null);
 let pusher, channel;
 let isApplyingState = false;
+const clientId = Math.random().toString(36).slice(2, 10);
+
+// Unicode-safe base64 helpers (plain btoa/atob throw on emoji/accented names)
+function b64Encode(str) {
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (_, p1) => String.fromCharCode(parseInt(p1, 16))));
+}
+function b64Decode(str) {
+  return decodeURIComponent(atob(str).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+}
 
 const params = new URLSearchParams(location.search);
 
@@ -186,10 +195,13 @@ const isDemo = params.get('demo') === '1';
 
 // --- URL persistence ---
 function saveToURL() {
-  const state = { n: names.slice(0, numPlayers), s: scores.map(r => r.slice(0, numPlayers)), p: numPlayers, b: betAmount, h: holeMode, par3: par3Holes, par5: par5Holes, ctp: ctpWinners };
-  params.set('data', btoa(JSON.stringify(state)));
-  history.replaceState({}, '', '?' + params.toString());
-  localStorage.setItem('golf-state-' + room, btoa(JSON.stringify(state))); // ADD THIS LINE
+  try {
+    const state = { n: names.slice(0, numPlayers), s: scores.map(r => r.slice(0, numPlayers)), p: numPlayers, b: betAmount, h: holeMode, par3: par3Holes, par5: par5Holes, ctp: ctpWinners };
+    const encoded = b64Encode(JSON.stringify(state));
+    params.set('data', encoded);
+    history.replaceState({}, '', '?' + params.toString());
+    localStorage.setItem('golf-state-' + room, encoded);
+  } catch (e) { console.log('saveToURL failed', e); }
 }
 
 
@@ -198,7 +210,7 @@ function loadFromURL() {
   if (!data) data = localStorage.getItem('golf-state-' + room); // ADD THIS LINE
   if (!data) return;
   try {
-    const state = JSON.parse(atob(data));
+    const state = JSON.parse(b64Decode(data));
     // rest stays exactly the same
 
     if (state.h) {
@@ -451,7 +463,7 @@ function connectPusher() {
     document.getElementById('dot').className = 'status-dot connected';
     document.getElementById('statusText').textContent = 'Live — all phones synced';
     // Request current state from others
-    triggerEvent('state-request', { from: 'new-joiner' });
+    triggerEvent('state-request', { from: clientId });
   });
 
   pusher.connection.bind('disconnected', () => {
@@ -460,11 +472,13 @@ function connectPusher() {
   });
 
   channel.bind('game-state', function(data) {
+    if (data && data.clientId === clientId) return; // ignore our own echoed broadcast
     if (isApplyingState) return;
     applyState(data);
   });
 
-  channel.bind('state-request', function() {
+  channel.bind('state-request', function(data) {
+    if (data && data.from === clientId) return; // don't answer our own request with our (possibly blank/stale) state
     broadcastState();
   });
 }
@@ -482,7 +496,7 @@ async function triggerEvent(eventName, data) {
 function broadcastState() {
   saveToURL();
   calculate();
-  const state = { scores, names: names.slice(0, numPlayers), numPlayers, betAmount, holeMode, par3Holes, par5Holes, ctpWinners };
+  const state = { scores, names: names.slice(0, numPlayers), numPlayers, betAmount, holeMode, par3Holes, par5Holes, ctpWinners, clientId };
   triggerEvent('game-state', state);
 }
 
@@ -575,4 +589,5 @@ connectPusher();
   <a href="https://tmacinspired.com/skins-landing.html" style="background:#1a2f1c; color:#c9a86c; padding:14px 28px; border-radius:10px; font-family:'DM Sans',sans-serif; font-weight:700; text-decoration:none; font-size:1rem;">Subscribe Now — $4.99/month</a>
 </div>
 </body>
+</html>
 </html>
