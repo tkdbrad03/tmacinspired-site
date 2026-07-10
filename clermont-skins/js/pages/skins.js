@@ -3,6 +3,7 @@ import { getState } from '../store.js';
 import { computeStandings, money } from '../calc.js';
 import { parOf } from '../course.js';
 import { esc } from '../ui.js';
+import { openScorecard } from '../router.js';
 
 export default {
   render() {
@@ -16,7 +17,7 @@ export default {
     const rows = skinResults.map((r) => {
       let winnerCell, valueCell;
       if (r.winnerId) {
-        winnerCell = `<span class="name">${esc(nameOf(r.winnerId))}</span>`;
+        winnerCell = `<span class="name tap-player" data-player="${r.winnerId}">${esc(nameOf(r.winnerId))}</span>`;
         valueCell = `<span class="pay">${money(skinValue)}</span>`;
       } else {
         const label = r.reason === 'tie' ? 'Tied — canceled'
@@ -50,5 +51,10 @@ export default {
         </table>
       </div>
     `;
+  },
+
+  onMount(root) {
+    root.querySelectorAll('[data-player]').forEach((el) =>
+      el.addEventListener('click', () => openScorecard(el.dataset.player, 'skins')));
   },
 };

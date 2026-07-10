@@ -2,6 +2,7 @@
 // scorekeepers unlock via the header chip (PIN). TMac (owner) also gets Owner controls.
 import { subscribe, getSession, isScorekeeper, isOwner, roleLabel } from './store.js';
 import { icon, openSheet, closeSheet, openRoleSheet } from './ui.js';
+import { router } from './router.js';
 
 import today from './pages/today.js';
 import scores from './pages/scores.js';
@@ -11,8 +12,9 @@ import ctp from './pages/ctp.js';
 import groups from './pages/groups.js';
 import payouts from './pages/payouts.js';
 import owner from './pages/owner.js';
+import scorecard from './pages/scorecard.js';
 
-const PAGES = { today, scores, live: scoreboard, skins, ctp, groups, payouts, owner };
+const PAGES = { today, scores, live: scoreboard, skins, ctp, groups, payouts, owner, scorecard };
 
 const NAV = {
   today:   { label: 'Today',   ic: 'today' },
@@ -35,7 +37,8 @@ function layout() {
   if (isOwner()) more.push('owner');
   return { primary: ['today', 'scores', 'live', 'skins'], more };
 }
-function allowed() { const l = layout(); return new Set([...l.primary, ...l.more]); }
+// 'scorecard' is a read-only detail view reachable by every role (via a player tap).
+function allowed() { const l = layout(); return new Set([...l.primary, ...l.more, 'scorecard']); }
 
 function renderRole() {
   const label = document.getElementById('roleLabel');
@@ -89,6 +92,7 @@ function setStatus(live) {
   if (dot) dot.classList.toggle('live', live);
 }
 
+router.navigate = navigate; // let any page open a player's scorecard
 subscribe((s) => { setStatus(!!(s && s.connected)); boot(); });
 
 // Register service worker (scoped to /clermont-skins/).

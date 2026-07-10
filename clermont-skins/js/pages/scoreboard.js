@@ -1,15 +1,15 @@
-// Live Scoreboard (NOT "leaderboard"). Player · Tee · Gross · Net · To par · Skins · CTP · Units · Projected payout.
+// Live Scoreboard — premium, tappable player cards (each opens a scorecard).
 import { getState } from '../store.js';
 import { computeStandings, money, toParLabel } from '../calc.js';
 import { teeChip, esc } from '../ui.js';
+import { openScorecard } from '../router.js';
 
 export default {
   render() {
     const s = getState();
     const { players } = computeStandings(s.players, s.scores, s.ctp, s.event);
-    const isFinal = s.event.status === 'final';
+    const isFinal = s.event.status === 'final' || s.event.locked;
 
-    // Sort by net (ascending) among those who have played, then by name.
     const ranked = [...players].sort((a, b) => {
       if (a.holesPlayed === 0 && b.holesPlayed === 0) return a.name.localeCompare(b.name);
       if (a.holesPlayed === 0) return 1;
@@ -17,35 +17,41 @@ export default {
       return a.net - b.net;
     });
 
-    const rows = ranked.map((p, i) => `
-      <tr>
-        <td>
-          <span class="rank ${i === 0 && p.holesPlayed ? 'r1' : ''}">${i + 1}</span>
-          <span class="name">${esc(p.name)}</span>
-          <span class="sub">${teeChip(p.tee)} · thru ${p.holesPlayed}</span>
-        </td>
-        <td class="num">${p.gross || '–'}</td>
-        <td class="num">${p.holesPlayed ? p.net : '–'}</td>
-        <td class="num ${p.toPar < 0 ? 'pos' : p.toPar > 0 ? 'neg' : ''}">${p.holesPlayed ? toParLabel(p.toPar) : '–'}</td>
-        <td class="num">${p.skins}</td>
-        <td class="num">${p.ctps}</td>
-        <td class="num">${p.units}</td>
-        <td class="num pay">${money(p.payoutCents)}</td>
-      </tr>`).join('');
+    const cards = ranked.map((p, i) => {
+      const started = p.holesPlayed > 0;
+      const lead = i === 0 && started;
+      return `
+        <button class="pcard ${lead ? 'lead' : ''}" data-player="${p.id}">
+          <div class="pc-top">
+            <div class="pc-rank ${lead ? 'r1' : ''}">${i + 1}</div>
+            <div class="pc-id">
+              <div class="pc-name">${esc(p.name)}</div>
+              <div class="pc-sub">${teeChip(p.tee)} · thru ${p.holesPlayed}</div>
+            </div>
+            <div class="pc-pay">
+              <div class="pc-pay-v">${money(p.payoutCents)}</div>
+              <div class="pc-pay-k">${isFinal ? 'Payout' : 'Projected'}</div>
+            </div>
+          </div>
+          <div class="pc-stats">
+            <div class="pcs"><span class="pcs-v">${started ? p.gross : '–'}</span><span class="pcs-k">Gross</span></div>
+            <div class="pcs"><span class="pcs-v">${started ? p.net : '–'}</span><span class="pcs-k">Net</span></div>
+            <div class="pcs"><span class="pcs-v ${p.toPar < 0 ? 'pos' : p.toPar > 0 ? 'neg' : ''}">${started ? toParLabel(p.toPar) : '–'}</span><span class="pcs-k">To Par</span></div>
+            <div class="pcs"><span class="pcs-v">${p.skins}</span><span class="pcs-k">Skins</span></div>
+            <div class="pcs"><span class="pcs-v">${p.ctps}</span><span class="pcs-k">CTP</span></div>
+          </div>
+          <div class="pc-view">View Card <span class="pc-chev">›</span></div>
+        </button>`;
+    }).join('');
 
     return `
-      <div class="page-title"><h1>Live Scoreboard</h1><p>${isFinal ? 'Final results' : 'Updates instantly across every phone'}.</p></div>
-      <div class="card">
-        <div style="overflow-x:auto;">
-        <table class="board">
-          <thead><tr>
-            <th>Player</th><th>Gr</th><th>Net</th><th>+/-</th><th>Sk</th><th>CTP</th><th>U</th><th>${isFinal ? 'Payout' : 'Proj'}</th>
-          </tr></thead>
-          <tbody>${rows}</tbody>
-        </table>
-        </div>
-      </div>
-      <div class="banner info"><div><b>Net</b> = gross minus strokes received. Payout is projected from current skins &amp; CTP and the paid-player pool.</div></div>
+      <div class="page-title"><h1>Live Scoreboard</h1><p>${isFinal ? 'Final standings.' : 'Tap any player to open their scorecard.'}</p></div>
+      <div class="pcards">${cards}</div>
     `;
+  },
+
+  onMount(root) {
+    root.querySelectorAll('[data-player]').forEach((b) =>
+      b.addEventListener('click', () => openScorecard(b.dataset.player, 'live')));
   },
 };

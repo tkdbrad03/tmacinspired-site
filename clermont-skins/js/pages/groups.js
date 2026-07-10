@@ -1,6 +1,7 @@
 // Groups — display only. Explicitly does NOT affect scoring.
 import { getState } from '../store.js';
 import { ballMarker, playerMeta, esc, icon } from '../ui.js';
+import { openScorecard } from '../router.js';
 
 const GROUP_WORDS = { 1: 'One', 2: 'Two', 3: 'Three', 4: 'Four' };
 
@@ -20,7 +21,7 @@ export default {
           </div>
           <div class="rows">
             ${gp.map((p, i) => `
-              <div class="row">
+              <div class="row tap-player" data-player="${p.id}">
                 ${ballMarker()}
                 <div class="grow">
                   <div class="rname">${esc(p.name)}</div>
@@ -40,5 +41,10 @@ export default {
       ${groupCard(1)}
       ${groupCard(2)}
     `;
+  },
+
+  onMount(root) {
+    root.querySelectorAll('[data-player]').forEach((el) =>
+      el.addEventListener('click', () => openScorecard(el.dataset.player, 'groups')));
   },
 };

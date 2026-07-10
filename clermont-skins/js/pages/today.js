@@ -3,6 +3,7 @@ import { getState } from '../store.js';
 import { computeStandings, money } from '../calc.js';
 import { COURSE, TOTAL_PAR } from '../course.js';
 import { icon, ballMarker, playerMeta, esc } from '../ui.js';
+import { openScorecard } from '../router.js';
 
 const GROUP_WORDS = { 1: 'One', 2: 'Two', 3: 'Three', 4: 'Four' };
 
@@ -28,7 +29,7 @@ export default {
           </div>
           <div class="rows">
             ${gp.map((p) => `
-              <div class="row">
+              <div class="row tap-player" data-player="${p.id}">
                 ${ballMarker()}
                 <div class="grow">
                   <div class="rname">${esc(p.name)}</div>
@@ -75,5 +76,10 @@ export default {
         <div class="nc-body">Groups organize play only. Skins, CTP, and payouts are based on <b>individual net scores</b>.</div>
       </div>
     `;
+  },
+
+  onMount(root) {
+    root.querySelectorAll('[data-player]').forEach((el) =>
+      el.addEventListener('click', () => openScorecard(el.dataset.player, 'today')));
   },
 };

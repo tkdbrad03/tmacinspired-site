@@ -2,6 +2,7 @@
 import { getState } from '../store.js';
 import { computeStandings, money } from '../calc.js';
 import { esc } from '../ui.js';
+import { openScorecard } from '../router.js';
 
 export default {
   render() {
@@ -13,7 +14,7 @@ export default {
       .filter((p) => p.units > 0)
       .sort((a, b) => b.payoutCents - a.payoutCents)
       .map((p) => `
-        <tr>
+        <tr class="tap-player" data-player="${p.id}">
           <td><span class="name">${esc(p.name)}</span><span class="sub">${p.skins} skin${p.skins===1?'':'s'} · ${p.ctps} CTP</span></td>
           <td class="num">${p.units}</td>
           <td class="num pay">${money(p.payoutCents)}</td>
@@ -61,5 +62,10 @@ export default {
         </div>
       </div>
     `;
+  },
+
+  onMount(root) {
+    root.querySelectorAll('[data-player]').forEach((el) =>
+      el.addEventListener('click', () => openScorecard(el.dataset.player, 'payouts')));
   },
 };
