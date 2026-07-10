@@ -1,0 +1,17 @@
+{
+  "name": "Clermont Skins",
+  "short_name": "Clermont Skins",
+  "description": "Clermont National Individual Skins & CTP — live golf scoring.",
+  "id": "/clermont-skins/",
+  "start_url": "/clermont-skins/",
+  "scope": "/clermont-skins/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FAFAF7",
+  "theme_color": "#174C3C",
+  "icons": [
+    { "src": "/clermont-skins/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/clermont-skins/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/clermont-skins/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
