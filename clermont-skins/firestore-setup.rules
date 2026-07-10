@@ -1,0 +1,25 @@
+rules_version = '2';
+
+// TEMPORARY setup rules — publish these ONLY long enough to run the one-time
+// seed (clermont-skins/scripts/seed-firestore.js), then immediately replace them
+// with the final clermont-skins/firestore.rules.
+//
+// While these are live, anyone with the link could write to the event. Keep the
+// window short: publish → run seed → verify → publish final rules.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Only the one event tree is open, and only temporarily.
+    match /events/clermont-national-2026 {
+      allow read, write: if true;
+      match /{document=**} {
+        allow read, write: if true;
+      }
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

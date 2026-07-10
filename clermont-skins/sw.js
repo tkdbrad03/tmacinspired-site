@@ -2,7 +2,7 @@
 // Scope: /clermont-skins/. Network-first for HTML/JS so updates land; cache fallback offline.
 // Firestore traffic is never intercepted (its own SDK handles offline persistence).
 
-var CACHE = 'clermont-skins-v2';
+var CACHE = 'clermont-skins-v3';
 var SHELL = [
   '/clermont-skins/',
   '/clermont-skins/index.html',
@@ -14,6 +14,8 @@ var SHELL = [
   '/clermont-skins/js/calc.js',
   '/clermont-skins/js/course.js',
   '/clermont-skins/js/access.js',
+  '/clermont-skins/js/firebase.js',
+  '/clermont-skins/js/firebase-config.js',
   '/clermont-skins/js/pages/today.js',
   '/clermont-skins/js/pages/scores.js',
   '/clermont-skins/js/pages/scoreboard.js',
@@ -21,7 +23,7 @@ var SHELL = [
   '/clermont-skins/js/pages/ctp.js',
   '/clermont-skins/js/pages/groups.js',
   '/clermont-skins/js/pages/payouts.js',
-  '/clermont-skins/js/pages/admin.js',
+  '/clermont-skins/js/pages/owner.js',
   '/clermont-skins/icons/icon-192.png',
   '/clermont-skins/icons/icon-512.png'
 ];

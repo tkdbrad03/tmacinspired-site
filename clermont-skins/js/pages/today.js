@@ -13,7 +13,7 @@ export default {
     const { payouts } = computeStandings(s.players, s.scores, s.ctp, ev);
     const paidCount = s.players.filter((p) => p.paid).length;
     const holesLogged = Object.keys(s.scores).length;
-    const statusLabel = { setup: 'Setup', live: 'Live', final: 'Final' }[ev.status] || ev.status;
+    const statusLabel = ev.locked ? 'Final' : ({ setup: 'Setup', live: 'Live', active: 'Live', final: 'Final' }[ev.status] || 'Live');
 
     const groups = [1, 2].map((g) => {
       const gp = s.players.filter((p) => p.group === g);

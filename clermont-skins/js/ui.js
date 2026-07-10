@@ -1,7 +1,7 @@
 // ui.js — small view helpers, inline SVG icons (no emojis), toast, sheet.
 
 import { TEES } from './course.js';
-import { applyCode, setViewer, signOut, roleLabel } from './store.js';
+import { applyPin, signOut, roleLabel, isScorekeeper } from './store.js';
 
 export function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -104,39 +104,36 @@ export function closeSheet() {
   if (bd) bd.classList.remove('open');
 }
 
-// Access-code entry (scorekeeper / admin). Resolves to a role on success.
-export function openCodeSheet() {
+// Scorekeeper PIN entry. Verifies a 4-digit PIN (hashed) client-side.
+export function openPinSheet() {
   openSheet(`
-    <div class="page-title"><h1>Enter Access Code</h1><p>Scorekeepers and admins only.</p></div>
-    <div class="field"><label>Access code</label>
-      <input id="acInput" type="text" autocapitalize="characters" autocomplete="off" placeholder="e.g. TMAC-G1"></div>
-    <button class="btn gold block" id="acGo">Continue</button>
-    <div class="ac-hint" id="acHint"></div>
+    <div class="page-title"><h1>Enter Scorekeeper PIN</h1><p>Scorekeepers only. Everyone else can keep viewing.</p></div>
+    <div class="field"><label>4-digit PIN</label>
+      <input id="pinInput" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="••••"></div>
+    <button class="btn gold block" id="pinGo">Unlock Scoring</button>
+    <div class="ac-hint" id="pinHint"></div>
     <div class="spacer"></div>
   `);
-  const go = () => {
-    if (applyCode(document.getElementById('acInput').value)) {
-      closeSheet();
-      toast(`Signed in — ${roleLabel()}`);
-    } else {
-      document.getElementById('acHint').textContent = 'Code not recognized. Check with the event admin.';
-    }
+  const go = async () => {
+    const v = document.getElementById('pinInput').value;
+    if (await applyPin(v)) { closeSheet(); toast(`Unlocked — ${roleLabel()}`); }
+    else document.getElementById('pinHint').textContent = 'Incorrect PIN.';
   };
-  const inp = document.getElementById('acInput');
-  document.getElementById('acGo').onclick = go;
+  const inp = document.getElementById('pinInput');
+  document.getElementById('pinGo').onclick = go;
   inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') go(); });
   inp.focus();
 }
 
 // Role switcher (from the header chip).
 export function openRoleSheet() {
+  const scorekeeper = isScorekeeper();
   openSheet(`
-    <div class="page-title"><h1>Access</h1><p>Signed in as <b>${esc(roleLabel())}</b></p></div>
-    <div class="sheet-item" data-ac-code>${icon('lock')}<span>Enter access code</span></div>
-    <div class="sheet-item" data-ac-viewer>${icon('groups')}<span>Continue as viewer</span></div>
-    <div class="sheet-item" data-ac-out>${icon('reset')}<span>Sign out</span></div>
+    <div class="page-title"><h1>Access</h1><p>You are: <b>${esc(roleLabel())}</b></p></div>
+    ${scorekeeper
+      ? `<div class="sheet-item" data-ac-exit>${icon('reset')}<span>Exit Scorekeeper Mode</span></div>`
+      : `<div class="sheet-item" data-ac-pin>${icon('lock')}<span>Enter Scorekeeper PIN</span></div>`}
   `);
-  document.querySelector('[data-ac-code]').onclick = () => { closeSheet(); openCodeSheet(); };
-  document.querySelector('[data-ac-viewer]').onclick = () => { setViewer(); closeSheet(); };
-  document.querySelector('[data-ac-out]').onclick = () => { signOut(); closeSheet(); };
+  document.querySelector('[data-ac-pin]')?.addEventListener('click', () => { closeSheet(); openPinSheet(); });
+  document.querySelector('[data-ac-exit]')?.addEventListener('click', () => { signOut(); closeSheet(); });
 }

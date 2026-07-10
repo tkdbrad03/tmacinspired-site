@@ -1,0 +1,60 @@
+rules_version = '2';
+
+// Clermont National Skins & CTP — FINAL rules for a private one-time event.
+// Public reads. No event creation/deletion. No player writes. Scores + CTP
+// writable only while the event is not locked. Audit log is append-only.
+// Only the event id `clermont-national-2026` is reachable; everything else denied.
+//
+// LOCKING LIMITATION (accepted): the TMac PIN only controls who SEES the Owner
+// screen in the app. Without Firebase Auth the database cannot prove the caller
+// is TMac, so a technically capable visitor could attempt to flip `locked` via
+// Firestore while the event is public. This is an accepted trade-off for this
+// one-time private event; we intentionally do not add auth to prevent it.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /events/clermont-national-2026 {
+      allow read: if true;
+
+      // Lightweight event control accepted for this private event.
+      // Only locked, status, and updatedAt may change.
+      allow create, delete: if false;
+      allow update: if
+        request.resource.data.diff(resource.data)
+          .affectedKeys()
+          .hasOnly(['locked', 'status', 'updatedAt']);
+
+      match /players/{playerId} {
+        allow read: if true;
+        allow write: if false;
+      }
+
+      match /scores/{scoreId} {
+        allow read: if true;
+        allow create, update, delete: if
+          get(/databases/$(database)/documents/events/clermont-national-2026)
+            .data.locked == false;
+      }
+
+      match /ctp/{holeId} {
+        allow read: if true;
+        allow create, update, delete: if
+          get(/databases/$(database)/documents/events/clermont-national-2026)
+            .data.locked == false;
+      }
+
+      match /auditLog/{entryId} {
+        allow read: if true;
+        allow create: if
+          get(/databases/$(database)/documents/events/clermont-national-2026)
+            .data.locked == false;
+        allow update, delete: if false;
+      }
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

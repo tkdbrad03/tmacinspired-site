@@ -1,6 +1,7 @@
-// app.js — shell, entry gate, role-based navigation, live re-render.
-import { subscribe, getSession, setViewer, roleLabel } from './store.js';
-import { icon, openSheet, closeSheet, openCodeSheet, openRoleSheet } from './ui.js';
+// app.js — shell, role-based navigation, live re-render. Opens in Viewer mode;
+// scorekeepers unlock via the header chip (PIN). TMac (owner) also gets Owner controls.
+import { subscribe, getSession, isScorekeeper, isOwner, roleLabel } from './store.js';
+import { icon, openSheet, closeSheet, openRoleSheet } from './ui.js';
 
 import today from './pages/today.js';
 import scores from './pages/scores.js';
@@ -9,9 +10,9 @@ import skins from './pages/skins.js';
 import ctp from './pages/ctp.js';
 import groups from './pages/groups.js';
 import payouts from './pages/payouts.js';
-import admin from './pages/admin.js';
+import owner from './pages/owner.js';
 
-const PAGES = { today, scores, live: scoreboard, skins, ctp, groups, payouts, admin };
+const PAGES = { today, scores, live: scoreboard, skins, ctp, groups, payouts, owner };
 
 const NAV = {
   today:   { label: 'Today',   ic: 'today' },
@@ -21,21 +22,19 @@ const NAV = {
   ctp:     { label: 'CTP',     ic: 'ctp' },
   groups:  { label: 'Groups',  ic: 'groups' },
   payouts: { label: 'Payouts', ic: 'payouts' },
-  admin:   { label: 'Admin',   ic: 'admin' },
-};
-
-// Navigation by role. Viewers get no Scores entry and no Admin.
-const LAYOUT = {
-  viewer:      { primary: ['today', 'live', 'skins', 'ctp'],   more: ['groups', 'payouts'] },
-  scorekeeper: { primary: ['today', 'scores', 'live', 'skins'], more: ['ctp', 'groups', 'payouts'] },
-  admin:       { primary: ['today', 'scores', 'live', 'skins'], more: ['ctp', 'groups', 'payouts', 'admin'] },
+  owner:   { label: 'Owner',   ic: 'admin' },
 };
 
 let current = 'today';
 const main = document.getElementById('main');
 const nav = document.getElementById('nav');
 
-function layout() { return LAYOUT[getSession().role] || LAYOUT.viewer; }
+function layout() {
+  if (!isScorekeeper()) return { primary: ['today', 'live', 'skins', 'ctp'], more: ['groups', 'payouts'] };
+  const more = ['ctp', 'groups', 'payouts'];
+  if (isOwner()) more.push('owner');
+  return { primary: ['today', 'scores', 'live', 'skins'], more };
+}
 function allowed() { const l = layout(); return new Set([...l.primary, ...l.more]); }
 
 function renderRole() {
@@ -78,31 +77,7 @@ function navigate(key) {
 
 function ensureAllowed() { if (!allowed().has(current)) current = 'today'; }
 
-// Entry gate ---------------------------------------------------------------
-function renderGate() {
-  nav.style.display = 'none';
-  main.classList.add('gate-wrap');
-  main.innerHTML = `
-    <div class="gate">
-      <img class="gate-mark" src="/clermont-skins/icons/icon.svg" alt="">
-      <h1>Clermont National</h1>
-      <div class="gate-sub">Skins &amp; CTP</div>
-      <div class="gate-card">
-        <button class="btn gold block" id="asViewer">Continue as Viewer</button>
-        <div class="gate-or"><span>or</span></div>
-        <button class="btn ghost block" id="asCode">Enter Scorekeeper Code</button>
-      </div>
-      <div class="gate-foot">Only designated scorekeepers enter scores. Everyone else, continue as a viewer to follow the event live.</div>
-    </div>`;
-  document.getElementById('asViewer').onclick = () => setViewer();
-  document.getElementById('asCode').onclick = () => openCodeSheet();
-}
-
-// Boot / re-render on any state or session change --------------------------
 function boot() {
-  if (!getSession().role) { renderGate(); return; }
-  nav.style.display = '';
-  main.classList.remove('gate-wrap');
   ensureAllowed();
   renderRole();
   renderNav();
@@ -114,8 +89,7 @@ function setStatus(live) {
   if (dot) dot.classList.toggle('live', live);
 }
 
-subscribe(() => { boot(); });
-setStatus(false); // Phase 2 is local-only; Phase 3 sets true on Firestore connect.
+subscribe((s) => { setStatus(!!(s && s.connected)); boot(); });
 
 // Register service worker (scoped to /clermont-skins/).
 if ('serviceWorker' in navigator) {
