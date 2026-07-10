@@ -18,6 +18,9 @@ let state = {
   ctp: {},
   auditLog: [],
   connected: false,
+  online: typeof navigator !== 'undefined' ? navigator.onLine : true,
+  pendingScores: [], // score doc ids with writes not yet acked by the server
+  pendingCtp: [],    // ctp hole ids with pending writes
 };
 let session = loadSession();
 let fb = null; // the firebase module, once dynamically loaded
@@ -71,6 +74,17 @@ export function roleLabel() {
 
 export function eventLocked() { return !!(state.event && state.event.locked); }
 
+// Connection / sync status ---------------------------------------------------
+export function isOnline() { return state.online !== false; }
+export function pendingCount() { return (state.pendingScores?.length || 0) + (state.pendingCtp?.length || 0); }
+export function isSyncing() { return pendingCount() > 0; }
+export function scorePending(scoreId) { return (state.pendingScores || []).includes(scoreId); }
+// 'offline' | 'syncing' | 'synced'
+export function connectionState() {
+  if (!isOnline()) return 'offline';
+  return isSyncing() ? 'syncing' : 'synced';
+}
+
 // Writes (go to Firestore; onSnapshot brings them back to every device) ------
 export function setScore(playerId, hole, gross) {
   if (!canEditPlayer(playerId) || eventLocked() || !fb) return false;
@@ -120,10 +134,15 @@ export async function start() {
     fb.listen({
       onEvent: (ev) => { if (ev) state.event = { ...state.event, ...ev }; state.connected = true; emit(); },
       onPlayers: (ps) => { if (ps && ps.length) state.players = sortPlayers(ps); emit(); },
-      onScores: (m) => { state.scores = m; emit(); },
-      onCtp: (m) => { state.ctp = m; emit(); },
+      onScores: (m, meta) => { state.scores = m; state.pendingScores = (meta && meta.pending) || []; state.connected = true; emit(); },
+      onCtp: (m, meta) => { state.ctp = m; state.pendingCtp = (meta && meta.pending) || []; emit(); },
       onAudit: (a) => { state.auditLog = a; emit(); },
     });
+    // Track browser online/offline for the connection banner.
+    if (typeof window !== 'undefined') {
+      window.addEventListener('online', () => { state.online = true; emit(); });
+      window.addEventListener('offline', () => { state.online = false; emit(); });
+    }
   } catch (e) {
     // Firebase unavailable (offline / CDN blocked): app still runs read-only on seed data.
     console.warn('[clermont] Firestore unavailable:', e && e.message);

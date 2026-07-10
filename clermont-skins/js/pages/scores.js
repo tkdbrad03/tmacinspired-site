@@ -1,7 +1,7 @@
 // Enter Scores — hole-first, whole-group-at-once, like a real scorecard.
 // Shows one hole with every group player defaulted to par; one Save Hole button
 // writes all scores and auto-advances. CTP holes show the CTP control inline.
-import { getState, setScore, editablePlayers, canEditScores, scorekeeperGroup, eventLocked, updateCtpLeader, canEditCtp } from '../store.js';
+import { getState, setScore, editablePlayers, canEditScores, scorekeeperGroup, eventLocked, updateCtpLeader, canEditCtp, scorePending, isOnline } from '../store.js';
 import { strokesOnHole, scoreKey } from '../calc.js';
 import { parOf, holeHandicap, isCtpHole, COURSE } from '../course.js';
 import { icon, esc, toast, teeChip, openSheet, closeSheet, timeAgo } from '../ui.js';
@@ -43,11 +43,17 @@ export default {
     const playerRows = roster.map((p) => {
       const gross = pending[p.id];
       const rec = strokesOnHole(p.strokes, p.tee, hole);
-      const logged = !!s.scores[scoreKey(p.id, hole)];
+      const key = scoreKey(p.id, hole);
+      const logged = !!s.scores[key];
+      const pend = logged && scorePending(key);
+      const badge = !logged ? ''
+        : pend && !isOnline() ? '<span class="sr-logged pending">saved offline</span>'
+        : pend ? '<span class="sr-logged pending">syncing</span>'
+        : '<span class="sr-logged saved">saved</span>';
       return `
         <div class="score-row" data-row="${p.id}">
           <div class="score-name">
-            <span class="sr-name">${esc(p.name)}${logged ? '<span class="sr-logged">saved</span>' : ''}</span>
+            <span class="sr-name">${esc(p.name)}${badge}</span>
             <span class="sr-sub">${teeChip(p.tee)}${rec > 0 ? ` · <span class="sr-net">net <b data-net="${p.id}">${gross - rec}</b></span>` : ''}</span>
           </div>
           <div class="score-stepper">
@@ -124,7 +130,7 @@ export default {
       root.querySelector('#saveHole')?.addEventListener('click', () => {
         let ok = 0;
         for (const p of roster) if (setScore(p.id, hole, pending[p.id])) ok++;
-        toast(`Hole ${hole} saved (${ok} score${ok === 1 ? '' : 's'})`);
+        toast(isOnline() ? `Hole ${hole} saved (${ok})` : `Hole ${hole} saved offline — will sync`);
         if (hole < 18) { hole += 1; saveHole(); }
         pending = {}; pendingHole = null;
         rerender();

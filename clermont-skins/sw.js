@@ -1,8 +1,10 @@
-// sw.js — Clermont Skins service worker. Offline app shell + cached course data.
-// Scope: /clermont-skins/. Network-first for HTML/JS so updates land; cache fallback offline.
-// Firestore traffic is never intercepted (its own SDK handles offline persistence).
+// sw.js — Clermont Skins service worker. Offline-first app shell.
+// Scope: /clermont-skins/. Stale-while-revalidate: serve from cache instantly,
+// refresh in the background. The Firebase SDK is self-hosted and precached, so
+// the app boots with no signal. Firestore traffic (IndexedDB + its own network)
+// is never intercepted.
 
-var CACHE = 'clermont-skins-v4';
+var CACHE = 'clermont-skins-v5';
 var SHELL = [
   '/clermont-skins/',
   '/clermont-skins/index.html',
@@ -17,6 +19,8 @@ var SHELL = [
   '/clermont-skins/js/firebase.js',
   '/clermont-skins/js/firebase-config.js',
   '/clermont-skins/js/router.js',
+  '/clermont-skins/vendor/firebase-app.js',
+  '/clermont-skins/vendor/firebase-firestore.js',
   '/clermont-skins/js/pages/today.js',
   '/clermont-skins/js/pages/scores.js',
   '/clermont-skins/js/pages/scoreboard.js',
@@ -26,6 +30,8 @@ var SHELL = [
   '/clermont-skins/js/pages/payouts.js',
   '/clermont-skins/js/pages/owner.js',
   '/clermont-skins/js/pages/scorecard.js',
+  '/clermont-skins/icons/icon.svg',
+  '/clermont-skins/icons/favicon.png',
   '/clermont-skins/icons/icon-192.png',
   '/clermont-skins/icons/icon-512.png'
 ];
@@ -53,16 +59,20 @@ self.addEventListener('fetch', function (e) {
   if (url.origin !== self.location.origin || url.pathname.indexOf('/clermont-skins/') !== 0) return;
   if (url.pathname.indexOf('/api/') === 0) return;
 
-  // Network-first, cache fallback.
+  // Stale-while-revalidate: cache-first, refresh in the background.
   e.respondWith(
-    fetch(req).then(function (res) {
-      var clone = res.clone();
-      caches.open(CACHE).then(function (c) { c.put(req, clone); });
-      return res;
-    }).catch(function () {
-      return caches.match(req).then(function (hit) {
-        return hit || caches.match('/clermont-skins/index.html');
+    caches.match(req).then(function (cached) {
+      var network = fetch(req).then(function (res) {
+        if (res && res.status === 200 && res.type === 'basic') {
+          var clone = res.clone();
+          caches.open(CACHE).then(function (c) { c.put(req, clone); });
+        }
+        return res;
+      }).catch(function () {
+        // offline and not cached: fall back to the app shell for navigations
+        return cached || caches.match('/clermont-skins/index.html');
       });
+      return cached || network;
     })
   );
 });

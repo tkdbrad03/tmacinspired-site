@@ -1,11 +1,32 @@
 // Today — event overview.
-import { getState } from '../store.js';
+import { getState, getSession, isScorekeeper, scorekeeperGroup, signOut } from '../store.js';
 import { computeStandings, money } from '../calc.js';
 import { COURSE, TOTAL_PAR } from '../course.js';
-import { icon, ballMarker, playerMeta, esc } from '../ui.js';
+import { SCOREKEEPERS } from '../access.js';
+import { icon, ballMarker, playerMeta, esc, openPinSheet } from '../ui.js';
 import { openScorecard } from '../router.js';
 
 const GROUP_WORDS = { 1: 'One', 2: 'Two', 3: 'Three', 4: 'Four' };
+
+function scorekeeperCard() {
+  const sess = getSession();
+  const sk = isScorekeeper();
+  const name = sk ? (SCOREKEEPERS[sess.scorekeeperId]?.name || 'Scorekeeper') : null;
+  const g = sk ? scorekeeperGroup() : null;
+  return `
+    <div class="card sk-card">
+      <div class="sk-head">
+        <div>
+          <div class="eyebrow">Scorekeeper Access</div>
+          <div class="sk-k">Current Mode</div>
+          <div class="sk-mode">${sk ? esc(name) + ' Scorekeeper' : 'Viewer'}</div>
+          <div class="sk-sub">${sk ? 'Managing Group ' + (GROUP_WORDS[g] || g) : 'Read-only — follow the event live'}</div>
+        </div>
+        <span class="sk-ic">${icon('lock')}</span>
+      </div>
+      <button class="btn ${sk ? 'ghost' : 'gold'} block" id="skBtn">${sk ? 'Exit Scorekeeper Mode' : icon('lock') + ' Enter Scorekeeper PIN'}</button>
+    </div>`;
+}
 
 export default {
   render() {
@@ -57,6 +78,8 @@ export default {
         </div>
       </div>
 
+      ${scorekeeperCard()}
+
       <div class="stats">
         <div class="stat"><div class="v">${s.players.length}</div><div class="k">Players</div></div>
         <div class="stat"><div class="v">$${ev.buyIn}</div><div class="k">Buy-in</div></div>
@@ -79,6 +102,10 @@ export default {
   },
 
   onMount(root) {
+    root.querySelector('#skBtn')?.addEventListener('click', () => {
+      if (isScorekeeper()) signOut();
+      else openPinSheet();
+    });
     root.querySelectorAll('[data-player]').forEach((el) =>
       el.addEventListener('click', () => openScorecard(el.dataset.player, 'today')));
   },

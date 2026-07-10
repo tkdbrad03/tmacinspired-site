@@ -1,6 +1,6 @@
 // app.js — shell, role-based navigation, live re-render. Opens in Viewer mode;
 // scorekeepers unlock via the header chip (PIN). TMac (owner) also gets Owner controls.
-import { subscribe, getSession, isScorekeeper, isOwner, roleLabel } from './store.js';
+import { subscribe, getSession, isScorekeeper, isOwner, roleLabel, connectionState, getState } from './store.js';
 import { icon, openSheet, closeSheet, openRoleSheet } from './ui.js';
 import { router } from './router.js';
 
@@ -85,15 +85,46 @@ function boot() {
   renderRole();
   renderNav();
   renderPage();
+  renderConn();
 }
 
-function setStatus(live) {
+// Connection banner + header dot. Shows Offline / Syncing, and a brief
+// "All changes synced" when it settles.
+let lastConn = 'synced';
+let syncedUntil = 0;
+let hideTimer = null;
+function renderConn() {
+  const bar = document.getElementById('connbar');
   const dot = document.getElementById('statusDot');
-  if (dot) dot.classList.toggle('live', live);
+  const st = connectionState();
+  const connected = getState().connected;
+  if (dot) {
+    dot.classList.remove('live', 'syncing', 'off');
+    if (st === 'offline') dot.classList.add('off');
+    else if (st === 'syncing') dot.classList.add('syncing');
+    else if (connected) dot.classList.add('live');
+  }
+  if (bar) {
+    if (st === 'offline') { clearTimeout(hideTimer); showBar(bar, 'offline', 'Offline — changes will sync when connection returns'); }
+    else if (st === 'syncing') { clearTimeout(hideTimer); showBar(bar, 'syncing', 'Syncing changes…'); }
+    else {
+      // synced — briefly confirm after recovering from offline/syncing, then hide.
+      if (lastConn !== 'synced') syncedUntil = Date.now() + 2600;
+      if (Date.now() < syncedUntil) {
+        showBar(bar, 'synced', 'All changes synced');
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => { const b = document.getElementById('connbar'); if (b) b.hidden = true; }, Math.max(0, syncedUntil - Date.now()));
+      } else {
+        bar.hidden = true;
+      }
+    }
+  }
+  lastConn = st;
 }
+function showBar(bar, cls, text) { bar.hidden = false; bar.className = 'connbar ' + cls; bar.textContent = text; }
 
 router.navigate = navigate; // let any page open a player's scorecard
-subscribe((s) => { setStatus(!!(s && s.connected)); boot(); });
+subscribe(() => { boot(); });
 
 // Register service worker (scoped to /clermont-skins/).
 if ('serviceWorker' in navigator) {
