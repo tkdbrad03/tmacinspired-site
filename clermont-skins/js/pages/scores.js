@@ -1,25 +1,37 @@
-// Enter Scores — fast mobile entry: pick player, pick hole, +/- gross, save, auto-advance.
-import { getState, setScore, playerById } from '../store.js';
+// Enter Scores — scorekeepers/admin only. A scorekeeper may only enter/edit
+// scores for players in their assigned group; admin may edit everyone.
+import { getState, setScore, playerById, editablePlayers, canEditScores, isAdmin, scorekeeperGroup } from '../store.js';
 import { strokesOnHole, scoreKey } from '../calc.js';
-import { parOf, holeHandicap, yardsOf, isCtpHole, COURSE } from '../course.js';
+import { parOf, holeHandicap, yardsOf, isCtpHole } from '../course.js';
 import { icon, teeChip, esc, toast } from '../ui.js';
 
+const GROUP_WORDS = { 1: 'One', 2: 'Two', 3: 'Three', 4: 'Four' };
 // Local UI state (persists across re-renders).
 let sel = { playerId: null, hole: 1, gross: null, groupFilter: 0 };
 
 export default {
   render() {
     const s = getState();
-    if (!sel.playerId) sel.playerId = s.players[0]?.id;
-    const locked = s.event.status === 'final' || s.event.locked;
 
-    const roster = sel.groupFilter ? s.players.filter((p) => p.group === sel.groupFilter) : s.players;
+    if (!canEditScores()) {
+      return `
+        <div class="page-title"><h1>Enter Scores</h1></div>
+        <div class="note-card">${icon('lock')}<div class="nc-body">Score entry is restricted to the two designated <b>scorekeepers</b>. Continue as a viewer to follow the event, or enter a scorekeeper code from the access menu.</div></div>`;
+    }
+
+    const editable = editablePlayers();
+    const admin = isAdmin();
+    let roster = editable;
+    if (admin && sel.groupFilter) roster = editable.filter((p) => p.group === sel.groupFilter);
+
+    if (!sel.playerId || !editable.find((p) => p.id === sel.playerId)) sel.playerId = roster[0]?.id || editable[0]?.id;
     if (sel.playerId && !roster.find((p) => p.id === sel.playerId)) sel.playerId = roster[0]?.id;
     const player = playerById(sel.playerId);
 
+    const disabled = (s.event.status === 'final' || s.event.locked) && !admin;
+
     const existing = s.scores[scoreKey(sel.playerId, sel.hole)];
-    const displayGross = sel.gross != null ? sel.gross
-      : (existing ? existing.gross : parOf(sel.hole));
+    const displayGross = sel.gross != null ? sel.gross : (existing ? existing.gross : parOf(sel.hole));
     const received = player ? strokesOnHole(player.strokes, player.tee, sel.hole) : 0;
     const net = displayGross - received;
     const par = parOf(sel.hole);
@@ -33,19 +45,22 @@ export default {
       return `<button class="${cls}" data-hole="${h}">${h}</button>`;
     }).join('');
 
-    return `
-      <div class="page-title"><h1>Enter Scores</h1><p>Tap a player and hole, set the gross, save.</p></div>
+    // Scope indicator: admin gets a group filter, a scorekeeper sees their group.
+    const scopeControl = admin
+      ? `<select id="groupFilter" style="border:1px solid var(--line-2);border-radius:9px;padding:5px 8px;font-size:.75rem;color:var(--pine);">
+           <option value="0" ${sel.groupFilter === 0 ? 'selected' : ''}>All groups</option>
+           <option value="1" ${sel.groupFilter === 1 ? 'selected' : ''}>Group 1</option>
+           <option value="2" ${sel.groupFilter === 2 ? 'selected' : ''}>Group 2</option>
+         </select>`
+      : `<span class="pill gold">Group ${GROUP_WORDS[scorekeeperGroup()] || scorekeeperGroup()}</span>`;
 
-      ${locked ? '<div class="banner lock">'+icon('lock')+'<div>Event is locked. Only an admin can edit scores.</div></div>' : ''}
+    return `
+      <div class="page-title"><h1>Enter Scores</h1><p>${admin ? 'Admin — all players.' : 'Your group only. Tap a player and hole, set the gross, save.'}</p></div>
+
+      ${disabled ? '<div class="banner lock">' + icon('lock') + '<div>Event is locked. Only an admin can edit scores now.</div></div>' : ''}
 
       <div class="card tight">
-        <div class="card-head"><h2>Player</h2>
-          <select id="groupFilter" style="border:1px solid var(--line-strong);border-radius:9px;padding:5px 8px;font-size:.75rem;color:var(--pine);">
-            <option value="0" ${sel.groupFilter===0?'selected':''}>All groups</option>
-            <option value="1" ${sel.groupFilter===1?'selected':''}>Group 1</option>
-            <option value="2" ${sel.groupFilter===2?'selected':''}>Group 2</option>
-          </select>
-        </div>
+        <div class="card-head"><h2>Player</h2>${scopeControl}</div>
         <div class="chips" id="playerTabs">${playerTabs}</div>
       </div>
 
@@ -56,12 +71,12 @@ export default {
         </div>
 
         <div class="stepper">
-          <button class="step-btn minus" id="minus" ${locked ? 'disabled' : ''}>−</button>
+          <button class="step-btn minus" id="minus" ${disabled ? 'disabled' : ''}>−</button>
           <div class="step-value">
             <div class="big" id="grossVal">${displayGross}</div>
             <div class="lbl">Gross</div>
           </div>
-          <button class="step-btn" id="plus" ${locked ? 'disabled' : ''}>+</button>
+          <button class="step-btn" id="plus" ${disabled ? 'disabled' : ''}>+</button>
         </div>
 
         <div class="stats" style="margin-top:16px;">
@@ -71,7 +86,7 @@ export default {
         </div>
 
         <div class="spacer"></div>
-        <button class="btn gold block" id="saveBtn" ${locked ? 'disabled' : ''}>${icon('scores')} Save &amp; Next Hole</button>
+        <button class="btn gold block" id="saveBtn" ${disabled ? 'disabled' : ''}>${icon('scores')} Save &amp; Next Hole</button>
       </div>
 
       <div class="card tight">
@@ -82,8 +97,9 @@ export default {
   },
 
   onMount(root, rerender) {
+    if (!canEditScores()) return;
     const s = getState();
-    const locked = s.event.status === 'final' || s.event.locked;
+    const disabled = (s.event.status === 'final' || s.event.locked) && !isAdmin();
 
     root.querySelector('#groupFilter')?.addEventListener('change', (e) => {
       sel.groupFilter = Number(e.target.value); sel.gross = null; rerender();
@@ -93,7 +109,7 @@ export default {
     root.querySelectorAll('[data-hole]').forEach((b) =>
       b.addEventListener('click', () => { sel.hole = Number(b.dataset.hole); sel.gross = null; rerender(); }));
 
-    if (locked) return;
+    if (disabled) return;
 
     const valEl = root.querySelector('#grossVal');
     const cur = () => Number(valEl.textContent);
@@ -102,11 +118,13 @@ export default {
     root.querySelector('#plus')?.addEventListener('click', () => setVal(cur() + 1));
 
     root.querySelector('#saveBtn')?.addEventListener('click', () => {
-      setScore(sel.playerId, sel.hole, cur(), 'device');
-      toast(`Hole ${sel.hole} saved`);
-      if (sel.hole < 18) sel.hole += 1;
-      sel.gross = null;
-      // store emit triggers app re-render
+      if (setScore(sel.playerId, sel.hole, cur())) {
+        toast(`Hole ${sel.hole} saved`);
+        if (sel.hole < 18) sel.hole += 1;
+        sel.gross = null;
+      } else {
+        toast('Not permitted for this player');
+      }
     });
   },
 };
@@ -117,9 +135,7 @@ function netToPar(net, par) {
   return d > 0 ? `+${d}` : `${d}`;
 }
 
-// Live-update the strokes/net stats as the stepper changes, without a full re-render.
 function softStats(root) {
-  const s = getState();
   const player = playerById(sel.playerId);
   const par = parOf(sel.hole);
   const gross = Number(root.querySelector('#grossVal').textContent);

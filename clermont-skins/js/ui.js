@@ -1,6 +1,7 @@
 // ui.js — small view helpers, inline SVG icons (no emojis), toast, sheet.
 
 import { TEES } from './course.js';
+import { applyCode, setViewer, signOut, roleLabel } from './store.js';
 
 export function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -101,4 +102,41 @@ export function openSheet(html) {
 export function closeSheet() {
   const bd = document.getElementById('sheet-backdrop');
   if (bd) bd.classList.remove('open');
+}
+
+// Access-code entry (scorekeeper / admin). Resolves to a role on success.
+export function openCodeSheet() {
+  openSheet(`
+    <div class="page-title"><h1>Enter Access Code</h1><p>Scorekeepers and admins only.</p></div>
+    <div class="field"><label>Access code</label>
+      <input id="acInput" type="text" autocapitalize="characters" autocomplete="off" placeholder="e.g. TMAC-G1"></div>
+    <button class="btn gold block" id="acGo">Continue</button>
+    <div class="ac-hint" id="acHint"></div>
+    <div class="spacer"></div>
+  `);
+  const go = () => {
+    if (applyCode(document.getElementById('acInput').value)) {
+      closeSheet();
+      toast(`Signed in — ${roleLabel()}`);
+    } else {
+      document.getElementById('acHint').textContent = 'Code not recognized. Check with the event admin.';
+    }
+  };
+  const inp = document.getElementById('acInput');
+  document.getElementById('acGo').onclick = go;
+  inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') go(); });
+  inp.focus();
+}
+
+// Role switcher (from the header chip).
+export function openRoleSheet() {
+  openSheet(`
+    <div class="page-title"><h1>Access</h1><p>Signed in as <b>${esc(roleLabel())}</b></p></div>
+    <div class="sheet-item" data-ac-code>${icon('lock')}<span>Enter access code</span></div>
+    <div class="sheet-item" data-ac-viewer>${icon('groups')}<span>Continue as viewer</span></div>
+    <div class="sheet-item" data-ac-out>${icon('reset')}<span>Sign out</span></div>
+  `);
+  document.querySelector('[data-ac-code]').onclick = () => { closeSheet(); openCodeSheet(); };
+  document.querySelector('[data-ac-viewer]').onclick = () => { setViewer(); closeSheet(); };
+  document.querySelector('[data-ac-out]').onclick = () => { signOut(); closeSheet(); };
 }

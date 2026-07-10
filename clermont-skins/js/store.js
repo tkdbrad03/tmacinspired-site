@@ -4,11 +4,16 @@
 
 import { DEFAULT_PLAYERS, DEFAULT_EVENT } from './course.js';
 import { strokesOnHole } from './calc.js';
+import { ROLES, SCOREKEEPERS, resolveCode } from './access.js';
 
 const LS_KEY = 'clermont-skins-state-v1';
+const SESSION_KEY = 'clermont-skins-session-v1';
 
 const listeners = new Set();
 let state = load();
+// Session (role) is DEVICE-LOCAL, kept separate from shared event data. In
+// Phase 3 event data comes from Firestore while the role stays on the device.
+let session = loadSession();
 
 function load() {
   try {
@@ -50,12 +55,22 @@ function freshState() {
     // hole -> { hole, currentLeaderId, currentLeaderName, noWinner, locked, updatedBy, updatedAt, revision }
     ctp: {},
     auditLog: [], // { id, ts, area, hole, action, playerId, playerName, by }
-    admin: false,
   };
 }
 
 function persist() {
   try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (e) { /* ignore */ }
+}
+
+function loadSession() {
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) { /* ignore */ }
+  return { role: null, scorekeeperId: null };
+}
+function persistSession() {
+  try { localStorage.setItem(SESSION_KEY, JSON.stringify(session)); } catch (e) { /* ignore */ }
 }
 
 function emit() {
@@ -81,9 +96,11 @@ export function playerById(id) {
   return state.players.find((p) => p.id === id) || null;
 }
 
-export function setScore(playerId, hole, gross, updatedBy = 'Scorekeeper') {
+export function setScore(playerId, hole, gross, updatedBy) {
   const p = playerById(playerId);
-  if (!p) return;
+  if (!p) return false;
+  if (!canEditPlayer(playerId)) return false; // viewers / wrong-group scorekeepers blocked
+  updatedBy = updatedBy || actorName();
   const key = `${playerId}_${hole}`;
   const received = strokesOnHole(p.strokes, p.tee, hole);
   if (gross == null || gross === '') {
@@ -102,12 +119,15 @@ export function setScore(playerId, hole, gross, updatedBy = 'Scorekeeper') {
     };
   }
   emit();
+  return true;
 }
 
 // CTP -----------------------------------------------------------------------
 // Enter the player who is currently closest. The most recently saved player
 // becomes the current leader (and, once finalized/locked, the winner).
-export function updateCtpLeader(hole, playerId, by = 'Scorekeeper') {
+export function updateCtpLeader(hole, playerId, by) {
+  if (!canEditCtp()) return false; // only scorekeepers + admin
+  by = by || actorName();
   const cur = state.ctp[hole];
   if (cur?.locked || state.event.status === 'final') return false;
   const p = playerById(playerId);
@@ -128,6 +148,7 @@ export function updateCtpLeader(hole, playerId, by = 'Scorekeeper') {
 }
 
 export function clearCtp(hole, by = 'Admin') {
+  if (!isAdmin()) return false; // corrections are admin-only
   const cur = state.ctp[hole];
   if (cur?.locked) return false;
   state.ctp[hole] = { hole, currentLeaderId: null, currentLeaderName: null, noWinner: false, locked: false, updatedBy: by, updatedAt: now(), revision: (cur?.revision || 0) + 1 };
@@ -137,6 +158,7 @@ export function clearCtp(hole, by = 'Admin') {
 }
 
 export function markCtpNoWinner(hole, by = 'Admin') {
+  if (!isAdmin()) return false;
   const cur = state.ctp[hole];
   if (cur?.locked) return false;
   state.ctp[hole] = { hole, currentLeaderId: null, currentLeaderName: null, noWinner: true, locked: false, updatedBy: by, updatedAt: now(), revision: (cur?.revision || 0) + 1 };
@@ -146,6 +168,7 @@ export function markCtpNoWinner(hole, by = 'Admin') {
 }
 
 export function setCtpLocked(hole, locked, by = 'Admin') {
+  if (!isAdmin()) return false;
   const cur = state.ctp[hole];
   if (!cur) return false;
   cur.locked = !!locked;
@@ -162,13 +185,16 @@ export function ctpHistory(hole) {
 }
 
 export function updateEvent(patch) {
+  if (!isAdmin()) return false; // buy-in / status / lock / finalize are admin-only
   state.event = { ...state.event, ...patch };
   emit();
+  return true;
 }
 
 export function updatePlayer(id, patch) {
+  if (!isAdmin()) return false; // tees / strokes / paid are admin-only
   const p = playerById(id);
-  if (!p) return;
+  if (!p) return false;
   Object.assign(p, patch);
   // Recompute affected net scores if tee/strokes changed.
   if ('tee' in patch || 'strokes' in patch) {
@@ -188,7 +214,53 @@ export function updatePlayer(id, patch) {
   emit();
 }
 
-export function setAdmin(on) { state.admin = !!on; emit(); }
+// Session / roles ------------------------------------------------------------
+export function getSession() { return session; }
+
+export function setViewer() { session = { role: ROLES.VIEWER, scorekeeperId: null }; persistSession(); emit(); }
+export function signOut() { session = { role: null, scorekeeperId: null }; persistSession(); emit(); }
+export function applyCode(code) {
+  const r = resolveCode(code);
+  if (!r) return false;
+  session = { role: r.role, scorekeeperId: r.scorekeeperId || null };
+  persistSession(); emit();
+  return true;
+}
+
+export function isAdmin() { return session.role === ROLES.ADMIN; }
+export function isScorekeeper() { return session.role === ROLES.SCOREKEEPER; }
+export function canEditScores() { return isAdmin() || isScorekeeper(); }
+export function canEditCtp() { return isAdmin() || isScorekeeper(); }
+
+export function scorekeeperGroup() {
+  const sk = session.scorekeeperId ? SCOREKEEPERS[session.scorekeeperId] : null;
+  return sk ? sk.group : null;
+}
+
+// The players this session may enter/edit scores for.
+export function editablePlayers() {
+  if (isAdmin()) return state.players;
+  if (isScorekeeper()) { const g = scorekeeperGroup(); return state.players.filter((p) => p.group === g); }
+  return [];
+}
+export function canEditPlayer(playerId) {
+  if (isAdmin()) return true;
+  if (isScorekeeper()) { const p = playerById(playerId); return !!p && p.group === scorekeeperGroup(); }
+  return false;
+}
+
+// Label for who is acting (used as updatedBy / CTP "by").
+export function actorName() {
+  if (isAdmin()) return 'Admin';
+  if (isScorekeeper()) { const sk = SCOREKEEPERS[session.scorekeeperId]; return sk ? sk.name : 'Scorekeeper'; }
+  return 'Viewer';
+}
+export function roleLabel() {
+  if (isAdmin()) return 'Admin';
+  if (isScorekeeper()) { const sk = SCOREKEEPERS[session.scorekeeperId]; return sk ? `Scorekeeper · ${sk.name}` : 'Scorekeeper'; }
+  if (session.role === ROLES.VIEWER) return 'Viewer';
+  return '';
+}
 
 export function resetData() { state = freshState(); emit(); }
 

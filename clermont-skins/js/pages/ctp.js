@@ -1,7 +1,7 @@
 // CTP — Closest to the Pin. No distance measurement: the most recently entered
 // player is the current leader (and the winner once finalized/locked). One
 // authoritative record per hole; every change is written to the audit history.
-import { getState, updateCtpLeader, clearCtp, markCtpNoWinner, setCtpLocked, ctpHistory } from '../store.js';
+import { getState, updateCtpLeader, clearCtp, markCtpNoWinner, setCtpLocked, ctpHistory, canEditCtp, isAdmin } from '../store.js';
 import { computeStandings, money } from '../calc.js';
 import { COURSE, parOf } from '../course.js';
 import { esc, openSheet, closeSheet, toast, icon, timeAgo } from '../ui.js';
@@ -31,7 +31,7 @@ export default {
       const c = s.ctp[hole];
       const status = statusOf(c, eventFinal);
       const hist = ctpHistory(hole).filter((e) => e.action === 'leader');
-      const canUpdate = !eventFinal && !(c && c.locked);
+      const mayUpdate = canEditCtp() && !eventFinal && !(c && c.locked);
 
       let lead = '';
       if (status === 'current' || status === 'final') {
@@ -55,7 +55,7 @@ export default {
           </div>
         </details>` : '';
 
-      const adminRow = s.admin ? `
+      const adminRow = isAdmin() ? `
         <div class="ctp-admin">
           <button class="btn ghost sm" data-clear="${hole}">Clear</button>
           <button class="btn ghost sm" data-nowin="${hole}">No winner</button>
@@ -73,7 +73,8 @@ export default {
             ${lead}
             ${(c && c.locked) ? `<span class="pill" style="align-self:flex-start">${'Locked'}</span>` : ''}
           </div>
-          ${canUpdate ? `<button class="btn gold block" data-update="${hole}">${icon('flag')} Update Closest Player</button>`
+          ${!canEditCtp() ? ''
+            : mayUpdate ? `<button class="btn gold block" data-update="${hole}">${icon('flag')} Update Closest Player</button>`
             : `<button class="btn ghost block" disabled>${eventFinal ? 'Event finalized' : 'Result locked'}</button>`}
           ${history}
           ${adminRow}
@@ -81,12 +82,12 @@ export default {
     }).join('');
 
     return `
-      <div class="page-title"><h1>Closest to the Pin</h1><p>Enter whoever is currently closest. The last name saved wins. Each CTP is worth 2 units.</p></div>
+      <div class="page-title"><h1>Closest to the Pin</h1><p>${canEditCtp() ? 'Enter whoever is currently closest — the last name saved wins. Each CTP is worth 2 units.' : 'Live closest-to-the-pin results. Each CTP is worth 2 units.'}</p></div>
       ${cards}
-      <div class="note-card">
+      ${canEditCtp() ? `<div class="note-card">
         ${icon('flag')}
         <div class="nc-body">No measuring required — move the tee to the closest ball and enter that player. Updates appear on every device instantly, and prior leaders stay in the hole's <b>history</b>.</div>
-      </div>
+      </div>` : ''}
     `;
   },
 
@@ -112,7 +113,6 @@ export default {
 
 function openPicker(hole) {
   const s = getState();
-  const by = s.admin ? 'Admin' : 'Scorekeeper';
   const cur = s.ctp[hole];
   const buttons = s.players.map((p) => `
     <button class="btn ${cur && cur.currentLeaderId === p.id ? 'gold' : 'ghost'} block" data-pick="${p.id}" style="justify-content:flex-start;margin-bottom:10px;">${esc(p.name)}</button>`).join('');
@@ -123,11 +123,11 @@ function openPicker(hole) {
   `);
   document.querySelectorAll('[data-pick]').forEach((b) =>
     b.addEventListener('click', () => {
-      if (updateCtpLeader(hole, b.dataset.pick, by)) {
+      if (updateCtpLeader(hole, b.dataset.pick)) {
         closeSheet();
         toast(`Hole ${hole}: closest updated`);
       } else {
-        toast('Result is locked');
+        toast('Not permitted');
       }
     }));
 }

@@ -1,16 +1,14 @@
-// Admin — settings & controls. Phase 2: client-side gate + local mutations.
-// Phase 6 swaps the unlock for a serverless PIN check that mints an admin claim,
-// and Firestore rules enforce these actions server-side.
-import { getState, updateEvent, updatePlayer, setAdmin, resetData, seedSample } from '../store.js';
+// Admin — settings & controls. Admin role is granted via the admin access code
+// (Phase 3 verifies it server-side and mints a Firebase admin custom claim; the
+// store already blocks these mutations for non-admins).
+import { getState, updateEvent, updatePlayer, resetData, seedSample, isAdmin, setViewer } from '../store.js';
 import { TEE_ORDER, TEES } from '../course.js';
-import { esc, icon, toast, ballMarker } from '../ui.js';
-
-let pinInput = '';
+import { esc, icon, toast, ballMarker, openCodeSheet } from '../ui.js';
 
 export default {
   render() {
     const s = getState();
-    if (!s.admin) return lockedView();
+    if (!isAdmin()) return lockedView();
 
     const ev = s.event;
     const statusBtns = `
@@ -74,14 +72,8 @@ export default {
 
   onMount(root, rerender) {
     const s = getState();
-    if (!s.admin) {
-      const inp = root.querySelector('#pin');
-      inp?.addEventListener('input', (e) => { pinInput = e.target.value; });
-      root.querySelector('#unlock')?.addEventListener('click', () => {
-        // Phase 2 stub: any non-empty PIN unlocks locally. Phase 6 verifies server-side.
-        if (!pinInput) { toast('Enter the admin PIN'); return; }
-        setAdmin(true); pinInput = ''; toast('Admin unlocked');
-      });
+    if (!isAdmin()) {
+      root.querySelector('#adminCode')?.addEventListener('click', () => openCodeSheet());
       return;
     }
 
@@ -110,18 +102,17 @@ export default {
     });
     root.querySelector('#exportCsv')?.addEventListener('click', () => toast('CSV export arrives in Phase 8'));
     root.querySelector('#exportPdf')?.addEventListener('click', () => toast('PDF export arrives in Phase 8'));
-    root.querySelector('#signout')?.addEventListener('click', () => { setAdmin(false); toast('Admin locked'); });
+    root.querySelector('#signout')?.addEventListener('click', () => { setViewer(); toast('Signed out of admin'); });
   },
 };
 
 function lockedView() {
   return `
-    <div class="page-title"><h1>Admin</h1><p>Enter the admin PIN to manage the event.</p></div>
+    <div class="page-title"><h1>Admin</h1><p>Admin access required.</p></div>
     <div class="card">
-      <div class="card-head"><h2>${'Admin Access'}</h2>${icon('lock')}</div>
-      <div class="field"><label>Admin PIN</label><input type="password" inputmode="numeric" id="pin" placeholder="••••" value="${esc(pinInput)}"></div>
-      <button class="btn gold block" id="unlock">Unlock Admin</button>
+      <div class="card-head"><h2>Admin Access</h2>${icon('lock')}</div>
+      <div class="nc-body" style="font-size:.86rem;color:var(--muted);margin-bottom:14px;">Admin controls scoring corrections, tees, strokes, buy-in, CTP lock, finalize, and exports.</div>
+      <button class="btn gold block" id="adminCode">${icon('lock')} Enter Admin Code</button>
     </div>
-    <div class="banner info"><div>Admin controls scoring corrections, tees, strokes, CTP winners, finalize, and exports.</div></div>
   `;
 }
