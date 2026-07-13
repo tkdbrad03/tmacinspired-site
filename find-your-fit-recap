@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Find Your Fit | Workshop Recap</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --pine:#1f4236; --navy:#05122a; --gold:#b8912f; --gold-br:#c9a55c;
+    --cream:#fdf9f2; --white:#fff; --ink:#1a1a14; --soft:#3d3d2e; --line:#e4dcc8;
+    --home:#2f8f6b; --nemt:#3d8f8f; --alf:#c78a2f; --rev:#b04a4a; --models:#5a4a8f;
+    --font:Georgia,'Times New Roman',serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#f4f1ea;font-family:var(--font);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;padding:14px;}
+  .wrap{max-width:1200px;margin:0 auto;}
+
+  /* HERO */
+  .hero{background:linear-gradient(120deg,var(--pine),var(--navy));border-radius:16px;padding:24px 22px;color:#fff;display:flex;flex-direction:column;gap:20px;box-shadow:0 8px 30px rgba(5,18,42,.18);}
+  .hero-badge{display:inline-block;font-size:.68rem;text-transform:uppercase;letter-spacing:.18em;color:var(--gold-br);border:1px solid rgba(201,165,92,.4);border-radius:20px;padding:5px 14px;margin-bottom:14px;}
+  .hero h1{font-size:1.55rem;line-height:1.2;margin-bottom:10px;}
+  .hero h1 em{color:var(--gold-br);font-style:italic;}
+  .hero p{font-size:.95rem;color:rgba(255,255,255,.85);max-width:640px;}
+  .hero p strong{color:#fff;}
+  .hero-stats{display:flex;gap:12px;}
+  .hero-stat{background:rgba(255,255,255,.12);border-radius:12px;padding:14px 20px;text-align:center;flex:1;}
+  .hero-stat .n{font-size:1.8rem;font-weight:bold;color:#fff;line-height:1;}
+  .hero-stat .l{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--gold-br);margin-top:6px;}
+
+  /* STAT CARDS */
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0;}
+  .card{border-radius:14px;padding:16px;color:#fff;box-shadow:0 4px 16px rgba(0,0,0,.1);}
+  .card .ic{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;opacity:.9;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+  .card .big{font-size:1.5rem;font-weight:bold;line-height:1.1;}
+  .card .sub{font-size:.78rem;opacity:.9;margin-top:4px;}
+  .c-home{background:var(--home);} .c-nemt{background:var(--nemt);}
+  .c-alf{background:var(--alf);} .c-rev{background:var(--rev);} .c-models{background:var(--models);}
+  .card.c-models{grid-column:1 / -1;}
+
+  /* CHART ROW */
+  .charts{display:grid;grid-template-columns:1fr;gap:12px;}
+  .panel{background:#fff;border-radius:14px;padding:18px;box-shadow:0 4px 16px rgba(0,0,0,.06);}
+  .panel h2{font-size:1.15rem;color:var(--pine);margin-bottom:2px;}
+  .panel .psub{font-size:.82rem;color:var(--soft);font-style:italic;margin-bottom:14px;}
+  .panel-tag{float:right;font-size:.7rem;background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:4px 12px;color:var(--gold);font-style:normal;}
+  .chart-box{position:relative;height:260px;}
+
+  /* TABLE */
+  .tbl-panel{background:#fff;border-radius:14px;padding:18px;box-shadow:0 4px 16px rgba(0,0,0,.06);margin-top:14px;}
+  .tbl-head{display:flex;flex-direction:column;gap:12px;margin-bottom:14px;}
+  .tbl-head h2{font-size:1.15rem;color:var(--pine);}
+  .tbl-head .psub{font-size:.82rem;color:var(--soft);font-style:italic;}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;}
+  .filter-btn{font-family:var(--font);font-size:.82rem;padding:8px 15px;border-radius:20px;border:1px solid var(--line);background:#fff;color:var(--soft);cursor:pointer;transition:.2s;}
+  .filter-btn:hover{border-color:var(--gold);}
+  .filter-btn.active{background:var(--pine);color:#fff;border-color:var(--pine);}
+  .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  table{width:100%;border-collapse:collapse;min-width:640px;}
+  th{text-align:left;font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);padding:10px 10px;border-bottom:2px solid var(--line);cursor:pointer;user-select:none;white-space:nowrap;}
+  th:hover{color:var(--pine);}
+  td{padding:12px 10px;border-bottom:1px solid var(--line);font-size:.88rem;color:var(--soft);}
+  tr.row{cursor:pointer;transition:background .15s;}
+  tr.row:hover{background:var(--cream);}
+  .model-name{font-weight:bold;color:var(--navy);display:flex;align-items:center;gap:8px;}
+  .pill{display:inline-block;font-size:.7rem;padding:3px 10px;border-radius:12px;font-style:normal;white-space:nowrap;}
+  .pill-home{background:#e3f2ec;color:#2f8f6b;}
+  .pill-fac{background:#f6ede1;color:#b8912f;}
+  .pill-mob{background:#e5eff0;color:#3d8f8f;}
+  .rev{color:var(--home);font-weight:bold;white-space:nowrap;}
+  .detail{display:none;background:var(--cream);}
+  .detail.open{display:table-row;}
+  .detail td{padding:16px 16px;font-size:.88rem;color:var(--soft);line-height:1.7;}
+  .detail strong{color:var(--pine);}
+  .tap-hint{font-size:.72rem;color:var(--gold);font-style:italic;margin-top:8px;}
+
+  /* NEXT STEPS */
+  .steps{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px;}
+  .step{background:#fff;border-radius:14px;padding:20px;box-shadow:0 4px 16px rgba(0,0,0,.06);}
+  .step .num{width:38px;height:38px;border-radius:50%;background:var(--gold);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1.1rem;margin-bottom:12px;}
+  .step h3{color:var(--navy);font-size:1.05rem;margin-bottom:8px;}
+  .step p{font-size:.88rem;color:var(--soft);}
+
+  /* FUNDING NOTE */
+  .note{background:var(--pine);color:#fff;border-radius:14px;padding:22px 24px;margin-top:14px;}
+  .note h3{color:var(--gold-br);font-size:1.1rem;margin-bottom:8px;font-style:italic;}
+  .note p{color:rgba(255,255,255,.88);font-size:.92rem;}
+
+  /* CTA */
+  .cta{background:linear-gradient(120deg,var(--navy),var(--pine));color:#fff;border-radius:16px;padding:32px 24px;text-align:center;margin-top:14px;}
+  .cta .k{font-size:.7rem;text-transform:uppercase;letter-spacing:.2em;color:var(--gold-br);margin-bottom:10px;}
+  .cta h2{font-size:1.55rem;margin-bottom:10px;}
+  .cta h2 em{color:var(--gold-br);font-style:italic;}
+  .cta p{color:rgba(255,255,255,.82);margin-bottom:20px;font-size:.92rem;}
+  .cta a{display:block;background:var(--gold);color:var(--navy);font-family:var(--font);font-weight:bold;font-size:.92rem;text-transform:uppercase;letter-spacing:.08em;padding:15px 20px;border-radius:8px;text-decoration:none;transition:.2s;}
+  .cta a:hover{background:var(--gold-br);}
+
+  .footer{text-align:center;padding:22px 14px;color:var(--soft);font-size:.78rem;line-height:1.8;}
+  .footer em{color:var(--gold);}
+
+  /* TABLET AND UP */
+  @media(min-width:640px){
+    body{padding:20px;}
+    .cards{grid-template-columns:repeat(3,1fr);}
+    .card.c-models{grid-column:auto;}
+    .steps{grid-template-columns:repeat(3,1fr);}
+    .cta a{display:inline-block;}
+    .tbl-head{flex-direction:row;justify-content:space-between;align-items:flex-start;}
+  }
+  /* DESKTOP */
+  @media(min-width:960px){
+    body{padding:24px;}
+    .hero{flex-direction:row;justify-content:space-between;align-items:flex-start;padding:36px 40px;}
+    .hero h1{font-size:2.1rem;}
+    .hero p{font-size:1rem;}
+    .hero-stat{min-width:96px;flex:none;}
+    .cards{grid-template-columns:repeat(5,1fr);gap:16px;}
+    .card .big{font-size:1.7rem;}
+    .charts{grid-template-columns:1fr 1fr;gap:16px;}
+    .chart-box{height:300px;}
+    .panel{padding:24px;}
+    .panel h2{font-size:1.25rem;}
+    .tbl-panel{padding:24px;}
+    table{min-width:0;}
+    .cta{padding:40px;}
+    .cta h2{font-size:1.9rem;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div>
+      <span class="hero-badge">Workshop Recap</span>
+      <h1><em>"Find Your Fit"</em> Care Business Workshop</h1>
+      <p>Presented by <strong>Dr. TMac</strong> and <strong>Dr. Catrina Smith</strong>, helping healthcare professionals choose the right care business model, with real South Carolina numbers.</p>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="n">5</div><div class="l">Business Models</div></div>
+      <div class="hero-stat"><div class="n">3</div><div class="l">Next Steps</div></div>
+    </div>
+  </div>
+
+  <!-- STAT CARDS -->
+  <div class="cards">
+    <div class="card c-home">
+      <div class="ic">Home Care</div>
+      <div class="big">Lowest</div>
+      <div class="sub">Easiest entry point</div>
+    </div>
+    <div class="card c-nemt">
+      <div class="ic">NEMT</div>
+      <div class="big">$25K+</div>
+      <div class="sub">Mobile, scalable</div>
+    </div>
+    <div class="card c-alf">
+      <div class="ic">Assisted Living</div>
+      <div class="big">$250K</div>
+      <div class="sub">Highest startup cost</div>
+    </div>
+    <div class="card c-rev">
+      <div class="ic">Revenue Range</div>
+      <div class="big">$300K&ndash;$5M</div>
+      <div class="sub">Annual potential</div>
+    </div>
+    <div class="card c-models">
+      <div class="ic">Models</div>
+      <div class="big">5 paths</div>
+      <div class="sub">To choose from</div>
+    </div>
+  </div>
+
+  <!-- CHARTS -->
+  <div class="charts">
+    <div class="panel">
+      <span class="panel-tag">SC estimates</span>
+      <h2>Startup Cost Comparison</h2>
+      <div class="psub">Typical estimated startup cost by model (South Carolina)</div>
+      <div class="chart-box"><canvas id="costChart"></canvas></div>
+    </div>
+    <div class="panel">
+      <span class="panel-tag">$ Projections</span>
+      <h2>Annual Revenue Potential</h2>
+      <div class="psub">Projected annual revenue range by model</div>
+      <div class="chart-box"><canvas id="revChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="tbl-panel">
+    <div class="tbl-head">
+      <div>
+        <h2>Care Business Models Comparison</h2>
+        <div class="psub">Click any row to see details. Filter by type.</div>
+      </div>
+      <div class="filters">
+        <button class="filter-btn active" data-f="all">All Models</button>
+        <button class="filter-btn" data-f="facility">Facility-based</button>
+        <button class="filter-btn" data-f="home">Home-based</button>
+        <button class="filter-btn" data-f="mobile">Mobile</button>
+      </div>
+    </div>
+    <div class="tbl-scroll">
+    <table id="modelTable">
+      <thead>
+        <tr>
+          <th data-sort="name">Model</th>
+          <th data-sort="type">Type</th>
+          <th data-sort="cost">Startup Cost</th>
+          <th data-sort="lic">Licensing</th>
+          <th data-sort="rev">Revenue Potential</th>
+          <th data-sort="hours">Care Hours</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    </div>
+    <div class="tap-hint">Tap any row for details. Swipe the table sideways to see all columns.</div>
+  </div>
+
+  <!-- FUNDING NOTE -->
+  <div class="note">
+    <h3>You Do Not Always Need Medicaid to Start</h3>
+    <p>Many businesses begin with private-pay clients or insurance voucher programs before pursuing broader Medicaid or Medicare participation. Several of our clients started with the simplest model and minimal requirements, then expanded over time. Start lean, prove the model, then grow.</p>
+  </div>
+
+  <!-- NEXT STEPS -->
+  <div class="steps">
+    <div class="step">
+      <div class="num">1</div>
+      <h3>Form Your Entity</h3>
+      <p>Choose your business name, file for your LLC, and get your EIN. Make it real and legal first.</p>
+    </div>
+    <div class="step">
+      <div class="num">2</div>
+      <h3>Contact Licensing</h3>
+      <p>Identify and contact the licensing body in your state for your chosen model. Every state is different.</p>
+    </div>
+    <div class="step">
+      <div class="num">3</div>
+      <h3>Secure Funding</h3>
+      <p>Know your startup number and where the first dollars come from. Private pay and vouchers count.</p>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <div class="k">Your Next Step</div>
+    <h2>Ready to Actually <em>Build It?</em></h2>
+    <p>Join Dr. TMac and Dr. Catrina in person. One day. Your care business, decided and mapped.<br>Cocktails &amp; Care CEO Companies, September 19, 2026, Tampa, Florida.</p>
+    <a href="https://www.tmacinspired.com/cocktails-ccc">Reserve Your Seat</a>
+  </div>
+
+  <div class="footer">
+    <em>"Leave With More Than Notes."</em><br>
+    Care CEO Collective &nbsp;&middot;&nbsp; Dr. TMac &amp; Dr. Catrina Smith &nbsp;&middot;&nbsp; 64 Years of Combined Healthcare Experience
+  </div>
+
+</div>
+
+<script>
+// ---- DATA ----
+const models = [
+  { name:'Home Care', type:'home', typeLabel:'Home-based', cost:'$8K&ndash;$25K', costMid:25000, lic:'Lower barrier', rev:'$250K&ndash;$3M+', revMin:250000, revMax:3000000, hours:'Flexible',
+    detail:'The fastest and most accessible care business to launch. No residential facility to own or lease. You send trained caregivers into clients homes. Lower overhead, high demand, and you can start with private-pay clients before pursuing Medicaid participation.' },
+  { name:'Unlicensed Group Home', type:'facility', typeLabel:'Facility-based', cost:'~$15K&ndash;$30K', costMid:30000, lic:'Minimal', rev:'$200K&ndash;$800K', revMin:200000, revMax:800000, hours:'24/7',
+    detail:'A residential home-based model with the lowest facility startup cost because you are generally not operating under full residential care licensing. Good entry point for someone who wants a facility model without the heaviest capital or regulatory load.' },
+  { name:'Licensed Group Home', type:'facility', typeLabel:'Facility-based', cost:'$40K&ndash;$150K+', costMid:75000, lic:'Required', rev:'$200K&ndash;$1.5M+', revMin:200000, revMax:1500000, hours:'24/7',
+    detail:'Adds state licensing, fire marshal requirements, building modifications, policies and procedures, and staff training. More capital and compliance work, but higher revenue ceiling and asset value. Most new owners underestimate the working capital needed before the first resident arrives.' },
+  { name:'Non-Emergency Medical Transportation', type:'mobile', typeLabel:'Mobile', cost:'$25K&ndash;$90K+', costMid:90000, lic:'Varies', rev:'$300K&ndash;$5M+', revMin:300000, revMax:5000000, hours:'Scheduled',
+    detail:'A mobile business helping clients reach medical appointments. Buying one used wheelchair-accessible van keeps startup lower. Scalable, with growing demand in every state. Building a fleet increases capital requirements but also revenue.' },
+  { name:'Adult Day Care', type:'facility', typeLabel:'Facility-based', cost:'$60K&ndash;$150K+', costMid:150000, lic:'Required', rev:'$400K&ndash;$3M+', revMin:400000, revMax:3000000, hours:'Daytime',
+    detail:'Daytime program where clients return home each evening. Often requires less capital than assisted living because there is no overnight care. Community-focused model with a commercial lease, activity and dining areas, and staffing.' },
+  { name:'Assisted Living Facility', type:'facility', typeLabel:'Facility-based', cost:'$250K&ndash;$2M+', costMid:600000, lic:'Required, 24hr', rev:'$1M&ndash;$20M+', revMin:1000000, revMax:20000000, hours:'24/7',
+    detail:'The highest capital model, requiring licensing and 24-hour care. Commercial building, renovations, commercial kitchen, clinical equipment, and several months of payroll. The revenue ceiling is the highest of all five models.' }
+];
+
+// ---- COST CHART ----
+const costLabels = ['Home care','Unlicensed group','Licensed group','NEMT','Adult day care','Assisted living'];
+const costData = [25000,30000,75000,90000,150000,600000];
+const costColors = ['#2f8f6b','#5a8f6b','#7a8f4b','#3d8f8f','#c78a2f','#b04a4a'];
+new Chart(document.getElementById('costChart'),{
+  type:'bar',
+  data:{labels:costLabels,datasets:[{data:costData,backgroundColor:costColors,borderRadius:6,barPercentage:.7}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+    tooltip:{callbacks:{label:c=>' $'+c.raw.toLocaleString()}}},
+    scales:{y:{ticks:{callback:v=>'$'+(v>=1000?(v/1000)+'K':v),color:'#3d3d2e',font:{family:'Georgia'}},grid:{color:'#eee'}},
+    x:{ticks:{color:'#3d3d2e',font:{family:'Georgia',size:10}},grid:{display:false}}}}
+});
+
+// ---- REVENUE CHART ----
+new Chart(document.getElementById('revChart'),{
+  type:'bar',
+  data:{labels:costLabels,datasets:[
+    {label:'Revenue min',data:[250000,200000,200000,300000,400000,1000000],backgroundColor:'#9cc7b4',borderRadius:5,barPercentage:.8},
+    {label:'Revenue max',data:[3000000,800000,1500000,5000000,3000000,20000000],backgroundColor:'#2f8f6b',borderRadius:5,barPercentage:.8}
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{font:{family:'Georgia',size:11},color:'#3d3d2e'}},
+    tooltip:{callbacks:{label:c=>' '+c.dataset.label+': $'+c.raw.toLocaleString()}}},
+    scales:{y:{ticks:{callback:v=>'$'+(v>=1000000?(v/1000000)+'M':(v/1000)+'K'),color:'#3d3d2e',font:{family:'Georgia'}},grid:{color:'#eee'}},
+    x:{ticks:{color:'#3d3d2e',font:{family:'Georgia',size:10}},grid:{display:false}}}}
+});
+
+// ---- TABLE RENDER ----
+const tbody=document.getElementById('tbody');
+let currentFilter='all', sortKey=null, sortAsc=true;
+
+function pillClass(t){return t==='home'?'pill-home':t==='mobile'?'pill-mob':'pill-fac';}
+
+function render(){
+  let rows=models.filter(m=>currentFilter==='all'||m.type===currentFilter);
+  if(sortKey){
+    rows.sort((a,b)=>{
+      let av,bv;
+      if(sortKey==='cost'){av=a.costMid;bv=b.costMid;}
+      else if(sortKey==='rev'){av=a.revMax;bv=b.revMax;}
+      else{av=(a[sortKey==='name'?'name':sortKey==='type'?'typeLabel':sortKey==='lic'?'lic':'hours']).toLowerCase();bv=(b[sortKey==='name'?'name':sortKey==='type'?'typeLabel':sortKey==='lic'?'lic':'hours']).toLowerCase();}
+      if(av<bv)return sortAsc?-1:1; if(av>bv)return sortAsc?1:-1; return 0;
+    });
+  }
+  tbody.innerHTML='';
+  rows.forEach((m,i)=>{
+    const tr=document.createElement('tr');
+    tr.className='row';
+    tr.innerHTML=`<td><span class="model-name">${m.name}</span></td>
+      <td><span class="pill ${pillClass(m.type)}">${m.typeLabel}</span></td>
+      <td>${m.cost}</td><td>${m.lic}</td>
+      <td class="rev">${m.rev}</td><td>${m.hours}</td>`;
+    const det=document.createElement('tr');
+    det.className='detail';
+    det.innerHTML=`<td colspan="6"><strong>${m.name}.</strong> ${m.detail}</td>`;
+    tr.addEventListener('click',()=>det.classList.toggle('open'));
+    tbody.appendChild(tr); tbody.appendChild(det);
+  });
+}
+render();
+
+document.querySelectorAll('.filter-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active'); currentFilter=b.dataset.f; render();
+  });
+});
+document.querySelectorAll('th[data-sort]').forEach(th=>{
+  th.addEventListener('click',()=>{
+    const k=th.dataset.sort;
+    if(sortKey===k)sortAsc=!sortAsc; else{sortKey=k;sortAsc=true;}
+    render();
+  });
+});
+</script>
+</body>
+</html>
