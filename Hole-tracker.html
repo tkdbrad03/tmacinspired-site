@@ -573,10 +573,16 @@ function shareLeaderboard() {
   shareParams.set('view', '1');
   const url = location.origin + location.pathname + '?' + shareParams.toString();
   navigator.clipboard.writeText(url).then(() => {
-    const msg = document.getElementById('copiedMsg');
-    msg.style.display = 'block';
-    setTimeout(() => msg.style.display = 'none', 3000);
-  });
+  const msg = document.getElementById('copiedMsg');
+  msg.textContent = 'Link copied to clipboard!';
+  msg.style.display = 'block';
+  setTimeout(() => msg.style.display = 'none', 3000);
+}).catch(() => {
+  const msg = document.getElementById('copiedMsg');
+  msg.textContent = 'Could not copy — long-press the link to copy: ' + url;
+  msg.style.display = 'block';
+});
+
 }
 
 loadFromURL();
