@@ -225,7 +225,7 @@
     <!-- Home Courses — always visible -->
     <div class="course-list">
       <div class="course-card has-playbook" onclick="selectCourse('summerfield',this)"><div><div class="course-card-name">Summerfield Crossing</div><div class="course-card-meta">Par 72 · HCP 15 · Home Course</div></div><div class="course-card-badge badge-loaded">✓</div></div>
-      <div class="course-card" onclick="selectCourse('cypress',this)"><div><div class="course-card-name">Cypress Creek GC</div><div class="course-card-meta">Home Course · FPG League</div></div><div class="course-card-badge badge-soon">Soon</div></div>
+      <div class="course-card has-playbook" onclick="selectCourse('cypress',this)"><div><div class="course-card-name">Cypress Creek GC</div><div class="course-card-meta">Green · 4,630 yds · Par 72 · Slope 118 · Ruskin, FL</div></div><div class="course-card-badge badge-loaded">✓</div></div>
       <div class="course-card has-playbook" onclick="selectCourse('forestlake',this)"><div><div class="course-card-name">Forest Lake Golf Club</div><div class="course-card-meta">Red · 5,065 yds · Par 72 · Slope 117</div></div><div class="course-card-badge badge-loaded">✓</div></div>
       <div class="course-card has-playbook" onclick="selectCourse('barony',this)"><div><div class="course-card-name">Barony GC</div><div class="course-card-meta">Gold · 6,478 yds · Par 72 · Slope 135 · Hilton Head</div></div><div class="course-card-badge badge-loaded">✓</div></div>
       <div class="course-card has-playbook" onclick="selectCourse('robbersrow',this)"><div><div class="course-card-name">Robber's Row GC</div><div class="course-card-meta">Green · 4,887 yds · Par 72 · Slope 121 · Hilton Head</div></div><div class="course-card-badge badge-loaded">✓</div></div>
@@ -241,7 +241,7 @@
         <div class="course-list" style="margin-top:8px;">
           <div class="course-card" onclick="selectCourse('diamond',this)"><div><div class="course-card-name">Diamond Hill GC</div><div class="course-card-meta">FPG League</div></div><div class="course-card-badge badge-soon">Soon</div></div>
           <div class="course-card" onclick="selectCourse('huntington',this)"><div><div class="course-card-name">Huntington Hills</div><div class="course-card-meta">FPG League</div></div><div class="course-card-badge badge-soon">Soon</div></div>
-          <div class="course-card" onclick="selectCourse('esplanade',this)"><div><div class="course-card-name">Esplanade Azario</div><div class="course-card-meta">FPG League</div></div><div class="course-card-badge badge-soon">Soon</div></div>
+          <div class="course-card has-playbook" onclick="selectCourse('esplanade',this)"><div><div class="course-card-name">Esplanade Azario</div><div class="course-card-meta">Green · 4,644 yds · Par 72 · Slope 120 · Lakewood Ranch</div></div><div class="course-card-badge badge-loaded">✓</div></div>
           <div class="course-card" onclick="selectCourse('river',this)"><div><div class="course-card-name">The River Club</div><div class="course-card-meta">FPG League</div></div><div class="course-card-badge badge-soon">Soon</div></div>
           <div class="course-card" onclick="selectCourse('hunters',this)"><div><div class="course-card-name">Hunter's Green CC</div><div class="course-card-meta">FPG League</div></div><div class="course-card-badge badge-soon">Soon</div></div>
           <div class="course-card" onclick="selectCourse('heritage',this)"><div><div class="course-card-name">Heritage Isles G&amp;CC</div><div class="course-card-meta">FPG League</div></div><div class="course-card-badge badge-soon">Soon</div></div>
@@ -450,6 +450,61 @@ const courseData = {
       {num:18, yds:null,par:5,hcp:5, tee:'Fairway finder — nothing fancy',approach:'Layup 30–40 yds → confident wedge',key:'This is your money shot. Execute the finish. 5 or 6 only.',goal:'5 or 6',type:'score'}
     ]
   },
+    cypress: {
+    name:'Cypress Creek GC', meta:'Green Tees · 4,630 yds · Par 72 · Rating 68.1 · Slope 118 · Ruskin, FL',
+    formula:'Attack the four short par 3s · 3-shot every par 5 · Survive H4 and H14',
+    weapon:'H6 (93), H8 (107), H13 (113), H17 (110) — all wedge holes · Must score every one',
+    mindset:'Short course, low slope. This is a scoring round. Patience on the long par 5s.',
+    scoring:[6,8,13,17], danger:[4,14,18],
+    holes:[
+      {num:1, yds:264,par:4,hcp:11,tee:'Driver or 3W',approach:'Wedge in close',key:'264 yds. 3W leaves a short wedge. Don\'t force driver. Start clean.',goal:'Par',type:'normal'},
+      {num:2, yds:296,par:4,hcp:9, tee:'Driver or 3W',approach:'Wedge in',key:'Short par 4. Driver or 3W. Short wedge in. Attack center green.',goal:'Par',type:'normal'},
+      {num:3, yds:229,par:4,hcp:15,tee:'3W or 5W',approach:'Wedge in close',key:'229 yds par 4. Don\'t overpower it. 3W leaves a wedge. Simple golf.',goal:'Par',type:'normal'},
+      {num:4, yds:408,par:5,hcp:1, tee:'Driver — stay in play',approach:'3W layup → wedge in',key:'HCP 1 — hardest hole. Three shots only. Driver → 3W → wedge. Bogey is fine.',goal:'Bogey max',type:'danger'},
+      {num:5, yds:315,par:4,hcp:7, tee:'Driver',approach:'Short iron → middle green',key:'HCP 7. Driver + short iron. Middle green. Routine golf.',goal:'Par',type:'normal'},
+      {num:6, yds:93, par:3,hcp:17,tee:'50–60° wedge — smooth',approach:'Attack the pin',key:'93 yds — GIFT HOLE. HCP 17. Smooth 60°. Birdie or tap-in par. No excuses.',goal:'Birdie / par',type:'score'},
+      {num:7, yds:359,par:5,hcp:5, tee:'Driver',approach:'3W layup → wedge in',key:'Short par 5 but HCP 5. 3-shot formula. Driver → layup → wedge. Birdie look.',goal:'Par or birdie',type:'normal'},
+      {num:8, yds:107,par:3,hcp:13,tee:'PW or gap wedge',approach:'Attack the pin',key:'107 yds — MUST SCORE. Your PW distance. Attack this flag. Take the birdie.',goal:'Birdie / par',type:'score'},
+      {num:9, yds:263,par:4,hcp:3, tee:'Driver or 3W — careful',approach:'Middle green only',key:'HCP 3 — looks short, plays hard. Stay in play. Middle green into the turn.',goal:'Par or bogey',type:'normal'},
+      {num:10,yds:263,par:4,hcp:12,tee:'Driver or 3W',approach:'Wedge in',key:'Back 9 opener. Short par 4. Driver or 3W → wedge. Build momentum.',goal:'Par',type:'normal'},
+      {num:11,yds:257,par:4,hcp:10,tee:'Driver or 3W',approach:'Wedge in close',key:'Short par 4. Controlled tee shot. Wedge it close. Keep it going.',goal:'Par',type:'normal'},
+      {num:12,yds:299,par:4,hcp:6, tee:'Driver',approach:'Wedge → middle green',key:'HCP 6 — respect it. Driver + wedge. Middle green. Steady golf.',goal:'Par or bogey',type:'normal'},
+      {num:13,yds:113,par:3,hcp:18,tee:'PW or gap wedge',approach:'Attack the pin',key:'113 yds — MUST SCORE. HCP 18 easiest hole. PW. Attack. Birdie expected.',goal:'Birdie / par',type:'score'},
+      {num:14,yds:396,par:5,hcp:2, tee:'Driver',approach:'3W layup → wedge in',key:'HCP 2 — 396 yds. NOT going for it in 2. Driver → 3W → wedge. Stay patient.',goal:'Bogey max',type:'danger'},
+      {num:15,yds:271,par:4,hcp:8, tee:'Driver or 3W',approach:'Wedge in',key:'Short par 4. Driver or 3W. Short wedge in. Attack center green.',goal:'Par',type:'normal'},
+      {num:16,yds:255,par:4,hcp:14,tee:'Driver or 3W',approach:'Wedge in',key:'Short par 4. Don\'t get sloppy late. 3W → wedge → center green.',goal:'Par',type:'normal'},
+      {num:17,yds:110,par:3,hcp:16,tee:'PW or gap wedge',approach:'Attack the pin',key:'110 yds — MUST SCORE. Fourth wedge par 3. Attack. Score on all four.',goal:'Birdie / par',type:'score'},
+      {num:18,yds:332,par:5,hcp:4, tee:'6 iron — fairway finder',approach:'Layup 30–40 yds → confident wedge',key:'332-yd par 5 to close. HCP 4. Fairway finder, layup to your number, wedge it. 5 or 6 only.',goal:'Par or birdie',type:'danger'}
+    ]
+  },
+    esplanade: {
+    name:'Esplanade Azario', meta:'Green Tees · 4,644 yds · Par 72 · Rating 67.9 · Slope 120 · Lakewood Ranch, FL',
+    formula:'Attack the wedge par 3s · 3-shot every par 5 · Survive H6 and H14',
+    weapon:'H8 (119), H12 (95), H17 (119) — all wedge holes · Must score all three',
+    mindset:'Short course, low slope. Scoring round. Patience on the four par 5s.',
+    scoring:[8,12,17], danger:[6,3,14],
+    holes:[
+      {num:1, yds:242,par:4,hcp:11,tee:'3W or 5W',approach:'Wedge in close',key:'242 yds. 3W leaves a short wedge. Don\'t force driver. Start clean.',goal:'Par',type:'normal'},
+      {num:2, yds:379,par:5,hcp:7, tee:'Driver',approach:'3W layup → wedge in',key:'Short par 5. 3-shot formula. Driver → layup → wedge. Birdie look here.',goal:'Par or birdie',type:'normal'},
+      {num:3, yds:289,par:4,hcp:3, tee:'Driver — careful',approach:'Middle green only',key:'HCP 3 — looks short, plays hard. Stay in play. Middle green. No short side.',goal:'Par or bogey',type:'danger'},
+      {num:4, yds:257,par:4,hcp:15,tee:'Driver or 3W',approach:'Wedge in',key:'Short par 4. HCP 15. Driver or 3W → wedge. Attack center green.',goal:'Par',type:'normal'},
+      {num:5, yds:132,par:3,hcp:9, tee:'PW or 9i',approach:'Attack the pin',key:'132 yds — your PW range. Attack this flag. Make your par or birdie.',goal:'Par',type:'normal'},
+      {num:6, yds:406,par:5,hcp:1, tee:'Driver — stay in play',approach:'3W layup → wedge in',key:'HCP 1 — hardest hole. 406 yds. Three shots only. Bogey is fine here.',goal:'Bogey max',type:'danger'},
+      {num:7, yds:235,par:4,hcp:17,tee:'3W or 5W',approach:'Wedge in close',key:'HCP 17 — easiest hole. 3W leaves a wedge. No excuses. Par minimum.',goal:'Par',type:'normal'},
+      {num:8, yds:119,par:3,hcp:13,tee:'PW or gap wedge',approach:'Attack the pin',key:'119 yds — MUST SCORE. Your PW distance. Attack. Birdie or tap-in par.',goal:'Birdie / par',type:'score'},
+      {num:9, yds:287,par:4,hcp:5, tee:'Driver',approach:'Wedge → middle green',key:'HCP 5 — respect it. Driver + wedge. Middle green into the turn.',goal:'Par or bogey',type:'normal'},
+      {num:10,yds:242,par:4,hcp:14,tee:'3W or 5W',approach:'Wedge in',key:'Back 9 opener. Short par 4. 3W → wedge. Build momentum.',goal:'Par',type:'normal'},
+      {num:11,yds:399,par:5,hcp:6, tee:'Driver',approach:'3W layup → wedge in',key:'399-yd par 5, HCP 6. 3-shot formula. Driver → 3W → wedge. Patient.',goal:'Par',type:'normal'},
+      {num:12,yds:95, par:3,hcp:16,tee:'50–60° wedge — smooth',approach:'Attack the pin',key:'95 yds — GIFT HOLE. Smooth 60°. Birdie expected here. Take it.',goal:'Birdie / par',type:'score'},
+      {num:13,yds:293,par:4,hcp:10,tee:'Driver',approach:'Wedge → middle green',key:'Driver + wedge. Straightforward. Middle green. Steady golf.',goal:'Par',type:'normal'},
+      {num:14,yds:300,par:4,hcp:2, tee:'Driver — stay in play',approach:'Middle green — no short side',key:'HCP 2 — second hardest. Stay in play. Middle green only. Bogey is fine.',goal:'Bogey max',type:'danger'},
+      {num:15,yds:205,par:4,hcp:18,tee:'3W or 5W',approach:'Wedge in close',key:'205 yds — HCP 18 easiest hole. 3W → short wedge. Par minimum. No excuses.',goal:'Par',type:'normal'},
+      {num:16,yds:261,par:4,hcp:12,tee:'Driver or 3W',approach:'Wedge in',key:'Short par 4. Don\'t get sloppy late. 3W → wedge → center green.',goal:'Par',type:'normal'},
+      {num:17,yds:119,par:3,hcp:8, tee:'PW or gap wedge',approach:'Attack the pin',key:'119 yds — MUST SCORE. Third wedge par 3. Attack. Take the birdie.',goal:'Birdie / par',type:'score'},
+      {num:18,yds:384,par:5,hcp:4, tee:'Driver — fairway finder',approach:'Layup 30–40 yds → confident wedge',key:'Par 5 to close. HCP 4. Fairway finder, layup to your number, wedge it. 5 or 6 only.',goal:'Par or birdie',type:'normal'}
+    ]
+  },
+
   forestlake: {
     name:'Forest Lake Golf Club', meta:'Red Tees · 5,065 yds · Par 72 · Rating 68.7 · Slope 117',
     formula:'Score on the short par 3s · 3-shot every par 5 · Stay patient on H8 and H13',
