@@ -192,7 +192,7 @@
       <a href="#how">How It Works</a>
       <a href="#handle">What We Handle</a>
       <a href="#proof">Who We Are</a>
-      <a href="#book" class="nav-cta">Book a Review</a>
+      <a href="#book" class="nav-cta">Book a Call</a>
     </div>
   </div></nav>
 
@@ -202,7 +202,7 @@
     <h1>You Buy<br>The Property.<br><span class="out">We Handle</span><br>The <span class="amp">State.</span></h1>
     <p class="hero-sub">A vacant property and a licensed adult day care are two different assets at two different valuations. <b>We do the conversion</b>, file the application, coordinate every agency, and get you from deposit to licensed in six months. You never touch the paperwork.</p>
     <div class="hero-btns">
-      <a href="#book" class="btn btn-gold">Book a Feasibility Review</a>
+      <a href="#book" class="btn btn-gold">Book a Call</a>
       <a href="#how" class="btn btn-ghost">See How It Works</a>
     </div>
     <div class="hero-meta">
@@ -276,6 +276,107 @@
     </div>
     <p class="handle-note" style="margin-top:22px;text-align:center;">At a typical <b>$6K/month</b> carry, a four-month stall costs <b>$24,000</b> before the property earns a dollar. The fee isn't the cost. The vacant months are.</p>
   </div></section>
+
+ <!-- ============================================================
+     CARRYING-COST CALCULATOR  ..  paste this whole block right AFTER
+     the "Honest Math" ($2,500) </section> and BEFORE the next section.
+     Self-contained: uses your existing brand vars, styles travel with it.
+     ============================================================ -->
+  <section class="calc-section" id="calculator"><div class="wrap">
+    <span class="eyebrow">Run Your Own Numbers</span>
+    <h2 class="disp calc-h2">What is the <em>vacant property</em> costing you?</h2>
+    <p class="calc-sub">Move the sliders to your deal. The fee isn't the cost. The vacant months are.</p>
+
+    <div class="calc">
+      <div class="calc-controls">
+        <div class="calc-control">
+          <div class="calc-control-top">
+            <span class="calc-control-label">Your monthly carry</span>
+            <span class="calc-control-val" id="ccCarryVal">$6,000</span>
+          </div>
+          <input type="range" id="ccCarry" min="2000" max="20000" step="500" value="6000" aria-label="Your monthly carry">
+          <div class="calc-control-hint">Taxes, insurance, and debt service on the empty property.</div>
+        </div>
+        <div class="calc-control">
+          <div class="calc-control-top">
+            <span class="calc-control-label">Months of doing it yourself</span>
+            <span class="calc-control-val" id="ccMonthsVal">4</span>
+          </div>
+          <input type="range" id="ccMonths" min="1" max="12" step="1" value="4" aria-label="Months a DIY stall adds">
+          <div class="calc-control-hint">How long an application drifts when a deadline is missed.</div>
+        </div>
+      </div>
+
+      <div class="calc-result">
+        <div class="calc-result-label">Dead carry while you wait</div>
+        <div class="calc-result-number" id="ccTotal">$24,000</div>
+        <div class="calc-result-sub">gone to taxes, insurance, and debt before the property earns a dollar.</div>
+        <div class="calc-verdict" id="ccVerdict">That's real money, spent on nothing.</div>
+        <div class="calc-cta">
+          <a href="https://calendar.app.google/zLsZCBYdTQ8oSsQEA" class="btn btn-gold">Book an Intro Call</a>
+          <span class="calc-fine">Illustrative. Your real numbers are what we map together.</span>
+        </div>
+      </div>
+    </div>
+  </div></section>
+
+<style>
+  /* ---- CARRYING-COST CALCULATOR (scoped) ---- */
+  .calc-section{background:radial-gradient(700px 300px at 85% -10%, rgba(201,162,39,.10), transparent 60%), var(--green-3);
+    color:#fff;padding:76px 0;}
+  .calc-section .eyebrow{color:var(--gold-2);}
+  .calc-h2{color:#fff;margin-top:12px;}
+  .calc-h2 em{color:var(--gold);font-style:normal;}
+  .calc-sub{color:rgba(255,255,255,.72);font-size:18px;max-width:620px;margin:14px 0 36px;}
+
+  .calc{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center;}
+  @media(max-width:760px){.calc{grid-template-columns:1fr;gap:30px;}}
+
+  .calc-control{margin-bottom:30px;}
+  .calc-control:last-child{margin-bottom:0;}
+  .calc-control-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;}
+  .calc-control-label{font-family:var(--font-cond);font-weight:600;font-size:19px;color:#fff;}
+  .calc-control-val{font-family:var(--font-display);font-weight:600;font-size:27px;color:var(--gold-2);}
+  .calc-section input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;border-radius:2px;
+    background:linear-gradient(to right,var(--gold) 0%,var(--gold) var(--fill,40%),rgba(255,255,255,.18) var(--fill,40%));outline:none;}
+  .calc-section input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;
+    background:#fff;border:3px solid var(--gold);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);transition:transform .1s;}
+  .calc-section input[type=range]::-webkit-slider-thumb:active{transform:scale(1.15);}
+  .calc-section input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:#fff;border:3px solid var(--gold);cursor:pointer;}
+  .calc-control-hint{font-size:13px;color:rgba(255,255,255,.5);margin-top:8px;}
+
+  .calc-result{border-left:1px solid rgba(255,255,255,.14);padding-left:44px;}
+  @media(max-width:760px){.calc-result{border-left:0;border-top:1px solid rgba(255,255,255,.14);padding-left:0;padding-top:28px;}}
+  .calc-result-label{font-family:var(--font-cond);font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-size:13px;color:var(--gold-2);margin-bottom:6px;}
+  .calc-result-number{font-family:var(--font-display);font-weight:600;font-size:clamp(54px,8vw,80px);line-height:.95;color:#fff;}
+  .calc-result-sub{font-size:15px;color:rgba(255,255,255,.72);margin-top:12px;line-height:1.5;}
+  .calc-verdict{margin-top:20px;padding:15px 18px;border-radius:8px;background:rgba(201,162,39,.12);border-left:4px solid var(--gold);
+    font-family:var(--font-cond);font-weight:600;font-size:18px;color:var(--gold-2);line-height:1.3;transition:background .3s;}
+  .calc-verdict.over{background:rgba(201,162,39,.22);}
+  .calc-cta{margin-top:22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+  .calc-fine{font-size:12px;color:rgba(255,255,255,.45);font-style:italic;}
+</style>
+<script>
+  (function(){
+    var carry=document.getElementById('ccCarry'), months=document.getElementById('ccMonths');
+    if(!carry||!months) return;
+    var FEE=25000; // invisible threshold that flips the verdict; no price shown
+    function fmt(n){return '$'+n.toLocaleString('en-US');}
+    function fill(el){el.style.setProperty('--fill',((el.value-el.min)/(el.max-el.min)*100)+'%');}
+    function update(){
+      var c=+carry.value,m=+months.value,total=c*m;
+      document.getElementById('ccCarryVal').textContent=fmt(c);
+      document.getElementById('ccMonthsVal').textContent=m;
+      document.getElementById('ccTotal').textContent=fmt(total);
+      var v=document.getElementById('ccVerdict');
+      if(total>=FEE){v.textContent="That's more than the cost of our service, spent on nothing.";v.classList.add('over');}
+      else{v.textContent="Add a month or two and you pass what our service costs.";v.classList.remove('over');}
+      fill(carry);fill(months);
+    }
+    carry.addEventListener('input',update);months.addEventListener('input',update);update();
+  })();
+</script>
+<!-- ==================== END CALCULATOR SECTION ==================== -->
 
  <!-- ============================================================
      PROOF SECTION  ..  paste this whole block right AFTER the
@@ -375,13 +476,55 @@
       <span class="eyebrow" style="color:var(--gold-2)">Who We Are</span>
       <h2 class="disp" style="margin-top:12px;color:var(--white);">Not built from theory.<br><em>Built from inside the system.</em></h2>
       <p class="lede" style="color:rgba(255,255,255,.72);margin:16px auto 0;">Two principals, two firms, one team. The one who knows the real estate, and the one who has owned and run the facility for 14 years.</p>
+    <!-- ============================================================
+     PODCAST BLOCK  ..  paste this whole block right AFTER the
+     shared quote at the end of your "Who We Are" (#proof) section,
+     just before that section's closing </div></section>.
+     Self-contained: uses your existing brand vars.
+     ============================================================ -->
+  <div class="pod-band">
+    <div class="pod-left">
+      <span class="pod-eyebrow">Care CEOs Unfiltered</span>
+      <div class="pod-title">Hear us break it down, every week.</div>
+      <p class="pod-copy">Real conversations on licensing, compliance, and building care businesses that last. The same expertise, unfiltered, from the two people who would run your project.</p>
+    </div>
+    <div class="pod-right">
+      <a class="pod-btn" href="https://podcasts.apple.com/us/podcast/care-ceos-unfiltered/id1896875294" target="_blank" rel="noopener">
+        <span class="pod-btn-k">Listen on</span><span class="pod-btn-v">Apple Podcasts</span>
+      </a>
+      <a class="pod-btn" href="https://open.spotify.com/show/033s7HJNzIkwXch1UxC6uz" target="_blank" rel="noopener">
+        <span class="pod-btn-k">Listen on</span><span class="pod-btn-v">Spotify</span>
+      </a>
+      <a class="pod-btn" href="https://www.iheart.com/podcast/1333-care-ceos-unfiltered-335939128/" target="_blank" rel="noopener">
+        <span class="pod-btn-k">Listen on</span><span class="pod-btn-v">iHeartRadio</span>
+      </a>
+    </div>
+  </div>
+
+<style>
+  /* ---- PODCAST BAND (scoped) ---- */
+  .pod-band{margin-top:40px;background:rgba(201,162,39,.08);border:1px solid rgba(201,162,39,.28);
+    border-radius:12px;padding:32px 36px;display:grid;grid-template-columns:1.3fr 1fr;gap:34px;align-items:center;}
+  @media(max-width:820px){.pod-band{grid-template-columns:1fr;gap:24px;}}
+  .pod-eyebrow{font-family:var(--font-cond);font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:13px;color:var(--gold-2);}
+  .pod-title{font-family:var(--font-cond);font-weight:700;font-size:26px;color:#fff;line-height:1.15;margin:6px 0 10px;}
+  .pod-copy{font-size:15px;color:rgba(255,255,255,.75);line-height:1.55;margin:0;}
+  .pod-right{display:flex;flex-direction:column;gap:10px;}
+  .pod-btn{display:flex;flex-direction:column;gap:1px;background:var(--green-3);border:1px solid rgba(255,255,255,.14);
+    border-radius:8px;padding:11px 18px;text-decoration:none;transition:border-color .15s,transform .15s,background .15s;}
+  .pod-btn:hover{border-color:var(--gold);transform:translateY(-1px);background:rgba(201,162,39,.1);}
+  .pod-btn-k{font-family:var(--font-cond);font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-size:10px;color:rgba(255,255,255,.5);}
+  .pod-btn-v{font-family:var(--font-cond);font-weight:700;font-size:19px;color:var(--gold-2);line-height:1.05;}
+  .pod-btn:hover .pod-btn-v{color:#fff;}
+</style>
+<!-- ==================== END PODCAST BLOCK ==================== -->
     </div>
     <div class="bio-grid">
       <div class="bio">
         <img class="bio-photo" src="tmac-city.png" alt="Dr. Tasha McCray">
         <div class="bio-name">Dr. Tasha "TMac" McCray</div>
         <div class="bio-firm">CompliTrst, Inc.</div>
-        <p class="bio-copy">32 years in healthcare compliance and 29 years as an enrepreneur. She has built and owned group homes, and founded CompliTrst because the compliance software she needed didn't exist.</p>
+        <p class="bio-copy">32 years in healthcare compliance and 29 years as an entrepreneur. She has built and owned group homes, and founded CompliTrst because the compliance software she needed didn't exist.</p>
         <ul class="creds">
           <li>PhD, MSN-Ed, RN</li>
           <li>Certified ALF Administrator</li>
@@ -419,8 +562,8 @@
   <section class="cta-final" id="book"><div class="wrap">
     <span class="eyebrow">The First Step</span>
     <h2 style="margin-top:16px;">Bring us the property<br>that's been <em>sitting longest.</em></h2>
-    <p>Every property you're evaluating is either a licensing candidate or it isn't. A feasibility review tells you which: zoning, occupancy, and capacity, before your capital moves.</p>
-<a href="https://calendar.app.google/QPi3ebTs8BvfQ41P6" target="_blank" rel="noopener" class="btn btn-gold">Book a Feasibility Review</a>    <div class="cta-fine">Low-risk first step · No commitment required · Florida</div>
+    <p>Start with a free 30-minute intro call. We'll talk through your property and goals, and map your next step: a Site Feasibility Report that gives you a clear go or no-go before your capital moves.</p>
+<a href="https://calendar.app.google/QPi3ebTs8BvfQ41P6" target="_blank" rel="noopener" class="btn btn-gold">Book a Call</a>    <div class="cta-fine">30-minute Zoom · No commitment required · Florida</div>
   </div></section>
 
   <!-- FOOTER -->
@@ -432,6 +575,7 @@
       </div>
       <div class="foot-links">
         <a href="mailto:support@complitrst.com">Contact</a>
+        <a href="https://podcasts.apple.com/us/podcast/care-ceos-unfiltered/id1896875294" target="_blank" rel="noopener">Podcast</a>
       </div>
     </div>
     <div class="foot-legal">TMac Inspired™ © 2026 · Done-for-you facility licensing for investors.</div>
