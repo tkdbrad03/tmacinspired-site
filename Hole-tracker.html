@@ -164,14 +164,26 @@ function b64Decode(str) {
   return decodeURIComponent(atob(str).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
 }
 
+// Escape anything injected into innerHTML. Player names arrive from other phones,
+// and a name containing " or < used to corrupt the DOM for everyone in the room.
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
+    ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+}
+
 const params = new URLSearchParams(location.search);
 
-// Handle return from PayPal
+// Handle return from PayPal.
+// Only mint a new room if we don't already have one. A home-screen shortcut saved
+// from the PayPal return URL keeps ?paid=1 forever, and the old code generated a
+// brand-new empty room on every single launch.
 if (params.get('paid') === '1') {
-  const newRoom = 'golf-' + Math.random().toString(36).slice(2, 7);
-  params.set('room', newRoom);
+  if (!params.get('room')) {
+    const priorRoom = localStorage.getItem('golf-last-room');
+    params.set('room', priorRoom || ('golf-' + Math.random().toString(36).slice(2, 7)));
+  }
   params.delete('paid');
-  history.replaceState({}, '', '?' + params.toString());
+  try { history.replaceState({}, '', '?' + params.toString()); } catch (e) {}
 }
 
 let room = params.get('room');
@@ -193,26 +205,71 @@ document.getElementById('roomLabel').textContent = room;
 const isViewer = params.get('view') === '1';
 const isDemo = params.get('demo') === '1';
 
-// --- URL persistence ---
-function saveToURL() {
+// --- Persistence ---
+// Safari throws a SecurityError past ~100 history.replaceState calls per 30s.
+// We save on every keystroke, so the URL write is throttled while localStorage
+// is written immediately and unconditionally.
+let pendingEncoded = null;
+let lastUrlWrite = 0;
+let urlWriteTimer = null;
+
+function flushUrlWrite() {
+  urlWriteTimer = null;
+  if (!pendingEncoded) return;
+  lastUrlWrite = Date.now();
   try {
-    const state = { n: names.slice(0, numPlayers), s: scores.map(r => r.slice(0, numPlayers)), p: numPlayers, b: betAmount, h: holeMode, par3: par3Holes, par5: par5Holes, ctp: ctpWinners };
-    const encoded = b64Encode(JSON.stringify(state));
-    params.set('data', encoded);
+    params.set('data', pendingEncoded);
     history.replaceState({}, '', '?' + params.toString());
-    localStorage.setItem('golf-state-' + room, encoded);
-  } catch (e) { console.log('saveToURL failed', e); }
+  } catch (e) { /* throttled by Safari — localStorage already has it */ }
 }
 
+function saveToURL() {
+  let encoded;
+  try {
+    const state = { n: names.slice(0, numPlayers), s: scores.map(r => r.slice(0, numPlayers)), p: numPlayers, b: betAmount, h: holeMode, par3: par3Holes, par5: par5Holes, ctp: ctpWinners, t: Date.now() };
+    encoded = b64Encode(JSON.stringify(state));
+  } catch (e) { console.log('encode failed', e); return; }
+
+  // Durable copy first — this must never be skipped.
+  try { localStorage.setItem('golf-state-' + room, encoded); } catch (e) {}
+
+  pendingEncoded = encoded;
+  const since = Date.now() - lastUrlWrite;
+  if (since > 1200) flushUrlWrite();
+  else if (!urlWriteTimer) urlWriteTimer = setTimeout(flushUrlWrite, 1200 - since);
+}
+
+// Flush before iOS suspends or discards the app.
+function saveOnHide() {
+  saveToURL();
+  if (urlWriteTimer) { clearTimeout(urlWriteTimer); flushUrlWrite(); }
+}
+window.addEventListener('pagehide', saveOnHide);
+window.addEventListener('visibilitychange', () => { if (document.hidden) saveOnHide(); });
+
+function decodeState(str) {
+  if (!str) return null;
+  try {
+    const s = JSON.parse(b64Decode(str));
+    return (s && typeof s === 'object') ? s : null;
+  } catch (e) { return null; }
+}
 
 function loadFromURL() {
-  let data = params.get('data');
-  if (!data) data = localStorage.getItem('golf-state-' + room); // ADD THIS LINE
-  if (!data) return;
+  // An iOS home-screen shortcut always relaunches from the URL saved when the
+  // shortcut was created — history.replaceState never updates it. That frozen
+  // ?data= blob used to win over the fresher localStorage copy and wipe the round.
+  // Whichever copy is newer now wins.
+  const urlState = decodeState(params.get('data'));
+  const localState = decodeState(localStorage.getItem('golf-state-' + room));
+  let state;
+  if (urlState && localState) {
+    state = (localState.t || 0) >= (urlState.t || 0) ? localState : urlState;
+  } else {
+    state = urlState || localState;
+  }
+  if (!state) return;
   try {
-    const state = JSON.parse(b64Decode(data));
-    // rest stays exactly the same
-
     if (state.h) {
       holeMode = state.h;
       document.getElementById('numHoles').value = state.h;
@@ -277,7 +334,7 @@ function buildPlayerCards() {
     div.className = 'player-card';
     div.innerHTML = `
       <label>Player ${i+1}</label>
-      <input type="text" id="name${i}" value="${names[i]}" oninput="names[${i}]=this.value;" onblur="broadcastState()">
+      <input type="text" id="name${i}" value="${esc(names[i])}" oninput="names[${i}]=this.value;" onblur="broadcastState()">
       <div class="winnings zero" id="win${i}">$0</div>
       <div class="skins-count" id="skins${i}">0 skins</div>`;
     container.appendChild(div);
@@ -355,12 +412,22 @@ function ctpTap(h) {
 function renderHeaders() {
   const hdr = document.getElementById('tableHeader');
   hdr.innerHTML = '<th>Hole</th>';
-  for (let i = 0; i < numPlayers; i++) hdr.innerHTML += `<th id="h${i}">${names[i] || 'P'+(i+1)}</th>`;
+  for (let i = 0; i < numPlayers; i++) hdr.innerHTML += `<th id="h${i}">${esc(names[i] || 'P'+(i+1))}</th>`;
   hdr.innerHTML += '<th>Result</th>';
   const tot = document.getElementById('totalsRow');
   tot.innerHTML = '<td>Total</td>';
   for (let i = 0; i < numPlayers; i++) tot.innerHTML += `<td id="tot${i}">—</td>`;
   tot.innerHTML += '<td></td>';
+}
+
+// Guarded write. The old inline handler did scores[h][p] = value directly, which
+// threw if the scores array and HOLES ever fell out of step — and a throw inside
+// an oninput handler leaves the scorecard frozen mid-entry.
+function setScore(h, p, value) {
+  if (!scores[h]) scores[h] = Array(4).fill('');
+  scores[h][p] = value;
+  calculate();
+  broadcastState();
 }
 
 function buildTable() {
@@ -371,8 +438,9 @@ function buildTable() {
     let cells = `<td>Hole ${holeNumbers[h]}<br><span style="font-size:0.65rem;color:#5a7a5a;font-weight:400;">Par ${getPar(h)}</span></td>`;
     for (let p = 0; p < numPlayers; p++) {
       cells += `<td><input class="score-input" type="number" min="1" max="15" placeholder="—"
-        value="${scores[h] ? scores[h][p] : ''}"
-        oninput="scores[${h}][${p}]=this.value; calculate(); broadcastState();"> </td>`;
+        id="s${h}_${p}"
+        value="${scores[h] ? esc(scores[h][p]) : ''}"
+        oninput="setScore(${h}, ${p}, this.value);"> </td>`;
     }
     const ctpLabel = par3Holes.includes(h) ? `<div class="ctp-cell" onclick="ctpTap(${h})" id="ctp${h}">📍 Tap CTP</div>` : '';
     cells += `<td class="result-cell" id="res${h}">${ctpLabel}</td>`;
@@ -389,7 +457,12 @@ function calculate() {
     const cell = document.getElementById('res'+h);
     if (!cell) continue;
     const vals = [];
-    for (let p = 0; p < numPlayers; p++) vals.push(scores[h][p] === '' ? null : parseInt(scores[h][p]));
+    const row = scores[h] || [];
+    for (let p = 0; p < numPlayers; p++) {
+      const raw = row[p];
+      const n = (raw === '' || raw == null) ? null : parseInt(raw);
+      vals.push(Number.isNaN(n) ? null : n);
+    }
 
     if (vals.filter(v => v !== null).length < numPlayers) {
       if (par3Holes.includes(h) && ctpWinners[h] !== null) {
@@ -412,7 +485,7 @@ function calculate() {
 } else if (winners.length === 1) {
 
       skinCounts[winners[0]]++;
-      cell.innerHTML = '🏆 ' + (names[winners[0]] || 'P'+(winners[0]+1));
+      cell.innerHTML = '🏆 ' + esc(names[winners[0]] || 'P'+(winners[0]+1));
       cell.className = 'result-cell win-cell';
     } else {
       cell.innerHTML = 'Tie';
@@ -447,11 +520,15 @@ function calculate() {
   }
  // Demo mode — lock after 9 holes
   if (isDemo) {
-    const holesEntered = scores.filter(row => row[0] !== '').length;
+    const holesEntered = scores.filter(row => row && row[0] !== '').length;
     if (holesEntered > 9) {
-      document.getElementById('tbody').style.pointerEvents = 'none';
-      document.getElementById('tbody').style.opacity = '0.4';
-      document.getElementById('demoWall').style.display = 'flex';
+      const body = document.getElementById('tbody');
+      const wall = document.getElementById('demoWall');
+      // demoWall is declared below the script tag, so it does not exist at first paint.
+      // Dereferencing it there used to throw and abort the rest of startup —
+      // applyViewerMode() and connectPusher() never ran.
+      if (body) { body.style.pointerEvents = 'none'; body.style.opacity = '0.4'; }
+      if (wall) wall.style.display = 'flex';
     }
   }
 }
@@ -502,8 +579,30 @@ function broadcastState() {
   triggerEvent('game-state', state);
 }
 
+// A rebuild wipes the DOM. If a player is mid-entry when someone else changes a
+// setting, the input under their thumb is destroyed, the keyboard drops and the
+// digit is lost — which is what "the app closed on me" usually means.
+function captureFocus() {
+  const el = document.activeElement;
+  if (!el || !el.id || !('value' in el)) return null;
+  const f = { id: el.id };
+  try { f.start = el.selectionStart; f.end = el.selectionEnd; } catch (e) {}
+  return f;
+}
+
+function restoreFocus(f) {
+  if (!f) return;
+  const el = document.getElementById(f.id);
+  if (!el) return;
+  try {
+    el.focus({ preventScroll: true });
+    if (f.start != null) el.setSelectionRange(f.start, f.end);
+  } catch (e) {}
+}
+
 function applyState(msg) {
   isApplyingState = true;
+  const focus = captureFocus();
   let rebuild = false;
 
   if (msg.holeMode && msg.holeMode !== holeMode) {
@@ -527,18 +626,23 @@ function applyState(msg) {
   if (msg.par5Holes) { par5Holes = msg.par5Holes; rebuild = true; }
   if (msg.ctpWinners) ctpWinners = msg.ctpWinners;
 
-  if (rebuild) buildAll();
-  else {
-    for (let i = 0; i < numPlayers; i++) { const el = document.getElementById('name'+i); if (el) el.value = names[i]; }
+  if (rebuild) {
+    buildAll();
+    restoreFocus(focus);
+  } else {
+    for (let i = 0; i < numPlayers; i++) {
+      const el = document.getElementById('name'+i);
+      if (el && el !== document.activeElement) el.value = names[i];
+    }
     for (let h = 0; h < HOLES; h++) {
       for (let p = 0; p < numPlayers; p++) {
-        const inp = document.querySelector(`#tbody tr:nth-child(${h+1}) td:nth-child(${p+2}) input`);
-        if (inp && inp !== document.activeElement) inp.value = scores[h][p];
+        const inp = document.getElementById('s'+h+'_'+p);
+        if (inp && inp !== document.activeElement) inp.value = (scores[h] ? scores[h][p] : '');
       }
     }
     calculate();
   }
- saveToURL();
+  saveToURL();
   isApplyingState = false;
 }
 
@@ -548,7 +652,9 @@ function resetAll() {
   par5Holes = [];
   ctpWinners = Array(18).fill(null);
   params.delete('data');
-  history.replaceState({}, '', '?' + params.toString());
+  pendingEncoded = null;
+  try { localStorage.removeItem('golf-state-' + room); } catch (e) {}
+  try { history.replaceState({}, '', '?' + params.toString()); } catch (e) {}
   buildAll();
   broadcastState();
 }
