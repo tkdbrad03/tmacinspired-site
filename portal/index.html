@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TMac Inspired Mentorship Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --green:#235c42;--green-deep:#183f2d;--ink:#12211a;
+  --gold:#b8935a;--gold-soft:#e4d3ba;--cream:#f4f2ee;
+  --paper:#fbfaf8;--line:#e2ded6;--muted:#6e7a72;
+  --display:'Fraunces',Georgia,serif;--body:'DM Sans',system-ui,sans-serif;
+}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+.eyebrow{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+
+/* GATE */
+#gate{position:fixed;inset:0;z-index:100;background:var(--green-deep);display:flex;align-items:center;justify-content:center;padding:28px}
+#gate.hidden{display:none}
+.gate-card{width:100%;max-width:360px;text-align:center}
+.gate-mark{font-family:var(--display);font-size:34px;font-weight:600;color:var(--cream);letter-spacing:-.01em}
+.gate-rule{width:54px;height:1px;background:var(--gold);margin:22px auto}
+.gate-msg{color:#a9bcb1;font-size:14px;margin-bottom:24px;line-height:1.6}
+.gate-field{margin-bottom:10px;text-align:left}
+.gate-field label{display:block;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#6d857a;margin-bottom:6px}
+.gate-field input{width:100%;padding:14px 16px;background:rgba(255,255,255,.06);border:1px solid rgba(228,211,186,.28);border-radius:2px;color:var(--cream);font-family:var(--body);font-size:15px;outline:none;transition:border-color .2s}
+.gate-field input:focus{border-color:var(--gold)}
+.gate-btn{width:100%;margin-top:12px;padding:15px;background:var(--gold);color:var(--green-deep);border:none;border-radius:2px;cursor:pointer;font-family:var(--body);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;transition:opacity .2s}
+.gate-btn:hover{opacity:.88}
+.gate-btn:disabled{opacity:.5;cursor:default}
+.gate-err{color:#e8a598;font-size:13px;margin-top:14px;min-height:20px;opacity:0;transition:opacity .2s}
+.gate-err.show{opacity:1}
+.gate-help{font-size:12px;color:#5f7669;margin-top:18px}
+
+/* SHELL */
+#app{display:none}
+#app.ready{display:block}
+header{background:var(--green);color:var(--cream);padding:26px 20px 22px}
+.hd-inner{max-width:840px;margin:0 auto;position:relative}
+.hd-mark{font-family:var(--display);font-size:21px;font-weight:600;letter-spacing:-.01em}
+.hd-name{font-family:var(--display);font-size:29px;font-weight:400;margin-top:20px;line-height:1.2}
+.hd-meta{font-size:13px;color:#b6cabd;margin-top:7px}
+.hd-btns{position:absolute;top:2px;right:0;display:flex;gap:8px}
+.hd-btn{background:none;border:1px solid rgba(228,211,186,.35);color:var(--gold-soft);border-radius:2px;padding:7px 13px;font-family:var(--body);font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:background .2s}
+.hd-btn:hover{background:rgba(228,211,186,.12)}
+.hd-btn.hide{display:none}
+
+nav{background:var(--green-deep);position:sticky;top:0;z-index:20;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+.nav-inner{display:flex;max-width:840px;margin:0 auto;min-width:max-content}
+.tab{flex:1;padding:15px 20px;background:none;border:none;border-bottom:2px solid transparent;color:#93a89b;cursor:pointer;white-space:nowrap;font-family:var(--body);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;transition:color .2s,border-color .2s}
+.tab:hover{color:var(--cream)}
+.tab[aria-selected="true"]{color:var(--gold);border-bottom-color:var(--gold)}
+.tab:focus-visible{outline:2px solid var(--gold);outline-offset:-4px}
+
+main{max-width:840px;margin:0 auto;padding:32px 20px 90px}
+.panel{display:none;animation:rise .3s ease}
+.panel.on{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+h2{font-family:var(--display);font-size:25px;font-weight:400;margin:4px 0 6px;line-height:1.25}
+.lede{color:var(--muted);font-size:15px;margin-bottom:26px;max-width:56ch}
+.card{background:#fff;border:1px solid var(--line);border-radius:3px;padding:22px;margin-bottom:16px}
+.card h3{font-family:var(--display);font-size:17px;font-weight:600;margin-bottom:12px}
+
+.facts{border-top:1px solid var(--line)}
+.fact{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}
+.fact dt{color:var(--muted)}
+.fact dd{font-weight:500;text-align:right}
+
+/* billing */
+.billing{border:1px solid var(--line);border-radius:3px;background:#fff;margin-bottom:16px}
+.billing summary{list-style:none;cursor:pointer;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;gap:14px;font-size:13px;color:var(--muted)}
+.billing summary::-webkit-details-marker{display:none}
+.billing summary .next{color:var(--ink)}
+.billing summary .next b{font-weight:500}
+.billing summary .chev{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);flex-shrink:0}
+.billing[open] summary .chev::after{content:' \2212'}
+.billing:not([open]) summary .chev::after{content:' +'}
+.billing-body{padding:0 18px 18px}
+.pay-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 0;border-top:1px solid var(--line);font-size:13.5px}
+.pay-row .amt{font-variant-numeric:tabular-nums;font-weight:500}
+.pay-row .when{color:var(--muted)}
+.paid{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);background:#e6efe9;padding:3px 8px;border-radius:2px}
+.pay-cta{display:block;margin-top:16px;padding:13px;background:var(--green);color:var(--cream);text-align:center;text-decoration:none;border-radius:2px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;transition:background .2s}
+.pay-cta:hover{background:var(--green-deep)}
+
+/* spine */
+.spine{position:relative;padding-left:38px;margin-top:8px}
+.spine::before{content:'';position:absolute;left:11px;top:12px;bottom:14px;width:2px;background:var(--line)}
+.spine::after{content:'';position:absolute;left:11px;top:12px;width:2px;background:var(--gold);height:var(--fill,0%);transition:height .7s cubic-bezier(.4,0,.2,1)}
+.step{position:relative;padding:0 0 26px}
+.step:last-child{padding-bottom:4px}
+.dot{position:absolute;left:-38px;top:2px;width:24px;height:24px;border-radius:50%;background:var(--paper);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;transition:border-color .25s,background .25s}
+.dot:hover{border-color:var(--gold)}
+.dot:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.dot span{width:9px;height:9px;border-radius:50%;background:transparent;transition:background .25s,transform .25s;transform:scale(.4)}
+.step.done .dot{border-color:var(--gold);background:var(--gold)}
+.step.done .dot span{background:var(--green-deep);transform:scale(1)}
+.step-n{font-size:10px;font-weight:700;letter-spacing:.16em;color:var(--gold);text-transform:uppercase}
+.step-t{font-family:var(--display);font-size:18px;font-weight:600;margin:2px 0 5px;line-height:1.3;cursor:pointer}
+.step.done .step-t{color:var(--muted)}
+.step-d{font-size:14px;color:var(--muted);max-width:52ch}
+.spine-count{font-size:13px;color:var(--muted);padding-bottom:20px;margin-bottom:4px;border-bottom:1px solid var(--line)}
+.spine-count b{color:var(--green);font-weight:700}
+
+/* calls */
+.call{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--line)}
+.call:last-child{border-bottom:none}
+.call-when{flex-shrink:0;width:66px;text-align:center;padding-top:2px}
+.call-when .m{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.call-when .d{font-family:var(--display);font-size:23px;line-height:1.1}
+.call-body h4{font-size:15px;font-weight:500;margin-bottom:3px}
+.call-body p{font-size:14px;color:var(--muted);white-space:pre-wrap}
+.call-body a.rec{display:inline-block;margin-top:7px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:2px}
+
+/* resources */
+.res{display:block;padding:16px 0;border-bottom:1px solid var(--line);text-decoration:none;color:inherit}
+.res:last-child{border-bottom:none}
+.res h4{font-size:15px;font-weight:500;margin-bottom:3px}
+.res .soon{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.res .open{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green)}
+a.res.live:hover h4{color:var(--green)}
+
+/* form */
+.f{margin-bottom:18px}
+.f label{display:block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.f input,.f select,.f textarea{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:2px;font-family:var(--body);font-size:15px;color:var(--ink);background:#fff;outline:none;transition:border-color .2s}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--green)}
+.f textarea{min-height:92px;resize:vertical}
+.f .hint{font-size:13px;color:var(--muted);margin-top:6px}
+.save{padding:15px 34px;background:var(--green);color:var(--cream);border:none;border-radius:2px;cursor:pointer;font-family:var(--body);font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;transition:background .2s}
+.save:hover{background:var(--green-deep)}
+.save:disabled{opacity:.5;cursor:default}
+.saved{font-size:13px;color:var(--green);margin-left:14px;opacity:0;transition:opacity .3s}
+.saved.show{opacity:1}
+.saved.err{color:#b4442f}
+.note{background:var(--cream);border-left:2px solid var(--gold);padding:16px 18px;font-size:14px;color:#43514a;margin-bottom:24px}
+.empty{font-size:14px;color:var(--muted);padding:6px 0}
+
+/* admin */
+.client-row{display:flex;justify-content:space-between;align-items:center;gap:14px;width:100%;padding:16px 0;border-bottom:1px solid var(--line);background:none;border-left:none;border-right:none;border-top:none;cursor:pointer;text-align:left;font-family:var(--body)}
+.client-row:last-child{border-bottom:none}
+.client-row .nm{font-family:var(--display);font-size:17px;font-weight:600;color:var(--ink)}
+.client-row .sub{font-size:13px;color:var(--muted);margin-top:2px}
+.client-row .go{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.readout{border-top:1px solid var(--line)}
+.readout div{display:flex;justify-content:space-between;gap:18px;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}
+.readout dt{color:var(--muted);flex-shrink:0}
+.readout dd{text-align:right;font-weight:500}
+.readout dd.none{font-weight:400;color:#a8b1ab}
+.unlock{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.unlock:last-child{border-bottom:none}
+.unlock input[type=checkbox]{width:19px;height:19px;accent-color:var(--green);flex-shrink:0;cursor:pointer}
+.unlock .ttl{font-size:14.5px;flex:1}
+.unlock input[type=url]{flex:1.1;min-width:0;padding:9px 11px;border:1px solid var(--line);border-radius:2px;font-family:var(--body);font-size:13px;outline:none}
+.unlock input[type=url]:focus{border-color:var(--green)}
+
+footer{border-top:1px solid var(--line);padding:22px 20px 34px;text-align:center;font-size:12px;color:var(--muted)}
+
+@media(min-width:700px){
+  header{padding:38px 20px 30px}
+  .hd-name{font-size:36px}
+  main{padding:44px 20px 90px}
+  h2{font-size:30px}
+  .card{padding:28px}
+}
+@media(max-width:560px){
+  .unlock{flex-wrap:wrap}
+  .unlock input[type=url]{flex-basis:100%}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gate-card">
+    <div class="gate-mark">TMac Inspired</div>
+    <div class="gate-rule"></div>
+    <p class="gate-msg">Private mentorship portal</p>
+    <div class="gate-field"><label for="gEmail">Email</label><input id="gEmail" type="email" autocomplete="email"></div>
+    <div class="gate-field"><label for="gPass">Password</label><input id="gPass" type="password" autocomplete="current-password"></div>
+    <button class="gate-btn" id="gateBtn">Sign in</button>
+    <p class="gate-err" id="gateErr" role="alert"></p>
+    <p class="gate-help">Forgot your password? Message Tasha.</p>
+  </div>
+</div>
+
+<div id="app">
+<header>
+  <div class="hd-inner">
+    <div class="hd-btns">
+      <button class="hd-btn hide" id="backBtn">Clients</button>
+      <button class="hd-btn" id="signOut">Sign out</button>
+    </div>
+    <div class="hd-mark">TMac Inspired</div>
+    <h1 class="hd-name" id="hdName">&nbsp;</h1>
+    <p class="hd-meta" id="hdMeta">&nbsp;</p>
+  </div>
+</header>
+
+<nav id="navBar">
+  <div class="nav-inner" role="tablist" id="navInner"></div>
+</nav>
+
+<main>
+
+<!-- ══ CLIENT VIEW ══ -->
+<section class="panel" id="p-onboarding" role="tabpanel">
+  <p class="eyebrow">Start here</p>
+  <h2>Welcome, Amayah</h2>
+  <p class="lede">This is where everything lives. Your plan, your calls, and what you owe me between them. Fill out the intake below before our first session so we don't spend that hour on questions I could have read.</p>
+
+  <details class="billing">
+    <summary>
+      <span class="next">Next payment <b>September 1</b>, $1,583.33</span>
+      <span class="chev">Schedule</span>
+    </summary>
+    <div class="billing-body">
+      <div class="pay-row"><span class="when">Deposit</span><span><span class="paid">Paid</span></span></div>
+      <div class="pay-row"><span class="when">September 1, 2026</span><span class="amt">$1,583.33</span></div>
+      <div class="pay-row"><span class="when">October 1, 2026</span><span class="amt">$1,583.33</span></div>
+      <div class="pay-row"><span class="when">November 1, 2026</span><span class="amt">$1,583.33</span></div>
+      <div class="pay-row"><span class="when">December 1, 2026</span><span class="amt">$1,583.33</span></div>
+      <div class="pay-row"><span class="when">January 1, 2027</span><span class="amt">$1,583.33</span></div>
+      <div class="pay-row"><span class="when">February 1, 2027</span><span class="amt">$1,583.35</span></div>
+      <a class="pay-cta" href="https://buy.stripe.com/bJe28q744bnT3SY6gO1sQ0l" target="_blank" rel="noopener">Make a payment</a>
+    </div>
+  </details>
+
+  <div class="card">
+    <h3>Your program</h3>
+    <dl class="facts">
+      <div class="fact"><dt>Path</dt><dd>Independent living</dd></div>
+      <div class="fact"><dt>Length</dt><dd>Six months</dd></div>
+      <div class="fact"><dt>Sessions</dt><dd>Weekly, one-on-one via Zoom</dd></div>
+      <div class="fact"><dt>Mentor</dt><dd>Tasha McCray</dd></div>
+      <div class="fact"><dt>Between sessions</dt><dd>Reach me here</dd></div>
+    </dl>
+  </div>
+
+  <div class="card">
+    <h3>Intake</h3>
+    <p class="note">Answer what you can. If you don't know something like your credit score or your debt to income, write "don't know." That's an answer, and it tells me where to start.</p>
+    <div class="f"><label for="i-phone">Best number to reach you</label><input id="i-phone" type="tel"></div>
+    <div class="f"><label for="i-shift">Your shift pattern</label><input id="i-shift" type="text" placeholder="Three 12s, nights, rotating"><p class="hint">So I schedule calls around your rotation, not into it.</p></div>
+    <div class="f"><label for="i-window">Best day and time for our weekly call</label><input id="i-window" type="text" placeholder="Tuesday evenings after 7"></div>
+    <div class="f"><label for="i-license">Nursing license, state and years practicing</label><input id="i-license" type="text"></div>
+    <div class="f"><label for="i-entity">Do you have a business entity yet?</label>
+      <select id="i-entity"><option value="">Select</option><option>No, not yet</option><option>Yes, already formed</option><option>Started but not finished</option></select>
+    </div>
+    <div class="f"><label for="i-credit">Credit score, if you know it</label><input id="i-credit" type="text" placeholder="Or 'don't know'"></div>
+    <div class="f"><label for="i-dti">Debt to income ratio, if you know it</label><input id="i-dti" type="text" placeholder="Or 'don't know'"></div>
+    <div class="f"><label for="i-market">Where you'd want to buy</label><input id="i-market" type="text" placeholder="Counties, cities, or 'not sure yet'"><p class="hint">You said you'd consider outside Tennessee. Tell me what you're open to.</p></div>
+    <div class="f"><label for="i-hours">Hours a week you can put into this</label><input id="i-hours" type="text"></div>
+    <button class="save" id="saveIntake">Save intake</button>
+    <span class="saved" id="savedMsg">Saved</span>
+  </div>
+</section>
+
+<section class="panel" id="p-progress" role="tabpanel">
+  <p class="eyebrow">The sequence</p>
+  <h2>Progress</h2>
+  <p class="lede" id="progLede">Six milestones, in order. Each one has to hold before the next one makes sense. Tap a marker when it's done.</p>
+  <div class="card">
+    <p class="spine-count" id="spineCount">Nothing complete yet</p>
+    <div class="spine" id="spine"></div>
+  </div>
+</section>
+
+<section class="panel" id="p-calls" role="tabpanel">
+  <p class="eyebrow">Weekly</p>
+  <h2>Calls</h2>
+  <p class="lede" id="callsLede">Every session, with notes and recordings after each one.</p>
+  <div class="card" id="adminAddCall" style="display:none">
+    <h3>Post a session</h3>
+    <div class="f"><label for="c-date">Date</label><input id="c-date" type="text" placeholder="Aug 14, 2026"></div>
+    <div class="f"><label for="c-title">Title</label><input id="c-title" type="text" placeholder="Onboarding"></div>
+    <div class="f"><label for="c-notes">Notes and action items</label><textarea id="c-notes"></textarea></div>
+    <div class="f"><label for="c-link">Recording link, optional</label><input id="c-link" type="url" placeholder="https://"></div>
+    <button class="save" id="addCall">Post session</button>
+    <span class="saved" id="callMsg">Posted</span>
+  </div>
+  <div class="card"><div id="callList"></div></div>
+</section>
+
+<section class="panel" id="p-build" role="tabpanel">
+  <p class="eyebrow">Tools</p>
+  <h2>Build</h2>
+  <p class="lede" id="buildLede">Templates, checklists, and worksheets. These unlock as we reach the milestone they belong to.</p>
+  <div class="card"><div id="resList"></div></div>
+  <div id="adminResSave" style="display:none">
+    <button class="save" id="saveRes">Save resources</button>
+    <span class="saved" id="resMsg">Saved</span>
+  </div>
+</section>
+
+<!-- ══ ADMIN: CLIENT LIST ══ -->
+<section class="panel" id="p-clients" role="tabpanel">
+  <p class="eyebrow">Admin</p>
+  <h2>Clients</h2>
+  <p class="lede">Everyone currently in a program. Open a client to see their intake, move their milestones, post sessions, and release resources.</p>
+  <div class="card"><div id="clientList"><p class="empty">Loading clients.</p></div></div>
+</section>
+
+<!-- ══ ADMIN: INTAKE READOUT ══ -->
+<section class="panel" id="p-intake" role="tabpanel">
+  <p class="eyebrow">Admin</p>
+  <h2>Intake</h2>
+  <p class="lede">What she submitted, as she wrote it.</p>
+  <div class="card"><dl class="readout" id="intakeRead"></dl></div>
+</section>
+
+</main>
+
+<footer>TMac Inspired, LLC &middot; Private client portal</footer>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, collection, getDocs, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+/* ═══════════════════════════════════════════════════════════
+   PASTE YOUR FIREBASE CONFIG HERE
+   Console > Project settings > Your apps > Web app
+   ═══════════════════════════════════════════════════════════ */
+const firebaseConfig = {
+  apiKey: "AIzaSyDyHtwzVFg0ecUXf41R4Ar7RQFnWW5Gtoc",
+
+  authDomain: "mentorship-portal-605d0.firebaseapp.com",
+
+  projectId: "mentorship-portal-605d0",
+
+  storageBucket: "mentorship-portal-605d0.firebasestorage.app",
+
+  messagingSenderId: "969929769537",
+
+  appId: "1:969929769537:web:640d8729ec523677573cc0"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+const STEPS = [
+  {n:"Milestone 1", t:"Foundation", d:"Entity formed, business banking open, credit and debt to income known. Nothing else can be built until this is true."},
+  {n:"Milestone 2", t:"Market chosen", d:"One target area, with the criteria written down for what makes a property work there."},
+  {n:"Milestone 3", t:"Funding ready", d:"Your funding path confirmed and documented, so you can move when the right property shows up."},
+  {n:"Milestone 4", t:"Property under contract", d:"A building identified, evaluated, and secured."},
+  {n:"Milestone 5", t:"Set up to open", d:"Property prepared, business standing behind it, staffing and systems in place."},
+  {n:"Milestone 6", t:"Doors open", d:"Operating and filling. The first one is the hard one. The next is faster."}
+];
+
+const RESOURCES = [
+  "Entity setup checklist",
+  "Market screening worksheet",
+  "Funding readiness checklist",
+  "Property evaluation worksheet",
+  "Setup and opening checklist",
+  "Resident acquisition playbook"
+];
+
+const FIELDS = ['i-phone','i-shift','i-window','i-license','i-entity','i-credit','i-dti','i-market','i-hours'];
+const LABELS = {
+  'i-phone':'Phone','i-shift':'Shift pattern','i-window':'Call window',
+  'i-license':'License','i-entity':'Entity','i-credit':'Credit score',
+  'i-dti':'Debt to income','i-market':'Target market','i-hours':'Hours per week'
+};
+
+const CLIENT_TABS = [['onboarding','Onboarding'],['progress','Progress'],['calls','Calls'],['build','Build']];
+const ADMIN_TABS  = [['clients','Clients']];
+const DETAIL_TABS = [['intake','Intake'],['progress','Progress'],['calls','Calls'],['build','Build']];
+
+let isAdmin = false;
+let ref = null;                 // doc being viewed
+let done = new Array(STEPS.length).fill(false);
+let calls = [];
+let resources = RESOURCES.map(()=>({unlocked:false,url:''}));
+
+const $ = id => document.getElementById(id);
+
+/* ── nav ── */
+function buildTabs(tabs){
+  const inner = $('navInner');
+  inner.innerHTML = '';
+  tabs.forEach(([k,label],i)=>{
+    const b = document.createElement('button');
+    b.className = 'tab'; b.setAttribute('role','tab');
+    b.setAttribute('aria-selected', i===0 ? 'true' : 'false');
+    b.textContent = label;
+    b.addEventListener('click', ()=>{
+      inner.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected','false'));
+      b.setAttribute('aria-selected','true');
+      show(k);
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+    inner.appendChild(b);
+  });
+  show(tabs[0][0]);
+}
+function show(k){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  const el = $('p-'+k);
+  if(el) el.classList.add('on');
+}
+
+/* ── spine ── */
+function paintSpine(){
+  const spine = $('spine');
+  spine.innerHTML = '';
+  STEPS.forEach((s,i)=>{
+    const el = document.createElement('div');
+    el.className = 'step' + (done[i] ? ' done' : '');
+    el.innerHTML =
+      '<button class="dot" aria-pressed="'+(!!done[i])+'" aria-label="Mark '+s.t+' complete"><span></span></button>'+
+      '<div class="step-n">'+s.n+'</div>'+
+      '<div class="step-t">'+s.t+'</div>'+
+      '<div class="step-d">'+s.d+'</div>';
+    el.querySelector('.dot').addEventListener('click',()=>toggle(i));
+    el.querySelector('.step-t').addEventListener('click',()=>toggle(i));
+    spine.appendChild(el);
+  });
+  const c = done.filter(Boolean).length;
+  spine.style.setProperty('--fill', (c===0 ? 0 : (c/STEPS.length)*100)+'%');
+  $('spineCount').innerHTML = c===0 ? 'Nothing complete yet' : '<b>'+c+' of '+STEPS.length+'</b> complete';
+}
+async function toggle(i){
+  done[i] = !done[i];
+  paintSpine();
+  if(!ref) return;
+  try{ await setDoc(ref,{milestones:done,updatedAt:serverTimestamp()},{merge:true}); }
+  catch(e){ console.error(e); }
+}
+
+/* ── calls ── */
+function esc(s){ return String(s??'').replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function paintCalls(){
+  const list = $('callList');
+  if(!calls.length){
+    list.innerHTML = '<p class="empty">No sessions posted yet. Your first one gets scheduled at onboarding.</p>';
+    return;
+  }
+  list.innerHTML = calls.map((c,i)=>
+    '<div class="call">'+
+      '<div class="call-when"><div class="m">'+esc(c.date||'')+'</div>'+
+      '<div class="d">'+String(calls.length-i).padStart(2,'0')+'</div></div>'+
+      '<div class="call-body"><h4>'+esc(c.title||'Session')+'</h4>'+
+      '<p>'+esc(c.notes||'')+'</p>'+
+      (c.link ? '<a class="rec" href="'+esc(c.link)+'" target="_blank" rel="noopener">Recording</a>' : '')+
+      '</div></div>').join('');
+}
+
+/* ── resources ── */
+function paintResources(){
+  const list = $('resList');
+  if(isAdmin && ref){
+    list.innerHTML = RESOURCES.map((t,i)=>
+      '<div class="unlock">'+
+      '<input type="checkbox" id="u'+i+'" '+(resources[i].unlocked?'checked':'')+' aria-label="Release '+t+'">'+
+      '<span class="ttl">'+t+'</span>'+
+      '<input type="url" id="r'+i+'" placeholder="https://" value="'+esc(resources[i].url||'')+'">'+
+      '</div>').join('');
+    return;
+  }
+  list.innerHTML = RESOURCES.map((t,i)=>{
+    const r = resources[i];
+    if(r.unlocked && r.url)
+      return '<a class="res live" href="'+esc(r.url)+'" target="_blank" rel="noopener"><h4>'+t+'</h4><p class="open">Open</p></a>';
+    if(r.unlocked)
+      return '<div class="res"><h4>'+t+'</h4><p class="open">Released, link coming</p></div>';
+    return '<div class="res"><h4>'+t+'</h4><p class="soon">Unlocks at milestone '+(i+1)+'</p></div>';
+  }).join('');
+}
+
+/* ── intake readout (admin) ── */
+function paintIntake(data){
+  $('intakeRead').innerHTML = FIELDS.map(f=>{
+    const v = (data && data[f]) ? esc(data[f]) : 'Not answered';
+    const cls = (data && data[f]) ? '' : ' class="none"';
+    return '<div><dt>'+LABELS[f]+'</dt><dd'+cls+'>'+v+'</dd></div>';
+  }).join('');
+}
+
+/* ── flash helper ── */
+function flash(id, text, bad){
+  const m = $(id);
+  m.textContent = text;
+  m.classList.toggle('err', !!bad);
+  m.classList.add('show');
+  setTimeout(()=>m.classList.remove('show'), 3000);
+}
+
+/* ── save intake (client) ── */
+$('saveIntake').addEventListener('click', async ()=>{
+  if(!ref) return;
+  const btn = $('saveIntake'); btn.disabled = true;
+  const intake = {};
+  FIELDS.forEach(f => intake[f] = $(f).value);
+  try{
+    await setDoc(ref,{intake,updatedAt:serverTimestamp()},{merge:true});
+    flash('savedMsg','Saved');
+  }catch(e){ console.error(e); flash('savedMsg',"Didn't save. Check your connection and try again.",true); }
+  btn.disabled = false;
+});
+
+/* ── post session (admin) ── */
+$('addCall').addEventListener('click', async ()=>{
+  if(!ref) return;
+  const date = $('c-date').value.trim(), title = $('c-title').value.trim();
+  if(!date || !title){ flash('callMsg','Add a date and a title.',true); return; }
+  const btn = $('addCall'); btn.disabled = true;
+  calls.unshift({date, title, notes:$('c-notes').value.trim(), link:$('c-link').value.trim()});
+  try{
+    await setDoc(ref,{calls,updatedAt:serverTimestamp()},{merge:true});
+    ['c-date','c-title','c-notes','c-link'].forEach(i=>$(i).value='');
+    paintCalls(); flash('callMsg','Posted');
+  }catch(e){ console.error(e); calls.shift(); flash('callMsg',"Didn't post. Try again.",true); }
+  btn.disabled = false;
+});
+
+/* ── save resources (admin) ── */
+$('saveRes').addEventListener('click', async ()=>{
+  if(!ref) return;
+  const btn = $('saveRes'); btn.disabled = true;
+  resources = RESOURCES.map((t,i)=>({
+    unlocked: $('u'+i).checked,
+    url: $('r'+i).value.trim()
+  }));
+  try{
+    await setDoc(ref,{resources,updatedAt:serverTimestamp()},{merge:true});
+    flash('resMsg','Saved');
+  }catch(e){ console.error(e); flash('resMsg',"Didn't save. Try again.",true); }
+  btn.disabled = false;
+});
+
+/* ── load a client doc ── */
+function hydrate(d){
+  done = (Array.isArray(d.milestones) && d.milestones.length === STEPS.length)
+       ? d.milestones : new Array(STEPS.length).fill(false);
+  calls = Array.isArray(d.calls) ? d.calls : [];
+  resources = (Array.isArray(d.resources) && d.resources.length === RESOURCES.length)
+            ? d.resources : RESOURCES.map(()=>({unlocked:false,url:''}));
+}
+
+async function openClient(uid, name){
+  ref = doc(db,'clients',uid);
+  try{
+    const snap = await getDoc(ref);
+    const d = snap.exists() ? snap.data() : {};
+    hydrate(d);
+    paintIntake(d.intake);
+  }catch(e){ console.error(e); }
+  $('hdName').textContent = name || 'Client';
+  $('hdMeta').textContent = 'Admin view';
+  $('backBtn').classList.remove('hide');
+  $('adminAddCall').style.display = '';
+  $('adminResSave').style.display = '';
+  $('callsLede').textContent = 'Post a session after each call. She sees these in order, newest first.';
+  $('buildLede').textContent = 'Tick a resource to release it to her, and paste the link.';
+  $('progLede').textContent = 'Tap a marker to move her milestone. She sees this update.';
+  paintSpine(); paintCalls(); paintResources();
+  buildTabs(DETAIL_TABS);
+}
+
+async function listClients(){
+  ref = null;
+  $('hdName').textContent = 'Tasha McCray';
+  $('hdMeta').textContent = 'Admin';
+  $('backBtn').classList.add('hide');
+  buildTabs(ADMIN_TABS);
+  const wrap = $('clientList');
+  try{
+    const snap = await getDocs(collection(db,'clients'));
+    if(snap.empty){ wrap.innerHTML = '<p class="empty">No clients yet.</p>'; return; }
+    wrap.innerHTML = '';
+    snap.forEach(s=>{
+      const d = s.data();
+      const c = (Array.isArray(d.milestones) ? d.milestones.filter(Boolean).length : 0);
+      const b = document.createElement('button');
+      b.className = 'client-row';
+      b.innerHTML = '<span><span class="nm">'+esc(d.name||'Client')+'</span>'+
+                    '<span class="sub">'+esc(d.path||'')+' &middot; '+c+' of '+STEPS.length+' milestones</span></span>'+
+                    '<span class="go">Open</span>';
+      b.addEventListener('click', ()=>openClient(s.id, d.name));
+      wrap.appendChild(b);
+    });
+  }catch(e){
+    console.error(e);
+    wrap.innerHTML = '<p class="empty">Could not load clients. Check your Firestore rules.</p>';
+  }
+}
+
+$('backBtn').addEventListener('click', listClients);
+
+/* ── auth ── */
+const gateBtn = $('gateBtn'), gateErr = $('gateErr');
+function showErr(t){ gateErr.textContent = t; gateErr.classList.add('show'); }
+
+gateBtn.addEventListener('click', async ()=>{
+  const email = $('gEmail').value.trim(), pass = $('gPass').value;
+  gateErr.classList.remove('show');
+  if(!email || !pass){ showErr('Enter your email and password.'); return; }
+  gateBtn.disabled = true;
+  try{ await signInWithEmailAndPassword(auth,email,pass); }
+  catch(e){
+    const c = e.code || '';
+    if(c.includes('invalid-credential')||c.includes('wrong-password')||c.includes('user-not-found'))
+      showErr("That email and password don't match. Try again or message Tasha.");
+    else if(c.includes('too-many-requests')) showErr('Too many attempts. Wait a minute and try again.');
+    else if(c.includes('network')) showErr('No connection. Check your signal and try again.');
+    else showErr('Sign in failed. Message Tasha.');
+  }
+  gateBtn.disabled = false;
+});
+$('gPass').addEventListener('keydown', e=>{ if(e.key==='Enter') gateBtn.click(); });
+$('signOut').addEventListener('click', ()=> signOut(auth));
+
+onAuthStateChanged(auth, async user=>{
+  if(!user){
+    $('gate').classList.remove('hidden');
+    $('app').classList.remove('ready');
+    ref = null; isAdmin = false;
+    return;
+  }
+  $('gate').classList.add('hidden');
+  $('app').classList.add('ready');
+
+  try{
+    const a = await getDoc(doc(db,'admins',user.uid));
+    isAdmin = a.exists();
+  }catch(e){ isAdmin = false; }
+
+  if(isAdmin){ await listClients(); return; }
+
+  /* client */
+  ref = doc(db,'clients',user.uid);
+  $('hdName').textContent = 'Amayah Edwards';
+  $('hdMeta').textContent = 'Six-month mentorship \u00b7 Independent living';
+  try{
+    const snap = await getDoc(ref);
+    if(snap.exists()){
+      const d = snap.data();
+      hydrate(d);
+      if(d.intake) FIELDS.forEach(f=>{ if(d.intake[f]) $(f).value = d.intake[f]; });
+    }else{
+      await setDoc(ref,{name:'Amayah Edwards',program:'Six-month mentorship',
+        path:'Independent living',milestones:done,createdAt:serverTimestamp()});
+    }
+  }catch(e){ console.error(e); }
+  paintSpine(); paintCalls(); paintResources();
+  buildTabs(CLIENT_TABS);
+});
+</script>
+</body>
+</html>
