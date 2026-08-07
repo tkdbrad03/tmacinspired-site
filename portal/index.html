@@ -121,7 +121,7 @@ h2{font-family:var(--display);font-size:25px;font-weight:400;margin:4px 0 6px;li
 .call-body p{font-size:14px;color:var(--muted);white-space:pre-wrap}
 .call-body a.rec{display:inline-block;margin-top:7px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:2px}
 
-/* resources */
+/* legacy resource rows */
 .res{display:block;padding:16px 0;border-bottom:1px solid var(--line);text-decoration:none;color:inherit}
 .res:last-child{border-bottom:none}
 .res h4{font-size:15px;font-weight:500;margin-bottom:3px}
@@ -156,12 +156,51 @@ a.res.live:hover h4{color:var(--green)}
 .readout dt{color:var(--muted);flex-shrink:0}
 .readout dd{text-align:right;font-weight:500}
 .readout dd.none{font-weight:400;color:#a8b1ab}
-.unlock{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
-.unlock:last-child{border-bottom:none}
-.unlock input[type=checkbox]{width:19px;height:19px;accent-color:var(--green);flex-shrink:0;cursor:pointer}
-.unlock .ttl{font-size:14.5px;flex:1}
-.unlock input[type=url]{flex:1.1;min-width:0;padding:9px 11px;border:1px solid var(--line);border-radius:2px;font-family:var(--body);font-size:13px;outline:none}
-.unlock input[type=url]:focus{border-color:var(--green)}
+/* worksheets */
+.ws{border-bottom:1px solid var(--line)}
+.ws:last-child{border-bottom:none}
+.ws summary{list-style:none;cursor:pointer;padding:17px 0;display:flex;justify-content:space-between;align-items:center;gap:14px}
+.ws summary::-webkit-details-marker{display:none}
+.ws .ws-t{font-size:15px;font-weight:500}
+.ws .ws-s{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);flex-shrink:0}
+.ws .ws-s.go{color:var(--green)}
+.ws .ws-s.all{color:var(--gold)}
+.ws.locked summary{cursor:default}
+.ws.locked .ws-t{color:var(--muted)}
+.ws-body{padding:2px 0 20px}
+.item{display:flex;gap:12px;align-items:flex-start;padding:9px 0;cursor:pointer}
+.item input{width:18px;height:18px;margin-top:1px;accent-color:var(--green);flex-shrink:0;cursor:pointer}
+.item span{font-size:14.5px;line-height:1.5}
+.item.ticked span{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--gold)}
+.ws-bar{height:2px;background:var(--line);margin-bottom:12px;position:relative}
+.ws-bar i{position:absolute;left:0;top:0;height:100%;background:var(--gold);width:var(--w,0%);transition:width .4s ease}
+.release{display:flex;align-items:center;gap:12px;padding:15px 0;border-bottom:1px solid var(--line)}
+.release:last-child{border-bottom:none}
+.release input{width:19px;height:19px;accent-color:var(--green);flex-shrink:0;cursor:pointer}
+.release .ttl{font-size:14.5px;flex:1}
+.release .cnt{font-size:12px;color:var(--muted);flex-shrink:0}
+
+/* worksheets */
+.ws-row{display:flex;justify-content:space-between;align-items:center;gap:14px;width:100%;padding:16px 0;border-bottom:1px solid var(--line);background:none;border-left:none;border-right:none;border-top:none;text-align:left;font-family:var(--body)}
+.ws-row:last-child{border-bottom:none}
+.ws-row.open{cursor:pointer}
+.ws-row .nm{font-size:15.5px;font-weight:500;color:var(--ink)}
+.ws-row.locked .nm{color:#a8b1ab}
+.ws-row .sub{font-size:13px;color:var(--muted);margin-top:2px}
+.ws-row .go{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);flex-shrink:0}
+.ws-row .lk{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#a8b1ab;flex-shrink:0}
+.ws-row.open:hover .nm{color:var(--green)}
+.bar{height:3px;background:var(--line);border-radius:2px;margin-top:9px;max-width:180px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--gold);transition:width .4s ease}
+.backlink{background:none;border:none;padding:0 0 14px;cursor:pointer;font-family:var(--body);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.backlink:hover{color:var(--green)}
+.ws-item{display:flex;gap:13px;align-items:flex-start;padding:13px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.ws-item:last-child{border-bottom:none}
+.ws-item input{width:19px;height:19px;accent-color:var(--green);flex-shrink:0;margin-top:1px;cursor:pointer}
+.ws-item span{font-size:15px;line-height:1.45}
+.ws-item.ticked span{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--gold-soft)}
+.ws-item.ro{cursor:default}
+.ws-item.ro input{cursor:default}
 
 footer{border-top:1px solid var(--line);padding:22px 20px 34px;text-align:center;font-size:12px;color:var(--muted)}
 
@@ -173,8 +212,7 @@ footer{border-top:1px solid var(--line);padding:22px 20px 34px;text-align:center
   .card{padding:28px}
 }
 @media(max-width:560px){
-  .unlock{flex-wrap:wrap}
-  .unlock input[type=url]{flex-basis:100%}
+  .release{flex-wrap:wrap}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -297,17 +335,13 @@ footer{border-top:1px solid var(--line);padding:22px 20px 34px;text-align:center
   <h2>Build</h2>
   <p class="lede" id="buildLede">Templates, checklists, and worksheets. These unlock as we reach the milestone they belong to.</p>
   <div class="card"><div id="resList"></div></div>
-  <div id="adminResSave" style="display:none">
-    <button class="save" id="saveRes">Save resources</button>
-    <span class="saved" id="resMsg">Saved</span>
-  </div>
 </section>
 
 <!-- ══ ADMIN: CLIENT LIST ══ -->
 <section class="panel" id="p-clients" role="tabpanel">
   <p class="eyebrow">Admin</p>
   <h2>Clients</h2>
-  <p class="lede">Everyone currently in a program. Open a client to see their intake, move their milestones, post sessions, and release resources.</p>
+  <p class="lede">Everyone currently in a program. Open a client to see their intake, move their milestones, post sessions, and release worksheets.</p>
   <div class="card"><div id="clientList"><p class="empty">Loading clients.</p></div></div>
 </section>
 
@@ -337,15 +371,10 @@ import { getFirestore, doc, getDoc, setDoc, collection, getDocs, serverTimestamp
    ═══════════════════════════════════════════════════════════ */
 const firebaseConfig = {
   apiKey: "AIzaSyDyHtwzVFg0ecUXf41R4Ar7RQFnWW5Gtoc",
-
   authDomain: "mentorship-portal-605d0.firebaseapp.com",
-
   projectId: "mentorship-portal-605d0",
-
   storageBucket: "mentorship-portal-605d0.firebasestorage.app",
-
   messagingSenderId: "969929769537",
-
   appId: "1:969929769537:web:640d8729ec523677573cc0"
 };
 
@@ -362,13 +391,66 @@ const STEPS = [
   {n:"Milestone 6", t:"Doors open", d:"Operating and filling. The first one is the hard one. The next is faster."}
 ];
 
-const RESOURCES = [
-  "Entity setup checklist",
-  "Market screening worksheet",
-  "Funding readiness checklist",
-  "Property evaluation worksheet",
-  "Setup and opening checklist",
-  "Resident acquisition playbook"
+const WORKSHEETS = [
+  {t:"Entity setup checklist", items:[
+    "Choose your entity type and the state you'll form it in",
+    "File the formation documents",
+    "Get your EIN from the IRS",
+    "Open a business bank account, separate from personal",
+    "Set up bookkeeping before the first dollar moves",
+    "Pull all three credit reports",
+    "Calculate your debt to income ratio and write it down",
+    "Appoint a registered agent"
+  ]},
+  {t:"Market screening worksheet", items:[
+    "List the counties you're willing to buy in",
+    "Confirm zoning allows residential occupancy for your use",
+    "Count the homes already operating in each area",
+    "Check the demand signals: waitlists, referral sources, population",
+    "Note the price range for suitable homes in each area",
+    "Check proximity to hospitals, transit, and shopping",
+    "Talk to three people already operating there",
+    "Choose one target area and commit to it"
+  ]},
+  {t:"Funding readiness checklist", items:[
+    "Pull together two years of tax returns",
+    "Pull sixty days of bank statements",
+    "Get a pre-approval letter in hand",
+    "Identify exactly where the down payment is coming from",
+    "Compare conventional, DSCR, and private lending",
+    "Line up a backup funding source",
+    "Confirm what reserves you'll still have after closing"
+  ]},
+  {t:"Property evaluation worksheet", items:[
+    "Count bedrooms and bathrooms against your target capacity",
+    "Measure square footage per resident",
+    "Confirm with the city that the use is allowed at this address",
+    "Confirm the occupancy limit in writing",
+    "Walk it for accessibility: steps, doorways, bathrooms",
+    "Get a repair estimate from someone who isn't the seller",
+    "Run the numbers at your target rate and realistic occupancy",
+    "Confirm parking meets local requirements"
+  ]},
+  {t:"Setup and opening checklist", items:[
+    "Furnish every room you intend to fill",
+    "Install and test smoke and carbon monoxide detectors",
+    "Bind your insurance and read what it actually covers",
+    "Write your house rules and resident agreement",
+    "Set your rate sheet",
+    "Write your intake process and application",
+    "Post emergency contacts and procedures",
+    "Obtain the local business license"
+  ]},
+  {t:"Resident acquisition playbook", items:[
+    "Build your referral list: hospitals, case managers, social workers",
+    "Introduce yourself to every discharge planner on that list",
+    "Photograph the home properly",
+    "Post the listing where families actually look",
+    "Write and practice your tour script",
+    "Set your application and screening process",
+    "Place your first resident",
+    "Fill the remaining rooms"
+  ]}
 ];
 
 const FIELDS = ['i-phone','i-shift','i-window','i-license','i-entity','i-credit','i-dti','i-market','i-hours'];
@@ -386,7 +468,8 @@ let isAdmin = false;
 let ref = null;                 // doc being viewed
 let done = new Array(STEPS.length).fill(false);
 let calls = [];
-let resources = RESOURCES.map(()=>({unlocked:false,url:''}));
+let released = WORKSHEETS.map(()=>false);
+let sheets = {};                // { "0":[bool,...], ... }
 
 const $ = id => document.getElementById(id);
 
@@ -461,26 +544,76 @@ function paintCalls(){
       '</div></div>').join('');
 }
 
-/* ── resources ── */
-function paintResources(){
+/* ── worksheets ── */
+function ticks(i){
+  const a = sheets[String(i)];
+  return Array.isArray(a) && a.length === WORKSHEETS[i].items.length
+       ? a : new Array(WORKSHEETS[i].items.length).fill(false);
+}
+
+function paintWorksheets(){
   const list = $('resList');
+
   if(isAdmin && ref){
-    list.innerHTML = RESOURCES.map((t,i)=>
-      '<div class="unlock">'+
-      '<input type="checkbox" id="u'+i+'" '+(resources[i].unlocked?'checked':'')+' aria-label="Release '+t+'">'+
-      '<span class="ttl">'+t+'</span>'+
-      '<input type="url" id="r'+i+'" placeholder="https://" value="'+esc(resources[i].url||'')+'">'+
-      '</div>').join('');
+    list.innerHTML = WORKSHEETS.map((w,i)=>{
+      const c = ticks(i).filter(Boolean).length;
+      return '<label class="release">'+
+        '<input type="checkbox" id="u'+i+'" '+(released[i]?'checked':'')+'>'+
+        '<span class="ttl">'+w.t+'</span>'+
+        '<span class="cnt">'+c+' of '+w.items.length+'</span></label>';
+    }).join('');
+    WORKSHEETS.forEach((w,i)=>{
+      $('u'+i).addEventListener('change', ()=>release(i));
+    });
     return;
   }
-  list.innerHTML = RESOURCES.map((t,i)=>{
-    const r = resources[i];
-    if(r.unlocked && r.url)
-      return '<a class="res live" href="'+esc(r.url)+'" target="_blank" rel="noopener"><h4>'+t+'</h4><p class="open">Open</p></a>';
-    if(r.unlocked)
-      return '<div class="res"><h4>'+t+'</h4><p class="open">Released, link coming</p></div>';
-    return '<div class="res"><h4>'+t+'</h4><p class="soon">Unlocks at milestone '+(i+1)+'</p></div>';
+
+  list.innerHTML = WORKSHEETS.map((w,i)=>{
+    if(!released[i])
+      return '<div class="ws locked"><div style="padding:17px 0;display:flex;'+
+             'justify-content:space-between;gap:14px;align-items:center">'+
+             '<span class="ws-t">'+w.t+'</span>'+
+             '<span class="ws-s">Unlocks at milestone '+(i+1)+'</span></div></div>';
+    const t = ticks(i), c = t.filter(Boolean).length, n = w.items.length;
+    const label = c === n ? 'Done' : (c === 0 ? 'Start' : c+' of '+n);
+    const cls   = c === n ? 'ws-s all' : 'ws-s go';
+    return '<details class="ws" data-i="'+i+'">'+
+      '<summary><span class="ws-t">'+w.t+'</span><span class="'+cls+'">'+label+'</span></summary>'+
+      '<div class="ws-body">'+
+        '<div class="ws-bar" style="--w:'+Math.round(c/n*100)+'%"><i></i></div>'+
+        w.items.map((it,j)=>
+          '<label class="item'+(t[j]?' ticked':'')+'">'+
+          '<input type="checkbox" data-i="'+i+'" data-j="'+j+'" '+(t[j]?'checked':'')+'>'+
+          '<span>'+it+'</span></label>').join('')+
+      '</div></details>';
   }).join('');
+
+  list.querySelectorAll('.item input').forEach(cb=>{
+    cb.addEventListener('change', ()=>tick(+cb.dataset.i, +cb.dataset.j));
+  });
+}
+
+async function tick(i,j){
+  const open = Array.from($('resList').querySelectorAll('details.ws'))
+                    .filter(d=>d.open).map(d=>d.dataset.i);
+  const t = ticks(i).slice();
+  t[j] = !t[j];
+  sheets[String(i)] = t;
+  paintWorksheets();
+  open.forEach(idx=>{
+    const d = $('resList').querySelector('details.ws[data-i="'+idx+'"]');
+    if(d) d.open = true;
+  });
+  if(!ref) return;
+  try{ await setDoc(ref,{worksheets:sheets,updatedAt:serverTimestamp()},{merge:true}); }
+  catch(e){ console.error(e); }
+}
+
+async function release(i){
+  released[i] = $('u'+i).checked;
+  if(!ref) return;
+  try{ await setDoc(ref,{released,updatedAt:serverTimestamp()},{merge:true}); }
+  catch(e){ console.error(e); }
 }
 
 /* ── intake readout (admin) ── */
@@ -529,28 +662,14 @@ $('addCall').addEventListener('click', async ()=>{
   btn.disabled = false;
 });
 
-/* ── save resources (admin) ── */
-$('saveRes').addEventListener('click', async ()=>{
-  if(!ref) return;
-  const btn = $('saveRes'); btn.disabled = true;
-  resources = RESOURCES.map((t,i)=>({
-    unlocked: $('u'+i).checked,
-    url: $('r'+i).value.trim()
-  }));
-  try{
-    await setDoc(ref,{resources,updatedAt:serverTimestamp()},{merge:true});
-    flash('resMsg','Saved');
-  }catch(e){ console.error(e); flash('resMsg',"Didn't save. Try again.",true); }
-  btn.disabled = false;
-});
-
 /* ── load a client doc ── */
 function hydrate(d){
   done = (Array.isArray(d.milestones) && d.milestones.length === STEPS.length)
        ? d.milestones : new Array(STEPS.length).fill(false);
   calls = Array.isArray(d.calls) ? d.calls : [];
-  resources = (Array.isArray(d.resources) && d.resources.length === RESOURCES.length)
-            ? d.resources : RESOURCES.map(()=>({unlocked:false,url:''}));
+  released = (Array.isArray(d.released) && d.released.length === WORKSHEETS.length)
+           ? d.released : WORKSHEETS.map(()=>false);
+  sheets = (d.worksheets && typeof d.worksheets === 'object') ? d.worksheets : {};
 }
 
 async function openClient(uid, name){
@@ -565,11 +684,10 @@ async function openClient(uid, name){
   $('hdMeta').textContent = 'Admin view';
   $('backBtn').classList.remove('hide');
   $('adminAddCall').style.display = '';
-  $('adminResSave').style.display = '';
   $('callsLede').textContent = 'Post a session after each call. She sees these in order, newest first.';
-  $('buildLede').textContent = 'Tick a resource to release it to her, and paste the link.';
+  $('buildLede').textContent = 'Release a worksheet when she reaches it. The count shows how far she has gotten.';
   $('progLede').textContent = 'Tap a marker to move her milestone. She sees this update.';
-  paintSpine(); paintCalls(); paintResources();
+  paintSpine(); paintCalls(); paintWorksheets();
   buildTabs(DETAIL_TABS);
 }
 
@@ -658,7 +776,7 @@ onAuthStateChanged(auth, async user=>{
         path:'Independent living',milestones:done,createdAt:serverTimestamp()});
     }
   }catch(e){ console.error(e); }
-  paintSpine(); paintCalls(); paintResources();
+  paintSpine(); paintCalls(); paintWorksheets();
   buildTabs(CLIENT_TABS);
 });
 </script>
