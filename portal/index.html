@@ -11,7 +11,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
 :root{
   --green:#235c42;--green-deep:#183f2d;--ink:#12211a;
   --gold:#b8935a;--gold-soft:#e4d3ba;--cream:#f4f2ee;
@@ -26,14 +25,14 @@ body{font-family:var(--body);background:var(--paper);color:var(--ink);line-heigh
 #gate{position:fixed;inset:0;z-index:100;background:var(--green-deep);display:flex;align-items:center;justify-content:center;padding:28px}
 #gate.hidden{display:none}
 .gate-card{width:100%;max-width:360px;text-align:center}
-.gate-mark{font-family:var(--display);font-size:34px;font-weight:600;color:var(--cream);letter-spacing:-.01em}
+.gate-mark{font-family:var(--display);font-size:34px;font-weight:600;color:var(--cream)}
 .gate-rule{width:54px;height:1px;background:var(--gold);margin:22px auto}
-.gate-msg{color:#a9bcb1;font-size:14px;margin-bottom:24px;line-height:1.6}
+.gate-msg{color:#a9bcb1;font-size:14px;margin-bottom:24px}
 .gate-field{margin-bottom:10px;text-align:left}
 .gate-field label{display:block;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#6d857a;margin-bottom:6px}
 .gate-field input{width:100%;padding:14px 16px;background:rgba(255,255,255,.06);border:1px solid rgba(228,211,186,.28);border-radius:2px;color:var(--cream);font-family:var(--body);font-size:15px;outline:none;transition:border-color .2s}
 .gate-field input:focus{border-color:var(--gold)}
-.gate-btn{width:100%;margin-top:12px;padding:15px;background:var(--gold);color:var(--green-deep);border:none;border-radius:2px;cursor:pointer;font-family:var(--body);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;transition:opacity .2s}
+.gate-btn{width:100%;margin-top:12px;padding:15px;background:var(--gold);color:var(--green-deep);border:none;border-radius:2px;cursor:pointer;font-family:var(--body);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
 .gate-btn:hover{opacity:.88}
 .gate-btn:disabled{opacity:.5;cursor:default}
 .gate-err{color:#e8a598;font-size:13px;margin-top:14px;min-height:20px;opacity:0;transition:opacity .2s}
@@ -45,15 +44,15 @@ body{font-family:var(--body);background:var(--paper);color:var(--ink);line-heigh
 #app.ready{display:block}
 header{background:var(--green);color:var(--cream);padding:26px 20px 22px}
 .hd-inner{max-width:840px;margin:0 auto;position:relative}
-.hd-mark{font-family:var(--display);font-size:21px;font-weight:600;letter-spacing:-.01em}
+.hd-mark{font-family:var(--display);font-size:21px;font-weight:600}
 .hd-name{font-family:var(--display);font-size:29px;font-weight:400;margin-top:20px;line-height:1.2}
 .hd-meta{font-size:13px;color:#b6cabd;margin-top:7px}
 .hd-btns{position:absolute;top:2px;right:0;display:flex;gap:8px}
-.hd-btn{background:none;border:1px solid rgba(228,211,186,.35);color:var(--gold-soft);border-radius:2px;padding:7px 13px;font-family:var(--body);font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:background .2s}
+.hd-btn{background:none;border:1px solid rgba(228,211,186,.35);color:var(--gold-soft);border-radius:2px;padding:7px 13px;font-family:var(--body);font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
 .hd-btn:hover{background:rgba(228,211,186,.12)}
 .hd-btn.hide{display:none}
 
-nav{background:var(--green-deep);position:sticky;top:0;z-index:20;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+nav{background:var(--green-deep);position:sticky;top:0;z-index:20;overflow-x:auto;scrollbar-width:none}
 nav::-webkit-scrollbar{display:none}
 .nav-inner{display:flex;max-width:840px;margin:0 auto;min-width:max-content}
 .tab{flex:1;padding:15px 20px;background:none;border:none;border-bottom:2px solid transparent;color:#93a89b;cursor:pointer;white-space:nowrap;font-family:var(--body);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;transition:color .2s,border-color .2s}
@@ -69,7 +68,6 @@ h2{font-family:var(--display);font-size:25px;font-weight:400;margin:4px 0 6px;li
 .lede{color:var(--muted);font-size:15px;margin-bottom:26px;max-width:56ch}
 .card{background:#fff;border:1px solid var(--line);border-radius:3px;padding:22px;margin-bottom:16px}
 .card h3{font-family:var(--display);font-size:17px;font-weight:600;margin-bottom:12px}
-
 .facts{border-top:1px solid var(--line)}
 .fact{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}
 .fact dt{color:var(--muted)}
@@ -89,7 +87,7 @@ h2{font-family:var(--display);font-size:25px;font-weight:400;margin:4px 0 6px;li
 .pay-row .amt{font-variant-numeric:tabular-nums;font-weight:500}
 .pay-row .when{color:var(--muted)}
 .paid{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);background:#e6efe9;padding:3px 8px;border-radius:2px}
-.pay-cta{display:block;margin-top:16px;padding:13px;background:var(--green);color:var(--cream);text-align:center;text-decoration:none;border-radius:2px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;transition:background .2s}
+.pay-cta{display:block;margin-top:16px;padding:13px;background:var(--green);color:var(--cream);text-align:center;text-decoration:none;border-radius:2px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
 .pay-cta:hover{background:var(--green-deep)}
 
 /* spine */
@@ -121,29 +119,63 @@ h2{font-family:var(--display);font-size:25px;font-weight:400;margin:4px 0 6px;li
 .call-body p{font-size:14px;color:var(--muted);white-space:pre-wrap}
 .call-body a.rec{display:inline-block;margin-top:7px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:2px}
 
-/* legacy resource rows */
-.res{display:block;padding:16px 0;border-bottom:1px solid var(--line);text-decoration:none;color:inherit}
-.res:last-child{border-bottom:none}
-.res h4{font-size:15px;font-weight:500;margin-bottom:3px}
-.res .soon{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.res .open{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green)}
-a.res.live:hover h4{color:var(--green)}
+/* MODULES */
+.mod{border-bottom:1px solid var(--line)}
+.mod:last-child{border-bottom:none}
+.mod summary{list-style:none;cursor:pointer;padding:18px 0;display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+.mod summary::-webkit-details-marker{display:none}
+.mod-n{font-size:9.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.mod-t{font-family:var(--display);font-size:18px;font-weight:600;line-height:1.3;margin-top:2px}
+.mod-sub{font-size:13.5px;color:var(--muted);margin-top:3px;max-width:48ch}
+.mod-s{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;flex-shrink:0;padding-top:3px}
+.mod-s.locked{color:var(--muted)}
+.mod-s.open{color:var(--green)}
+.mod-s.done{color:var(--gold)}
+.mod.locked summary{cursor:default}
+.mod.locked .mod-t{color:var(--muted)}
+.mod-body{padding:0 0 24px}
+.mod-bar{height:2px;background:var(--line);margin-bottom:18px;position:relative}
+.mod-bar i{position:absolute;left:0;top:0;height:100%;background:var(--gold);width:var(--w,0%);transition:width .4s ease}
+.blk{margin-bottom:22px}
+.blk-h{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.item{display:flex;gap:12px;align-items:flex-start;padding:8px 0;cursor:pointer}
+.item input{width:18px;height:18px;margin-top:1px;accent-color:var(--green);flex-shrink:0;cursor:pointer}
+.item span{font-size:14.5px;line-height:1.5}
+.item.ticked span{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--gold)}
+audio,video{width:100%;display:block;border-radius:2px}
+video{background:#000}
+.media{margin-bottom:14px}
+.media-t{font-size:13px;font-weight:500;margin-bottom:7px}
+.ext{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;background:var(--cream);border-left:2px solid var(--gold);text-decoration:none;color:inherit;margin-bottom:10px}
+.ext:hover{background:#efece6}
+.ext .t{font-size:14px;font-weight:500}
+.ext .d{font-size:13px;color:var(--muted);margin-top:2px}
+.ext .go{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);flex-shrink:0}
+.docrow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}
+.docrow:last-child{border-bottom:none}
+.docrow .t{font-size:14.5px}
+.docrow .sub{font-size:12.5px;color:var(--muted);margin-top:2px}
+.docrow a{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:2px;flex-shrink:0}
+.pending{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);flex-shrink:0}
+.upbtn{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);border:1px solid var(--line);border-radius:2px;padding:8px 13px;cursor:pointer;flex-shrink:0}
+.upbtn:hover{background:var(--cream)}
+.upbtn input{display:none}
+.note{background:var(--cream);border-left:2px solid var(--gold);padding:15px 17px;font-size:14px;color:#43514a;margin-bottom:18px}
+.empty{font-size:14px;color:var(--muted);padding:6px 0}
 
 /* form */
 .f{margin-bottom:18px}
 .f label{display:block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
 .f input,.f select,.f textarea{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:2px;font-family:var(--body);font-size:15px;color:var(--ink);background:#fff;outline:none;transition:border-color .2s}
 .f input:focus,.f select:focus,.f textarea:focus{border-color:var(--green)}
-.f textarea{min-height:92px;resize:vertical}
+.f textarea{min-height:84px;resize:vertical}
 .f .hint{font-size:13px;color:var(--muted);margin-top:6px}
-.save{padding:15px 34px;background:var(--green);color:var(--cream);border:none;border-radius:2px;cursor:pointer;font-family:var(--body);font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;transition:background .2s}
+.save{padding:14px 30px;background:var(--green);color:var(--cream);border:none;border-radius:2px;cursor:pointer;font-family:var(--body);font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
 .save:hover{background:var(--green-deep)}
 .save:disabled{opacity:.5;cursor:default}
 .saved{font-size:13px;color:var(--green);margin-left:14px;opacity:0;transition:opacity .3s}
 .saved.show{opacity:1}
 .saved.err{color:#b4442f}
-.note{background:var(--cream);border-left:2px solid var(--gold);padding:16px 18px;font-size:14px;color:#43514a;margin-bottom:24px}
-.empty{font-size:14px;color:var(--muted);padding:6px 0}
 
 /* admin */
 .client-row{display:flex;justify-content:space-between;align-items:center;gap:14px;width:100%;padding:16px 0;border-bottom:1px solid var(--line);background:none;border-left:none;border-right:none;border-top:none;cursor:pointer;text-align:left;font-family:var(--body)}
@@ -156,51 +188,11 @@ a.res.live:hover h4{color:var(--green)}
 .readout dt{color:var(--muted);flex-shrink:0}
 .readout dd{text-align:right;font-weight:500}
 .readout dd.none{font-weight:400;color:#a8b1ab}
-/* worksheets */
-.ws{border-bottom:1px solid var(--line)}
-.ws:last-child{border-bottom:none}
-.ws summary{list-style:none;cursor:pointer;padding:17px 0;display:flex;justify-content:space-between;align-items:center;gap:14px}
-.ws summary::-webkit-details-marker{display:none}
-.ws .ws-t{font-size:15px;font-weight:500}
-.ws .ws-s{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);flex-shrink:0}
-.ws .ws-s.go{color:var(--green)}
-.ws .ws-s.all{color:var(--gold)}
-.ws.locked summary{cursor:default}
-.ws.locked .ws-t{color:var(--muted)}
-.ws-body{padding:2px 0 20px}
-.item{display:flex;gap:12px;align-items:flex-start;padding:9px 0;cursor:pointer}
-.item input{width:18px;height:18px;margin-top:1px;accent-color:var(--green);flex-shrink:0;cursor:pointer}
-.item span{font-size:14.5px;line-height:1.5}
-.item.ticked span{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--gold)}
-.ws-bar{height:2px;background:var(--line);margin-bottom:12px;position:relative}
-.ws-bar i{position:absolute;left:0;top:0;height:100%;background:var(--gold);width:var(--w,0%);transition:width .4s ease}
 .release{display:flex;align-items:center;gap:12px;padding:15px 0;border-bottom:1px solid var(--line)}
 .release:last-child{border-bottom:none}
 .release input{width:19px;height:19px;accent-color:var(--green);flex-shrink:0;cursor:pointer}
 .release .ttl{font-size:14.5px;flex:1}
 .release .cnt{font-size:12px;color:var(--muted);flex-shrink:0}
-
-/* worksheets */
-.ws-row{display:flex;justify-content:space-between;align-items:center;gap:14px;width:100%;padding:16px 0;border-bottom:1px solid var(--line);background:none;border-left:none;border-right:none;border-top:none;text-align:left;font-family:var(--body)}
-.ws-row:last-child{border-bottom:none}
-.ws-row.open{cursor:pointer}
-.ws-row .nm{font-size:15.5px;font-weight:500;color:var(--ink)}
-.ws-row.locked .nm{color:#a8b1ab}
-.ws-row .sub{font-size:13px;color:var(--muted);margin-top:2px}
-.ws-row .go{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);flex-shrink:0}
-.ws-row .lk{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#a8b1ab;flex-shrink:0}
-.ws-row.open:hover .nm{color:var(--green)}
-.bar{height:3px;background:var(--line);border-radius:2px;margin-top:9px;max-width:180px;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--gold);transition:width .4s ease}
-.backlink{background:none;border:none;padding:0 0 14px;cursor:pointer;font-family:var(--body);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
-.backlink:hover{color:var(--green)}
-.ws-item{display:flex;gap:13px;align-items:flex-start;padding:13px 0;border-bottom:1px solid var(--line);cursor:pointer}
-.ws-item:last-child{border-bottom:none}
-.ws-item input{width:19px;height:19px;accent-color:var(--green);flex-shrink:0;margin-top:1px;cursor:pointer}
-.ws-item span{font-size:15px;line-height:1.45}
-.ws-item.ticked span{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--gold-soft)}
-.ws-item.ro{cursor:default}
-.ws-item.ro input{cursor:default}
 
 footer{border-top:1px solid var(--line);padding:22px 20px 34px;text-align:center;font-size:12px;color:var(--muted)}
 
@@ -210,9 +202,6 @@ footer{border-top:1px solid var(--line);padding:22px 20px 34px;text-align:center
   main{padding:44px 20px 90px}
   h2{font-size:30px}
   .card{padding:28px}
-}
-@media(max-width:560px){
-  .release{flex-wrap:wrap}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -245,17 +234,15 @@ footer{border-top:1px solid var(--line);padding:22px 20px 34px;text-align:center
   </div>
 </header>
 
-<nav id="navBar">
-  <div class="nav-inner" role="tablist" id="navInner"></div>
-</nav>
+<nav><div class="nav-inner" role="tablist" id="navInner"></div></nav>
 
 <main>
 
-<!-- ══ CLIENT VIEW ══ -->
+<!-- ONBOARDING (client) -->
 <section class="panel" id="p-onboarding" role="tabpanel">
   <p class="eyebrow">Start here</p>
   <h2>Welcome, Amayah</h2>
-  <p class="lede">This is where everything lives. Your plan, your calls, and what you owe me between them. Fill out the intake below before our first session so we don't spend that hour on questions I could have read.</p>
+  <p class="lede">This is where everything lives. Your program, your calls, and what you owe me between them. Fill out the intake below before our first session so we don't spend that hour on questions I could have read.</p>
 
   <details class="billing">
     <summary>
@@ -304,16 +291,18 @@ footer{border-top:1px solid var(--line);padding:22px 20px 34px;text-align:center
   </div>
 </section>
 
+<!-- PROGRESS -->
 <section class="panel" id="p-progress" role="tabpanel">
   <p class="eyebrow">The sequence</p>
   <h2>Progress</h2>
-  <p class="lede" id="progLede">Six milestones, in order. Each one has to hold before the next one makes sense. Tap a marker when it's done.</p>
+  <p class="lede" id="progLede">Six milestones, in order. Each one has to hold before the next one makes sense.</p>
   <div class="card">
     <p class="spine-count" id="spineCount">Nothing complete yet</p>
     <div class="spine" id="spine"></div>
   </div>
 </section>
 
+<!-- CALLS -->
 <section class="panel" id="p-calls" role="tabpanel">
   <p class="eyebrow">Weekly</p>
   <h2>Calls</h2>
@@ -330,22 +319,23 @@ footer{border-top:1px solid var(--line);padding:22px 20px 34px;text-align:center
   <div class="card"><div id="callList"></div></div>
 </section>
 
-<section class="panel" id="p-build" role="tabpanel">
-  <p class="eyebrow">Tools</p>
-  <h2>Build</h2>
-  <p class="lede" id="buildLede">Templates, checklists, and worksheets. These unlock as we reach the milestone they belong to.</p>
-  <div class="card"><div id="resList"></div></div>
+<!-- PROGRAM -->
+<section class="panel" id="p-program" role="tabpanel">
+  <p class="eyebrow">How to start your independent living home</p>
+  <h2>The program</h2>
+  <p class="lede" id="progLede2">Six modules. Each one opens when you get there, so you're working on one thing at a time instead of drowning in all of it.</p>
+  <div class="card"><div id="modList"></div></div>
 </section>
 
-<!-- ══ ADMIN: CLIENT LIST ══ -->
+<!-- ADMIN CLIENT LIST -->
 <section class="panel" id="p-clients" role="tabpanel">
   <p class="eyebrow">Admin</p>
   <h2>Clients</h2>
-  <p class="lede">Everyone currently in a program. Open a client to see their intake, move their milestones, post sessions, and release worksheets.</p>
+  <p class="lede">Everyone currently in a program. Open a client to see their intake, move their milestones, post sessions, and release modules.</p>
   <div class="card"><div id="clientList"><p class="empty">Loading clients.</p></div></div>
 </section>
 
-<!-- ══ ADMIN: INTAKE READOUT ══ -->
+<!-- ADMIN INTAKE -->
 <section class="panel" id="p-intake" role="tabpanel">
   <p class="eyebrow">Admin</p>
   <h2>Intake</h2>
@@ -354,7 +344,6 @@ footer{border-top:1px solid var(--line);padding:22px 20px 34px;text-align:center
 </section>
 
 </main>
-
 <footer>TMac Inspired, LLC &middot; Private client portal</footer>
 </div>
 
@@ -364,11 +353,9 @@ import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, collection, getDocs, serverTimestamp }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getStorage, ref as sref, uploadBytes, getDownloadURL }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
-/* ═══════════════════════════════════════════════════════════
-   PASTE YOUR FIREBASE CONFIG HERE
-   Console > Project settings > Your apps > Web app
-   ═══════════════════════════════════════════════════════════ */
 const firebaseConfig = {
   apiKey: "AIzaSyDyHtwzVFg0ecUXf41R4Ar7RQFnWW5Gtoc",
   authDomain: "mentorship-portal-605d0.firebaseapp.com",
@@ -378,114 +365,226 @@ const firebaseConfig = {
   appId: "1:969929769537:web:640d8729ec523677573cc0"
 };
 
-const app  = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db   = getFirestore(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
 
-const STEPS = [
-  {n:"Milestone 1", t:"Foundation", d:"Entity formed, business banking open, credit and debt to income known. Nothing else can be built until this is true."},
-  {n:"Milestone 2", t:"Market chosen", d:"One target area, with the criteria written down for what makes a property work there."},
-  {n:"Milestone 3", t:"Funding ready", d:"Your funding path confirmed and documented, so you can move when the right property shows up."},
-  {n:"Milestone 4", t:"Property under contract", d:"A building identified, evaluated, and secured."},
-  {n:"Milestone 5", t:"Set up to open", d:"Property prepared, business standing behind it, staffing and systems in place."},
-  {n:"Milestone 6", t:"Doors open", d:"Operating and filling. The first one is the hard one. The next is faster."}
+/* ══════════ CURRICULUM ══════════ */
+const MODULES = [
+  {
+    t:"Where to Start",
+    sub:"Your why, what this business actually is, and the legal ground you stand on.",
+    note:"An independent living home provides room and board for two or more unrelated individuals and is not licensed or certified by the state. Federal law limits what a city can do to you: the Equal Protection Clause, the ADA, the Rehabilitation Act of 1973, and the Fair Housing Amendments Act.",
+    media:[],
+    ask:[
+      {id:"m1_why", l:"Write down your why", ta:true,
+       h:"Help the community. Passive income. Become a leader. Be your own boss. Family legacy. Or your own reason."},
+      {id:"m1_type", l:"What type of independent living home will you start, and why", ta:true,
+       h:"Seniors, recovery, re-entry, aged out of foster care, students, travel nurses, veterans, and many more."}
+    ],
+    checks:[
+      "Research the industry",
+      "Understand who you want to serve",
+      "Write your why",
+      "Choose the type of independent living home you will operate",
+      "Read the legal section and understand what a city can and cannot do"
+    ]
+  },
+  {
+    t:"Business Set-up",
+    sub:"The roadmap to filing, and everything that has to happen before it.",
+    note:"We are not attorneys and none of this is legal advice.",
+    media:[
+      {type:"audio", t:"Road Map to Success",
+       url:"https://www.dropbox.com/scl/fi/7jhvh24oq0cfaw9dyrwki/Roadmap-To-Success.m4a?rlkey=kejfied47alft6ql0ci2b988c&raw=1"}
+    ],
+    ask:[
+      {id:"m2_name", l:"Your business name"},
+      {id:"m2_domain", l:"Your domain and email"},
+      {id:"m2_office", l:"Your virtual office address"},
+      {id:"m2_number", l:"Your 1-800 number"}
+    ],
+    checks:[
+      "Check your name on Namechk for domain and social availability",
+      "Obtain your matching domain and email",
+      "Set up a virtual office to use as your business address",
+      "Purchase a 1-800 number and forward it to your mobile",
+      "Choose your business name",
+      "Register the business at state, federal, and local level",
+      "Get your EIN at irs.gov",
+      "Open your business bank account",
+      "Set up your accounting system",
+      "Decide your payment options for clients"
+    ]
+  },
+  {
+    t:"Entrepreneurship",
+    sub:"The nine questions that make the marketing work.",
+    note:"Answer all nine before you spend a dollar on promotion. This is the thinking the flyer comes from.",
+    media:[
+      {type:"audio", t:"Entrepreneurship and Marketing", url:""}
+    ],
+    ask:[
+      {id:"m3_why", l:"Why", ta:true, h:"Your purpose."},
+      {id:"m3_who", l:"Who", ta:true, h:"Your ideal client."},
+      {id:"m3_diff", l:"Difference", ta:true, h:"How and why you are better."},
+      {id:"m3_price", l:"Price and positioning", ta:true, h:"The story you want people to believe about the value you create."},
+      {id:"m3_dist", l:"Distribution", ta:true, h:"How you reach people and let them know about your home."},
+      {id:"m3_plat", l:"Platform", ta:true, h:"Where you tell your story."},
+      {id:"m3_promo", l:"Promotion strategy", ta:true, h:"How you tell your story."},
+      {id:"m3_growth", l:"Growth strategy", ta:true, h:"The plan for attracting more customers."},
+      {id:"m3_ref", l:"Referral strategy", ta:true, h:"The story you give people to tell."}
+    ],
+    checks:[
+      "Answer all nine questions above",
+      "Pick the three channels you will actually work",
+      "Write your elevator speech"
+    ]
+  },
+  {
+    t:"Marketing",
+    sub:"Referral form, flyer, marketing email, and how to handle what comes in.",
+    note:"Your referral form is also your CRM. Set it up once and it does two jobs.",
+    media:[
+      {type:"audio", t:"Referral Form",
+       url:"https://www.dropbox.com/scl/fi/yrdrgrwnwaxa6l6vzzf95/Referral-Form.m4a?rlkey=2e04ymk3alvnv6jloa8u4dgcq&raw=1"},
+      {type:"video", t:"Building your form, link, and QR code",
+       url:"https://www.dropbox.com/scl/fi/ixlmnhz20al59qhv8ki5j/Referral-Form-Link.mp4?rlkey=o46oot22hmu9612gl9bdvwxmw&raw=1"},
+      {type:"audio", t:"Marketing email", url:""}
+    ],
+    ext:[
+      {t:"Marketing flyer template", d:"Opens in Canva. Make your own copy.",
+       url:"https://www.canva.com/design/DAEMG1HPI8I/UojRBEQLuXkFoi5t4c3fRw/view?mode=preview"}
+    ],
+    docs:["referral_form"],
+    ask:[
+      {id:"m4_formlink", l:"Your referral form link"},
+      {id:"m4_crm", l:"What you are using as your CRM"}
+    ],
+    checks:[
+      "Create your electronic referral form",
+      "Create your form link",
+      "Create your QR code",
+      "Set the form up to work as your CRM",
+      "Build your marketing flyer",
+      "Send your marketing email to housing guides and agencies",
+      "Choose your CRM or set up Google Workspace"
+    ]
+  },
+  {
+    t:"Set Up and Run",
+    sub:"Finding the property, partnerships, furnishing, staffing, securing, and opening.",
+    note:"It is not about the money in the beginning. It is about leverage. If you have no capital, the partnership route is real: you bring the management and marketing, the partner brings the property or the money, and you split after expenses.",
+    media:[
+      {type:"audio", t:"Securing your property",
+       url:"https://www.dropbox.com/scl/fi/lz7ln8ofvkgpmy2ez7qsz/Securing-Your-Property.m4a?rlkey=lf26syipyzk5staz6fttbl85z&raw=1"}
+    ],
+    docs:["house_rules"],
+    live:"House manager job description is taught live on our call.",
+    ask:[
+      {id:"m5_budget", l:"Your budget for the home"},
+      {id:"m5_rentbuy", l:"Renting or buying, and why", ta:true},
+      {id:"m5_partner", l:"Who could partner with you, and what you would offer them", ta:true,
+       h:"Friends, family, anyone who knows anyone with a rental property. Real estate, finance, and banking networks."},
+      {id:"m5_bed", l:"Your price per bed"}
+    ],
+    checks:[
+      "Start your property search, looking for a ranch home",
+      "Decide whether you are renting or buying",
+      "Work with an agency, property manager, or private landlord",
+      "Pull a crime report for the neighborhood",
+      "Locate the amenities nearby: transit, groceries, walkability",
+      "Get renter's and liability insurance quotes and compare",
+      "Get small business insurance quotes and compare",
+      "Check vacancy rates in the area",
+      "Set your budget",
+      "Visit the property at different times of day",
+      "Negotiate the best price",
+      "Acquire the first property by renting or purchasing",
+      "Make needed adjustments to the home without overdoing it",
+      "Clean the home",
+      "Buy used furniture",
+      "Move the furniture in",
+      "Decide your price per bed",
+      "Get multiple copies of keys made",
+      "Secure the property: keyless entry, cameras, Ring, lock box, monitoring, alarm, lighting",
+      "Identify your house manager",
+      "Create your policies and procedures manual",
+      "Set up your house rules",
+      "Create your system for groceries",
+      "Create your system for maintenance issues",
+      "Double check that everything is well in the house",
+      "Accept your first client",
+      "Get the licensee agreement and other documents signed",
+      "Receive the deposit and first month's rent"
+    ]
+  },
+  {
+    t:"Scale",
+    sub:"Tweak, improve, repeat.",
+    note:"The first one is the hard one. Everything you learned in the first home makes the second one faster.",
+    media:[{type:"audio", t:"Scaling your business", url:""}],
+    ask:[
+      {id:"m6_worked", l:"What worked in the first home", ta:true},
+      {id:"m6_change", l:"What you will do differently next time", ta:true},
+      {id:"m6_next", l:"Where the next home goes"}
+    ],
+    checks:[
+      "Tweak what you learned from the first home",
+      "Improve your systems and write them down",
+      "Repeat with the next property"
+    ]
+  }
 ];
 
-const WORKSHEETS = [
-  {t:"Entity setup checklist", items:[
-    "Choose your entity type and the state you'll form it in",
-    "File the formation documents",
-    "Get your EIN from the IRS",
-    "Open a business bank account, separate from personal",
-    "Set up bookkeeping before the first dollar moves",
-    "Pull all three credit reports",
-    "Calculate your debt to income ratio and write it down",
-    "Appoint a registered agent"
-  ]},
-  {t:"Market screening worksheet", items:[
-    "List the counties you're willing to buy in",
-    "Confirm zoning allows residential occupancy for your use",
-    "Count the homes already operating in each area",
-    "Check the demand signals: waitlists, referral sources, population",
-    "Note the price range for suitable homes in each area",
-    "Check proximity to hospitals, transit, and shopping",
-    "Talk to three people already operating there",
-    "Choose one target area and commit to it"
-  ]},
-  {t:"Funding readiness checklist", items:[
-    "Pull together two years of tax returns",
-    "Pull sixty days of bank statements",
-    "Get a pre-approval letter in hand",
-    "Identify exactly where the down payment is coming from",
-    "Compare conventional, DSCR, and private lending",
-    "Line up a backup funding source",
-    "Confirm what reserves you'll still have after closing"
-  ]},
-  {t:"Property evaluation worksheet", items:[
-    "Count bedrooms and bathrooms against your target capacity",
-    "Measure square footage per resident",
-    "Confirm with the city that the use is allowed at this address",
-    "Confirm the occupancy limit in writing",
-    "Walk it for accessibility: steps, doorways, bathrooms",
-    "Get a repair estimate from someone who isn't the seller",
-    "Run the numbers at your target rate and realistic occupancy",
-    "Confirm parking meets local requirements"
-  ]},
-  {t:"Setup and opening checklist", items:[
-    "Furnish every room you intend to fill",
-    "Install and test smoke and carbon monoxide detectors",
-    "Bind your insurance and read what it actually covers",
-    "Write your house rules and resident agreement",
-    "Set your rate sheet",
-    "Write your intake process and application",
-    "Post emergency contacts and procedures",
-    "Obtain the local business license"
-  ]},
-  {t:"Resident acquisition playbook", items:[
-    "Build your referral list: hospitals, case managers, social workers",
-    "Introduce yourself to every discharge planner on that list",
-    "Photograph the home properly",
-    "Post the listing where families actually look",
-    "Write and practice your tour script",
-    "Set your application and screening process",
-    "Place your first resident",
-    "Fill the remaining rooms"
-  ]}
+const DOC_TITLES = { referral_form:"Referral form", house_rules:"House rules" };
+
+const STEPS = [
+  {n:"Milestone 1", t:"Clear on your why", d:"You know why you are doing this and who you intend to serve."},
+  {n:"Milestone 2", t:"Business standing", d:"Entity registered, EIN in hand, bank account open, accounting running."},
+  {n:"Milestone 3", t:"Strategy written", d:"All nine marketing questions answered, so promotion has something to stand on."},
+  {n:"Milestone 4", t:"Marketing live", d:"Referral form working as your CRM, flyer out, marketing email sent."},
+  {n:"Milestone 5", t:"Doors open", d:"Property secured, furnished, staffed, and your first resident placed."},
+  {n:"Milestone 6", t:"Second home moving", d:"Systems written down and the next property in motion."}
 ];
 
 const FIELDS = ['i-phone','i-shift','i-window','i-license','i-entity','i-credit','i-dti','i-market','i-hours'];
-const LABELS = {
-  'i-phone':'Phone','i-shift':'Shift pattern','i-window':'Call window',
-  'i-license':'License','i-entity':'Entity','i-credit':'Credit score',
-  'i-dti':'Debt to income','i-market':'Target market','i-hours':'Hours per week'
-};
+const LABELS = {'i-phone':'Phone','i-shift':'Shift pattern','i-window':'Call window','i-license':'License',
+  'i-entity':'Entity','i-credit':'Credit score','i-dti':'Debt to income','i-market':'Target market','i-hours':'Hours per week'};
 
-const CLIENT_TABS = [['onboarding','Onboarding'],['progress','Progress'],['calls','Calls'],['build','Build']];
+const CLIENT_TABS = [['onboarding','Onboarding'],['program','Program'],['progress','Progress'],['calls','Calls']];
 const ADMIN_TABS  = [['clients','Clients']];
-const DETAIL_TABS = [['intake','Intake'],['progress','Progress'],['calls','Calls'],['build','Build']];
+const DETAIL_TABS = [['intake','Intake'],['program','Program'],['progress','Progress'],['calls','Calls']];
 
-let isAdmin = false;
-let ref = null;                 // doc being viewed
-let done = new Array(STEPS.length).fill(false);
-let calls = [];
-let released = WORKSHEETS.map(()=>false);
-let sheets = {};                // { "0":[bool,...], ... }
+let isAdmin=false, ref=null, uid=null;
+let done=new Array(STEPS.length).fill(false);
+let calls=[], released=MODULES.map(()=>false), checks={}, answers={}, docs={};
 
 const $ = id => document.getElementById(id);
+const esc = s => String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function flash(id,text,bad){
+  const m=$(id); m.textContent=text; m.classList.toggle('err',!!bad);
+  m.classList.add('show'); setTimeout(()=>m.classList.remove('show'),3000);
+}
+async function save(patch){
+  if(!ref) return false;
+  try{ await setDoc(ref,{...patch,updatedAt:serverTimestamp()},{merge:true}); return true; }
+  catch(e){ console.error(e); return false; }
+}
 
 /* ── nav ── */
 function buildTabs(tabs){
-  const inner = $('navInner');
-  inner.innerHTML = '';
+  const inner=$('navInner'); inner.innerHTML='';
   tabs.forEach(([k,label],i)=>{
-    const b = document.createElement('button');
-    b.className = 'tab'; b.setAttribute('role','tab');
-    b.setAttribute('aria-selected', i===0 ? 'true' : 'false');
-    b.textContent = label;
-    b.addEventListener('click', ()=>{
+    const b=document.createElement('button');
+    b.className='tab'; b.setAttribute('role','tab');
+    b.setAttribute('aria-selected', i===0?'true':'false');
+    b.textContent=label;
+    b.addEventListener('click',()=>{
       inner.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected','false'));
-      b.setAttribute('aria-selected','true');
-      show(k);
+      b.setAttribute('aria-selected','true'); show(k);
       window.scrollTo({top:0,behavior:'smooth'});
     });
     inner.appendChild(b);
@@ -494,289 +593,317 @@ function buildTabs(tabs){
 }
 function show(k){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
-  const el = $('p-'+k);
-  if(el) el.classList.add('on');
+  const el=$('p-'+k); if(el) el.classList.add('on');
 }
 
 /* ── spine ── */
 function paintSpine(){
-  const spine = $('spine');
-  spine.innerHTML = '';
+  const spine=$('spine'); spine.innerHTML='';
   STEPS.forEach((s,i)=>{
-    const el = document.createElement('div');
-    el.className = 'step' + (done[i] ? ' done' : '');
-    el.innerHTML =
-      '<button class="dot" aria-pressed="'+(!!done[i])+'" aria-label="Mark '+s.t+' complete"><span></span></button>'+
-      '<div class="step-n">'+s.n+'</div>'+
-      '<div class="step-t">'+s.t+'</div>'+
-      '<div class="step-d">'+s.d+'</div>';
-    el.querySelector('.dot').addEventListener('click',()=>toggle(i));
-    el.querySelector('.step-t').addEventListener('click',()=>toggle(i));
+    const el=document.createElement('div');
+    el.className='step'+(done[i]?' done':'');
+    el.innerHTML='<button class="dot" aria-pressed="'+(!!done[i])+'" aria-label="Mark '+s.t+' complete"><span></span></button>'+
+      '<div class="step-n">'+s.n+'</div><div class="step-t">'+s.t+'</div><div class="step-d">'+s.d+'</div>';
+    el.querySelector('.dot').addEventListener('click',()=>toggleStep(i));
+    el.querySelector('.step-t').addEventListener('click',()=>toggleStep(i));
     spine.appendChild(el);
   });
-  const c = done.filter(Boolean).length;
-  spine.style.setProperty('--fill', (c===0 ? 0 : (c/STEPS.length)*100)+'%');
-  $('spineCount').innerHTML = c===0 ? 'Nothing complete yet' : '<b>'+c+' of '+STEPS.length+'</b> complete';
+  const c=done.filter(Boolean).length;
+  spine.style.setProperty('--fill',(c===0?0:(c/STEPS.length)*100)+'%');
+  $('spineCount').innerHTML = c===0?'Nothing complete yet':'<b>'+c+' of '+STEPS.length+'</b> complete';
 }
-async function toggle(i){
-  done[i] = !done[i];
-  paintSpine();
-  if(!ref) return;
-  try{ await setDoc(ref,{milestones:done,updatedAt:serverTimestamp()},{merge:true}); }
-  catch(e){ console.error(e); }
-}
+async function toggleStep(i){ done[i]=!done[i]; paintSpine(); await save({milestones:done}); }
 
 /* ── calls ── */
-function esc(s){ return String(s??'').replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function paintCalls(){
-  const list = $('callList');
-  if(!calls.length){
-    list.innerHTML = '<p class="empty">No sessions posted yet. Your first one gets scheduled at onboarding.</p>';
-    return;
-  }
-  list.innerHTML = calls.map((c,i)=>
-    '<div class="call">'+
-      '<div class="call-when"><div class="m">'+esc(c.date||'')+'</div>'+
-      '<div class="d">'+String(calls.length-i).padStart(2,'0')+'</div></div>'+
-      '<div class="call-body"><h4>'+esc(c.title||'Session')+'</h4>'+
-      '<p>'+esc(c.notes||'')+'</p>'+
-      (c.link ? '<a class="rec" href="'+esc(c.link)+'" target="_blank" rel="noopener">Recording</a>' : '')+
-      '</div></div>').join('');
+  const list=$('callList');
+  if(!calls.length){ list.innerHTML='<p class="empty">No sessions posted yet. Your first one gets scheduled at onboarding.</p>'; return; }
+  list.innerHTML=calls.map((c,i)=>
+    '<div class="call"><div class="call-when"><div class="m">'+esc(c.date||'')+'</div>'+
+    '<div class="d">'+String(calls.length-i).padStart(2,'0')+'</div></div>'+
+    '<div class="call-body"><h4>'+esc(c.title||'Session')+'</h4><p>'+esc(c.notes||'')+'</p>'+
+    (c.link?'<a class="rec" href="'+esc(c.link)+'" target="_blank" rel="noopener">Recording</a>':'')+
+    '</div></div>').join('');
 }
 
-/* ── worksheets ── */
+/* ── modules ── */
 function ticks(i){
-  const a = sheets[String(i)];
-  return Array.isArray(a) && a.length === WORKSHEETS[i].items.length
-       ? a : new Array(WORKSHEETS[i].items.length).fill(false);
+  const a=checks[String(i)];
+  return Array.isArray(a)&&a.length===MODULES[i].checks.length ? a : new Array(MODULES[i].checks.length).fill(false);
 }
 
-function paintWorksheets(){
-  const list = $('resList');
+function paintModules(){
+  const list=$('modList');
+  const openIdx=Array.from(list.querySelectorAll('details.mod')).filter(d=>d.open).map(d=>d.dataset.i);
 
-  if(isAdmin && ref){
-    list.innerHTML = WORKSHEETS.map((w,i)=>{
-      const c = ticks(i).filter(Boolean).length;
-      return '<label class="release">'+
-        '<input type="checkbox" id="u'+i+'" '+(released[i]?'checked':'')+'>'+
-        '<span class="ttl">'+w.t+'</span>'+
-        '<span class="cnt">'+c+' of '+w.items.length+'</span></label>';
-    }).join('');
-    WORKSHEETS.forEach((w,i)=>{
-      $('u'+i).addEventListener('change', ()=>release(i));
+  list.innerHTML=MODULES.map((m,i)=>{
+    const label='Module '+(i+1);
+    if(!released[i] && !isAdmin){
+      return '<div class="mod locked"><div style="padding:18px 0;display:flex;justify-content:space-between;gap:14px;align-items:flex-start">'+
+        '<div><div class="mod-n">'+label+'</div><div class="mod-t">'+m.t+'</div>'+
+        '<div class="mod-sub">'+m.sub+'</div></div>'+
+        '<span class="mod-s locked">Locked</span></div></div>';
+    }
+    const t=ticks(i), c=t.filter(Boolean).length, n=m.checks.length;
+    const st = c===n ? '<span class="mod-s done">Done</span>'
+             : '<span class="mod-s open">'+(c===0?'Open':c+' of '+n)+'</span>';
+
+    let body='<div class="mod-bar" style="--w:'+Math.round(c/n*100)+'%"><i></i></div>';
+    if(!released[i]) body+='<p class="note"><b>Not released to her yet.</b> Tick this module in the release list to open it.</p>';
+    if(m.note) body+='<p class="note">'+m.note+'</p>';
+
+    (m.media||[]).forEach((md,k)=>{
+      body+='<div class="media"><div class="media-t">'+esc(md.t)+'</div>';
+      if(!md.url) body+='<p class="empty">Recording coming.</p>';
+      else if(md.type==='video') body+='<video controls preload="metadata" src="'+esc(md.url)+'"></video>';
+      else body+='<audio controls preload="none" src="'+esc(md.url)+'"></audio>';
+      body+='</div>';
     });
-    return;
-  }
 
-  list.innerHTML = WORKSHEETS.map((w,i)=>{
-    if(!released[i])
-      return '<div class="ws locked"><div style="padding:17px 0;display:flex;'+
-             'justify-content:space-between;gap:14px;align-items:center">'+
-             '<span class="ws-t">'+w.t+'</span>'+
-             '<span class="ws-s">Unlocks at milestone '+(i+1)+'</span></div></div>';
-    const t = ticks(i), c = t.filter(Boolean).length, n = w.items.length;
-    const label = c === n ? 'Done' : (c === 0 ? 'Start' : c+' of '+n);
-    const cls   = c === n ? 'ws-s all' : 'ws-s go';
-    return '<details class="ws" data-i="'+i+'">'+
-      '<summary><span class="ws-t">'+w.t+'</span><span class="'+cls+'">'+label+'</span></summary>'+
-      '<div class="ws-body">'+
-        '<div class="ws-bar" style="--w:'+Math.round(c/n*100)+'%"><i></i></div>'+
-        w.items.map((it,j)=>
-          '<label class="item'+(t[j]?' ticked':'')+'">'+
-          '<input type="checkbox" data-i="'+i+'" data-j="'+j+'" '+(t[j]?'checked':'')+'>'+
-          '<span>'+it+'</span></label>').join('')+
-      '</div></details>';
+    (m.ext||[]).forEach(x=>{
+      body+='<a class="ext" href="'+esc(x.url)+'" target="_blank" rel="noopener">'+
+        '<span><span class="t">'+esc(x.t)+'</span><span class="d">'+esc(x.d||'')+'</span></span>'+
+        '<span class="go">Open</span></a>';
+    });
+
+    if(m.live) body+='<p class="note">'+m.live+'</p>';
+
+    if(m.docs&&m.docs.length){
+      body+='<div class="blk"><div class="blk-h">Documents</div>';
+      m.docs.forEach(k=>{
+        const d=docs[k];
+        body+='<div class="docrow"><span><span class="t">'+DOC_TITLES[k]+'</span>'+
+          (d?'<span class="sub">'+esc(d.name||'PDF')+'</span>':'')+'</span>'+
+          (d?'<a href="'+esc(d.url)+'" target="_blank" rel="noopener">Open</a>':'<span class="pending">Coming</span>')+
+          (isAdmin?'<label class="upbtn">Upload<input type="file" accept="application/pdf" data-doc="'+k+'"></label>':'')+
+          '</div>';
+      });
+      body+='</div>';
+    }
+
+    if(m.ask&&m.ask.length){
+      body+='<div class="blk"><div class="blk-h">Your work</div>';
+      m.ask.forEach(a=>{
+        const v=esc(answers[a.id]||'');
+        body+='<div class="f"><label for="'+a.id+'">'+esc(a.l)+'</label>'+
+          (a.ta?'<textarea id="'+a.id+'" data-ans="1"'+(isAdmin?' readonly':'')+'>'+v+'</textarea>'
+               :'<input id="'+a.id+'" type="text" data-ans="1"'+(isAdmin?' readonly':'')+' value="'+v+'">')+
+          (a.h?'<p class="hint">'+esc(a.h)+'</p>':'')+'</div>';
+      });
+      if(!isAdmin) body+='<button class="save" data-savemod="'+i+'">Save my work</button>'+
+        '<span class="saved" id="ansMsg'+i+'">Saved</span>';
+      body+='</div>';
+    }
+
+    body+='<div class="blk"><div class="blk-h">Checklist</div>'+
+      m.checks.map((it,j)=>
+        '<label class="item'+(t[j]?' ticked':'')+'">'+
+        '<input type="checkbox" data-i="'+i+'" data-j="'+j+'" '+(t[j]?'checked':'')+(isAdmin?' disabled':'')+'>'+
+        '<span>'+esc(it)+'</span></label>').join('')+'</div>';
+
+    return '<details class="mod" data-i="'+i+'"><summary>'+
+      '<div><div class="mod-n">'+label+'</div><div class="mod-t">'+esc(m.t)+'</div>'+
+      '<div class="mod-sub">'+esc(m.sub)+'</div></div>'+st+'</summary>'+
+      '<div class="mod-body">'+body+'</div></details>';
   }).join('');
 
-  list.querySelectorAll('.item input').forEach(cb=>{
-    cb.addEventListener('change', ()=>tick(+cb.dataset.i, +cb.dataset.j));
+  if(isAdmin && ref){
+    list.insertAdjacentHTML('afterbegin',
+      '<div class="blk" style="padding-bottom:6px"><div class="blk-h">Release to her</div>'+
+      MODULES.map((m,i)=>{
+        const c=ticks(i).filter(Boolean).length;
+        return '<label class="release"><input type="checkbox" data-rel="'+i+'" '+(released[i]?'checked':'')+'>'+
+          '<span class="ttl">'+(i+1)+'. '+esc(m.t)+'</span>'+
+          '<span class="cnt">'+c+' of '+m.checks.length+'</span></label>';
+      }).join('')+'</div>');
+    list.querySelectorAll('[data-rel]').forEach(cb=>
+      cb.addEventListener('change',()=>doRelease(+cb.dataset.rel, cb.checked)));
+  }
+
+  list.querySelectorAll('.item input:not([disabled])').forEach(cb=>
+    cb.addEventListener('change',()=>tick(+cb.dataset.i,+cb.dataset.j)));
+  list.querySelectorAll('[data-savemod]').forEach(b=>
+    b.addEventListener('click',()=>saveAnswers(+b.dataset.savemod)));
+  list.querySelectorAll('input[type=file][data-doc]').forEach(inp=>
+    inp.addEventListener('change',()=>upload(inp.dataset.doc,inp.files[0])));
+
+  openIdx.forEach(i=>{
+    const d=list.querySelector('details.mod[data-i="'+i+'"]');
+    if(d) d.open=true;
   });
 }
 
 async function tick(i,j){
-  const open = Array.from($('resList').querySelectorAll('details.ws'))
-                    .filter(d=>d.open).map(d=>d.dataset.i);
-  const t = ticks(i).slice();
-  t[j] = !t[j];
-  sheets[String(i)] = t;
-  paintWorksheets();
-  open.forEach(idx=>{
-    const d = $('resList').querySelector('details.ws[data-i="'+idx+'"]');
-    if(d) d.open = true;
-  });
-  if(!ref) return;
-  try{ await setDoc(ref,{worksheets:sheets,updatedAt:serverTimestamp()},{merge:true}); }
-  catch(e){ console.error(e); }
+  const t=ticks(i).slice(); t[j]=!t[j]; checks[String(i)]=t;
+  paintModules(); await save({checks});
+}
+async function doRelease(i,val){ released[i]=val; paintModules(); await save({released}); }
+
+async function saveAnswers(i){
+  MODULES[i].ask.forEach(a=>{ const el=$(a.id); if(el) answers[a.id]=el.value; });
+  const ok=await save({answers});
+  flash('ansMsg'+i, ok?'Saved':"Didn't save. Try again.", !ok);
 }
 
-async function release(i){
-  released[i] = $('u'+i).checked;
-  if(!ref) return;
-  try{ await setDoc(ref,{released,updatedAt:serverTimestamp()},{merge:true}); }
-  catch(e){ console.error(e); }
+async function upload(key,file){
+  if(!file) return;
+  if(file.type!=='application/pdf'){ alert('That needs to be a PDF.'); return; }
+  try{
+    const r=sref(storage,'program/'+key+'.pdf');
+    await uploadBytes(r,file);
+    const url=await getDownloadURL(r);
+    docs[key]={name:file.name,url};
+    await setDoc(doc(db,'program','materials'),{docs},{merge:true});
+    paintModules();
+  }catch(e){
+    console.error(e);
+    alert("Upload failed. Check that Firebase Storage is enabled and your rules allow it.");
+  }
 }
 
-/* ── intake readout (admin) ── */
+/* ── intake ── */
+$('saveIntake').addEventListener('click',async()=>{
+  const btn=$('saveIntake'); btn.disabled=true;
+  const intake={}; FIELDS.forEach(f=>intake[f]=$(f).value);
+  const ok=await save({intake});
+  flash('savedMsg', ok?'Saved':"Didn't save. Check your connection and try again.", !ok);
+  btn.disabled=false;
+});
+
+/* ── post session ── */
+$('addCall').addEventListener('click',async()=>{
+  const date=$('c-date').value.trim(), title=$('c-title').value.trim();
+  if(!date||!title){ flash('callMsg','Add a date and a title.',true); return; }
+  const btn=$('addCall'); btn.disabled=true;
+  calls.unshift({date,title,notes:$('c-notes').value.trim(),link:$('c-link').value.trim()});
+  const ok=await save({calls});
+  if(ok){ ['c-date','c-title','c-notes','c-link'].forEach(i=>$(i).value=''); paintCalls(); flash('callMsg','Posted'); }
+  else { calls.shift(); flash('callMsg',"Didn't post. Try again.",true); }
+  btn.disabled=false;
+});
+
 function paintIntake(data){
-  $('intakeRead').innerHTML = FIELDS.map(f=>{
-    const v = (data && data[f]) ? esc(data[f]) : 'Not answered';
-    const cls = (data && data[f]) ? '' : ' class="none"';
-    return '<div><dt>'+LABELS[f]+'</dt><dd'+cls+'>'+v+'</dd></div>';
+  $('intakeRead').innerHTML=FIELDS.map(f=>{
+    const v=(data&&data[f])?esc(data[f]):'Not answered';
+    return '<div><dt>'+LABELS[f]+'</dt><dd'+((data&&data[f])?'':' class="none"')+'>'+v+'</dd></div>';
   }).join('');
 }
 
-/* ── flash helper ── */
-function flash(id, text, bad){
-  const m = $(id);
-  m.textContent = text;
-  m.classList.toggle('err', !!bad);
-  m.classList.add('show');
-  setTimeout(()=>m.classList.remove('show'), 3000);
-}
-
-/* ── save intake (client) ── */
-$('saveIntake').addEventListener('click', async ()=>{
-  if(!ref) return;
-  const btn = $('saveIntake'); btn.disabled = true;
-  const intake = {};
-  FIELDS.forEach(f => intake[f] = $(f).value);
-  try{
-    await setDoc(ref,{intake,updatedAt:serverTimestamp()},{merge:true});
-    flash('savedMsg','Saved');
-  }catch(e){ console.error(e); flash('savedMsg',"Didn't save. Check your connection and try again.",true); }
-  btn.disabled = false;
-});
-
-/* ── post session (admin) ── */
-$('addCall').addEventListener('click', async ()=>{
-  if(!ref) return;
-  const date = $('c-date').value.trim(), title = $('c-title').value.trim();
-  if(!date || !title){ flash('callMsg','Add a date and a title.',true); return; }
-  const btn = $('addCall'); btn.disabled = true;
-  calls.unshift({date, title, notes:$('c-notes').value.trim(), link:$('c-link').value.trim()});
-  try{
-    await setDoc(ref,{calls,updatedAt:serverTimestamp()},{merge:true});
-    ['c-date','c-title','c-notes','c-link'].forEach(i=>$(i).value='');
-    paintCalls(); flash('callMsg','Posted');
-  }catch(e){ console.error(e); calls.shift(); flash('callMsg',"Didn't post. Try again.",true); }
-  btn.disabled = false;
-});
-
-/* ── load a client doc ── */
 function hydrate(d){
-  done = (Array.isArray(d.milestones) && d.milestones.length === STEPS.length)
-       ? d.milestones : new Array(STEPS.length).fill(false);
-  calls = Array.isArray(d.calls) ? d.calls : [];
-  released = (Array.isArray(d.released) && d.released.length === WORKSHEETS.length)
-           ? d.released : WORKSHEETS.map(()=>false);
-  sheets = (d.worksheets && typeof d.worksheets === 'object') ? d.worksheets : {};
+  done=(Array.isArray(d.milestones)&&d.milestones.length===STEPS.length)?d.milestones:new Array(STEPS.length).fill(false);
+  calls=Array.isArray(d.calls)?d.calls:[];
+  released=(Array.isArray(d.released)&&d.released.length===MODULES.length)?d.released:MODULES.map(()=>false);
+  checks=(d.checks&&typeof d.checks==='object')?d.checks:{};
+  answers=(d.answers&&typeof d.answers==='object')?d.answers:{};
 }
 
-async function openClient(uid, name){
-  ref = doc(db,'clients',uid);
+async function loadMaterials(){
   try{
-    const snap = await getDoc(ref);
-    const d = snap.exists() ? snap.data() : {};
-    hydrate(d);
-    paintIntake(d.intake);
+    const s=await getDoc(doc(db,'program','materials'));
+    docs = s.exists() && s.data().docs ? s.data().docs : {};
+  }catch(e){ docs={}; }
+}
+
+async function openClient(id,name){
+  ref=doc(db,'clients',id);
+  try{
+    const snap=await getDoc(ref);
+    const d=snap.exists()?snap.data():{};
+    hydrate(d); paintIntake(d.intake);
   }catch(e){ console.error(e); }
-  $('hdName').textContent = name || 'Client';
-  $('hdMeta').textContent = 'Admin view';
+  $('hdName').textContent=name||'Client';
+  $('hdMeta').textContent='Admin view';
   $('backBtn').classList.remove('hide');
-  $('adminAddCall').style.display = '';
-  $('callsLede').textContent = 'Post a session after each call. She sees these in order, newest first.';
-  $('buildLede').textContent = 'Release a worksheet when she reaches it. The count shows how far she has gotten.';
-  $('progLede').textContent = 'Tap a marker to move her milestone. She sees this update.';
-  paintSpine(); paintCalls(); paintWorksheets();
+  $('adminAddCall').style.display='';
+  $('callsLede').textContent='Post a session after each call. She sees these newest first.';
+  $('progLede').textContent='Tap a marker to move her milestone. She sees this update.';
+  $('progLede2').textContent='Tick a module to release it to her. Her checklist progress shows beside each one.';
+  paintSpine(); paintCalls(); paintModules();
   buildTabs(DETAIL_TABS);
 }
 
 async function listClients(){
-  ref = null;
-  $('hdName').textContent = 'Tasha McCray';
-  $('hdMeta').textContent = 'Admin';
+  ref=null;
+  $('hdName').textContent='Tasha McCray';
+  $('hdMeta').textContent='Admin';
   $('backBtn').classList.add('hide');
   buildTabs(ADMIN_TABS);
-  const wrap = $('clientList');
+  const wrap=$('clientList');
   try{
-    const snap = await getDocs(collection(db,'clients'));
-    if(snap.empty){ wrap.innerHTML = '<p class="empty">No clients yet.</p>'; return; }
-    wrap.innerHTML = '';
+    const snap=await getDocs(collection(db,'clients'));
+    if(snap.empty){ wrap.innerHTML='<p class="empty">No clients yet.</p>'; return; }
+    wrap.innerHTML='';
     snap.forEach(s=>{
-      const d = s.data();
-      const c = (Array.isArray(d.milestones) ? d.milestones.filter(Boolean).length : 0);
-      const b = document.createElement('button');
-      b.className = 'client-row';
-      b.innerHTML = '<span><span class="nm">'+esc(d.name||'Client')+'</span>'+
-                    '<span class="sub">'+esc(d.path||'')+' &middot; '+c+' of '+STEPS.length+' milestones</span></span>'+
-                    '<span class="go">Open</span>';
-      b.addEventListener('click', ()=>openClient(s.id, d.name));
+      const d=s.data();
+      const rel=Array.isArray(d.released)?d.released.filter(Boolean).length:0;
+      const b=document.createElement('button');
+      b.className='client-row';
+      b.innerHTML='<span><span class="nm">'+esc(d.name||'Client')+'</span>'+
+        '<span class="sub">'+esc(d.path||'')+' &middot; '+rel+' of '+MODULES.length+' modules released</span></span>'+
+        '<span class="go">Open</span>';
+      b.addEventListener('click',()=>openClient(s.id,d.name));
       wrap.appendChild(b);
     });
   }catch(e){
     console.error(e);
-    wrap.innerHTML = '<p class="empty">Could not load clients. Check your Firestore rules.</p>';
+    wrap.innerHTML='<p class="empty">Could not load clients. Check your Firestore rules.</p>';
   }
 }
-
-$('backBtn').addEventListener('click', listClients);
+$('backBtn').addEventListener('click',listClients);
 
 /* ── auth ── */
-const gateBtn = $('gateBtn'), gateErr = $('gateErr');
-function showErr(t){ gateErr.textContent = t; gateErr.classList.add('show'); }
+const gateBtn=$('gateBtn'), gateErr=$('gateErr');
+function showErr(t){ gateErr.textContent=t; gateErr.classList.add('show'); }
 
-gateBtn.addEventListener('click', async ()=>{
-  const email = $('gEmail').value.trim(), pass = $('gPass').value;
+gateBtn.addEventListener('click',async()=>{
+  const email=$('gEmail').value.trim(), pass=$('gPass').value;
   gateErr.classList.remove('show');
-  if(!email || !pass){ showErr('Enter your email and password.'); return; }
-  gateBtn.disabled = true;
+  if(!email||!pass){ showErr('Enter your email and password.'); return; }
+  gateBtn.disabled=true;
   try{ await signInWithEmailAndPassword(auth,email,pass); }
   catch(e){
-    const c = e.code || '';
+    const c=e.code||'';
     if(c.includes('invalid-credential')||c.includes('wrong-password')||c.includes('user-not-found'))
       showErr("That email and password don't match. Try again or message Tasha.");
     else if(c.includes('too-many-requests')) showErr('Too many attempts. Wait a minute and try again.');
     else if(c.includes('network')) showErr('No connection. Check your signal and try again.');
     else showErr('Sign in failed. Message Tasha.');
   }
-  gateBtn.disabled = false;
+  gateBtn.disabled=false;
 });
-$('gPass').addEventListener('keydown', e=>{ if(e.key==='Enter') gateBtn.click(); });
-$('signOut').addEventListener('click', ()=> signOut(auth));
+$('gPass').addEventListener('keydown',e=>{ if(e.key==='Enter') gateBtn.click(); });
+$('signOut').addEventListener('click',()=>signOut(auth));
 
-onAuthStateChanged(auth, async user=>{
+onAuthStateChanged(auth,async user=>{
   if(!user){
     $('gate').classList.remove('hidden');
     $('app').classList.remove('ready');
-    ref = null; isAdmin = false;
+    ref=null; isAdmin=false; uid=null;
     return;
   }
+  uid=user.uid;
   $('gate').classList.add('hidden');
   $('app').classList.add('ready');
 
-  try{
-    const a = await getDoc(doc(db,'admins',user.uid));
-    isAdmin = a.exists();
-  }catch(e){ isAdmin = false; }
+  try{ isAdmin=(await getDoc(doc(db,'admins',uid))).exists(); }catch(e){ isAdmin=false; }
+  await loadMaterials();
 
   if(isAdmin){ await listClients(); return; }
 
-  /* client */
-  ref = doc(db,'clients',user.uid);
-  $('hdName').textContent = 'Amayah Edwards';
-  $('hdMeta').textContent = 'Six-month mentorship \u00b7 Independent living';
+  ref=doc(db,'clients',uid);
+  $('hdName').textContent='Amayah Edwards';
+  $('hdMeta').textContent='Six-month mentorship \u00b7 Independent living';
   try{
-    const snap = await getDoc(ref);
+    const snap=await getDoc(ref);
     if(snap.exists()){
-      const d = snap.data();
-      hydrate(d);
-      if(d.intake) FIELDS.forEach(f=>{ if(d.intake[f]) $(f).value = d.intake[f]; });
+      const d=snap.data(); hydrate(d);
+      if(d.intake) FIELDS.forEach(f=>{ if(d.intake[f]) $(f).value=d.intake[f]; });
     }else{
       await setDoc(ref,{name:'Amayah Edwards',program:'Six-month mentorship',
         path:'Independent living',milestones:done,createdAt:serverTimestamp()});
     }
   }catch(e){ console.error(e); }
-  paintSpine(); paintCalls(); paintWorksheets();
+  paintSpine(); paintCalls(); paintModules();
   buildTabs(CLIENT_TABS);
 });
 </script>
