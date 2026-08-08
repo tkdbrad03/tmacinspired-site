@@ -194,6 +194,39 @@ video{background:#000}
 .release .ttl{font-size:14.5px;flex:1}
 .release .cnt{font-size:12px;color:var(--muted);flex-shrink:0}
 
+/* board */
+.compose{background:#fff;border:1px solid var(--line);border-radius:3px;padding:18px;margin-bottom:18px}
+.compose textarea{width:100%;min-height:88px;padding:12px 14px;border:1px solid var(--line);border-radius:2px;font-family:var(--body);font-size:15px;color:var(--ink);outline:none;resize:vertical}
+.compose textarea:focus{border-color:var(--green)}
+.compose-foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:12px}
+.compose-as{font-size:12px;color:var(--muted)}
+.msg{background:#fff;border:1px solid var(--line);border-radius:3px;padding:18px;margin-bottom:12px}
+.msg.mine{border-left:2px solid var(--gold)}
+.msg-hd{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}
+.who{display:flex;align-items:center;gap:10px;min-width:0}
+.av{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;letter-spacing:.03em;color:var(--cream);background:var(--green)}
+.av.gold{background:var(--gold);color:var(--green-deep)}
+.who .nm{font-size:14px;font-weight:500}
+.when{font-size:12px;color:var(--muted);flex-shrink:0}
+.msg-tx{font-size:14.5px;line-height:1.6;white-space:pre-wrap;word-wrap:break-word}
+.msg-ft{display:flex;align-items:center;gap:14px;margin-top:12px}
+.lnk{background:none;border:none;padding:0;cursor:pointer;font-family:var(--body);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green)}
+.lnk:hover{color:var(--green-deep)}
+.lnk.warn{color:#b4442f}
+.badge{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);cursor:pointer;background:none;border:none;font-family:var(--body)}
+.thread{margin-top:14px;padding-left:16px;border-left:2px solid var(--line);display:none}
+.thread.open{display:block}
+.rep{padding:11px 0;border-bottom:1px solid var(--line)}
+.rep:last-child{border-bottom:none}
+.rbox{display:none;margin-top:12px}
+.rbox.open{display:block}
+.rbox textarea{width:100%;min-height:70px;padding:11px 13px;border:1px solid var(--line);border-radius:2px;font-family:var(--body);font-size:14.5px;outline:none;resize:vertical}
+.rbox textarea:focus{border-color:var(--green)}
+.rbox-foot{display:flex;gap:10px;margin-top:9px}
+.mini{padding:9px 18px;border-radius:2px;cursor:pointer;font-family:var(--body);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--line);background:none;color:var(--muted)}
+.mini.go{background:var(--green);color:var(--cream);border-color:var(--green)}
+.tab .dotb{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gold);margin-left:7px;vertical-align:middle}
+
 footer{border-top:1px solid var(--line);padding:22px 20px 34px;text-align:center;font-size:12px;color:var(--muted)}
 
 @media(min-width:700px){
@@ -327,6 +360,21 @@ footer{border-top:1px solid var(--line);padding:22px 20px 34px;text-align:center
   <div class="card"><div id="modList"></div></div>
 </section>
 
+<!-- MESSAGES -->
+<section class="panel" id="p-board" role="tabpanel">
+  <p class="eyebrow">Between sessions</p>
+  <h2>Messages</h2>
+  <p class="lede" id="boardLede">Ask anything here and it stays with the rest of your program. I answer within two business days.</p>
+  <div class="compose">
+    <textarea id="mNew" placeholder="Write a message"></textarea>
+    <div class="compose-foot">
+      <span class="compose-as" id="mAs">&nbsp;</span>
+      <button class="save" id="mPost">Post</button>
+    </div>
+  </div>
+  <div id="boardList"></div>
+</section>
+
 <!-- ADMIN CLIENT LIST -->
 <section class="panel" id="p-clients" role="tabpanel">
   <p class="eyebrow">Admin</p>
@@ -364,6 +412,13 @@ const firebaseConfig = {
   messagingSenderId: "969929769537",
   appId: "1:969929769537:web:640d8729ec523677573cc0"
 };
+
+/* ══ EMAIL ALERTS ══
+   Paste the Apps Script Web App URL below after you deploy it.
+   Leave it empty and the portal simply skips sending. */
+const NOTIFY_URL    = "https://script.google.com/macros/s/AKfycbw66NiXOWmhU2Z88LiDwtd9Wv1Gbh1tXkKg8J-46g1uQ5VPmw7XIBgxJtejnh4sCcSV/exec";
+const NOTIFY_SECRET = "tmac-8f3d21b7c4";
+const ADMIN_EMAIL   = "support@tmacinspired.com";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -553,13 +608,14 @@ const FIELDS = ['i-phone','i-shift','i-window','i-license','i-entity','i-credit'
 const LABELS = {'i-phone':'Phone','i-shift':'Shift pattern','i-window':'Call window','i-license':'License',
   'i-entity':'Entity','i-credit':'Credit score','i-dti':'Debt to income','i-market':'Target market','i-hours':'Hours per week'};
 
-const CLIENT_TABS = [['onboarding','Onboarding'],['program','Program'],['progress','Progress'],['calls','Calls']];
+const CLIENT_TABS = [['onboarding','Onboarding'],['program','Program'],['progress','Progress'],['calls','Calls'],['board','Messages']];
 const ADMIN_TABS  = [['clients','Clients']];
-const DETAIL_TABS = [['intake','Intake'],['program','Program'],['progress','Progress'],['calls','Calls']];
+const DETAIL_TABS = [['intake','Intake'],['program','Program'],['progress','Progress'],['calls','Calls'],['board','Messages']];
 
 let isAdmin=false, ref=null, uid=null;
 let done=new Array(STEPS.length).fill(false);
 let calls=[], released=MODULES.map(()=>false), checks={}, answers={}, docs={};
+let board=[], seen={}, clientName='Amayah Edwards', clientEmail='';
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -581,15 +637,17 @@ function buildTabs(tabs){
     const b=document.createElement('button');
     b.className='tab'; b.setAttribute('role','tab');
     b.setAttribute('aria-selected', i===0?'true':'false');
-    b.textContent=label;
+    b.textContent=label; b.dataset.k=k;
     b.addEventListener('click',()=>{
       inner.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected','false'));
       b.setAttribute('aria-selected','true'); show(k);
+      if(k==='board') markSeen();
       window.scrollTo({top:0,behavior:'smooth'});
     });
     inner.appendChild(b);
   });
   show(tabs[0][0]);
+  paintBadge();
 }
 function show(k){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
@@ -761,6 +819,150 @@ async function upload(key,file){
   }
 }
 
+/* ── email alerts ── */
+function notify(text,isReply){
+  if(!NOTIFY_URL) return;
+  const to = isAdmin ? clientEmail : ADMIN_EMAIL;
+  if(!to) return;
+  try{
+    fetch(NOTIFY_URL,{
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify({secret:NOTIFY_SECRET,to,from:me(),text,isReply:!!isReply})
+    });
+  }catch(e){ console.error(e); }
+}
+
+/* ── messages ── */
+const me = () => isAdmin ? 'Dr. Tasha' : (clientName||'Client');
+const myRole = () => isAdmin ? 'admin' : 'client';
+const initials = n => String(n||'?').trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+
+function ago(ts){
+  if(!ts) return '';
+  const s=Math.floor((Date.now()-ts)/1000);
+  if(s<60) return 'just now';
+  if(s<3600) return Math.floor(s/60)+'m ago';
+  if(s<86400) return Math.floor(s/3600)+'h ago';
+  if(s<604800) return Math.floor(s/86400)+'d ago';
+  return new Date(ts).toLocaleDateString(undefined,{month:'short',day:'numeric'});
+}
+
+function unread(){
+  const since = seen[myRole()] || 0;
+  let n=0;
+  board.forEach(m=>{
+    if(m.role!==myRole() && m.ts>since) n++;
+    (m.replies||[]).forEach(r=>{ if(r.role!==myRole() && r.ts>since) n++; });
+  });
+  return n;
+}
+
+function paintBadge(){
+  const t=document.querySelector('.tab[data-k="board"]');
+  if(!t) return;
+  t.querySelectorAll('.dotb').forEach(d=>d.remove());
+  if(unread()>0) t.insertAdjacentHTML('beforeend','<span class="dotb"></span>');
+}
+
+async function markSeen(){
+  seen={...seen,[myRole()]:Date.now()};
+  paintBadge();
+  await save({seen});
+}
+
+function paintBoard(){
+  $('mAs').textContent='Posting as '+me();
+  const list=$('boardList');
+  const open=Array.from(list.querySelectorAll('.thread.open')).map(t=>t.dataset.id);
+
+  if(!board.length){
+    list.innerHTML='<p class="empty">No messages yet. Anything you get stuck on between calls, put it here.</p>';
+    return;
+  }
+
+  list.innerHTML=board.map(m=>{
+    const mine=m.role===myRole();
+    const reps=m.replies||[];
+    return '<div class="msg'+(mine?' mine':'')+'">'+
+      '<div class="msg-hd"><span class="who">'+
+        '<span class="av'+(m.role==='admin'?' gold':'')+'">'+initials(m.name)+'</span>'+
+        '<span class="nm">'+esc(m.name)+'</span></span>'+
+        '<span class="when">'+ago(m.ts)+'</span></div>'+
+      '<div class="msg-tx">'+esc(m.text)+'</div>'+
+      '<div class="msg-ft">'+
+        '<button class="lnk" data-reply="'+m.id+'">Reply</button>'+
+        (reps.length?'<button class="badge" data-thread="'+m.id+'">'+reps.length+(reps.length===1?' reply':' replies')+'</button>':'')+
+        (isAdmin?'<button class="lnk warn" data-del="'+m.id+'">Delete</button>':'')+
+      '</div>'+
+      '<div class="thread" data-id="'+m.id+'">'+
+        reps.map(r=>'<div class="rep"><div class="msg-hd"><span class="who">'+
+          '<span class="av'+(r.role==='admin'?' gold':'')+'">'+initials(r.name)+'</span>'+
+          '<span class="nm">'+esc(r.name)+'</span></span>'+
+          '<span class="when">'+ago(r.ts)+'</span></div>'+
+          '<div class="msg-tx">'+esc(r.text)+'</div></div>').join('')+
+      '</div>'+
+      '<div class="rbox" data-box="'+m.id+'">'+
+        '<textarea data-rin="'+m.id+'" placeholder="Write your reply"></textarea>'+
+        '<div class="rbox-foot"><button class="mini go" data-send="'+m.id+'">Send reply</button>'+
+        '<button class="mini" data-cancel="'+m.id+'">Cancel</button></div>'+
+      '</div></div>';
+  }).join('');
+
+  list.querySelectorAll('[data-thread]').forEach(b=>b.addEventListener('click',()=>{
+    const t=list.querySelector('.thread[data-id="'+b.dataset.thread+'"]');
+    if(t) t.classList.toggle('open');
+  }));
+  list.querySelectorAll('[data-reply]').forEach(b=>b.addEventListener('click',()=>{
+    const x=list.querySelector('.rbox[data-box="'+b.dataset.reply+'"]');
+    if(x){ x.classList.add('open'); x.querySelector('textarea').focus(); }
+  }));
+  list.querySelectorAll('[data-cancel]').forEach(b=>b.addEventListener('click',()=>{
+    const x=list.querySelector('.rbox[data-box="'+b.dataset.cancel+'"]');
+    if(x){ x.classList.remove('open'); x.querySelector('textarea').value=''; }
+  }));
+  list.querySelectorAll('[data-send]').forEach(b=>b.addEventListener('click',()=>reply(b.dataset.send)));
+  list.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click',()=>del(b.dataset.del)));
+
+  open.forEach(id=>{
+    const t=list.querySelector('.thread[data-id="'+id+'"]');
+    if(t) t.classList.add('open');
+  });
+  paintBadge();
+}
+
+$('mPost').addEventListener('click',async()=>{
+  const ta=$('mNew'), text=ta.value.trim();
+  if(!text) return;
+  const btn=$('mPost'); btn.disabled=true;
+  board.unshift({id:'m'+Date.now(),name:me(),role:myRole(),text,ts:Date.now(),replies:[]});
+  const ok=await save({board,seen:{...seen,[myRole()]:Date.now()}});
+  if(ok){ seen={...seen,[myRole()]:Date.now()}; ta.value=''; paintBoard(); notify(text,false); }
+  else { board.shift(); alert("Didn't post. Check your connection and try again."); }
+  btn.disabled=false;
+});
+
+async function reply(id){
+  const box=$('boardList').querySelector('[data-rin="'+id+'"]');
+  const text=box.value.trim(); if(!text) return;
+  const m=board.find(x=>x.id===id); if(!m) return;
+  m.replies=m.replies||[];
+  m.replies.push({name:me(),role:myRole(),text,ts:Date.now()});
+  const ok=await save({board,seen:{...seen,[myRole()]:Date.now()}});
+  if(ok){ seen={...seen,[myRole()]:Date.now()}; paintBoard(); notify(text,true);
+    const t=$('boardList').querySelector('.thread[data-id="'+id+'"]'); if(t) t.classList.add('open'); }
+  else { m.replies.pop(); alert("Didn't send. Try again."); }
+}
+
+async function del(id){
+  if(!confirm('Delete this message and its replies?')) return;
+  const keep=board.filter(x=>x.id!==id);
+  const old=board; board=keep;
+  const ok=await save({board});
+  if(!ok){ board=old; alert("Couldn't delete."); }
+  paintBoard();
+}
+
 /* ── intake ── */
 $('saveIntake').addEventListener('click',async()=>{
   const btn=$('saveIntake'); btn.disabled=true;
@@ -795,6 +997,10 @@ function hydrate(d){
   released=(Array.isArray(d.released)&&d.released.length===MODULES.length)?d.released:MODULES.map(()=>false);
   checks=(d.checks&&typeof d.checks==='object')?d.checks:{};
   answers=(d.answers&&typeof d.answers==='object')?d.answers:{};
+  board=Array.isArray(d.board)?d.board:[];
+  seen=(d.seen&&typeof d.seen==='object')?d.seen:{};
+  if(d.name) clientName=d.name;
+  clientEmail=d.email||'';
 }
 
 async function loadMaterials(){
@@ -818,7 +1024,8 @@ async function openClient(id,name){
   $('callsLede').textContent='Post a session after each call. She sees these newest first.';
   $('progLede').textContent='Tap a marker to move her milestone. She sees this update.';
   $('progLede2').textContent='Tick a module to release it to her. Her checklist progress shows beside each one.';
-  paintSpine(); paintCalls(); paintModules();
+  $('boardLede').textContent='Her questions and your answers. You committed to replying within two business days.';
+  paintSpine(); paintCalls(); paintModules(); paintBoard();
   buildTabs(DETAIL_TABS);
 }
 
@@ -898,12 +1105,14 @@ onAuthStateChanged(auth,async user=>{
     if(snap.exists()){
       const d=snap.data(); hydrate(d);
       if(d.intake) FIELDS.forEach(f=>{ if(d.intake[f]) $(f).value=d.intake[f]; });
+      if(d.email!==user.email) await setDoc(ref,{email:user.email},{merge:true});
     }else{
       await setDoc(ref,{name:'Amayah Edwards',program:'Six-month mentorship',
-        path:'Independent living',milestones:done,createdAt:serverTimestamp()});
+        path:'Independent living',email:user.email,milestones:done,createdAt:serverTimestamp()});
     }
+    clientEmail=user.email;
   }catch(e){ console.error(e); }
-  paintSpine(); paintCalls(); paintModules();
+  paintSpine(); paintCalls(); paintModules(); paintBoard();
   buildTabs(CLIENT_TABS);
 });
 </script>
