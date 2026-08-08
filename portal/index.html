@@ -301,7 +301,7 @@ footer{border-top:1px solid var(--line);padding:22px 20px 34px;text-align:center
       <div class="fact"><dt>Length</dt><dd>Six months</dd></div>
       <div class="fact"><dt>Sessions</dt><dd>Weekly, one-on-one via Zoom</dd></div>
       <div class="fact"><dt>Mentor</dt><dd>Tasha McCray</dd></div>
-      <div class="fact"><dt>Between sessions</dt><dd>Reach me here</dd></div>
+      <div class="fact"><dt>Between sessions</dt><dd><button id="goBoard" style="background:none;border:none;padding:0;font-family:var(--body);font-size:14px;font-weight:500;color:var(--green);cursor:pointer;border-bottom:1px solid var(--gold)">Message me here</button></dd></div>
     </dl>
   </div>
 
@@ -430,6 +430,7 @@ const MODULES = [
   {
     t:"Where to Start",
     sub:"Your why, what this business actually is, and the legal ground you stand on.",
+    docs:["manual_1"],
     note:"An independent living home provides room and board for two or more unrelated individuals and is not licensed or certified by the state. Federal law limits what a city can do to you: the Equal Protection Clause, the ADA, the Rehabilitation Act of 1973, and the Fair Housing Amendments Act.",
     media:[],
     ask:[
@@ -439,16 +440,17 @@ const MODULES = [
        h:"Seniors, recovery, re-entry, aged out of foster care, students, travel nurses, veterans, and many more."}
     ],
     checks:[
-      "Research the industry",
+      "Read the Module 1 workbook",
       "Understand who you want to serve",
       "Write your why",
       "Choose the type of independent living home you will operate",
-      "Read the legal section and understand what a city can and cannot do"
+      "Read the workbook, including the legal pages on what a city can and cannot do"
     ]
   },
   {
     t:"Business Set-up",
     sub:"The roadmap to filing, and everything that has to happen before it.",
+    docs:["manual_2"],
     note:"We are not attorneys and none of this is legal advice.",
     media:[
       {type:"audio", t:"Road Map to Success",
@@ -476,6 +478,7 @@ const MODULES = [
   {
     t:"Entrepreneurship",
     sub:"The nine questions that make the marketing work.",
+    docs:["manual_3"],
     note:"Answer all nine before you spend a dollar on promotion. This is the thinking the flyer comes from.",
     media:[
       {type:"audio", t:"Entrepreneurship and Marketing", url:""}
@@ -512,7 +515,7 @@ const MODULES = [
       {t:"Marketing flyer template", d:"Opens in Canva. Make your own copy.",
        url:"https://www.canva.com/design/DAEMG1HPI8I/UojRBEQLuXkFoi5t4c3fRw/view?mode=preview"}
     ],
-    docs:["referral_form"],
+    docs:["manual_4","referral_form"],
     ask:[
       {id:"m4_formlink", l:"Your referral form link"},
       {id:"m4_crm", l:"What you are using as your CRM"}
@@ -535,7 +538,7 @@ const MODULES = [
       {type:"audio", t:"Securing your property",
        url:"https://www.dropbox.com/scl/fi/lz7ln8ofvkgpmy2ez7qsz/Securing-Your-Property.m4a?rlkey=lf26syipyzk5staz6fttbl85z&raw=1"}
     ],
-    docs:["house_rules"],
+    docs:["manual_5","house_rules"],
     live:"House manager job description is taught live on our call.",
     ask:[
       {id:"m5_budget", l:"Your budget for the home"},
@@ -578,6 +581,7 @@ const MODULES = [
   {
     t:"Scale",
     sub:"Tweak, improve, repeat.",
+    docs:["manual_6"],
     note:"The first one is the hard one. Everything you learned in the first home makes the second one faster.",
     media:[{type:"audio", t:"Scaling your business", url:""}],
     ask:[
@@ -593,7 +597,11 @@ const MODULES = [
   }
 ];
 
-const DOC_TITLES = { referral_form:"Referral form", house_rules:"House rules" };
+const DOC_TITLES = {
+  manual_1:"Module 1 workbook", manual_2:"Module 2 workbook", manual_3:"Module 3 workbook",
+  manual_4:"Module 4 workbook", manual_5:"Module 5 workbook", manual_6:"Module 6 workbook",
+  referral_form:"Referral form", house_rules:"House rules"
+};
 
 const STEPS = [
   {n:"Milestone 1", t:"Clear on your why", d:"You know why you are doing this and who you intend to serve."},
@@ -1057,6 +1065,7 @@ async function listClients(){
   }
 }
 $('backBtn').addEventListener('click',listClients);
+const gb=$('goBoard'); if(gb) gb.addEventListener('click',()=>{ const t=document.querySelector('.tab[data-k="board"]'); if(t) t.click(); });
 
 /* ── auth ── */
 const gateBtn=$('gateBtn'), gateErr=$('gateErr');
