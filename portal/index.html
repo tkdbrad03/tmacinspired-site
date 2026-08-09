@@ -752,7 +752,10 @@ function paintModules(){
         '<div class="mod-sub">'+m.sub+'</div></div>'+
         '<span class="mod-s locked">Locked</span></div></div>';
     }
-    const t=ticks(i), c=t.filter(Boolean).length, n=m.checks.length;
+    const vis = k => isAdmin || !k || !!docs[k];
+    const t=ticks(i);
+    const shown=m.checks.map((it,j)=>j).filter(j=>vis(typeof m.checks[j]==='string'?null:m.checks[j].doc));
+    const c=shown.filter(j=>t[j]).length, n=shown.length||1;
     const st = c===n ? '<span class="mod-s done">Done</span>'
              : '<span class="mod-s open">'+(c===0?'Open':c+' of '+n)+'</span>';
 
@@ -791,7 +794,7 @@ function paintModules(){
 
     if(m.ask&&m.ask.length){
       body+='<div class="blk"><div class="blk-h">Your work</div>';
-      m.ask.forEach(a=>{
+      m.ask.filter(a=>vis(a.doc)).forEach(a=>{
         const v=esc(answers[a.id]||'');
         body+='<div class="f"><label for="'+a.id+'">'+esc(a.l)+'</label>'+
           (a.ta?'<textarea id="'+a.id+'" data-ans="1"'+(isAdmin?' readonly':'')+'>'+v+'</textarea>'
@@ -804,10 +807,14 @@ function paintModules(){
     }
 
     body+='<div class="blk"><div class="blk-h">Checklist</div>'+
-      m.checks.map((it,j)=>
-        '<label class="item'+(t[j]?' ticked':'')+'">'+
+      m.checks.map((it,j)=>{
+        const txt = typeof it==='string' ? it : it.t;
+        const gate = typeof it==='string' ? null : it.doc;
+        if(!vis(gate)) return '';
+        return '<label class="item'+(t[j]?' ticked':'')+'">'+
         '<input type="checkbox" data-i="'+i+'" data-j="'+j+'" '+(t[j]?'checked':'')+(isAdmin?' disabled':'')+'>'+
-        '<span>'+esc(it)+'</span></label>').join('')+'</div>';
+        '<span>'+esc(txt)+'</span></label>';
+      }).join('')+'</div>';
 
     return '<details class="mod" data-i="'+i+'"><summary>'+
       '<div><div class="mod-n">'+label+'</div><div class="mod-t">'+esc(m.t)+'</div>'+
