@@ -205,6 +205,17 @@ video{background:#000}
 .compose textarea:focus{border-color:var(--green)}
 .compose-foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:12px}
 .compose-as{font-size:12px;color:var(--muted)}
+.mic{padding:12px 20px;border:1px solid var(--green);background:none;color:var(--green);border-radius:2px;cursor:pointer;font-family:var(--body);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.mic:hover{background:var(--cream)}
+.mic.rec{background:#b4442f;border-color:#b4442f;color:#fff}
+.mic-time{font-size:13px;color:#b4442f;font-weight:700;margin-left:10px}
+.mic-prev{display:none;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.mic-prev audio{flex:1;min-width:180px;height:38px}
+.mic-len{font-size:13px;color:var(--muted)}
+.vn{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.vn-l{font-size:13px;font-weight:500;color:var(--green);white-space:nowrap}
+.vn audio{flex:1;min-width:200px;height:38px}
+.vn-dl{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);text-decoration:none;border-bottom:1px solid var(--gold)}
 .msg{background:#fff;border:1px solid var(--line);border-radius:3px;padding:18px;margin-bottom:12px}
 .msg.mine{border-left:2px solid var(--gold)}
 .msg-hd{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}
@@ -411,7 +422,17 @@ footer{border-top:1px solid var(--line);padding:22px 20px 34px;text-align:center
     <textarea id="mNew" placeholder="Write a message"></textarea>
     <div class="compose-foot">
       <span class="compose-as" id="mAs">&nbsp;</span>
-      <button class="save" id="mPost">Post</button>
+      <span>
+        <button class="mic" id="micBtn">Record</button>
+        <span class="mic-time" id="micTime" style="display:none">0:00</span>
+        <button class="save" id="mPost" style="margin-left:10px">Post</button>
+      </span>
+    </div>
+    <div class="mic-prev" id="micPrev">
+      <audio id="micAudio" controls></audio>
+      <span class="mic-len" id="micLen"></span>
+      <button class="mini go" id="micSend">Send</button>
+      <button class="mini" id="micDiscard">Discard</button>
     </div>
   </div>
   <div id="boardList"></div>
@@ -903,6 +924,87 @@ function notify(text,isReply){
   }catch(e){ console.error(e); }
 }
 
+/* ── voice notes ── */
+const MAX_MS = 180000;
+let rec=null, chunks=[], startedAt=0, tick=null, blob=null, blobMime='';
+
+function pickMime(){
+  const opts=['audio/mp4','audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus'];
+  for(const o of opts){ if(window.MediaRecorder && MediaRecorder.isTypeSupported(o)) return o; }
+  return '';
+}
+function fmt(ms){ const s=Math.floor(ms/1000); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
+
+function voiceUI(state){
+  const btn=$('micBtn');
+  btn.classList.toggle('rec', state==='recording');
+  btn.textContent = state==='recording' ? 'Stop' : 'Record';
+  $('micTime').style.display = state==='recording' ? 'inline' : 'none';
+  $('micPrev').style.display = state==='ready' ? 'flex' : 'none';
+  $('mNew').disabled = state!=='idle';
+  $('mPost').disabled = state!=='idle';
+}
+
+async function startRec(){
+  const mime=pickMime();
+  if(!window.MediaRecorder || !mime){ alert('This browser cannot record. Try Safari on iPhone or Chrome on Android.'); return; }
+  let stream;
+  try{ stream=await navigator.mediaDevices.getUserMedia({audio:true}); }
+  catch(e){ alert('Microphone access was blocked. Allow the microphone for this site and try again.'); return; }
+  chunks=[]; blob=null; blobMime=mime;
+  rec=new MediaRecorder(stream,{mimeType:mime});
+  rec.ondataavailable=e=>{ if(e.data.size) chunks.push(e.data); };
+  rec.onstop=()=>{
+    stream.getTracks().forEach(t=>t.stop());
+    blob=new Blob(chunks,{type:blobMime});
+    $('micAudio').src=URL.createObjectURL(blob);
+    $('micLen').textContent=fmt(Date.now()-startedAt);
+    voiceUI('ready');
+  };
+  rec.start(); startedAt=Date.now(); voiceUI('recording');
+  tick=setInterval(()=>{
+    const el=Date.now()-startedAt;
+    $('micTime').textContent=fmt(el);
+    if(el>=MAX_MS) stopRec();
+  },200);
+}
+function stopRec(){ clearInterval(tick); if(rec && rec.state!=='inactive') rec.stop(); }
+function discardRec(){ blob=null; chunks=[]; $('micAudio').removeAttribute('src'); voiceUI('idle'); }
+
+async function postVoice(){
+  if(!blob || !ref) return;
+  const btn=$('micSend'); btn.disabled=true; btn.textContent='Sending';
+  try{
+    const ext = blobMime.includes('mp4') ? 'm4a' : blobMime.includes('ogg') ? 'ogg' : 'webm';
+    const id='v'+Date.now();
+    const r=sref(storage,'voice/'+ref.id+'/'+id+'.'+ext);
+    await uploadBytes(r,blob,{contentType:blobMime});
+    const url=await getDownloadURL(r);
+    const dur=$('micLen').textContent;
+    const text='Voice note, '+dur;
+    board.unshift({id,name:me(),role:myRole(),text,ts:Date.now(),kind:'voice',url,mime:blobMime,dur,replies:[]});
+    await save({board,seen:{...seen,[myRole()]:Date.now()}});
+    seen={...seen,[myRole()]:Date.now()};
+    discardRec(); paintBoard(); notify(text,false);
+  }catch(e){
+    console.error(e);
+    alert('The voice note did not send. Check your connection and try again.');
+  }
+  btn.disabled=false; btn.textContent='Send';
+}
+
+function voiceHTML(m){
+  const a=document.createElement('audio');
+  const playable = a.canPlayType && a.canPlayType(m.mime||'audio/mp4')!=='';
+  if(!playable) return '<div class="vn"><span class="vn-l">Voice note, '+esc(m.dur||'')+'</span>'+
+    '<a class="vn-dl" href="'+esc(m.url)+'" target="_blank" rel="noopener">Download to listen</a></div>';
+  return '<div class="vn"><span class="vn-l">Voice note, '+esc(m.dur||'')+'</span>'+
+    '<audio controls preload="none" src="'+esc(m.url)+'"></audio></div>';
+}
+
+$('micBtn').addEventListener('click',()=>{ rec && rec.state==='recording' ? stopRec() : startRec(); });
+$('micSend').addEventListener('click',postVoice);
+$('micDiscard').addEventListener('click',discardRec);
 /* ── messages ── */
 const me = () => isAdmin ? 'Dr. Tasha' : (clientName||'Client');
 const myRole = () => isAdmin ? 'admin' : 'client';
@@ -959,7 +1061,7 @@ function paintBoard(){
         '<span class="av'+(m.role==='admin'?' gold':'')+'">'+initials(m.name)+'</span>'+
         '<span class="nm">'+esc(m.name)+'</span></span>'+
         '<span class="when">'+ago(m.ts)+'</span></div>'+
-      '<div class="msg-tx">'+esc(m.text)+'</div>'+
+      (m.kind==='voice' ? voiceHTML(m) : '<div class="msg-tx">'+esc(m.text)+'</div>')+
       '<div class="msg-ft">'+
         '<button class="lnk" data-reply="'+m.id+'">Reply</button>'+
         (reps.length?'<button class="badge" data-thread="'+m.id+'">'+reps.length+(reps.length===1?' reply':' replies')+'</button>':'')+
