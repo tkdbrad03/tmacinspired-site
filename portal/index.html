@@ -926,7 +926,7 @@ function notify(text,isReply){
 
 /* ── voice notes ── */
 const MAX_MS = 180000;
-let rec=null, chunks=[], startedAt=0, tick=null, blob=null, blobMime='';
+let rec=null, chunks=[], startedAt=0, micTimer=null, blob=null, blobMime='';
 
 function pickMime(){
   const opts=['audio/mp4','audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus'];
@@ -962,13 +962,13 @@ async function startRec(){
     voiceUI('ready');
   };
   rec.start(); startedAt=Date.now(); voiceUI('recording');
-  tick=setInterval(()=>{
+  micTimer=setInterval(()=>{
     const el=Date.now()-startedAt;
     $('micTime').textContent=fmt(el);
     if(el>=MAX_MS) stopRec();
   },200);
 }
-function stopRec(){ clearInterval(tick); if(rec && rec.state!=='inactive') rec.stop(); }
+function stopRec(){ clearInterval(micTimer); if(rec && rec.state!=='inactive') rec.stop(); }
 function discardRec(){ blob=null; chunks=[]; $('micAudio').removeAttribute('src'); voiceUI('idle'); }
 
 async function postVoice(){
