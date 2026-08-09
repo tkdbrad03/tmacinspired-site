@@ -848,8 +848,16 @@ async function tick(i,j){
   const t=ticks(i).slice(); t[j]=!t[j]; checks[String(i)]=t;
   paintModules(); await save({checks});
 }
-async function doRelease(i,val){ released[i]=val; paintModules(); await save({released}); }
-
+async function doRelease(i,val){
+  released[i]=val; paintModules(); await save({released});
+  if(val && confirm('Post and email that Module '+(i+1)+' is open?')){
+    const text='Module '+(i+1)+', '+MODULES[i].t+', is now open in your portal. Read the workbook first, then work the checklist.';
+    board.unshift({id:'m'+Date.now(),name:me(),role:myRole(),text,ts:Date.now(),replies:[]});
+    await save({board});
+    paintBoard();
+    notify(text,false);
+  }
+}
 async function saveAnswers(i){
   MODULES[i].ask.forEach(a=>{ const el=$(a.id); if(el) answers[a.id]=el.value; });
   const ok=await save({answers});
