@@ -472,7 +472,7 @@ const MODULES = [
   {
     t:"Where to Start",
     sub:"Your why, what this business actually is, and the legal ground you stand on.",
-    docs:["manual_1"],
+    docs:["manual_1","manual_1_p2","manual_1_p3"],
     note:"An independent living home provides room and board for two or more unrelated individuals and is not licensed or certified by the state. Federal law limits what a city can do to you: the Equal Protection Clause, the ADA, the Rehabilitation Act of 1973, and the Fair Housing Amendments Act.",
     media:[],
     ask:[
@@ -492,7 +492,7 @@ const MODULES = [
   {
     t:"Business Set-up",
     sub:"The roadmap to filing, and everything that has to happen before it.",
-    docs:["manual_2"],
+    docs:["manual_2","manual_2_p2","manual_2_p3"],
     note:"We are not attorneys and none of this is legal advice.",
     media:[
       {type:"audio", t:"Road Map to Success",
@@ -520,7 +520,7 @@ const MODULES = [
   {
     t:"Entrepreneurship",
     sub:"The nine questions that make the marketing work.",
-    docs:["manual_3"],
+    docs:["manual_3","manual_3_p2","manual_3_p3"],
     note:"Answer all nine before you spend a dollar on promotion. This is the thinking the flyer comes from.",
     media:[
       {type:"audio", t:"Entrepreneurship and Marketing", url:""}
@@ -557,7 +557,7 @@ const MODULES = [
       {t:"Marketing flyer template", d:"Opens in Canva. Make your own copy.",
        url:"https://www.canva.com/design/DAEMG1HPI8I/UojRBEQLuXkFoi5t4c3fRw/view?mode=preview"}
     ],
-    docs:["manual_4","referral_form"],
+    docs:["manual_4","manual_4_p2","manual_4_p3","referral_form"],
     ask:[
       {id:"m4_formlink", l:"Your referral form link"},
       {id:"m4_crm", l:"What you are using as your CRM"}
@@ -580,7 +580,7 @@ const MODULES = [
       {type:"audio", t:"Securing your property",
        url:"https://www.dropbox.com/scl/fi/lz7ln8ofvkgpmy2ez7qsz/Securing-Your-Property.m4a?rlkey=lf26syipyzk5staz6fttbl85z&raw=1"}
     ],
-    docs:["manual_5","house_rules"],
+    docs:["manual_5","manual_5_p2","manual_5_p3","house_rules"],
     live:"House manager job description is taught live on our call.",
     ask:[
       {id:"m5_budget", l:"Your budget for the home"},
@@ -623,7 +623,7 @@ const MODULES = [
   {
     t:"Scale",
     sub:"Tweak, improve, repeat.",
-    docs:["manual_6"],
+    docs:["manual_6","manual_6_p2","manual_6_p3"],
     note:"The first one is the hard one. Everything you learned in the first home makes the second one faster.",
     media:[{type:"audio", t:"Scaling your business", url:""}],
     ask:[
@@ -640,11 +640,14 @@ const MODULES = [
 ];
 
 const DOC_TITLES = {
-  manual_1:"Module 1 workbook", manual_2:"Module 2 workbook", manual_3:"Module 3 workbook",
-  manual_4:"Module 4 workbook", manual_5:"Module 5 workbook", manual_6:"Module 6 workbook",
+  manual_1:"Module 1 workbook",  manual_1_p2:"Module 1 workbook, Part 2",  manual_1_p3:"Module 1 workbook, Part 3",
+  manual_2:"Module 2 workbook",  manual_2_p2:"Module 2 workbook, Part 2",  manual_2_p3:"Module 2 workbook, Part 3",
+  manual_3:"Module 3 workbook",  manual_3_p2:"Module 3 workbook, Part 2",  manual_3_p3:"Module 3 workbook, Part 3",
+  manual_4:"Module 4 workbook",  manual_4_p2:"Module 4 workbook, Part 2",  manual_4_p3:"Module 4 workbook, Part 3",
+  manual_5:"Module 5 workbook",  manual_5_p2:"Module 5 workbook, Part 2",  manual_5_p3:"Module 5 workbook, Part 3",
+  manual_6:"Module 6 workbook",  manual_6_p2:"Module 6 workbook, Part 2",  manual_6_p3:"Module 6 workbook, Part 3",
   referral_form:"Referral form", house_rules:"House rules"
 };
-
 const STEPS = [
   {n:"Milestone 1", t:"Clear on your why", d:"You know why you are doing this and who you intend to serve."},
   {n:"Milestone 2", t:"Business standing", d:"Entity registered, EIN in hand, bank account open, accounting running."},
