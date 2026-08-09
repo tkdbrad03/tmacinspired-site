@@ -272,7 +272,7 @@ footer{border-top:1px solid var(--line);padding:22px 20px 34px;text-align:center
     <div class="gate-field"><label for="gPass">Password</label><input id="gPass" type="password" autocomplete="current-password"></div>
     <button class="gate-btn" id="gateBtn">Sign in</button>
     <p class="gate-err" id="gateErr" role="alert"></p>
-    <p class="gate-help">Forgot your password? Message Tasha.</p>
+    <p class="gate-help"><button id="resetBtn" style="background:none;border:none;padding:0;color:#8aa397;font-family:var(--body);font-size:12px;cursor:pointer;border-bottom:1px solid #4a6357">Forgot your password?</button></p>
   </div>
 </div>
 
@@ -454,6 +454,13 @@ footer{border-top:1px solid var(--line);padding:22px 20px 34px;text-align:center
   <div id="boardList"></div>
 </section>
 
+<section class="panel" id="p-mywork" role="tabpanel">
+  <p class="eyebrow">Everything you've written</p>
+  <h2>My Work</h2>
+  <p class="lede" id="workLede">Every answer you've saved, in one place. Read it back when you forget why you started.</p>
+  <div class="card"><div id="workList"></div></div>
+</section>
+  
 <!-- ADMIN CLIENT LIST -->
 <section class="panel" id="p-clients" role="tabpanel">
   <p class="eyebrow">Admin</p>
@@ -476,7 +483,7 @@ footer{border-top:1px solid var(--line);padding:22px 20px 34px;text-align:center
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, collection, getDocs, serverTimestamp }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -700,10 +707,10 @@ const FIELDS = ['i-phone','i-shift','i-window','i-license','i-entity','i-credit'
 const LABELS = {'i-phone':'Phone','i-shift':'Shift pattern','i-window':'Call window','i-license':'License',
   'i-entity':'Entity','i-credit':'Credit score','i-dti':'Debt to income','i-market':'Target market','i-hours':'Hours per week'};
 
-const CLIENT_TABS = [['onboarding','Onboarding'],['program','Program'],['progress','Progress'],['calls','Calls'],['board','Messages']];
+const CLIENT_TABS = [['onboarding','Onboarding'],['program','Program'],['mywork','My Work'],['progress','Progress'],['calls','Calls'],['board','Messages']];
 const ADMIN_TABS  = [['clients','Clients']];
 const DETAIL_TABS = [['intake','Intake'],['program','Program'],['progress','Progress'],['calls','Calls'],['board','Messages']];
-
+const DETAIL_TABS = [['intake','Intake'],['program','Program'],['mywork','Her Work'],['progress','Progress'],['calls','Calls'],['board','Messages']];
 let isAdmin=false, ref=null, uid=null;
 let done=new Array(STEPS.length).fill(false);
 let calls=[], released=MODULES.map(()=>false), checks={}, answers={}, docs={};
@@ -788,7 +795,22 @@ function paintCalls(){
     (c.link?'<a class="rec" href="'+esc(c.link)+'" target="_blank" rel="noopener">Recording</a>':'')+
     '</div></div>').join('');
 }
-
+function paintWork(){
+  const list=$('workList');
+  let out='', any=false;
+  MODULES.forEach((m,i)=>{
+    const rows=(m.ask||[]).filter(a=>answers[a.id]&&answers[a.id].trim());
+    if(!rows.length) return;
+    any=true;
+    out+='<div class="blk"><div class="blk-h">Module '+(i+1)+', '+esc(m.t)+'</div>'+
+      rows.map(a=>'<div style="padding:12px 0;border-bottom:1px solid var(--line)">'+
+        '<div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">'+esc(a.l)+'</div>'+
+        '<div class="msg-tx">'+esc(answers[a.id])+'</div></div>').join('')+'</div>';
+  });
+  list.innerHTML = any ? out :
+    '<p class="empty">Nothing saved yet. Answer the questions in a module and hit Save my work, and it will show up here.</p>';
+}
+  
 /* ── modules ── */
 function ticks(i){
   const a=checks[String(i)];
@@ -920,6 +942,7 @@ async function doRelease(i,val){
 async function saveAnswers(i){
   MODULES[i].ask.forEach(a=>{ const el=$(a.id); if(el) answers[a.id]=el.value; });
   const ok=await save({answers});
+  paintWork();
   flash('ansMsg'+i, ok?'Saved':"Didn't save. Try again.", !ok);
 }
 
@@ -1228,7 +1251,8 @@ async function openClient(id,name){
   $('progLede').textContent='Tap a marker to move her milestone. She sees this update.';
   $('progLede2').textContent='Tick a module to release it to her. Her checklist progress shows beside each one.';
   $('boardLede').textContent='Her questions and your answers. You committed to replying within two business days.';
-  paintSpine(); paintCalls(); paintNext(); paintModules(); paintBoard();
+  $('workLede').textContent='Everything she has written across all six modules. Read this before every call.';
+  paintSpine(); paintCalls(); paintNext(); paintModules(); paintWork(); paintBoard();
   buildTabs(DETAIL_TABS);
 }
 
@@ -1284,6 +1308,18 @@ gateBtn.addEventListener('click',async()=>{
 });
 $('gPass').addEventListener('keydown',e=>{ if(e.key==='Enter') gateBtn.click(); });
 $('signOut').addEventListener('click',()=>signOut(auth));
+$('resetBtn').addEventListener('click',async()=>{
+  const email=$('gEmail').value.trim();
+  if(!email){ showErr('Type your email above first, then tap this again.'); return; }
+  try{
+    await sendPasswordResetEmail(auth,email);
+    gateErr.style.color='#a9d3b8';
+    showErr('Check your email for a link to set a new password.');
+  }catch(e){
+    gateErr.style.color='';
+    showErr("Couldn't send that. Check the email address and try again.");
+  }
+});
 
 onAuthStateChanged(auth,async user=>{
   if(!user){
@@ -1316,7 +1352,7 @@ onAuthStateChanged(auth,async user=>{
     }
     clientEmail=user.email;
   }catch(e){ console.error(e); }
-  paintSpine(); paintCalls(); paintNext(); paintModules(); paintBoard();
+  paintSpine(); paintCalls(); paintNext(); paintModules(); paintWork(); paintBoard();
   buildTabs(CLIENT_TABS);
 });
 </script>
