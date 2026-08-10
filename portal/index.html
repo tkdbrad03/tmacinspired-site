@@ -856,7 +856,7 @@ function paintModules(){
 
     if(m.docs&&m.docs.length){
       body+='<div class="blk"><div class="blk-h">Documents</div>';
-      m.docs.forEach(k=>{
+      m.docs.filter(k=>isAdmin||docs[k]||k===m.docs[0]).forEach(k=>{
         const d=docs[k];
         body+='<div class="docrow"><span><span class="t">'+DOC_TITLES[k]+'</span>'+
           (d?'<span class="sub">'+esc(d.name||'PDF')+'</span>':'')+'</span>'+
