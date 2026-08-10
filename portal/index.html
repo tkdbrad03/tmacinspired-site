@@ -160,6 +160,13 @@ video{background:#000}
 .ext .t{font-size:14px;font-weight:500}
 .ext .d{font-size:13px;color:var(--muted);margin-top:2px}
 .ext .go{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);flex-shrink:0}
+.res{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;padding:16px 0;border-bottom:1px solid var(--line)}
+.res:last-child{border-bottom:none}
+.res .t{font-size:15px;font-weight:500}
+.res .t a{color:inherit;text-decoration:none;border-bottom:1px solid var(--gold)}
+.res .t a:hover{color:var(--green)}
+.res .n{font-size:13.5px;color:var(--muted);margin-top:4px;max-width:56ch}
+.res .host{font-size:12px;color:var(--muted);margin-top:3px}
 .docrow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}
 .docrow:last-child{border-bottom:none}
 .docrow .t{font-size:14.5px}
@@ -460,6 +467,20 @@ footer{border-top:1px solid var(--line);padding:22px 20px 34px;text-align:center
   <p class="lede" id="workLede">Every answer you've saved, in one place. Read it back when you forget why you started.</p>
   <div class="card"><div id="workList"></div></div>
 </section>
+<section class="panel" id="p-resources" role="tabpanel">
+  <p class="eyebrow">Keep coming back to these</p>
+  <h2>Resources</h2>
+  <p class="lede">Links you'll use throughout the program. I add to this as we go, so check it when you're stuck.</p>
+  <div class="card" id="adminAddRes" style="display:none">
+    <h3>Add a resource</h3>
+    <div class="f"><label for="r-title">Title</label><input id="r-title" type="text" placeholder="Business startup resources"></div>
+    <div class="f"><label for="r-url">Link</label><input id="r-url" type="url" placeholder="https://"></div>
+    <div class="f"><label for="r-note">Note, optional</label><input id="r-note" type="text" placeholder="Living doc. I add to it as we go."></div>
+    <button class="save" id="addRes">Add</button>
+    <span class="saved" id="resMsg">Added</span>
+  </div>
+  <div class="card"><div id="resList"></div></div>
+</section>
   
 <!-- ADMIN CLIENT LIST -->
 <section class="panel" id="p-clients" role="tabpanel">
@@ -706,13 +727,11 @@ const FIELDS = ['i-phone','i-shift','i-window','i-license','i-entity','i-credit'
 const LABELS = {'i-phone':'Phone','i-shift':'Shift pattern','i-window':'Call window','i-license':'License',
   'i-entity':'Entity','i-credit':'Credit score','i-dti':'Debt to income','i-market':'Target market','i-hours':'Hours per week'};
 
-const CLIENT_TABS = [['onboarding','Onboarding'],['program','Program'],['mywork','My Work'],['progress','Progress'],['calls','Calls'],['board','Messages']];
-const ADMIN_TABS  = [['clients','Clients']];
-const DETAIL_TABS = [['intake','Intake'],['program','Program'],['mywork','Her Work'],['progress','Progress'],['calls','Calls'],['board','Messages']];
-let isAdmin=false, ref=null, uid=null;
+const CLIENT_TABS = [['onboarding','Onboarding'],['program','Program'],['resources','Resources'],['mywork','My Work'],['progress','Progress'],['calls','Calls'],['board','Messages']];const ADMIN_TABS  = [['clients','Clients']];
+const DETAIL_TABS = [['intake','Intake'],['program','Program'],['resources','Resources'],['mywork','Her Work'],['progress','Progress'],['calls','Calls'],['board','Messages']];let isAdmin=false, ref=null, uid=null;
 let done=new Array(STEPS.length).fill(false);
 let calls=[], released=MODULES.map(()=>false), checks={}, answers={}, docs={};
-let board=[], seen={}, clientName='Amayah Edwards', clientEmail='', nextSession='';
+let board=[], seen={}, clientName='Amayah Edwards', clientEmail='', nextSession='', resources=[];
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -807,6 +826,44 @@ function paintWork(){
   });
   list.innerHTML = any ? out :
     '<p class="empty">Nothing saved yet. Answer the questions in a module and hit Save my work, and it will show up here.</p>';
+}
+ function paintResources(){
+  const list=$('resList');
+  if(!resources.length){
+    list.innerHTML='<p class="empty">Nothing here yet.</p>';
+    return;
+  }
+  list.innerHTML=resources.map((r,i)=>{
+    let host=''; try{ host=new URL(r.url).hostname.replace(/^www\./,''); }catch(e){}
+    return '<div class="res"><div>'+
+      '<div class="t"><a href="'+esc(r.url)+'" target="_blank" rel="noopener">'+esc(r.title)+'</a></div>'+
+      (r.note?'<div class="n">'+esc(r.note)+'</div>':'')+
+      '<div class="host">'+esc(host)+'</div></div>'+
+      (isAdmin?'<button class="lnk warn" data-delres="'+i+'">Remove</button>':'')+
+      '</div>';
+  }).join('');
+  list.querySelectorAll('[data-delres]').forEach(b=>
+    b.addEventListener('click',()=>delRes(+b.dataset.delres)));
+}
+
+$('addRes').addEventListener('click',async()=>{
+  const title=$('r-title').value.trim(), url=$('r-url').value.trim();
+  if(!title||!url){ flash('resMsg','Add a title and a link.',true); return; }
+  const btn=$('addRes'); btn.disabled=true;
+  resources.push({title,url,note:$('r-note').value.trim()});
+  const ok=await save({resources});
+  if(ok){ ['r-title','r-url','r-note'].forEach(i=>$(i).value=''); paintResources(); flash('resMsg','Added'); }
+  else { resources.pop(); flash('resMsg',"Didn't save. Try again.",true); }
+  btn.disabled=false;
+});
+
+async function delRes(i){
+  if(!confirm('Remove this resource?')) return;
+  const old=resources.slice();
+  resources.splice(i,1);
+  const ok=await save({resources});
+  if(!ok){ resources=old; alert("Couldn't remove it."); }
+  paintResources();
 }
   
 /* ── modules ── */
@@ -1224,6 +1281,7 @@ function hydrate(d){
   if(d.name) clientName=d.name;
   clientEmail=d.email||'';
   nextSession=d.nextSession||'';
+  resources=Array.isArray(d.resources)?d.resources:[];
 }
 
 async function loadMaterials(){
@@ -1245,11 +1303,12 @@ async function openClient(id,name){
   $('backBtn').classList.remove('hide');
   $('adminAddCall').style.display='';
   $('adminNext').style.display='';
+  $('adminAddRes').style.display='';
   $('callsLede').textContent='Post a session after each call. She sees these newest first.';
   $('progLede').textContent='Tap a marker to move her milestone. She sees this update.';
   $('progLede2').textContent='Tick a module to release it to her. Her checklist progress shows beside each one.';
   $('boardLede').textContent='Her questions and your answers. You committed to replying within two business days.';
-  paintSpine(); paintCalls(); paintNext(); paintModules(); paintWork(); paintBoard();
+  paintSpine(); paintCalls(); paintNext(); paintModules(); paintResources(); paintWork(); paintBoard();
   buildTabs(DETAIL_TABS);
 }
 
@@ -1349,7 +1408,7 @@ onAuthStateChanged(auth,async user=>{
     }
     clientEmail=user.email;
   }catch(e){ console.error(e); }
-  paintSpine(); paintCalls(); paintNext(); paintModules(); paintWork(); paintBoard();
+  paintSpine(); paintCalls(); paintNext(); paintModules(); paintResources(); paintWork(); paintBoard();
   buildTabs(CLIENT_TABS);
 });
 </script>
