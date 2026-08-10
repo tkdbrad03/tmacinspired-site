@@ -238,6 +238,9 @@ video{background:#000}
 .who .nm{font-size:14px;font-weight:500}
 .when{font-size:12px;color:var(--muted);flex-shrink:0}
 .msg-tx{font-size:14.5px;line-height:1.6;white-space:pre-wrap;word-wrap:break-word}
+.msg-tx a.mlink{color:var(--green);text-decoration:underline;text-underline-offset:2px;word-break:break-all}
+.msg .mine .msg-tx a.mlink,.msg.mine .msg-tx a.mlink{color:var(--gold)}
+.msg-tx a.mlink:hover{color:var(--gold)}
 .msg-ft{display:flex;align-items:center;gap:14px;margin-top:12px}
 .lnk{background:none;border:none;padding:0;cursor:pointer;font-family:var(--body);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green)}
 .lnk:hover{color:var(--green-deep)}
@@ -735,6 +738,8 @@ let board=[], seen={}, clientName='Amayah Edwards', clientEmail='', nextSession=
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const linkify = s => esc(s).replace(/((?:https?:\/\/|www\.)[^\s<]+[^\s<.,;:!?)\]}"'])/g,
+  u => '<a href="'+(u.startsWith('www.')?'https://'+u:u)+'" target="_blank" rel="noopener noreferrer" class="mlink">'+u+'</a>');
 
 function flash(id,text,bad){
   const m=$(id); m.textContent=text; m.classList.toggle('err',!!bad);
@@ -1168,7 +1173,7 @@ function paintBoard(){
         '<span class="av'+(m.role==='admin'?' gold':'')+'">'+initials(m.name)+'</span>'+
         '<span class="nm">'+esc(m.name)+'</span></span>'+
         '<span class="when">'+ago(m.ts)+'</span></div>'+
-      (m.kind==='voice' ? voiceHTML(m) : '<div class="msg-tx">'+esc(m.text)+'</div>')+
+      (m.kind==='voice' ? voiceHTML(m) : '<div class="msg-tx">'+linkify(m.text)+'</div>')+ 
       '<div class="msg-ft">'+
         '<button class="lnk" data-reply="'+m.id+'">Reply</button>'+
         (reps.length?'<button class="badge" data-thread="'+m.id+'">'+reps.length+(reps.length===1?' reply':' replies')+'</button>':'')+
@@ -1179,7 +1184,7 @@ function paintBoard(){
           '<span class="av'+(r.role==='admin'?' gold':'')+'">'+initials(r.name)+'</span>'+
           '<span class="nm">'+esc(r.name)+'</span></span>'+
           '<span class="when">'+ago(r.ts)+'</span></div>'+
-          '<div class="msg-tx">'+esc(r.text)+'</div></div>').join('')+
+          '<div class="msg-tx">'+linkify(r.text)+'</div></div>').join('')+ 
       '</div>'+
       '<div class="rbox" data-box="'+m.id+'">'+
         '<textarea data-rin="'+m.id+'" placeholder="Write your reply"></textarea>'+
