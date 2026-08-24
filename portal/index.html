@@ -127,7 +127,14 @@ h2{font-family:var(--display);font-size:25px;font-weight:400;margin:4px 0 6px;li
 .call-body h4{font-size:15px;font-weight:500;margin-bottom:3px}
 .call-body p{font-size:14px;color:var(--muted);white-space:pre-wrap}
 .call-body a.rec{display:inline-block;margin-top:7px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:2px}
-
+.call-body h4{cursor:pointer;display:flex;align-items:center;gap:8px;user-select:none}
+.call-body h4:hover{color:var(--green)}
+.call-body h4 .chev{flex-shrink:0;font-size:10px;color:var(--gold);transition:transform .18s ease;display:inline-block}
+.call.open .call-body h4 .chev{transform:rotate(90deg)}
+.call-more{display:none}
+.call.open .call-more{display:block}
+.call-peek{font-size:14px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.call.open .call-peek{display:none}
 /* MODULES */
 .mod{border-bottom:1px solid var(--line)}
 .mod:last-child{border-bottom:none}
@@ -825,11 +832,18 @@ function paintCalls(){
   const list=$('callList');
   if(!calls.length){ list.innerHTML='<p class="empty">No sessions posted yet. Your first one gets scheduled at onboarding.</p>'; return; }
   list.innerHTML=calls.map((c,i)=>
-    '<div class="call"><div class="call-when"><div class="m">'+esc(c.date||'')+'</div>'+
+    '<div class="call'+(i===0?' open':'')+'" data-call="'+i+'"><div class="call-when"><div class="m">'+esc(c.date||'')+'</div>'+
     '<div class="d">'+String(calls.length-i).padStart(2,'0')+'</div></div>'+
-    '<div class="call-body"><h4>'+esc(c.title||'Session')+'</h4><p>'+esc(c.notes||'')+'</p>'+
+    '<div class="call-body"><h4 data-toggle="'+i+'"><span class="chev">&#9654;</span>'+esc(c.title||'Session')+'</h4>'+
+    '<div class="call-peek">'+esc(c.notes||'')+'</div>'+
+    '<div class="call-more"><p>'+linkify(c.notes||'')+'</p>'+
     (c.link?'<a class="rec" href="'+esc(c.link)+'" target="_blank" rel="noopener">Recording</a>':'')+
-    '</div></div>').join('');
+    '</div></div></div>').join('');
+
+  list.querySelectorAll('[data-toggle]').forEach(h=>h.addEventListener('click',()=>{
+    const row=list.querySelector('.call[data-call="'+h.dataset.toggle+'"]');
+    if(row) row.classList.toggle('open');
+  }));
 }
 function paintWork(){
   const list=$('workList');
