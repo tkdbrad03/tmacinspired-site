@@ -127,6 +127,12 @@ h2{font-family:var(--display);font-size:25px;font-weight:400;margin:4px 0 6px;li
 .call-body h4{font-size:15px;font-weight:500;margin-bottom:3px}
 .call-body p{font-size:14px;color:var(--muted);white-space:pre-wrap}
 .call-body a.rec{display:inline-block;margin-top:7px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:2px}
+.call-tx{font-size:14px;color:var(--muted);line-height:1.6}
+.call-tx p{margin:0 0 9px}
+.call-tx h5{font-size:13px;font-weight:700;color:var(--ink);margin:15px 0 6px}
+.call-tx h5:first-child{margin-top:0}
+.call-tx ul,.call-tx ol{margin:0 0 9px;padding-left:19px}
+.call-tx li{margin-bottom:4px}
 .call-body h4{cursor:pointer;display:flex;align-items:center;gap:8px;user-select:none}
 .call-body h4:hover{color:var(--green)}
 .call-body h4 .chev{flex-shrink:0;font-size:10px;color:var(--gold);transition:transform .18s ease;display:inline-block}
@@ -761,6 +767,18 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const linkify = s => esc(s).replace(/((?:https?:\/\/|www\.)[^\s<]+[^\s<.,;:!?)\]}"'])/g,
   u => '<a href="'+(u.startsWith('www.')?'https://'+u:u)+'" target="_blank" rel="noopener noreferrer" class="mlink">'+u+'</a>');
+  const inl = s => linkify(s).replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
+  .replace(/(^|\W)\*([^*\n]+)\*/g,'$1<em>$2</em>');
+const richText = s => String(s??'').split(/\n{2,}/).map(b=>{
+  const L = b.split('\n').filter(x=>x.trim());
+  if(!L.length) return '';
+  if(L.every(x=>/^\s*[-*]\s+/.test(x)))
+    return '<ul>'+L.map(x=>'<li>'+inl(x.replace(/^\s*[-*]\s+/,''))+'</li>').join('')+'</ul>';
+  if(L.every(x=>/^\s*\d+[.)]\s+/.test(x)))
+    return '<ol>'+L.map(x=>'<li>'+inl(x.replace(/^\s*\d+[.)]\s+/,''))+'</li>').join('')+'</ol>';
+  return L.map(x=>/^#{1,6}\s/.test(x) ? '<h5>'+inl(x.replace(/^#{1,6}\s+/,''))+'</h5>'
+    : (/^\s*\*\*[^*]+\*\*\s*$/.test(x) ? '<h5>'+inl(x)+'</h5>' : '<p>'+inl(x)+'</p>')).join('');
+}).join('');
 
 function flash(id,text,bad){
   const m=$(id); m.textContent=text; m.classList.toggle('err',!!bad);
@@ -835,8 +853,8 @@ function paintCalls(){
     '<div class="call'+(i===0?' open':'')+'" data-call="'+i+'"><div class="call-when"><div class="m">'+esc(c.date||'')+'</div>'+
     '<div class="d">'+String(calls.length-i).padStart(2,'0')+'</div></div>'+
     '<div class="call-body"><h4 data-toggle="'+i+'"><span class="chev">&#9654;</span>'+esc(c.title||'Session')+'</h4>'+
-    '<div class="call-peek">'+esc(c.notes||'')+'</div>'+
-    '<div class="call-more"><p>'+linkify(c.notes||'')+'</p>'+
+    '<div class="call-peek">'+esc((c.notes||'').replace(/[*#]/g,''))+'</div>'+
+    '<div class="call-more"><div class="call-tx">'+richText(c.notes||'')+'</div>'+
     (c.link?'<a class="rec" href="'+esc(c.link)+'" target="_blank" rel="noopener">Recording</a>':'')+
     '</div></div></div>').join('');
 
