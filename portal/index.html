@@ -126,6 +126,15 @@ h2{font-family:var(--display);font-size:25px;font-weight:400;margin:4px 0 6px;li
 .call-when .d{font-family:var(--display);font-size:23px;line-height:1.1}
 .call-body h4{font-size:15px;font-weight:500;margin-bottom:3px}
 .call-body p{font-size:14px;color:var(--muted);white-space:pre-wrap}
+.call-admin{display:flex;gap:16px;margin-top:10px}
+.rt-bar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.rt-b{background:#fff;border:1px solid var(--line);border-radius:2px;padding:6px 11px;font-family:var(--body);font-size:12px;color:var(--ink);cursor:pointer}
+.rt-b:hover{border-color:var(--green);color:var(--green)}
+.rt-ed{min-height:190px;max-height:440px;overflow:auto;padding:12px 14px;border:1px solid var(--line);border-radius:2px;background:#fff;font-size:15px;line-height:1.6;outline:none}
+.rt-ed:focus{border-color:var(--green)}
+.rt-ed h5{font-size:14px;font-weight:700;margin:14px 0 6px}
+.rt-ed p{margin:0 0 9px}
+.rt-ed ul,.rt-ed ol{margin:0 0 9px;padding-left:20px}
 .call-body a.rec{display:inline-block;margin-top:7px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:2px}
 .call-tx{font-size:14px;color:var(--muted);line-height:1.6}
 .call-tx p{margin:0 0 9px}
@@ -440,7 +449,17 @@ footer{border-top:1px solid var(--line);padding:22px 20px 34px;text-align:center
     <h3>Post a session</h3>
     <div class="f"><label for="c-date">Date</label><input id="c-date" type="text" placeholder="Aug 14, 2026"></div>
     <div class="f"><label for="c-title">Title</label><input id="c-title" type="text" placeholder="Onboarding"></div>
-    <div class="f"><label for="c-notes">Notes and action items</label><textarea id="c-notes"></textarea></div>
+        <div class="f"><label>Notes and action items</label>
+      <div class="rt-bar">
+        <button type="button" class="rt-b" data-cmd="bold"><b>B</b></button>
+        <button type="button" class="rt-b" data-cmd="italic"><i>I</i></button>
+        <button type="button" class="rt-b" data-cmd="formatBlock" data-val="h5">Heading</button>
+        <button type="button" class="rt-b" data-cmd="insertUnorderedList">Bullets</button>
+        <button type="button" class="rt-b" data-cmd="insertOrderedList">Numbers</button>
+        <button type="button" class="rt-b" data-cmd="removeFormat">Clear</button>
+      </div>
+      <div id="c-notes" class="rt-ed" contenteditable="true"></div>
+    </div>
     <div class="f"><label for="c-link">Recording link, optional</label><input id="c-link" type="url" placeholder="https://"></div>
     <button class="save" id="addCall">Post session</button>
     <span class="saved" id="callMsg">Posted</span>
@@ -853,11 +872,14 @@ function paintCalls(){
     '<div class="call'+(i===0?' open':'')+'" data-call="'+i+'"><div class="call-when"><div class="m">'+esc(c.date||'')+'</div>'+
     '<div class="d">'+String(calls.length-i).padStart(2,'0')+'</div></div>'+
     '<div class="call-body"><h4 data-toggle="'+i+'"><span class="chev">&#9654;</span>'+esc(c.title||'Session')+'</h4>'+
-    '<div class="call-peek">'+esc((c.notes||'').replace(/[*#]/g,''))+'</div>'+
-    '<div class="call-more"><div class="call-tx">'+richText(c.notes||'')+'</div>'+
+    '<div class="call-peek">'+esc(String(c.notes||'').replace(/<[^>]*>/g,' ').replace(/[*#]/g,'').replace(/\s+/g,' '))+'</div>'+
+    '<div class="call-more"><div class="call-tx">'+noteHTML(c.notes||'')+'</div>'+
     (c.link?'<a class="rec" href="'+esc(c.link)+'" target="_blank" rel="noopener">Recording</a>':'')+
+        (isAdmin?'<div class="call-admin"><button class="lnk" data-editcall="'+i+'">Edit</button><button class="lnk warn" data-delcall="'+i+'">Delete</button></div>':'')+
     '</div></div></div>').join('');
 
+  list.querySelectorAll('[data-editcall]').forEach(b=>b.addEventListener('click',()=>editCall(+b.dataset.editcall)));
+  list.querySelectorAll('[data-delcall]').forEach(b=>b.addEventListener('click',()=>delCall(+b.dataset.delcall)));
   list.querySelectorAll('[data-toggle]').forEach(h=>h.addEventListener('click',()=>{
     const row=list.querySelector('.call[data-call="'+h.dataset.toggle+'"]');
     if(row) row.classList.toggle('open');
@@ -908,6 +930,42 @@ $('addRes').addEventListener('click',async()=>{
   btn.disabled=false;
 });
 
+function cleanHTML(h){
+  const d=document.createElement('div'); d.innerHTML=String(h||'');
+  d.querySelectorAll('script,style,meta,link,iframe,object,embed,form,input').forEach(n=>n.remove());
+  d.querySelectorAll('*').forEach(n=>{
+    Array.from(n.attributes).forEach(a=>{
+      if(a.name.toLowerCase()==='href' && !/^\s*javascript:/i.test(a.value)) return;
+      n.removeAttribute(a.name);
+    });
+  });
+  d.querySelectorAll('a').forEach(n=>{ n.setAttribute('target','_blank'); n.setAttribute('rel','noopener noreferrer'); });
+  return d.innerHTML;
+}
+const noteHTML = n => /<[a-z][^>]*>/i.test(n||'') ? cleanHTML(n) : richText(n||'');
+
+let editIdx=-1;
+function editCall(i){
+  const c=calls[i]||{};
+  $('c-date').value=c.date||''; $('c-title').value=c.title||'';
+  $('c-notes').innerHTML=noteHTML(c.notes||''); $('c-link').value=c.link||'';
+  editIdx=i; $('addCall').textContent='Update session';
+  $('adminAddCall').scrollIntoView({behavior:'smooth',block:'start'});
+}
+async function delCall(i){
+  if(!confirm('Delete this session summary?')) return;
+  const old=calls.slice();
+  calls.splice(i,1);
+  const ok=await save({calls});
+  if(!ok){ calls=old; alert("Couldn't delete it."); }
+  if(editIdx===i){ editIdx=-1; $('addCall').textContent='Post session'; }
+  paintCalls();
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('.rt-b'); if(!b) return;
+  e.preventDefault(); $('c-notes').focus();
+  document.execCommand(b.dataset.cmd, false, b.dataset.val||null);
+});
 async function delRes(i){
   if(!confirm('Remove this resource?')) return;
   const old=resources.slice();
@@ -1383,10 +1441,12 @@ $('addCall').addEventListener('click',async()=>{
   const date=$('c-date').value.trim(), title=$('c-title').value.trim();
   if(!date||!title){ flash('callMsg','Add a date and a title.',true); return; }
   const btn=$('addCall'); btn.disabled=true;
-  calls.unshift({date,title,notes:$('c-notes').value.trim(),link:$('c-link').value.trim()});
+  const entry={date,title,notes:cleanHTML($('c-notes').innerHTML),link:$('c-link').value.trim()};
+  const oldCalls=calls.slice();
+  if(editIdx>-1) calls[editIdx]=entry; else calls.unshift(entry);
   const ok=await save({calls});
-  if(ok){ ['c-date','c-title','c-notes','c-link'].forEach(i=>$(i).value=''); paintCalls(); flash('callMsg','Posted'); }
-  else { calls.shift(); flash('callMsg',"Didn't post. Try again.",true); }
+    if(ok){ ['c-date','c-title','c-link'].forEach(i=>$(i).value=''); $('c-notes').innerHTML=''; editIdx=-1; btn.textContent='Post session'; paintCalls(); flash('callMsg','Saved'); }
+    else { calls=oldCalls; flash('callMsg',"Didn't save. Try again.",true); }
   btn.disabled=false;
 });
 
