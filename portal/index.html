@@ -335,21 +335,12 @@ footer{border-top:1px solid var(--line);padding:22px 20px 34px;text-align:center
   <h2>Welcome, Amayah</h2>
   <p class="lede">This is where everything lives. Your program, your calls, and your next steps between them. Fill out the intake below before our first session so we don't spend that hour on questions I could have read.</p>
 
-  <details class="billing">
+    <details class="billing">
     <summary>
-      <span class="next">Next payment <b>September 1</b>, $1,583.33</span>
+      <span class="next" id="billingNext">Next payment</span>
       <span class="chev">Schedule</span>
     </summary>
-    <div class="billing-body">
-      <div class="pay-row"><span class="when">Deposit</span><span><span class="paid">Paid</span></span></div>
-      <div class="pay-row"><span class="when">September 1, 2026</span><span class="amt">$1,583.33</span></div>
-      <div class="pay-row"><span class="when">October 1, 2026</span><span class="amt">$1,583.33</span></div>
-      <div class="pay-row"><span class="when">November 1, 2026</span><span class="amt">$1,583.33</span></div>
-      <div class="pay-row"><span class="when">December 1, 2026</span><span class="amt">$1,583.33</span></div>
-      <div class="pay-row"><span class="when">January 1, 2027</span><span class="amt">$1,583.33</span></div>
-      <div class="pay-row"><span class="when">February 1, 2027</span><span class="amt">$1,583.35</span></div>
-      <a class="pay-cta" href="https://buy.stripe.com/bJe28q744bnT3SY6gO1sQ0l" target="_blank" rel="noopener">Make a payment</a>
-    </div>
+    <div class="billing-body" id="billingBody"></div>
   </details>
 
   <div class="card">
@@ -545,6 +536,11 @@ footer{border-top:1px solid var(--line);padding:22px 20px 34px;text-align:center
   <h2>Intake</h2>
   <p class="lede">What she submitted, as she wrote it.</p>
   <div class="card"><dl class="readout" id="intakeRead"></dl></div>
+    <div class="card" style="margin-top:16px">
+    <h3 style="margin:0 0 4px">Payments</h3>
+    <p class="hint" id="adminPayNext"></p>
+    <div id="adminPayBody"></div>
+  </div>
 </section>
 
 </main>
@@ -797,6 +793,41 @@ async function save(patch){
   try{ await setDoc(ref,{...patch,updatedAt:serverTimestamp()},{merge:true}); return true; }
   catch(e){ console.error(e); return false; }
 }
+/* ── billing ── */
+const PAYMENTS = [
+  {when:'Deposit',           amt:''},
+  {when:'September 1, 2026', amt:'$1,583.33'},
+  {when:'October 1, 2026',   amt:'$1,583.33'},
+  {when:'November 1, 2026',  amt:'$1,583.33'},
+  {when:'December 1, 2026',  amt:'$1,583.33'},
+  {when:'January 1, 2027',   amt:'$1,583.33'},
+  {when:'February 1, 2027',  amt:'$1,583.35'}
+];
+let paid = PAYMENTS.map((p,i)=>i===0);
+
+function paintBilling(){
+  const rows = PAYMENTS.map((p,i)=>
+    '<div class="pay-row"><span class="when">'+p.when+'</span><span>'+
+    (paid[i] ? '<span class="paid">Paid</span>' : '<span class="amt">'+p.amt+'</span>')+
+    (isAdmin ? ' <button class="lnk'+(paid[i]?' warn':'')+'" data-pay="'+i+'" style="margin-left:12px">'+(paid[i]?'Undo':'Mark paid')+'</button>' : '')+
+    '</span></div>').join('');
+  const nxt = PAYMENTS.findIndex((p,i)=>!paid[i]);
+  const nextText = nxt<0 ? 'Paid in full' : 'Next payment <b>'+PAYMENTS[nxt].when.replace(/,.*$/,'')+'</b>, '+PAYMENTS[nxt].amt;
+  const cb=$('billingBody'), cn=$('billingNext');
+  if(cb) cb.innerHTML = rows + (isAdmin ? '' :
+    '<a class="pay-cta" href="https://buy.stripe.com/bJe28q744bnT3SY6gO1sQ0l" target="_blank" rel="noopener">Make a payment</a>');
+  if(cn) cn.innerHTML = nextText;
+  const ab=$('adminPayBody'), an=$('adminPayNext');
+  if(ab) ab.innerHTML = rows;
+  if(an) an.innerHTML = nextText;
+}
+document.addEventListener('click', async e=>{
+  const b=e.target.closest('[data-pay]'); if(!b||!isAdmin) return;
+  const i=+b.dataset.pay, old=paid.slice();
+  paid[i]=!paid[i]; paintBilling();
+  const ok=await save({paid});
+  if(!ok){ paid=old; paintBilling(); alert("Didn't save. Try again."); }
+});
 
 /* ── nav ── */
 function buildTabs(tabs){
@@ -1458,6 +1489,8 @@ function hydrate(d){
   clientEmail=d.email||'';
   nextSession=d.nextSession||'';
   resources=Array.isArray(d.resources)?d.resources:[];
+  paid=(Array.isArray(d.paid)&&d.paid.length===PAYMENTS.length)?d.paid:PAYMENTS.map((p,i)=>i===0);
+
 }
 
 async function loadMaterials(){
@@ -1584,8 +1617,7 @@ onAuthStateChanged(auth,async user=>{
     }
     clientEmail=user.email;
   }catch(e){ console.error(e); }
-  paintSpine(); paintCalls(); paintNext(); paintModules(); paintResources(); paintWork(); paintBoard();
-  buildTabs(CLIENT_TABS);
+  paintSpine(); paintCalls(); paintNext(); paintModules(); paintResources(); paintWork(); paintBoard(); paintBilling();  buildTabs(CLIENT_TABS);
 });
 </script>
 </body>
