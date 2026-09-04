@@ -664,13 +664,22 @@ const MODULES = [
       {id:"m4_formlink", l:"Your referral form link"},
       {id:"m4_crm", l:"Your response sheet link (this is your CRM)"}
     ],
-    checks:[
+        checks:[
       "Make your copy of the Referral Form",
       "Put your name on it",
       "Create your short form link and save it in the portal above",
       "Link responses to a Google Sheet and add the four CRM columns",
-      "Review the flyer I post to your portal"
+      "Review the flyer I post to your portal",
+      {t:"Read Part 2, Getting the Flyer Out", doc:"manual_4_p2"},
+      {t:"Print 20 color copies of the flyer at a print shop or the library", doc:"manual_4_p2"},
+      {t:"Add an Outreach tab to your response sheet: agency, contact, date, how, next follow-up", doc:"manual_4_p2"},
+      {t:"Week 1: email the PNG to ten offices from your Outreach List", doc:"manual_4_p2"},
+      {t:"Week 2: visit the hospitals, rehab, and VA clinic in person with printed flyers", doc:"manual_4_p2"},
+      {t:"Email the West TN Continuum of Care to join and get the next meeting date", doc:"manual_4_p2"},
+      {t:"Week 3 on: one follow-up touch per contact, every week, logged in your Outreach tab", doc:"manual_4_p2"},
+      {t:"Ten people on your waiting list", doc:"manual_4_p2"}
     ]
+
   },
   {
     t:"Set Up and Run",
@@ -997,9 +1006,10 @@ async function delRes(i){
   
 /* ── modules ── */
 function ticks(i){
-  const a=checks[String(i)];
-  return Array.isArray(a)&&a.length===MODULES[i].checks.length ? a : new Array(MODULES[i].checks.length).fill(false);
+  const n=MODULES[i].checks.length, a=Array.isArray(checks[String(i)])?checks[String(i)]:[];
+  return Array.from({length:n},(_,j)=>!!a[j]);
 }
+
 
 function paintModules(){
   const list=$('modList');
